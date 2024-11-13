@@ -32,10 +32,11 @@ export interface InkSdk<
   getDeployer(code: Binary): Deployer<T, D>
   readDeploymentEvents: (
     origin: SS58String,
-    events?: Array<{
-      event: GenericEvent
-      topics: FixedSizeBinary<number>[]
-    }>,
+    events?: Array<
+      GenericEvent & {
+        topics: FixedSizeBinary<number>[]
+      }
+    >,
   ) => {
     address: string
     contractEvents: Array<D["__types"]["event"]>
