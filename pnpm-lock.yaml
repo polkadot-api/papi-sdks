@@ -42,7 +42,20 @@ importers:
         specifier: ^7.8.1
         version: 7.8.1
 
-  packages/sdk-ink: {}
+  packages/sdk-ink:
+    dependencies:
+      '@polkadot-api/common-sdk-utils':
+        specifier: workspace:*
+        version: link:../common-utils
+      '@polkadot-api/ink-contracts':
+        specifier: ^0.2.0
+        version: 0.2.0
+      polkadot-api:
+        specifier: ^1.7.3
+        version: 1.7.3(rxjs@7.8.1)
+      rxjs:
+        specifier: ^7.8.1
+        version: 7.8.1
 
 packages:
 

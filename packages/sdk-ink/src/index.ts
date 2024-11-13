@@ -1,1 +1,2 @@
-export const hey = 0
+export { createInkSdk } from "./ink-sdk"
+export type * from "./descriptor-types"

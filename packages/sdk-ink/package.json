@@ -39,5 +39,11 @@
     "format": "prettier --write README.md \"src/**/*.{js,jsx,ts,tsx,json,md}\"",
     "prepack": "pnpm run build"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "@polkadot-api/common-sdk-utils": "workspace:*",
+    "@polkadot-api/ink-contracts": "^0.2.0",
+    "polkadot-api": "^1.7.3",
+    "rxjs": "^7.8.1"
+  }
 }
