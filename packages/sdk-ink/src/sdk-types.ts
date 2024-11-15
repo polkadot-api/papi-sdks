@@ -89,6 +89,7 @@ export interface Contract<
   T extends InkSdkTypedApi,
   D extends GenericInkDescriptors,
 > {
+  isCompatible(): Promise<boolean>
   getStorage(): SdkStorage<D["__types"]["storage"]>
   query: <L extends string & keyof D["__types"]["messages"]>(
     message: L,

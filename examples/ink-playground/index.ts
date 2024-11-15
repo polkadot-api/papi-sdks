@@ -29,6 +29,8 @@ const typedApi = client.getTypedApi(testAzero)
 const psp22Sdk = createInkSdk(typedApi, contracts.psp22)
 const psp22Contract = psp22Sdk.getContract(ADDRESS.psp22)
 
+console.log("is compatible", await psp22Contract.isCompatible())
+
 // Nested storage query
 {
   console.log("Query storage of psp22 contract")

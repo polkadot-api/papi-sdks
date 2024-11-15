@@ -22,6 +22,17 @@ export function getContract<
     typedApi.query.Contracts.ContractInfoOf.getValue(address)
 
   return {
+    async isCompatible() {
+      try {
+        const details = await contractDetails
+        return details
+          ? details.code_hash.asHex() === lookup.metadata.source.hash
+          : false
+      } catch (ex) {
+        console.error(ex)
+        return false
+      }
+    },
     getStorage: () => getStorage(typedApi, inkClient, lookup, address),
     async query(message, args) {
       const msg = inkClient.message(message)

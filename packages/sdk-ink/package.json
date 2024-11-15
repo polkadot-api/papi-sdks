@@ -41,9 +41,16 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@polkadot-api/common-sdk-utils": "workspace:*",
-    "@polkadot-api/ink-contracts": "^0.2.0",
-    "polkadot-api": "^1.7.3",
+    "@polkadot-api/common-sdk-utils": "workspace:*"
+  },
+  "peerDependencies": {
+    "@polkadot-api/ink-contracts": ">=0.2.1",
+    "polkadot-api": ">=1.7.4",
+    "rxjs": ">=7.8.0"
+  },
+  "devDependencies": {
+    "@polkadot-api/ink-contracts": "^0.2.1",
+    "polkadot-api": "^1.7.4",
     "rxjs": "^7.8.1"
   }
 }
