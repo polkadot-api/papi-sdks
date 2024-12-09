@@ -7,12 +7,7 @@ import { Binary, Enum, getSs58AddressInfo, type SS58String } from "polkadot-api"
 
 export type Location = (XcmVersionedLocation & { type: "V4" })["value"]
 
-// TODO: impl
-export const routeRelative = (_from: Location, _to: Location): Location => {
-  return { parents: 0, interior: Enum("Here") }
-}
-
-export const addrToLocation = (addr: SS58String): Location => {
+export const accId32ToLocation = (addr: SS58String): Location => {
   const ss58Info = getSs58AddressInfo(addr)
   if (!ss58Info.isValid) throw new Error(`Beneficiary ${addr} not valid`)
   return {
@@ -107,4 +102,46 @@ export const locationsAreEq = (a: Location, b: Location): boolean => {
     if (!junctionsAreEq(a.interior.value[i], (b as any).interior.value[i]))
       return false
   return true
+}
+
+export const routeRelative = (from: Location, to: Location): Location => {
+  const global = "GlobalConsensus"
+  if (
+    from.parents ||
+    from.interior.type === "Here" ||
+    (from.interior.type === "X1" && from.interior.value.type !== global) ||
+    (from.interior.type !== "X1" && from.interior.value[0].type !== global) ||
+    to.parents ||
+    to.interior.type === "Here" ||
+    (to.interior.type === "X1" && to.interior.value.type !== global) ||
+    (to.interior.type !== "X1" && to.interior.value[0].type !== global)
+  )
+    throw new Error("Both routes need to be absolute")
+  const fromLocation =
+    from.interior.type === "X1" ? [from.interior.value] : from.interior.value
+  const toLocation =
+    to.interior.type === "X1" ? [to.interior.value] : to.interior.value
+  let parents = 0
+  let junctions: XcmV3Junction[] = []
+  for (let i = 0; i < Math.max(fromLocation.length, toLocation.length); i++) {
+    if (
+      i < Math.min(fromLocation.length, toLocation.length) &&
+      junctionsAreEq(fromLocation[i], toLocation[i])
+    )
+      continue
+    junctions = toLocation.slice(i)
+    parents = Math.max(0, fromLocation.length - i)
+  }
+
+  const len = junctions.length
+  if (len > 8) throw new Error("Unable to route. Too many junctions")
+  return {
+    parents,
+    interior:
+      len === 0
+        ? Enum("Here")
+        : len === 1
+          ? Enum("X1", junctions[0])
+          : (Enum(`X${len}`, junctions) as any),
+  }
 }

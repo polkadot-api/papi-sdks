@@ -36,6 +36,7 @@
   "scripts": {
     "postinstall": "papi --whitelist .papi/whitelist.ts",
     "build": "tsc --noEmit && rollup -c ../../rollup.config.js",
+    "test": "vitest",
     "lint": "prettier --check README.md \"src/**/*.{js,jsx,ts,tsx,json,md}\"",
     "format": "prettier --write README.md \"src/**/*.{js,jsx,ts,tsx,json,md}\"",
     "prepack": "pnpm run build"

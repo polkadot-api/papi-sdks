@@ -6,7 +6,11 @@ import {
 } from "@polkadot-api/descriptors"
 import { Enum, type SS58String, type TypedApi } from "polkadot-api"
 import type { Result } from "@polkadot-api/common-sdk-utils"
-import { addrToLocation, type Location, routeRelative } from "./utils/location"
+import {
+  accId32ToLocation,
+  type Location,
+  routeRelative,
+} from "./utils/location"
 
 const unwrap = <T>({ success, value }: Result<T>): T => {
   if (success) return value
@@ -47,7 +51,7 @@ export const createTeleport = (
           }),
           XcmV4Instruction.DepositAsset({
             assets: Enum("Wild", Enum("AllCounted", 1)),
-            beneficiary: addrToLocation(beneficiary),
+            beneficiary: accId32ToLocation(beneficiary),
           }),
         ],
         dest: routeRelative(origin, dest),
