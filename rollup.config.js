@@ -16,7 +16,7 @@ const absoluteAlias = alias({
       // In tsconfig this would be like `"paths": { "@/*": ["./src/*"] }`
       replacement: path.resolve("./src"),
       customResolver: resolve({
-        extensions: [".js", ".ts"],
+        extensions: [".mjs", ".js", ".ts"],
       }),
     },
   ],
@@ -31,6 +31,7 @@ export default [
         file: `dist/index.js`,
         format: "cjs",
         sourcemap: true,
+        inlineDynamicImports: true,
       },
       {
         dir: `dist/esm`,
@@ -46,6 +47,7 @@ export default [
     plugins: [absoluteAlias, dts()],
     output: {
       file: `dist/index.d.ts`,
+      inlineDynamicImports: true,
       format: "es",
     },
   },

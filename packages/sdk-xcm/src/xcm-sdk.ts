@@ -1,9 +1,7 @@
-import { pas } from "@polkadot-api/descriptors"
-import { TypedApi } from "polkadot-api"
-import { noop } from "polkadot-api/utils"
+import { createTeleport } from "./create-teleport"
 
-export const createXcmSdk = <T extends TypedApi<typeof pas>>(api: T) => {
+export const createXcmSdk = () => {
   return {
-    createTeleport: noop,
+    createTeleport,
   }
 }

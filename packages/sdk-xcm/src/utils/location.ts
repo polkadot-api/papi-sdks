@@ -2,10 +2,16 @@ import type {
   XcmV3Junction,
   XcmV3JunctionNetworkId,
   XcmVersionedLocation,
-} from "@polkadot-api/descriptors"
+} from "@/descriptors"
 import { Binary, Enum, getSs58AddressInfo, type SS58String } from "polkadot-api"
 
-export type Location = (XcmVersionedLocation & { type: "V4" })["value"]
+type ExcludeV2<T> = Exclude<T, { type: "V2" }>
+export type Location = ExcludeV2<XcmVersionedLocation>["value"]
+
+export const filterV2 = <T extends { type: string }>(val: T): ExcludeV2<T> => {
+  if (val.type === "V2") throw null
+  return val as any
+}
 
 export const accId32ToLocation = (addr: SS58String): Location => {
   const ss58Info = getSs58AddressInfo(addr)

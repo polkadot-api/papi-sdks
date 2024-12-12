@@ -91,9 +91,6 @@ importers:
       '@polkadot-api/common-sdk-utils':
         specifier: workspace:*
         version: link:../common-utils
-      '@polkadot-api/descriptors':
-        specifier: file:.papi/descriptors
-        version: file:packages/sdk-xcm/.papi/descriptors(polkadot-api@1.7.8(postcss@8.4.49)(rxjs@7.8.1))
     devDependencies:
       '@polkadot-api/substrate-bindings':
         specifier: ^0.10.0
@@ -449,11 +446,6 @@ packages:
 
   '@polkadot-api/descriptors@file:examples/ink-playground/.papi/descriptors':
     resolution: {directory: examples/ink-playground/.papi/descriptors, type: directory}
-    peerDependencies:
-      polkadot-api: '*'
-
-  '@polkadot-api/descriptors@file:packages/sdk-xcm/.papi/descriptors':
-    resolution: {directory: packages/sdk-xcm/.papi/descriptors, type: directory}
     peerDependencies:
       polkadot-api: '*'
 
@@ -1711,10 +1703,6 @@ snapshots:
       '@polkadot-api/utils': 0.1.2
 
   '@polkadot-api/descriptors@file:examples/ink-playground/.papi/descriptors(polkadot-api@1.7.8(postcss@8.4.49)(rxjs@7.8.1))':
-    dependencies:
-      polkadot-api: 1.7.8(postcss@8.4.49)(rxjs@7.8.1)
-
-  '@polkadot-api/descriptors@file:packages/sdk-xcm/.papi/descriptors(polkadot-api@1.7.8(postcss@8.4.49)(rxjs@7.8.1))':
     dependencies:
       polkadot-api: 1.7.8(postcss@8.4.49)(rxjs@7.8.1)
 

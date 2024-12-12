@@ -34,7 +34,6 @@
     "dist"
   ],
   "scripts": {
-    "postinstall": "papi --whitelist .papi/whitelist.ts",
     "build": "tsc --noEmit && rollup -c ../../rollup.config.js",
     "test": "vitest",
     "lint": "prettier --check README.md \"src/**/*.{js,jsx,ts,tsx,json,md}\"",
@@ -43,12 +42,11 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@polkadot-api/common-sdk-utils": "workspace:*",
-    "@polkadot-api/descriptors": "file:.papi/descriptors"
+    "@polkadot-api/common-sdk-utils": "workspace:*"
   },
   "peerDependencies": {
     "@polkadot-api/substrate-bindings": ">=0.9.4",
-    "polkadot-api": ">=1.7.7",
+    "polkadot-api": ">=1.7.8",
     "rxjs": ">=7.8.0"
   },
   "devDependencies": {

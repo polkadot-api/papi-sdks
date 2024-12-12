@@ -1,4 +1,4 @@
-import { XcmV3Junction, XcmV3Junctions } from "@polkadot-api/descriptors"
+import { XcmV3Junction, XcmV3Junctions } from "@/descriptors"
 import { Enum } from "polkadot-api"
 import { describe, expect, it } from "vitest"
 import { Location, routeRelative } from "./location"
