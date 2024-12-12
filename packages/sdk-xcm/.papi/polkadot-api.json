@@ -9,6 +9,14 @@
     "pah": {
       "chain": "paseo_asset_hub",
       "metadata": ".papi/metadata/pah.scale"
+    },
+    "wnd": {
+      "chain": "westend2",
+      "metadata": ".papi/metadata/wnd.scale"
+    },
+    "wah": {
+      "chain": "westend2_asset_hub",
+      "metadata": ".papi/metadata/wah.scale"
     }
   }
 }
