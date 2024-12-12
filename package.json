@@ -17,8 +17,8 @@
   "devDependencies": {
     "@rollup/plugin-alias": "^5.1.1",
     "@rollup/plugin-node-resolve": "^15.3.0",
-    "prettier": "^3.4.1",
-    "rollup": "^4.28.0",
+    "prettier": "^3.4.2",
+    "rollup": "^4.28.1",
     "rollup-plugin-dts": "^6.1.1",
     "rollup-plugin-esbuild": "^6.1.1",
     "typescript": "^5.7.2",
