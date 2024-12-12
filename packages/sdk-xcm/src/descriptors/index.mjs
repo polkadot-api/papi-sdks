@@ -14,8 +14,8 @@ var toBinary = (() => {
     return bytes;
   };
 })();
-var descriptorValues = import("./descriptors-C3JG7XDI.mjs").then((module) => module["Pas"]);
-var metadataTypes = import("./metadataTypes-HH4OIXDW.mjs").then(
+var descriptorValues = import("./descriptors.mjs").then((module) => module["Pas"]);
+var metadataTypes = import("./metadataTypes.mjs").then(
   (module) => toBinary("default" in module ? module.default : module)
 );
 var asset = {};
@@ -38,13 +38,61 @@ var toBinary2 = (() => {
     return bytes;
   };
 })();
-var descriptorValues2 = import("./descriptors-C3JG7XDI.mjs").then((module) => module["Pah"]);
-var metadataTypes2 = import("./metadataTypes-HH4OIXDW.mjs").then(
+var descriptorValues2 = import("./descriptors.mjs").then((module) => module["Pah"]);
+var metadataTypes2 = import("./metadataTypes.mjs").then(
   (module) => toBinary2("default" in module ? module.default : module)
 );
 var asset2 = {};
 var _allDescriptors2 = { descriptors: descriptorValues2, metadataTypes: metadataTypes2, asset: asset2 };
 var pah_default = _allDescriptors2;
+
+// .papi/descriptors/src/wnd.ts
+var toBinary3 = (() => {
+  const table = new Uint8Array(128);
+  for (let i = 0; i < 64; i++) table[i < 26 ? i + 65 : i < 52 ? i + 71 : i < 62 ? i - 4 : i * 4 - 205] = i;
+  return (base64) => {
+    const n = base64.length, bytes = new Uint8Array((n - Number(base64[n - 1] === "=") - Number(base64[n - 2] === "=")) * 3 / 4 | 0);
+    for (let i2 = 0, j = 0; i2 < n; ) {
+      const c0 = table[base64.charCodeAt(i2++)], c1 = table[base64.charCodeAt(i2++)];
+      const c2 = table[base64.charCodeAt(i2++)], c3 = table[base64.charCodeAt(i2++)];
+      bytes[j++] = c0 << 2 | c1 >> 4;
+      bytes[j++] = c1 << 4 | c2 >> 2;
+      bytes[j++] = c2 << 6 | c3;
+    }
+    return bytes;
+  };
+})();
+var descriptorValues3 = import("./descriptors.mjs").then((module) => module["Wnd"]);
+var metadataTypes3 = import("./metadataTypes.mjs").then(
+  (module) => toBinary3("default" in module ? module.default : module)
+);
+var asset3 = {};
+var _allDescriptors3 = { descriptors: descriptorValues3, metadataTypes: metadataTypes3, asset: asset3 };
+var wnd_default = _allDescriptors3;
+
+// .papi/descriptors/src/wah.ts
+var toBinary4 = (() => {
+  const table = new Uint8Array(128);
+  for (let i = 0; i < 64; i++) table[i < 26 ? i + 65 : i < 52 ? i + 71 : i < 62 ? i - 4 : i * 4 - 205] = i;
+  return (base64) => {
+    const n = base64.length, bytes = new Uint8Array((n - Number(base64[n - 1] === "=") - Number(base64[n - 2] === "=")) * 3 / 4 | 0);
+    for (let i2 = 0, j = 0; i2 < n; ) {
+      const c0 = table[base64.charCodeAt(i2++)], c1 = table[base64.charCodeAt(i2++)];
+      const c2 = table[base64.charCodeAt(i2++)], c3 = table[base64.charCodeAt(i2++)];
+      bytes[j++] = c0 << 2 | c1 >> 4;
+      bytes[j++] = c1 << 4 | c2 >> 2;
+      bytes[j++] = c2 << 6 | c3;
+    }
+    return bytes;
+  };
+})();
+var descriptorValues4 = import("./descriptors.mjs").then((module) => module["Wah"]);
+var metadataTypes4 = import("./metadataTypes.mjs").then(
+  (module) => toBinary4("default" in module ? module.default : module)
+);
+var asset4 = {};
+var _allDescriptors4 = { descriptors: descriptorValues4, metadataTypes: metadataTypes4, asset: asset4 };
+var wah_default = _allDescriptors4;
 
 // .papi/descriptors/src/common-types.ts
 import { _Enum } from "polkadot-api";
@@ -193,6 +241,15 @@ var CoreState = _Enum;
 var OccupiedCoreAssumption = _Enum;
 var CandidateEvent = _Enum;
 var MmrPrimitivesError = _Enum;
+var RecoveryEvent = _Enum;
+var WestendRuntimeProxyType = _Enum;
+var PolkadotRuntimeCommonAssignedSlotsEvent = _Enum;
+var RootTestingEvent = _Enum;
+var PolkadotRuntimeCommonIdentityMigratorEvent = _Enum;
+var IdentityJudgement = _Enum;
+var IdentityData = _Enum;
+var WestendRuntimeGovernanceOriginsPalletCustomOriginsOrigin = _Enum;
+var PolkadotRuntimeCommonAssignedSlotsSlotLeasePeriodStart = _Enum;
 export {
   ArithmeticError,
   AssetRateEvent,
@@ -230,6 +287,8 @@ export {
   GrandpaEquivocation,
   GrandpaEvent,
   GrandpaStoredState,
+  IdentityData,
+  IdentityJudgement,
   IndicesEvent,
   InvalidDisputeStatementKind,
   MmrPrimitivesError,
@@ -260,6 +319,9 @@ export {
   PolkadotPrimitivesV6ExecutorParamsExecutorParam,
   PolkadotPrimitivesV6PvfPrepKind,
   PolkadotPrimitivesV6ValidDisputeStatementKind,
+  PolkadotRuntimeCommonAssignedSlotsEvent,
+  PolkadotRuntimeCommonAssignedSlotsSlotLeasePeriodStart,
+  PolkadotRuntimeCommonIdentityMigratorEvent,
   PolkadotRuntimeOriginCaller,
   PolkadotRuntimeParachainsCoretimeEvent,
   PolkadotRuntimeParachainsSchedulerCommonAssignment,
@@ -270,7 +332,9 @@ export {
   PreimageRequestStatus,
   PreimagesBounded,
   PvfExecKind,
+  RecoveryEvent,
   ReferendaTypesCurve,
+  RootTestingEvent,
   SessionEvent,
   SlashingOffenceKind,
   StakingEvent,
@@ -295,6 +359,8 @@ export {
   VersionedLocatableAsset,
   VestingEvent,
   VotingConviction,
+  WestendRuntimeGovernanceOriginsPalletCustomOriginsOrigin,
+  WestendRuntimeProxyType,
   WestendRuntimeRuntimeFreezeReason,
   XcmPalletOrigin,
   XcmPalletQueryStatus,
@@ -340,5 +406,7 @@ export {
   XcmVersionedResponse,
   XcmVersionedXcm,
   pah_default as pah,
-  pas_default as pas
+  pas_default as pas,
+  wah_default as wah,
+  wnd_default as wnd
 };

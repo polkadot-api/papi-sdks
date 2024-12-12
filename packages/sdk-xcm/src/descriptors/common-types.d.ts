@@ -16889,4 +16889,7686 @@ export type I5tspd7e422fr9 = AnonymousEnum<{
     "AmountToBalanceConversionFailed": undefined;
 }>;
 export type I5vv5n03oo8gas = (Anonymize<I200n1ov5tbcvr>) | undefined;
+export type Iepk3927t67cg5 = Array<Anonymize<I89svvj2vmkdi0>>;
+export type I89svvj2vmkdi0 = {
+    "phase": Phase;
+    "event": Anonymize<Ieu7lkv7gb5kv2>;
+    "topics": Anonymize<Ic5m5lp1oioo8r>;
+};
+export type Ieu7lkv7gb5kv2 = AnonymousEnum<{
+    "System": Anonymize<I6fl4osha7hjdi>;
+    "Indices": Anonymize<IndicesEvent>;
+    "Balances": Anonymize<Iao8h4hv7atnq3>;
+    "TransactionPayment": TransactionPaymentEvent;
+    "Staking": Anonymize<Id2fnegepp3euf>;
+    "Offences": OffencesEvent;
+    "Parameters": Anonymize<In3t00aurfuda>;
+    "Session": SessionEvent;
+    "Grandpa": GrandpaEvent;
+    "Utility": Anonymize<Icdo18ud9j8na8>;
+    "Identity": Anonymize<I2au2or9cskfoi>;
+    "Recovery": RecoveryEvent;
+    "Vesting": VestingEvent;
+    "Scheduler": Anonymize<I7tg2jl7vhqfn>;
+    "Preimage": PreimageEvent;
+    "Sudo": Anonymize<Idkshihsl0fqp2>;
+    "Proxy": Anonymize<Ia2tmos8nk07i4>;
+    "Multisig": Anonymize<Iel61up536egjn>;
+    "ElectionProviderMultiPhase": ElectionProviderMultiPhaseEvent;
+    "VoterList": BagsListEvent;
+    "NominationPools": Anonymize<I1mroqu3ca6qo2>;
+    "FastUnstake": Anonymize<Idi0aq2qbd88mf>;
+    "ConvictionVoting": Anonymize<Itdqso6dq8jq1>;
+    "Referenda": Anonymize<Idfraa3b4eu018>;
+    "Whitelist": Anonymize<I79gilfps020tv>;
+    "Treasury": Anonymize<Ia1b9fjuj0ob0b>;
+    "DelegatedStaking": Anonymize<I1nq1se98idofq>;
+    "ParaInclusion": Anonymize<If7iaaqrjurpqf>;
+    "Paras": ParachainsParasEvent;
+    "Hrmp": ParachainsHrmpEvent;
+    "ParasDisputes": ParachainsDisputesEvent;
+    "OnDemandAssignmentProvider": Anonymize<Icuu6jjue8o6eb>;
+    "Registrar": CommonParasRegistrarEvent;
+    "Slots": CommonSlotsEvent;
+    "Auctions": CommonAuctionsEvent;
+    "Crowdloan": Anonymize<Ifv7oprrsroelo>;
+    "AssignedSlots": PolkadotRuntimeCommonAssignedSlotsEvent;
+    "Coretime": PolkadotRuntimeParachainsCoretimeEvent;
+    "MultiBlockMigrations": Anonymize<I94co7vj7h6bo>;
+    "XcmPallet": Anonymize<I3v8stpdt56ml>;
+    "MessageQueue": Anonymize<I13vul90391uuv>;
+    "AssetRate": Anonymize<I1dcjapt414ijf>;
+    "RootTesting": RootTestingEvent;
+    "IdentityMigrator": PolkadotRuntimeCommonIdentityMigratorEvent;
+}>;
+export type I6fl4osha7hjdi = AnonymousEnum<{
+    /**
+     *An extrinsic completed successfully.
+     */
+    "ExtrinsicSuccess": Anonymize<Ia82mnkmeo2rhc>;
+    /**
+     *An extrinsic failed.
+     */
+    "ExtrinsicFailed": Anonymize<I7cvubvgui44k9>;
+    /**
+     *`:code` was updated.
+     */
+    "CodeUpdated": undefined;
+    /**
+     *A new account was created.
+     */
+    "NewAccount": Anonymize<Icbccs0ug47ilf>;
+    /**
+     *An account was reaped.
+     */
+    "KilledAccount": Anonymize<Icbccs0ug47ilf>;
+    /**
+     *On on-chain remark happened.
+     */
+    "Remarked": Anonymize<I855j4i3kr8ko1>;
+    /**
+     *An upgrade was authorized.
+     */
+    "UpgradeAuthorized": Anonymize<Ibgl04rn6nbfm6>;
+}>;
+export type I7cvubvgui44k9 = {
+    "dispatch_error": Anonymize<I3k9vrkd497mbt>;
+    "dispatch_info": Anonymize<Ic9s8f85vjtncc>;
+};
+export type I3k9vrkd497mbt = AnonymousEnum<{
+    "Other": undefined;
+    "CannotLookup": undefined;
+    "BadOrigin": undefined;
+    "Module": Anonymize<If8f7k5kvumtld>;
+    "ConsumerRemaining": undefined;
+    "NoProviders": undefined;
+    "TooManyConsumers": undefined;
+    "Token": TokenError;
+    "Arithmetic": ArithmeticError;
+    "Transactional": TransactionalError;
+    "Exhausted": undefined;
+    "Corruption": undefined;
+    "Unavailable": undefined;
+    "RootNotAllowed": undefined;
+    "Trie": Anonymize<Idh4cj79bvroj8>;
+}>;
+export type If8f7k5kvumtld = AnonymousEnum<{
+    "System": Anonymize<I5o0s7c8q1cc9b>;
+    "Babe": Anonymize<Ib6q602k6o213a>;
+    "Timestamp": undefined;
+    "Indices": Anonymize<Icq1825fru3di2>;
+    "Balances": Anonymize<Idj13i7adlomht>;
+    "TransactionPayment": undefined;
+    "Authorship": undefined;
+    "Staking": Anonymize<I11137r14aka6n>;
+    "Offences": undefined;
+    "Historical": undefined;
+    "Parameters": undefined;
+    "Session": Anonymize<I1e07dgbaqd1sq>;
+    "Grandpa": Anonymize<I7q8i0pp1gkas6>;
+    "AuthorityDiscovery": undefined;
+    "Utility": Anonymize<I8dt2g2hcrgh36>;
+    "Identity": Anonymize<Ib8gja1crqq8kd>;
+    "Recovery": Anonymize<I29mqdjoga49c9>;
+    "Vesting": Anonymize<Icof2acl69lq3c>;
+    "Scheduler": Anonymize<If7oa8fprnilo5>;
+    "Preimage": Anonymize<I4cfhml1prt4lu>;
+    "Sudo": Anonymize<Iaug04qjhbli00>;
+    "Proxy": Anonymize<Iuvt54ei4cehc>;
+    "Multisig": Anonymize<Ia76qmhhg4jvb9>;
+    "ElectionProviderMultiPhase": Anonymize<Idb84kfjd998sl>;
+    "VoterList": Anonymize<Ic35l5bgiij29p>;
+    "NominationPools": Anonymize<Ic4cmf9id3qcei>;
+    "FastUnstake": Anonymize<Iau9bur8dc3bec>;
+    "ConvictionVoting": Anonymize<Idfa8k8ikssbsf>;
+    "Referenda": Anonymize<I84u4ul208g742>;
+    "Origins": undefined;
+    "Whitelist": Anonymize<I15nctscutpbeh>;
+    "Treasury": Anonymize<I36uss0m9fpcsf>;
+    "DelegatedStaking": Anonymize<Iaogv3iimefnis>;
+    "ParachainsOrigin": undefined;
+    "Configuration": Anonymize<In1jctfv299lm>;
+    "ParasShared": undefined;
+    "ParaInclusion": Anonymize<I4rrcn97hglfls>;
+    "ParaInherent": Anonymize<I2g8k20rpkqcs4>;
+    "ParaScheduler": undefined;
+    "Paras": Anonymize<Ieo97unb4d08rl>;
+    "Initializer": undefined;
+    "Dmp": undefined;
+    "Hrmp": Anonymize<Ibns95nfmm92df>;
+    "ParaSessionInfo": undefined;
+    "ParasDisputes": Anonymize<Iakburbqot4g58>;
+    "ParasSlashing": Anonymize<I1v70p1j0r2q1j>;
+    "OnDemandAssignmentProvider": Anonymize<I8htscm3ert491>;
+    "CoretimeAssignmentProvider": Anonymize<I2mjnb5vgujeqj>;
+    "Registrar": Anonymize<I97vkspnd0b8bh>;
+    "Slots": Anonymize<Iers095sa65pbg>;
+    "ParasSudoWrapper": Anonymize<Ieq0677kv2oqb2>;
+    "Auctions": Anonymize<I4kgo47o2v3701>;
+    "Crowdloan": Anonymize<I9o6l1c4r4qc3s>;
+    "AssignedSlots": Anonymize<I40te5bcfc046n>;
+    "Coretime": Anonymize<Ifju0orssp9h7o>;
+    "MultiBlockMigrations": Anonymize<Iaaqq5jevtahm8>;
+    "XcmPallet": Anonymize<I87j95aq93d7dq>;
+    "MessageQueue": Anonymize<I5iupade5ag2dp>;
+    "AssetRate": Anonymize<I3qgd61cgli6cp>;
+    "RootTesting": undefined;
+    "Beefy": Anonymize<Iflve6qd33ah68>;
+    "Mmr": undefined;
+    "BeefyMmrLeaf": undefined;
+    "IdentityMigrator": undefined;
+}>;
+export type Ib8gja1crqq8kd = AnonymousEnum<{
+    /**
+     *Too many subs-accounts.
+     */
+    "TooManySubAccounts": undefined;
+    /**
+     *Account isn't found.
+     */
+    "NotFound": undefined;
+    /**
+     *Account isn't named.
+     */
+    "NotNamed": undefined;
+    /**
+     *Empty index.
+     */
+    "EmptyIndex": undefined;
+    /**
+     *Fee is changed.
+     */
+    "FeeChanged": undefined;
+    /**
+     *No identity found.
+     */
+    "NoIdentity": undefined;
+    /**
+     *Sticky judgement.
+     */
+    "StickyJudgement": undefined;
+    /**
+     *Judgement given.
+     */
+    "JudgementGiven": undefined;
+    /**
+     *Invalid judgement.
+     */
+    "InvalidJudgement": undefined;
+    /**
+     *The index is invalid.
+     */
+    "InvalidIndex": undefined;
+    /**
+     *The target is invalid.
+     */
+    "InvalidTarget": undefined;
+    /**
+     *Maximum amount of registrars reached. Cannot add any more.
+     */
+    "TooManyRegistrars": undefined;
+    /**
+     *Account ID is already named.
+     */
+    "AlreadyClaimed": undefined;
+    /**
+     *Sender is not a sub-account.
+     */
+    "NotSub": undefined;
+    /**
+     *Sub-account isn't owned by sender.
+     */
+    "NotOwned": undefined;
+    /**
+     *The provided judgement was for a different identity.
+     */
+    "JudgementForDifferentIdentity": undefined;
+    /**
+     *Error that occurs when there is an issue paying for judgement.
+     */
+    "JudgementPaymentFailed": undefined;
+    /**
+     *The provided suffix is too long.
+     */
+    "InvalidSuffix": undefined;
+    /**
+     *The sender does not have permission to issue a username.
+     */
+    "NotUsernameAuthority": undefined;
+    /**
+     *The authority cannot allocate any more usernames.
+     */
+    "NoAllocation": undefined;
+    /**
+     *The signature on a username was not valid.
+     */
+    "InvalidSignature": undefined;
+    /**
+     *Setting this username requires a signature, but none was provided.
+     */
+    "RequiresSignature": undefined;
+    /**
+     *The username does not meet the requirements.
+     */
+    "InvalidUsername": undefined;
+    /**
+     *The username is already taken.
+     */
+    "UsernameTaken": undefined;
+    /**
+     *The requested username does not exist.
+     */
+    "NoUsername": undefined;
+    /**
+     *The username cannot be forcefully removed because it can still be accepted.
+     */
+    "NotExpired": undefined;
+    /**
+     *The username cannot be removed because it's still in the grace period.
+     */
+    "TooEarly": undefined;
+    /**
+     *The username cannot be removed because it is not unbinding.
+     */
+    "NotUnbinding": undefined;
+    /**
+     *The username cannot be unbound because it is already unbinding.
+     */
+    "AlreadyUnbinding": undefined;
+    /**
+     *The action cannot be performed because of insufficient privileges (e.g. authority
+     *trying to unbind a username provided by the system).
+     */
+    "InsufficientPrivileges": undefined;
+}>;
+export type I29mqdjoga49c9 = AnonymousEnum<{
+    /**
+     *User is not allowed to make a call on behalf of this account
+     */
+    "NotAllowed": undefined;
+    /**
+     *Threshold must be greater than zero
+     */
+    "ZeroThreshold": undefined;
+    /**
+     *Friends list must be greater than zero and threshold
+     */
+    "NotEnoughFriends": undefined;
+    /**
+     *Friends list must be less than max friends
+     */
+    "MaxFriends": undefined;
+    /**
+     *Friends list must be sorted and free of duplicates
+     */
+    "NotSorted": undefined;
+    /**
+     *This account is not set up for recovery
+     */
+    "NotRecoverable": undefined;
+    /**
+     *This account is already set up for recovery
+     */
+    "AlreadyRecoverable": undefined;
+    /**
+     *A recovery process has already started for this account
+     */
+    "AlreadyStarted": undefined;
+    /**
+     *A recovery process has not started for this rescuer
+     */
+    "NotStarted": undefined;
+    /**
+     *This account is not a friend who can vouch
+     */
+    "NotFriend": undefined;
+    /**
+     *The friend must wait until the delay period to vouch for this recovery
+     */
+    "DelayPeriod": undefined;
+    /**
+     *This user has already vouched for this recovery
+     */
+    "AlreadyVouched": undefined;
+    /**
+     *The threshold for recovering this account has not been met
+     */
+    "Threshold": undefined;
+    /**
+     *There are still active recovery attempts that need to be closed
+     */
+    "StillActive": undefined;
+    /**
+     *This account is already set up for recovery
+     */
+    "AlreadyProxy": undefined;
+    /**
+     *Some internal state is broken.
+     */
+    "BadState": undefined;
+}>;
+export type I4cfhml1prt4lu = AnonymousEnum<{
+    /**
+     *Preimage is too large to store on-chain.
+     */
+    "TooBig": undefined;
+    /**
+     *Preimage has already been noted on-chain.
+     */
+    "AlreadyNoted": undefined;
+    /**
+     *The user is not authorized to perform this action.
+     */
+    "NotAuthorized": undefined;
+    /**
+     *The preimage cannot be removed since it has not yet been noted.
+     */
+    "NotNoted": undefined;
+    /**
+     *A preimage may not be removed when there are outstanding requests.
+     */
+    "Requested": undefined;
+    /**
+     *The preimage request cannot be removed since no outstanding requests exist.
+     */
+    "NotRequested": undefined;
+    /**
+     *More than `MAX_HASH_UPGRADE_BULK_COUNT` hashes were requested to be upgraded at once.
+     */
+    "TooMany": undefined;
+    /**
+     *Too few hashes were requested to be upgraded (i.e. zero).
+     */
+    "TooFew": undefined;
+}>;
+export type Iaogv3iimefnis = AnonymousEnum<{
+    /**
+     *The account cannot perform this operation.
+     */
+    "NotAllowed": undefined;
+    /**
+     *An existing staker cannot perform this action.
+     */
+    "AlreadyStaking": undefined;
+    /**
+     *Reward Destination cannot be same as `Agent` account.
+     */
+    "InvalidRewardDestination": undefined;
+    /**
+     *Delegation conditions are not met.
+     *
+     *Possible issues are
+     *1) Cannot delegate to self,
+     *2) Cannot delegate to multiple delegates.
+     */
+    "InvalidDelegation": undefined;
+    /**
+     *The account does not have enough funds to perform the operation.
+     */
+    "NotEnoughFunds": undefined;
+    /**
+     *Not an existing `Agent` account.
+     */
+    "NotAgent": undefined;
+    /**
+     *Not a Delegator account.
+     */
+    "NotDelegator": undefined;
+    /**
+     *Some corruption in internal state.
+     */
+    "BadState": undefined;
+    /**
+     *Unapplied pending slash restricts operation on `Agent`.
+     */
+    "UnappliedSlash": undefined;
+    /**
+     *`Agent` has no pending slash to be applied.
+     */
+    "NothingToSlash": undefined;
+    /**
+     *Failed to withdraw amount from Core Staking.
+     */
+    "WithdrawFailed": undefined;
+    /**
+     *Operation not supported by this pallet.
+     */
+    "NotSupported": undefined;
+}>;
+export type I4rrcn97hglfls = AnonymousEnum<{
+    /**
+     *Validator index out of bounds.
+     */
+    "ValidatorIndexOutOfBounds": undefined;
+    /**
+     *Candidate submitted but para not scheduled.
+     */
+    "UnscheduledCandidate": undefined;
+    /**
+     *Head data exceeds the configured maximum.
+     */
+    "HeadDataTooLarge": undefined;
+    /**
+     *Code upgrade prematurely.
+     */
+    "PrematureCodeUpgrade": undefined;
+    /**
+     *Output code is too large
+     */
+    "NewCodeTooLarge": undefined;
+    /**
+     *The candidate's relay-parent was not allowed. Either it was
+     *not recent enough or it didn't advance based on the last parachain block.
+     */
+    "DisallowedRelayParent": undefined;
+    /**
+     *Failed to compute group index for the core: either it's out of bounds
+     *or the relay parent doesn't belong to the current session.
+     */
+    "InvalidAssignment": undefined;
+    /**
+     *Invalid group index in core assignment.
+     */
+    "InvalidGroupIndex": undefined;
+    /**
+     *Insufficient (non-majority) backing.
+     */
+    "InsufficientBacking": undefined;
+    /**
+     *Invalid (bad signature, unknown validator, etc.) backing.
+     */
+    "InvalidBacking": undefined;
+    /**
+     *The validation data hash does not match expected.
+     */
+    "ValidationDataHashMismatch": undefined;
+    /**
+     *The downward message queue is not processed correctly.
+     */
+    "IncorrectDownwardMessageHandling": undefined;
+    /**
+     *At least one upward message sent does not pass the acceptance criteria.
+     */
+    "InvalidUpwardMessages": undefined;
+    /**
+     *The candidate didn't follow the rules of HRMP watermark advancement.
+     */
+    "HrmpWatermarkMishandling": undefined;
+    /**
+     *The HRMP messages sent by the candidate is not valid.
+     */
+    "InvalidOutboundHrmp": undefined;
+    /**
+     *The validation code hash of the candidate is not valid.
+     */
+    "InvalidValidationCodeHash": undefined;
+    /**
+     *The `para_head` hash in the candidate descriptor doesn't match the hash of the actual
+     *para head in the commitments.
+     */
+    "ParaHeadMismatch": undefined;
+}>;
+export type I2g8k20rpkqcs4 = AnonymousEnum<{
+    /**
+     *Inclusion inherent called more than once per block.
+     */
+    "TooManyInclusionInherents": undefined;
+    /**
+     *The hash of the submitted parent header doesn't correspond to the saved block hash of
+     *the parent.
+     */
+    "InvalidParentHeader": undefined;
+    /**
+     *Inherent data was filtered during execution. This should have only been done
+     *during creation.
+     */
+    "InherentDataFilteredDuringExecution": undefined;
+    /**
+     *Too many candidates supplied.
+     */
+    "UnscheduledCandidate": undefined;
+}>;
+export type I2mjnb5vgujeqj = AnonymousEnum<{
+    "AssignmentsEmpty": undefined;
+    /**
+     *assign_core is only allowed to append new assignments at the end of already existing
+     *ones or update the last entry.
+     */
+    "DisallowedInsert": undefined;
+}>;
+export type I40te5bcfc046n = AnonymousEnum<{
+    /**
+     *The specified parachain is not registered.
+     */
+    "ParaDoesntExist": undefined;
+    /**
+     *Not a parathread (on-demand parachain).
+     */
+    "NotParathread": undefined;
+    /**
+     *Cannot upgrade on-demand parachain to lease holding
+     *parachain.
+     */
+    "CannotUpgrade": undefined;
+    /**
+     *Cannot downgrade lease holding parachain to
+     *on-demand.
+     */
+    "CannotDowngrade": undefined;
+    /**
+     *Permanent or Temporary slot already assigned.
+     */
+    "SlotAlreadyAssigned": undefined;
+    /**
+     *Permanent or Temporary slot has not been assigned.
+     */
+    "SlotNotAssigned": undefined;
+    /**
+     *An ongoing lease already exists.
+     */
+    "OngoingLeaseExists": undefined;
+    "MaxPermanentSlotsExceeded": undefined;
+    "MaxTemporarySlotsExceeded": undefined;
+}>;
+export type Iaaqq5jevtahm8 = AnonymousEnum<{
+    /**
+     *The operation cannot complete since some MBMs are ongoing.
+     */
+    "Ongoing": undefined;
+}>;
+export type Iflve6qd33ah68 = AnonymousEnum<{
+    /**
+     *A key ownership proof provided as part of an equivocation report is invalid.
+     */
+    "InvalidKeyOwnershipProof": undefined;
+    /**
+     *A double voting proof provided as part of an equivocation report is invalid.
+     */
+    "InvalidDoubleVotingProof": undefined;
+    /**
+     *A fork voting proof provided as part of an equivocation report is invalid.
+     */
+    "InvalidForkVotingProof": undefined;
+    /**
+     *A future block voting proof provided as part of an equivocation report is invalid.
+     */
+    "InvalidFutureBlockVotingProof": undefined;
+    /**
+     *The session of the equivocation proof is invalid
+     */
+    "InvalidEquivocationProofSession": undefined;
+    /**
+     *A given equivocation report is valid but already previously reported.
+     */
+    "DuplicateOffenceReport": undefined;
+    /**
+     *Submitted configuration is invalid.
+     */
+    "InvalidConfiguration": undefined;
+}>;
+export type Idh4cj79bvroj8 = AnonymousEnum<{
+    "InvalidStateRoot": undefined;
+    "IncompleteDatabase": undefined;
+    "ValueAtIncompleteKey": undefined;
+    "DecoderError": undefined;
+    "InvalidHash": undefined;
+    "DuplicateKey": undefined;
+    "ExtraneousNode": undefined;
+    "ExtraneousValue": undefined;
+    "ExtraneousHashReference": undefined;
+    "InvalidChildReference": undefined;
+    "ValueMismatch": undefined;
+    "IncompleteProof": undefined;
+    "RootMismatch": undefined;
+    "DecodeError": undefined;
+}>;
+export type Id2fnegepp3euf = AnonymousEnum<{
+    /**
+     *The era payout has been set; the first balance is the validator-payout; the second is
+     *the remainder from the maximum amount of reward.
+     */
+    "EraPaid": Anonymize<I1au3fq4n84nv3>;
+    /**
+     *The nominator has been rewarded by this amount to this destination.
+     */
+    "Rewarded": Anonymize<Iejaj7m7qka9tr>;
+    /**
+     *A staker (validator or nominator) has been slashed by the given amount.
+     */
+    "Slashed": Anonymize<Idnak900lt5lm8>;
+    /**
+     *A slash for the given validator, for the given percentage of their stake, at the given
+     *era as been reported.
+     */
+    "SlashReported": Anonymize<I27n7lbd66730p>;
+    /**
+     *An old slashing report from a prior era was discarded because it could
+     *not be processed.
+     */
+    "OldSlashingReportDiscarded": Anonymize<I2hq50pu2kdjpo>;
+    /**
+     *A new set of stakers was elected.
+     */
+    "StakersElected": undefined;
+    /**
+     *An account has bonded this amount. \[stash, amount\]
+     *
+     *NOTE: This event is only emitted when funds are bonded via a dispatchable. Notably,
+     *it will not be emitted for staking rewards when they are added to stake.
+     */
+    "Bonded": Anonymize<Ifk8eme5o7mukf>;
+    /**
+     *An account has unbonded this amount.
+     */
+    "Unbonded": Anonymize<Ifk8eme5o7mukf>;
+    /**
+     *An account has called `withdraw_unbonded` and removed unbonding chunks worth `Balance`
+     *from the unlocking queue.
+     */
+    "Withdrawn": Anonymize<Ifk8eme5o7mukf>;
+    /**
+     *A nominator has been kicked from a validator.
+     */
+    "Kicked": Anonymize<Iau4cgm6ih61cf>;
+    /**
+     *The election failed. No new era is planned.
+     */
+    "StakingElectionFailed": undefined;
+    /**
+     *An account has stopped participating as either a validator or nominator.
+     */
+    "Chilled": Anonymize<Idl3umm12u5pa>;
+    /**
+     *A Page of stakers rewards are getting paid. `next` is `None` if all pages are claimed.
+     */
+    "PayoutStarted": Anonymize<Ith132hqfb27q>;
+    /**
+     *A validator has set their preferences.
+     */
+    "ValidatorPrefsSet": Anonymize<Ic19as7nbst738>;
+    /**
+     *Voters size limit reached.
+     */
+    "SnapshotVotersSizeExceeded": Anonymize<I54umskavgc9du>;
+    /**
+     *Targets size limit reached.
+     */
+    "SnapshotTargetsSizeExceeded": Anonymize<I54umskavgc9du>;
+    /**
+     *A new force era mode was set.
+     */
+    "ForceEra": Anonymize<I2ip7o9e2tc5sf>;
+    /**
+     *Report of a controller batch deprecation.
+     */
+    "ControllerBatchDeprecated": Anonymize<I5egvk6hadac5h>;
+}>;
+export type Ith132hqfb27q = {
+    "era_index": number;
+    "validator_stash": SS58String;
+    "page": number;
+    "next"?: Anonymize<I4arjljr6dpflb>;
+};
+export type Icdo18ud9j8na8 = AnonymousEnum<{
+    /**
+     *Batch of dispatches did not complete fully. Index of first failing dispatch given, as
+     *well as the error.
+     */
+    "BatchInterrupted": Anonymize<Iabmgoe32d3p4c>;
+    /**
+     *Batch of dispatches completed fully with no error.
+     */
+    "BatchCompleted": undefined;
+    /**
+     *Batch of dispatches completed but has errors.
+     */
+    "BatchCompletedWithErrors": undefined;
+    /**
+     *A single item within a Batch of dispatches has completed with no error.
+     */
+    "ItemCompleted": undefined;
+    /**
+     *A single item within a Batch of dispatches has completed with error.
+     */
+    "ItemFailed": Anonymize<Ibo55e5bulnlfm>;
+    /**
+     *A call was dispatched.
+     */
+    "DispatchedAs": Anonymize<I7d0acmvafk5ue>;
+}>;
+export type Iabmgoe32d3p4c = {
+    "index": number;
+    "error": Anonymize<I3k9vrkd497mbt>;
+};
+export type Ibo55e5bulnlfm = {
+    "error": Anonymize<I3k9vrkd497mbt>;
+};
+export type I7d0acmvafk5ue = {
+    "result": Anonymize<Ifdink61fv1n9v>;
+};
+export type Ifdink61fv1n9v = ResultPayload<undefined, Anonymize<I3k9vrkd497mbt>>;
+export type I2au2or9cskfoi = AnonymousEnum<{
+    /**
+     *A name was set or reset (which will remove all judgements).
+     */
+    "IdentitySet": Anonymize<I4cbvqmqadhrea>;
+    /**
+     *A name was cleared, and the given balance returned.
+     */
+    "IdentityCleared": Anonymize<Iep1lmt6q3s6r3>;
+    /**
+     *A name was removed and the given balance slashed.
+     */
+    "IdentityKilled": Anonymize<Iep1lmt6q3s6r3>;
+    /**
+     *A judgement was asked from a registrar.
+     */
+    "JudgementRequested": Anonymize<I1fac16213rie2>;
+    /**
+     *A judgement request was retracted.
+     */
+    "JudgementUnrequested": Anonymize<I1fac16213rie2>;
+    /**
+     *A judgement was given by a registrar.
+     */
+    "JudgementGiven": Anonymize<Ifjt77oc391o43>;
+    /**
+     *A registrar was added.
+     */
+    "RegistrarAdded": Anonymize<Itvt1jsipv0lc>;
+    /**
+     *A sub-identity was added to an identity and the deposit paid.
+     */
+    "SubIdentityAdded": Anonymize<Ick3mveut33f44>;
+    /**
+     *An account's sub-identities were set (in bulk).
+     */
+    "SubIdentitiesSet": Anonymize<I719lqkkbtikbl>;
+    /**
+     *A given sub-account's associated name was changed by its super-identity.
+     */
+    "SubIdentityRenamed": Anonymize<Ie4intrc3n8jfu>;
+    /**
+     *A sub-identity was removed from an identity and the deposit freed.
+     */
+    "SubIdentityRemoved": Anonymize<Ick3mveut33f44>;
+    /**
+     *A sub-identity was cleared, and the given deposit repatriated from the
+     *main identity account to the sub-identity account.
+     */
+    "SubIdentityRevoked": Anonymize<Ick3mveut33f44>;
+    /**
+     *A username authority was added.
+     */
+    "AuthorityAdded": Anonymize<I2rg5btjrsqec0>;
+    /**
+     *A username authority was removed.
+     */
+    "AuthorityRemoved": Anonymize<I2rg5btjrsqec0>;
+    /**
+     *A username was set for `who`.
+     */
+    "UsernameSet": Anonymize<Ibdqerrooruuq9>;
+    /**
+     *A username was queued, but `who` must accept it prior to `expiration`.
+     */
+    "UsernameQueued": Anonymize<I8u2ba9jeiu6q0>;
+    /**
+     *A queued username passed its expiration without being claimed and was removed.
+     */
+    "PreapprovalExpired": Anonymize<I7ieadb293k6b4>;
+    /**
+     *A username was set as a primary and can be looked up from `who`.
+     */
+    "PrimaryUsernameSet": Anonymize<Ibdqerrooruuq9>;
+    /**
+     *A dangling username (as in, a username corresponding to an account that has removed its
+     *identity) has been removed.
+     */
+    "DanglingUsernameRemoved": Anonymize<Ibdqerrooruuq9>;
+    /**
+     *A username has been unbound.
+     */
+    "UsernameUnbound": Anonymize<Ie5l999tf7t2te>;
+    /**
+     *A username has been removed.
+     */
+    "UsernameRemoved": Anonymize<Ie5l999tf7t2te>;
+    /**
+     *A username has been killed.
+     */
+    "UsernameKilled": Anonymize<Ie5l999tf7t2te>;
+}>;
+export type I1fac16213rie2 = {
+    "who": SS58String;
+    "registrar_index": number;
+};
+export type Ifjt77oc391o43 = {
+    "target": SS58String;
+    "registrar_index": number;
+};
+export type Itvt1jsipv0lc = {
+    "registrar_index": number;
+};
+export type Ick3mveut33f44 = {
+    "sub": SS58String;
+    "main": SS58String;
+    "deposit": bigint;
+};
+export type I719lqkkbtikbl = {
+    "main": SS58String;
+    "number_of_subs": number;
+    "new_deposit": bigint;
+};
+export type Ie4intrc3n8jfu = {
+    "sub": SS58String;
+    "main": SS58String;
+};
+export type I2rg5btjrsqec0 = {
+    "authority": SS58String;
+};
+export type Ibdqerrooruuq9 = {
+    "who": SS58String;
+    "username": Binary;
+};
+export type I8u2ba9jeiu6q0 = {
+    "who": SS58String;
+    "username": Binary;
+    "expiration": number;
+};
+export type I7ieadb293k6b4 = {
+    "whose": SS58String;
+};
+export type Ie5l999tf7t2te = {
+    "username": Binary;
+};
+export type RecoveryEvent = Enum<{
+    /**
+     *A recovery process has been set up for an account.
+     */
+    "RecoveryCreated": Anonymize<Icbccs0ug47ilf>;
+    /**
+     *A recovery process has been initiated for lost account by rescuer account.
+     */
+    "RecoveryInitiated": Anonymize<I9vkkue6cq74et>;
+    /**
+     *A recovery process for lost account by rescuer account has been vouched for by sender.
+     */
+    "RecoveryVouched": Anonymize<Ibu56t5h1q49i4>;
+    /**
+     *A recovery process for lost account by rescuer account has been closed.
+     */
+    "RecoveryClosed": Anonymize<I9vkkue6cq74et>;
+    /**
+     *Lost account has been successfully recovered by rescuer account.
+     */
+    "AccountRecovered": Anonymize<I9vkkue6cq74et>;
+    /**
+     *A recovery process has been removed for an account.
+     */
+    "RecoveryRemoved": Anonymize<I1dmtl5t34b9g>;
+}>;
+export declare const RecoveryEvent: GetEnum<RecoveryEvent>;
+export type I9vkkue6cq74et = {
+    "lost_account": SS58String;
+    "rescuer_account": SS58String;
+};
+export type Ibu56t5h1q49i4 = {
+    "lost_account": SS58String;
+    "rescuer_account": SS58String;
+    "sender": SS58String;
+};
+export type I1dmtl5t34b9g = {
+    "lost_account": SS58String;
+};
+export type I7tg2jl7vhqfn = AnonymousEnum<{
+    /**
+     *Scheduled some task.
+     */
+    "Scheduled": Anonymize<I5n4sebgkfr760>;
+    /**
+     *Canceled some task.
+     */
+    "Canceled": Anonymize<I5n4sebgkfr760>;
+    /**
+     *Dispatched some task.
+     */
+    "Dispatched": Anonymize<I14f73ndcus0vc>;
+    /**
+     *Set a retry configuration for some task.
+     */
+    "RetrySet": Anonymize<Ia3c82eadg79bj>;
+    /**
+     *Cancel a retry configuration for some task.
+     */
+    "RetryCancelled": Anonymize<Ienusoeb625ftq>;
+    /**
+     *The call for the provided hash was not found so the task has been aborted.
+     */
+    "CallUnavailable": Anonymize<Ienusoeb625ftq>;
+    /**
+     *The given task was unable to be renewed since the agenda is full at that block.
+     */
+    "PeriodicFailed": Anonymize<Ienusoeb625ftq>;
+    /**
+     *The given task was unable to be retried since the agenda is full at that block or there
+     *was not enough weight to reschedule it.
+     */
+    "RetryFailed": Anonymize<Ienusoeb625ftq>;
+    /**
+     *The given task can never be executed since it is overweight.
+     */
+    "PermanentlyOverweight": Anonymize<Ienusoeb625ftq>;
+}>;
+export type I14f73ndcus0vc = {
+    "task": Anonymize<I9jd27rnpm8ttv>;
+    "id"?: Anonymize<I4s6vifaf8k998>;
+    "result": Anonymize<Ifdink61fv1n9v>;
+};
+export type Idkshihsl0fqp2 = AnonymousEnum<{
+    /**
+     *A sudo call just took place.
+     */
+    "Sudid": Anonymize<Ibm5rga73cj42u>;
+    /**
+     *The sudo key has been updated.
+     */
+    "KeyChanged": Anonymize<I5rtkmhm2dng4u>;
+    /**
+     *The key was permanently removed.
+     */
+    "KeyRemoved": undefined;
+    /**
+     *A [sudo_as](Pallet::sudo_as) call just took place.
+     */
+    "SudoAsDone": Anonymize<Ibm5rga73cj42u>;
+}>;
+export type Ibm5rga73cj42u = {
+    /**
+     *The result of the call made by the sudo user.
+     */
+    "sudo_result": Anonymize<Ifdink61fv1n9v>;
+};
+export type Ia2tmos8nk07i4 = AnonymousEnum<{
+    /**
+     *A proxy was executed correctly, with the given.
+     */
+    "ProxyExecuted": Anonymize<I7d0acmvafk5ue>;
+    /**
+     *A pure account has been created by new proxy with given
+     *disambiguation index and proxy type.
+     */
+    "PureCreated": Anonymize<I8tovb7vs0ncmb>;
+    /**
+     *An announcement was placed to make a call in the future.
+     */
+    "Announced": Anonymize<I2ur0oeqg495j8>;
+    /**
+     *A proxy was added.
+     */
+    "ProxyAdded": Anonymize<Icbvj2is37dfvg>;
+    /**
+     *A proxy was removed.
+     */
+    "ProxyRemoved": Anonymize<Icbvj2is37dfvg>;
+}>;
+export type I8tovb7vs0ncmb = {
+    "pure": SS58String;
+    "who": SS58String;
+    "proxy_type": WestendRuntimeProxyType;
+    "disambiguation_index": number;
+};
+export type WestendRuntimeProxyType = Enum<{
+    "Any": undefined;
+    "NonTransfer": undefined;
+    "Governance": undefined;
+    "Staking": undefined;
+    "SudoBalances": undefined;
+    "IdentityJudgement": undefined;
+    "CancelProxy": undefined;
+    "Auction": undefined;
+    "NominationPools": undefined;
+}>;
+export declare const WestendRuntimeProxyType: GetEnum<WestendRuntimeProxyType>;
+export type Icbvj2is37dfvg = {
+    "delegator": SS58String;
+    "delegatee": SS58String;
+    "proxy_type": WestendRuntimeProxyType;
+    "delay": number;
+};
+export type Iel61up536egjn = AnonymousEnum<{
+    /**
+     *A new multisig operation has begun.
+     */
+    "NewMultisig": Anonymize<Iep27ialq4a7o7>;
+    /**
+     *A multisig operation has been approved by someone.
+     */
+    "MultisigApproval": Anonymize<Iasu5jvoqr43mv>;
+    /**
+     *A multisig operation has been executed.
+     */
+    "MultisigExecuted": Anonymize<Iac2nr64ljogqh>;
+    /**
+     *A multisig operation has been cancelled.
+     */
+    "MultisigCancelled": Anonymize<I5qolde99acmd1>;
+}>;
+export type Iac2nr64ljogqh = {
+    "approving": SS58String;
+    "timepoint": Anonymize<Itvprrpb0nm3o>;
+    "multisig": SS58String;
+    "call_hash": FixedSizeBinary<32>;
+    "result": Anonymize<Ifdink61fv1n9v>;
+};
+export type I1mroqu3ca6qo2 = AnonymousEnum<{
+    /**
+     *A pool has been created.
+     */
+    "Created": Anonymize<I1ti389kf8t6oi>;
+    /**
+     *A member has became bonded in a pool.
+     */
+    "Bonded": Anonymize<If4nnre373amul>;
+    /**
+     *A payout has been made to a member.
+     */
+    "PaidOut": Anonymize<I55kbor0ocqk6h>;
+    /**
+     *A member has unbonded from their pool.
+     *
+     *- `balance` is the corresponding balance of the number of points that has been
+     *  requested to be unbonded (the argument of the `unbond` transaction) from the bonded
+     *  pool.
+     *- `points` is the number of points that are issued as a result of `balance` being
+     *dissolved into the corresponding unbonding pool.
+     *- `era` is the era in which the balance will be unbonded.
+     *In the absence of slashing, these values will match. In the presence of slashing, the
+     *number of points that are issued in the unbonding pool will be less than the amount
+     *requested to be unbonded.
+     */
+    "Unbonded": Anonymize<Idsj9cg7j96kpc>;
+    /**
+     *A member has withdrawn from their pool.
+     *
+     *The given number of `points` have been dissolved in return of `balance`.
+     *
+     *Similar to `Unbonded` event, in the absence of slashing, the ratio of point to balance
+     *will be 1.
+     */
+    "Withdrawn": Anonymize<Ido4u9drncfaml>;
+    /**
+     *A pool has been destroyed.
+     */
+    "Destroyed": Anonymize<I931cottvong90>;
+    /**
+     *The state of a pool has changed
+     */
+    "StateChanged": Anonymize<Ie8c7ctks8ur2p>;
+    /**
+     *A member has been removed from a pool.
+     *
+     *The removal can be voluntary (withdrawn all unbonded funds) or involuntary (kicked).
+     *Any funds that are still delegated (i.e. dangling delegation) are released and are
+     *represented by `released_balance`.
+     */
+    "MemberRemoved": Anonymize<I6c6fpqmnqijqd>;
+    /**
+     *The roles of a pool have been updated to the given new roles. Note that the depositor
+     *can never change.
+     */
+    "RolesUpdated": Anonymize<I6mik29s5073td>;
+    /**
+     *The active balance of pool `pool_id` has been slashed to `balance`.
+     */
+    "PoolSlashed": Anonymize<I2m0sqmb75cnpb>;
+    /**
+     *The unbond pool at `era` of pool `pool_id` has been slashed to `balance`.
+     */
+    "UnbondingPoolSlashed": Anonymize<I49agc5b62mehu>;
+    /**
+     *A pool's commission setting has been changed.
+     */
+    "PoolCommissionUpdated": Anonymize<Iatq9jda4hq6pg>;
+    /**
+     *A pool's maximum commission setting has been changed.
+     */
+    "PoolMaxCommissionUpdated": Anonymize<I8cbluptqo8kbp>;
+    /**
+     *A pool's commission `change_rate` has been changed.
+     */
+    "PoolCommissionChangeRateUpdated": Anonymize<I81cc4plffa1dm>;
+    /**
+     *Pool commission claim permission has been updated.
+     */
+    "PoolCommissionClaimPermissionUpdated": Anonymize<I3ihan8icf0c5k>;
+    /**
+     *Pool commission has been claimed.
+     */
+    "PoolCommissionClaimed": Anonymize<I2g87evcjlgmqi>;
+    /**
+     *Topped up deficit in frozen ED of the reward pool.
+     */
+    "MinBalanceDeficitAdjusted": Anonymize<Ieg1oc56mamrl5>;
+    /**
+     *Claimed excess frozen ED of af the reward pool.
+     */
+    "MinBalanceExcessAdjusted": Anonymize<Ieg1oc56mamrl5>;
+}>;
+export type I6c6fpqmnqijqd = {
+    "pool_id": number;
+    "member": SS58String;
+    "released_balance": bigint;
+};
+export type Idi0aq2qbd88mf = AnonymousEnum<{
+    /**
+     *A staker was unstaked.
+     */
+    "Unstaked": Anonymize<Ifciet714ilba1>;
+    /**
+     *A staker was slashed for requesting fast-unstake whilst being exposed.
+     */
+    "Slashed": Anonymize<Ifk8eme5o7mukf>;
+    /**
+     *A batch was partially checked for the given eras, but the process did not finish.
+     */
+    "BatchChecked": Anonymize<Ic0he9tlf9ll0u>;
+    /**
+     *A batch of a given size was terminated.
+     *
+     *This is always follows by a number of `Unstaked` or `Slashed` events, marking the end
+     *of the batch. A new batch will be created upon next block.
+     */
+    "BatchFinished": Anonymize<I54umskavgc9du>;
+    /**
+     *An internal error happened. Operations will be paused now.
+     */
+    "InternalError": undefined;
+}>;
+export type Ifciet714ilba1 = {
+    "stash": SS58String;
+    "result": Anonymize<Ifdink61fv1n9v>;
+};
+export type Itdqso6dq8jq1 = AnonymousEnum<{
+    /**
+     *An account has delegated their vote to another account. \[who, target\]
+     */
+    "Delegated": Anonymize<I2na29tt2afp0j>;
+    /**
+     *An \[account\] has cancelled a previous delegation operation.
+     */
+    "Undelegated": SS58String;
+    /**
+     *An account that has voted
+     */
+    "Voted": Anonymize<I9qfchhljqsjjl>;
+    /**
+     *A vote that been removed
+     */
+    "VoteRemoved": Anonymize<I9qfchhljqsjjl>;
+}>;
+export type I9qfchhljqsjjl = {
+    "who": SS58String;
+    "vote": ConvictionVotingVoteAccountVote;
+};
+export type I79gilfps020tv = AnonymousEnum<{
+    "CallWhitelisted": Anonymize<I1adbcfi5uc62r>;
+    "WhitelistedCallRemoved": Anonymize<I1adbcfi5uc62r>;
+    "WhitelistedCallDispatched": Anonymize<Iaj0gkf3sv0hba>;
+}>;
+export type Iaj0gkf3sv0hba = {
+    "call_hash": FixedSizeBinary<32>;
+    "result": Anonymize<Ifd9b8t0ogi3fg>;
+};
+export type Ifd9b8t0ogi3fg = ResultPayload<Anonymize<Ia1u1r3n74r13c>, Anonymize<Iet7gmq0oqphlu>>;
+export type Iet7gmq0oqphlu = {
+    "post_info": Anonymize<Ia1u1r3n74r13c>;
+    "error": Anonymize<I3k9vrkd497mbt>;
+};
+export type Ia1b9fjuj0ob0b = AnonymousEnum<{
+    /**
+     *We have ended a spend period and will now allocate funds.
+     */
+    "Spending": Anonymize<I8iksqi3eani0a>;
+    /**
+     *Some funds have been allocated.
+     */
+    "Awarded": Anonymize<I16enopmju1p0q>;
+    /**
+     *Some of our funds have been burnt.
+     */
+    "Burnt": Anonymize<I43kq8qudg7pq9>;
+    /**
+     *Spending has finished; this is the amount that rolls over until next spend.
+     */
+    "Rollover": Anonymize<I76riseemre533>;
+    /**
+     *Some funds have been deposited.
+     */
+    "Deposit": Anonymize<Ie5v6njpckr05b>;
+    /**
+     *A new spend proposal has been approved.
+     */
+    "SpendApproved": Anonymize<I38bmcrmh852rk>;
+    /**
+     *The inactive funds of the pallet have been updated.
+     */
+    "UpdatedInactive": Anonymize<I4hcillge8de5f>;
+    /**
+     *A new asset spend proposal has been approved.
+     */
+    "AssetSpendApproved": Anonymize<I2cftk5tgrglaa>;
+    /**
+     *An approved spend was voided.
+     */
+    "AssetSpendVoided": Anonymize<I666bl2fqjkejo>;
+    /**
+     *A payment happened.
+     */
+    "Paid": Anonymize<Iek7v4hrgnq6iv>;
+    /**
+     *A payment failed and can be retried.
+     */
+    "PaymentFailed": Anonymize<Iek7v4hrgnq6iv>;
+    /**
+     *A spend was processed and removed from the storage. It might have been successfully
+     *paid or it may have expired.
+     */
+    "SpendProcessed": Anonymize<I666bl2fqjkejo>;
+}>;
+export type I2cftk5tgrglaa = {
+    "index": number;
+    "asset_kind": Anonymize<I2q3ri6itcjj5u>;
+    "amount": bigint;
+    "beneficiary": Anonymize<Ichgaqm88qcdbe>;
+    "valid_from": number;
+    "expire_at": number;
+};
+export type I2q3ri6itcjj5u = AnonymousEnum<{
+    "V3": Anonymize<Ieiirnju6cff3l>;
+    "V4": Anonymize<Ieqft092b9kkr2>;
+    "V5": Anonymize<I4rqenbj90c4ms>;
+}>;
+export type I4rqenbj90c4ms = {
+    "location": Anonymize<If9iqq7i64mur8>;
+    "asset_id": Anonymize<If9iqq7i64mur8>;
+};
+export type If9iqq7i64mur8 = {
+    "parents": number;
+    "interior": Anonymize<I6d7om5l62r3h6>;
+};
+export type I6d7om5l62r3h6 = AnonymousEnum<{
+    "Here": undefined;
+    "X1": Anonymize<Indkvtfs34lhc>;
+    "X2": Anonymize<I279b0st0go8pj>;
+    "X3": Anonymize<I8t3509dftknlg>;
+    "X4": Anonymize<Iegifjnm8bgl6n>;
+    "X5": Anonymize<Ic40rerdemoe3f>;
+    "X6": Anonymize<Ieehae2qh5qhrv>;
+    "X7": Anonymize<I1pmgeuqv3eom3>;
+    "X8": Anonymize<I32k80jnq35fij>;
+}>;
+export type Indkvtfs34lhc = AnonymousEnum<{
+    "Parachain": number;
+    "AccountId32": Anonymize<I303u17k2gp1si>;
+    "AccountIndex64": Anonymize<Iejvsa7fje7ib3>;
+    "AccountKey20": Anonymize<Icmn90ot6tcot8>;
+    "PalletInstance": number;
+    "GeneralIndex": bigint;
+    "GeneralKey": Anonymize<I15lht6t53odo4>;
+    "OnlyChild": undefined;
+    "Plurality": Anonymize<I518fbtnclg1oc>;
+    "GlobalConsensus": Anonymize<I73beoct6oecc>;
+}>;
+export type I303u17k2gp1si = {
+    "network"?: Anonymize<I97pd2rst02a7r>;
+    "id": FixedSizeBinary<32>;
+};
+export type I97pd2rst02a7r = (Anonymize<I73beoct6oecc>) | undefined;
+export type I73beoct6oecc = AnonymousEnum<{
+    "ByGenesis": FixedSizeBinary<32>;
+    "ByFork": Anonymize<I15vf5oinmcgps>;
+    "Polkadot": undefined;
+    "Kusama": undefined;
+    "Ethereum": Anonymize<I623eo8t3jrbeo>;
+    "BitcoinCore": undefined;
+    "BitcoinCash": undefined;
+    "PolkadotBulletin": undefined;
+}>;
+export type Iejvsa7fje7ib3 = {
+    "network"?: Anonymize<I97pd2rst02a7r>;
+    "index": bigint;
+};
+export type Icmn90ot6tcot8 = {
+    "network"?: Anonymize<I97pd2rst02a7r>;
+    "key": FixedSizeBinary<20>;
+};
+export type I279b0st0go8pj = FixedSizeArray<2, Anonymize<Indkvtfs34lhc>>;
+export type I8t3509dftknlg = FixedSizeArray<3, Anonymize<Indkvtfs34lhc>>;
+export type Iegifjnm8bgl6n = FixedSizeArray<4, Anonymize<Indkvtfs34lhc>>;
+export type Ic40rerdemoe3f = FixedSizeArray<5, Anonymize<Indkvtfs34lhc>>;
+export type Ieehae2qh5qhrv = FixedSizeArray<6, Anonymize<Indkvtfs34lhc>>;
+export type I1pmgeuqv3eom3 = FixedSizeArray<7, Anonymize<Indkvtfs34lhc>>;
+export type I32k80jnq35fij = FixedSizeArray<8, Anonymize<Indkvtfs34lhc>>;
+export type Ichgaqm88qcdbe = AnonymousEnum<{
+    "V3": Anonymize<I4c0s5cioidn76>;
+    "V4": Anonymize<I4c0s5cioidn76>;
+    "V5": Anonymize<If9iqq7i64mur8>;
+}>;
+export type I1nq1se98idofq = AnonymousEnum<{
+    /**
+     *Funds delegated by a delegator.
+     */
+    "Delegated": Anonymize<Id2aanom2jncf1>;
+    /**
+     *Funds released to a delegator.
+     */
+    "Released": Anonymize<Id2aanom2jncf1>;
+    /**
+     *Funds slashed from a delegator.
+     */
+    "Slashed": Anonymize<Id2aanom2jncf1>;
+    /**
+     *Unclaimed delegation funds migrated to delegator.
+     */
+    "MigratedDelegation": Anonymize<Id2aanom2jncf1>;
+}>;
+export type Id2aanom2jncf1 = {
+    "agent": SS58String;
+    "delegator": SS58String;
+    "amount": bigint;
+};
+export type If7iaaqrjurpqf = AnonymousEnum<{
+    /**
+     *A candidate was backed. `[candidate, head_data]`
+     */
+    "CandidateBacked": Anonymize<I4s0gvfhejmdp2>;
+    /**
+     *A candidate was included. `[candidate, head_data]`
+     */
+    "CandidateIncluded": Anonymize<I4s0gvfhejmdp2>;
+    /**
+     *A candidate timed out. `[candidate, head_data]`
+     */
+    "CandidateTimedOut": Anonymize<I9njsgm2qsgnil>;
+    /**
+     *Some upward messages have been received and will be processed.
+     */
+    "UpwardMessagesReceived": Anonymize<Ic8i89mfkmn3n7>;
+}>;
+export type I4s0gvfhejmdp2 = [Anonymize<Iceqied2dhrjit>, Binary, number, number];
+export type Iceqied2dhrjit = {
+    "descriptor": Anonymize<Ibnq2mkuf1plno>;
+    "commitments_hash": FixedSizeBinary<32>;
+};
+export type Ibnq2mkuf1plno = {
+    "para_id": number;
+    "relay_parent": FixedSizeBinary<32>;
+    "version": number;
+    "core_index": number;
+    "session_index": number;
+    "reserved1": FixedSizeBinary<25>;
+    "persisted_validation_data_hash": FixedSizeBinary<32>;
+    "pov_hash": FixedSizeBinary<32>;
+    "erasure_root": FixedSizeBinary<32>;
+    "reserved2": FixedSizeBinary<64>;
+    "para_head": FixedSizeBinary<32>;
+    "validation_code_hash": FixedSizeBinary<32>;
+};
+export type I9njsgm2qsgnil = [Anonymize<Iceqied2dhrjit>, Binary, number];
+export type Ifv7oprrsroelo = AnonymousEnum<{
+    /**
+     *Create a new crowdloaning campaign.
+     */
+    "Created": Anonymize<I37r4bdai8o9mp>;
+    /**
+     *Contributed to a crowd sale.
+     */
+    "Contributed": Anonymize<I8ve4g3egaln6a>;
+    /**
+     *Withdrew full balance of a contributor.
+     */
+    "Withdrew": Anonymize<I8ve4g3egaln6a>;
+    /**
+     *The loans in a fund have been partially dissolved, i.e. there are some left
+     *over child keys that still need to be killed.
+     */
+    "PartiallyRefunded": Anonymize<I37r4bdai8o9mp>;
+    /**
+     *All loans in a fund have been refunded.
+     */
+    "AllRefunded": Anonymize<I37r4bdai8o9mp>;
+    /**
+     *Fund is dissolved.
+     */
+    "Dissolved": Anonymize<I37r4bdai8o9mp>;
+    /**
+     *The result of trying to submit a new bid to the Slots pallet.
+     */
+    "HandleBidResult": Anonymize<I1shcp0fvkfpm7>;
+    /**
+     *The configuration to a crowdloan has been edited.
+     */
+    "Edited": Anonymize<I37r4bdai8o9mp>;
+    /**
+     *A memo has been updated.
+     */
+    "MemoUpdated": Anonymize<If4hvqaeoqq5us>;
+    /**
+     *A parachain has been moved to `NewRaise`
+     */
+    "AddedToNewRaise": Anonymize<I37r4bdai8o9mp>;
+}>;
+export type I1shcp0fvkfpm7 = {
+    "para_id": number;
+    "result": Anonymize<Ifdink61fv1n9v>;
+};
+export type PolkadotRuntimeCommonAssignedSlotsEvent = Enum<{
+    /**
+     *A parachain was assigned a permanent parachain slot
+     */
+    "PermanentSlotAssigned": number;
+    /**
+     *A parachain was assigned a temporary parachain slot
+     */
+    "TemporarySlotAssigned": number;
+    /**
+     *The maximum number of permanent slots has been changed
+     */
+    "MaxPermanentSlotsChanged": Anonymize<I9d5h5irbki7mm>;
+    /**
+     *The maximum number of temporary slots has been changed
+     */
+    "MaxTemporarySlotsChanged": Anonymize<I9d5h5irbki7mm>;
+}>;
+export declare const PolkadotRuntimeCommonAssignedSlotsEvent: GetEnum<PolkadotRuntimeCommonAssignedSlotsEvent>;
+export type I9d5h5irbki7mm = {
+    "slots": number;
+};
+export type I94co7vj7h6bo = AnonymousEnum<{
+    /**
+     *A Runtime upgrade started.
+     *
+     *Its end is indicated by `UpgradeCompleted` or `UpgradeFailed`.
+     */
+    "UpgradeStarted": Anonymize<If1co0pilmi7oq>;
+    /**
+     *The current runtime upgrade completed.
+     *
+     *This implies that all of its migrations completed successfully as well.
+     */
+    "UpgradeCompleted": undefined;
+    /**
+     *Runtime upgrade failed.
+     *
+     *This is very bad and will require governance intervention.
+     */
+    "UpgradeFailed": undefined;
+    /**
+     *A migration was skipped since it was already executed in the past.
+     */
+    "MigrationSkipped": Anonymize<I666bl2fqjkejo>;
+    /**
+     *A migration progressed.
+     */
+    "MigrationAdvanced": Anonymize<Iae74gjak1qibn>;
+    /**
+     *A Migration completed.
+     */
+    "MigrationCompleted": Anonymize<Iae74gjak1qibn>;
+    /**
+     *A Migration failed.
+     *
+     *This implies that the whole upgrade failed and governance intervention is required.
+     */
+    "MigrationFailed": Anonymize<Iae74gjak1qibn>;
+    /**
+     *The set of historical migrations has been cleared.
+     */
+    "HistoricCleared": Anonymize<I3escdojpj0551>;
+}>;
+export type If1co0pilmi7oq = {
+    /**
+     *The number of migrations that this upgrade contains.
+     *
+     *This can be used to design a progress indicator in combination with counting the
+     *`MigrationCompleted` and `MigrationSkipped` events.
+     */
+    "migrations": number;
+};
+export type Iae74gjak1qibn = {
+    /**
+     *The index of the migration within the [`Config::Migrations`] list.
+     */
+    "index": number;
+    /**
+     *The number of blocks that this migration took so far.
+     */
+    "took": number;
+};
+export type I3escdojpj0551 = {
+    /**
+     *Should be passed to `clear_historic` in a successive call.
+     */
+    "next_cursor"?: Anonymize<Iabpgqcjikia83>;
+};
+export type I3v8stpdt56ml = AnonymousEnum<{
+    /**
+     *Execution of an XCM message was attempted.
+     */
+    "Attempted": Anonymize<Ia72eet39sf8j9>;
+    /**
+     *A XCM message was sent.
+     */
+    "Sent": Anonymize<I32f3p53p1v12p>;
+    /**
+     *Query response received which does not match a registered query. This may be because a
+     *matching query was never registered, it may be because it is a duplicate response, or
+     *because the query timed out.
+     */
+    "UnexpectedResponse": Anonymize<Icl7nl1rfeog3i>;
+    /**
+     *Query response has been received and is ready for taking with `take_response`. There is
+     *no registered notification call.
+     */
+    "ResponseReady": Anonymize<Iasr6pj6shs0fl>;
+    /**
+     *Query response has been received and query is removed. The registered notification has
+     *been dispatched and executed successfully.
+     */
+    "Notified": Anonymize<I2uqmls7kcdnii>;
+    /**
+     *Query response has been received and query is removed. The registered notification
+     *could not be dispatched because the dispatch weight is greater than the maximum weight
+     *originally budgeted by this runtime for the query result.
+     */
+    "NotifyOverweight": Anonymize<Idg69klialbkb8>;
+    /**
+     *Query response has been received and query is removed. There was a general error with
+     *dispatching the notification call.
+     */
+    "NotifyDispatchError": Anonymize<I2uqmls7kcdnii>;
+    /**
+     *Query response has been received and query is removed. The dispatch was unable to be
+     *decoded into a `Call`; this might be due to dispatch function having a signature which
+     *is not `(origin, QueryId, Response)`.
+     */
+    "NotifyDecodeFailed": Anonymize<I2uqmls7kcdnii>;
+    /**
+     *Expected query response has been received but the origin location of the response does
+     *not match that expected. The query remains registered for a later, valid, response to
+     *be received and acted upon.
+     */
+    "InvalidResponder": Anonymize<I7r6b7145022pp>;
+    /**
+     *Expected query response has been received but the expected origin location placed in
+     *storage by this runtime previously cannot be decoded. The query remains registered.
+     *
+     *This is unexpected (since a location placed in storage in a previously executing
+     *runtime should be readable prior to query timeout) and dangerous since the possibly
+     *valid response will be dropped. Manual governance intervention is probably going to be
+     *needed.
+     */
+    "InvalidResponderVersion": Anonymize<Icl7nl1rfeog3i>;
+    /**
+     *Received query response has been read and removed.
+     */
+    "ResponseTaken": Anonymize<I30pg328m00nr3>;
+    /**
+     *Some assets have been placed in an asset trap.
+     */
+    "AssetsTrapped": Anonymize<Icmrn7bogp28cs>;
+    /**
+     *An XCM version change notification message has been attempted to be sent.
+     *
+     *The cost of sending it (borne by the chain) is included.
+     */
+    "VersionChangeNotified": Anonymize<I7m9b5plj4h5ot>;
+    /**
+     *The supported version of a location has been changed. This might be through an
+     *automatic notification or a manual intervention.
+     */
+    "SupportedVersionChanged": Anonymize<I9kt8c221c83ln>;
+    /**
+     *A given location which had a version change subscription was dropped owing to an error
+     *sending the notification to it.
+     */
+    "NotifyTargetSendFail": Anonymize<I9onhk772nfs4f>;
+    /**
+     *A given location which had a version change subscription was dropped owing to an error
+     *migrating the location to our new XCM format.
+     */
+    "NotifyTargetMigrationFail": Anonymize<I3l6bnksrmt56r>;
+    /**
+     *Expected query response has been received but the expected querier location placed in
+     *storage by this runtime previously cannot be decoded. The query remains registered.
+     *
+     *This is unexpected (since a location placed in storage in a previously executing
+     *runtime should be readable prior to query timeout) and dangerous since the possibly
+     *valid response will be dropped. Manual governance intervention is probably going to be
+     *needed.
+     */
+    "InvalidQuerierVersion": Anonymize<Icl7nl1rfeog3i>;
+    /**
+     *Expected query response has been received but the querier location of the response does
+     *not match the expected. The query remains registered for a later, valid, response to
+     *be received and acted upon.
+     */
+    "InvalidQuerier": Anonymize<Idh09k0l2pmdcg>;
+    /**
+     *A remote has requested XCM version change notification from us and we have honored it.
+     *A version information message is sent to them and its cost is included.
+     */
+    "VersionNotifyStarted": Anonymize<I7uoiphbm0tj4r>;
+    /**
+     *We have requested that a remote chain send us XCM version change notifications.
+     */
+    "VersionNotifyRequested": Anonymize<I7uoiphbm0tj4r>;
+    /**
+     *We have requested that a remote chain stops sending us XCM version change
+     *notifications.
+     */
+    "VersionNotifyUnrequested": Anonymize<I7uoiphbm0tj4r>;
+    /**
+     *Fees were paid from a location for an operation (often for using `SendXcm`).
+     */
+    "FeesPaid": Anonymize<I512p1n7qt24l8>;
+    /**
+     *Some assets have been claimed from an asset trap
+     */
+    "AssetsClaimed": Anonymize<Icmrn7bogp28cs>;
+    /**
+     *A XCM version migration finished.
+     */
+    "VersionMigrationFinished": Anonymize<I6s1nbislhk619>;
+}>;
+export type Ia72eet39sf8j9 = {
+    "outcome": Anonymize<I6uq5gb4s805s7>;
+};
+export type I6uq5gb4s805s7 = AnonymousEnum<{
+    "Complete": Anonymize<I30iff2d192eu7>;
+    "Incomplete": Anonymize<I4bs14miklcn3h>;
+    "Error": Anonymize<Iflkd2j467575k>;
+}>;
+export type I4bs14miklcn3h = {
+    "used": Anonymize<I4q39t5hn830vp>;
+    "error": Anonymize<Id56rgs0bdb7gl>;
+};
+export type Id56rgs0bdb7gl = AnonymousEnum<{
+    "Overflow": undefined;
+    "Unimplemented": undefined;
+    "UntrustedReserveLocation": undefined;
+    "UntrustedTeleportLocation": undefined;
+    "LocationFull": undefined;
+    "LocationNotInvertible": undefined;
+    "BadOrigin": undefined;
+    "InvalidLocation": undefined;
+    "AssetNotFound": undefined;
+    "FailedToTransactAsset": undefined;
+    "NotWithdrawable": undefined;
+    "LocationCannotHold": undefined;
+    "ExceedsMaxMessageSize": undefined;
+    "DestinationUnsupported": undefined;
+    "Transport": undefined;
+    "Unroutable": undefined;
+    "UnknownClaim": undefined;
+    "FailedToDecode": undefined;
+    "MaxWeightInvalid": undefined;
+    "NotHoldingFees": undefined;
+    "TooExpensive": undefined;
+    "Trap": bigint;
+    "ExpectationFalse": undefined;
+    "PalletNotFound": undefined;
+    "NameMismatch": undefined;
+    "VersionIncompatible": undefined;
+    "HoldingWouldOverflow": undefined;
+    "ExportError": undefined;
+    "ReanchorFailed": undefined;
+    "NoDeal": undefined;
+    "FeesNotMet": undefined;
+    "LockError": undefined;
+    "NoPermission": undefined;
+    "Unanchored": undefined;
+    "NotDepositable": undefined;
+    "TooManyAssets": undefined;
+    "UnhandledXcmVersion": undefined;
+    "WeightLimitReached": Anonymize<I4q39t5hn830vp>;
+    "Barrier": undefined;
+    "WeightNotComputable": undefined;
+    "ExceedsStackLimit": undefined;
+}>;
+export type Iflkd2j467575k = {
+    "error": Anonymize<Id56rgs0bdb7gl>;
+};
+export type I32f3p53p1v12p = {
+    "origin": Anonymize<If9iqq7i64mur8>;
+    "destination": Anonymize<If9iqq7i64mur8>;
+    "message": Anonymize<Iqgpikad18l8f>;
+    "message_id": FixedSizeBinary<32>;
+};
+export type Iqgpikad18l8f = Array<Anonymize<Ic273gp45vic2b>>;
+export type Ic273gp45vic2b = AnonymousEnum<{
+    "WithdrawAsset": Anonymize<I4npjalvhmfuj>;
+    "ReserveAssetDeposited": Anonymize<I4npjalvhmfuj>;
+    "ReceiveTeleportedAsset": Anonymize<I4npjalvhmfuj>;
+    "QueryResponse": Anonymize<I7lviboj0crq1q>;
+    "TransferAsset": Anonymize<Ia4uoqg6e605nj>;
+    "TransferReserveAsset": Anonymize<Ib8pcn3p79bp2q>;
+    "Transact": Anonymize<Iffl6b2rs73tva>;
+    "HrmpNewChannelOpenRequest": Anonymize<I5uhhrjqfuo4e5>;
+    "HrmpChannelAccepted": Anonymize<Ifij4jam0o7sub>;
+    "HrmpChannelClosing": Anonymize<Ieeb4svd9i8fji>;
+    "ClearOrigin": undefined;
+    "DescendOrigin": Anonymize<I6d7om5l62r3h6>;
+    "ReportError": Anonymize<I6vsmh07hrp1rc>;
+    "DepositAsset": Anonymize<I81oo73d6i5279>;
+    "DepositReserveAsset": Anonymize<I5jkibb76os4m0>;
+    "ExchangeAsset": Anonymize<I2ga96bjhsjqmo>;
+    "InitiateReserveWithdraw": Anonymize<I7erocdiqlups1>;
+    "InitiateTeleport": Anonymize<I5jkibb76os4m0>;
+    "ReportHolding": Anonymize<Ifti8mofggqket>;
+    "BuyExecution": Anonymize<I491l3ihqncggf>;
+    "RefundSurplus": undefined;
+    "SetErrorHandler": Anonymize<Iqgpikad18l8f>;
+    "SetAppendix": Anonymize<Iqgpikad18l8f>;
+    "ClearError": undefined;
+    "SetAssetClaimer": Anonymize<I2adkav4nfpltp>;
+    "ClaimAsset": Anonymize<I2felkchmfl53m>;
+    "Trap": bigint;
+    "SubscribeVersion": Anonymize<Ieprdqqu7ildvr>;
+    "UnsubscribeVersion": undefined;
+    "BurnAsset": Anonymize<I4npjalvhmfuj>;
+    "ExpectAsset": Anonymize<I4npjalvhmfuj>;
+    "ExpectOrigin"?: Anonymize<I4pai6qnfk426l>;
+    "ExpectError"?: Anonymize<I3l6ejee750fv1>;
+    "ExpectTransactStatus": XcmV3MaybeErrorCode;
+    "QueryPallet": Anonymize<Ie5blkq940nvkd>;
+    "ExpectPallet": Anonymize<Id7mf37dkpgfjs>;
+    "ReportTransactStatus": Anonymize<I6vsmh07hrp1rc>;
+    "ClearTransactStatus": undefined;
+    "UniversalOrigin": Anonymize<Indkvtfs34lhc>;
+    "ExportMessage": Anonymize<Iebgdf0aefd1nf>;
+    "LockAsset": Anonymize<Idsbn0vvkhdj4i>;
+    "UnlockAsset": Anonymize<I70l2gii2hrbik>;
+    "NoteUnlockable": Anonymize<I4d5rrublaq1fn>;
+    "RequestUnlock": Anonymize<Imh2n1s2lr5v4>;
+    "SetFeesMode": Anonymize<I4nae9rsql8fa7>;
+    "SetTopic": FixedSizeBinary<32>;
+    "ClearTopic": undefined;
+    "AliasOrigin": Anonymize<If9iqq7i64mur8>;
+    "UnpaidExecution": Anonymize<I6apoeqjvad59g>;
+    "PayFees": Anonymize<I9btmbcvj13kgi>;
+    "InitiateTransfer": Anonymize<Ibfttt32v5trcp>;
+    "ExecuteWithOrigin": Anonymize<Ieh0r7b2fvhm5a>;
+}>;
+export type I4npjalvhmfuj = Array<Anonymize<Iffh1nc5e1mod6>>;
+export type Iffh1nc5e1mod6 = {
+    "id": Anonymize<If9iqq7i64mur8>;
+    "fun": XcmV3MultiassetFungibility;
+};
+export type I7lviboj0crq1q = {
+    "query_id": bigint;
+    "response": Anonymize<I7vucpgm2c6959>;
+    "max_weight": Anonymize<I4q39t5hn830vp>;
+    "querier"?: Anonymize<I4pai6qnfk426l>;
+};
+export type I7vucpgm2c6959 = AnonymousEnum<{
+    "Null": undefined;
+    "Assets": Anonymize<I4npjalvhmfuj>;
+    "ExecutionResult"?: Anonymize<I3l6ejee750fv1>;
+    "Version": number;
+    "PalletsInfo": Anonymize<I599u7h20b52at>;
+    "DispatchResult": XcmV3MaybeErrorCode;
+}>;
+export type I3l6ejee750fv1 = (Anonymize<Ia1dtsqe0g5uqn>) | undefined;
+export type Ia1dtsqe0g5uqn = [number, Anonymize<Id56rgs0bdb7gl>];
+export type I4pai6qnfk426l = (Anonymize<If9iqq7i64mur8>) | undefined;
+export type Ia4uoqg6e605nj = {
+    "assets": Anonymize<I4npjalvhmfuj>;
+    "beneficiary": Anonymize<If9iqq7i64mur8>;
+};
+export type Ib8pcn3p79bp2q = {
+    "assets": Anonymize<I4npjalvhmfuj>;
+    "dest": Anonymize<If9iqq7i64mur8>;
+    "xcm": Anonymize<Iqgpikad18l8f>;
+};
+export type Iffl6b2rs73tva = {
+    "origin_kind": XcmV2OriginKind;
+    "call": Binary;
+};
+export type I6vsmh07hrp1rc = {
+    "destination": Anonymize<If9iqq7i64mur8>;
+    "query_id": bigint;
+    "max_weight": Anonymize<I4q39t5hn830vp>;
+};
+export type I81oo73d6i5279 = {
+    "assets": Anonymize<Iau5bveb13r5dm>;
+    "beneficiary": Anonymize<If9iqq7i64mur8>;
+};
+export type Iau5bveb13r5dm = AnonymousEnum<{
+    "Definite": Anonymize<I4npjalvhmfuj>;
+    "Wild": Anonymize<Ieu5nmcltehl17>;
+}>;
+export type Ieu5nmcltehl17 = AnonymousEnum<{
+    "All": undefined;
+    "AllOf": Anonymize<I3ufm9dj6id8cd>;
+    "AllCounted": number;
+    "AllOfCounted": Anonymize<Ibobri3ld2tm8f>;
+}>;
+export type I3ufm9dj6id8cd = {
+    "id": Anonymize<If9iqq7i64mur8>;
+    "fun": XcmV2MultiassetWildFungibility;
+};
+export type Ibobri3ld2tm8f = {
+    "id": Anonymize<If9iqq7i64mur8>;
+    "fun": XcmV2MultiassetWildFungibility;
+    "count": number;
+};
+export type I5jkibb76os4m0 = {
+    "assets": Anonymize<Iau5bveb13r5dm>;
+    "dest": Anonymize<If9iqq7i64mur8>;
+    "xcm": Anonymize<Iqgpikad18l8f>;
+};
+export type I2ga96bjhsjqmo = {
+    "give": Anonymize<Iau5bveb13r5dm>;
+    "want": Anonymize<I4npjalvhmfuj>;
+    "maximal": boolean;
+};
+export type I7erocdiqlups1 = {
+    "assets": Anonymize<Iau5bveb13r5dm>;
+    "reserve": Anonymize<If9iqq7i64mur8>;
+    "xcm": Anonymize<Iqgpikad18l8f>;
+};
+export type Ifti8mofggqket = {
+    "response_info": Anonymize<I6vsmh07hrp1rc>;
+    "assets": Anonymize<Iau5bveb13r5dm>;
+};
+export type I491l3ihqncggf = {
+    "fees": Anonymize<Iffh1nc5e1mod6>;
+    "weight_limit": XcmV3WeightLimit;
+};
+export type I2adkav4nfpltp = {
+    "location": Anonymize<If9iqq7i64mur8>;
+};
+export type I2felkchmfl53m = {
+    "assets": Anonymize<I4npjalvhmfuj>;
+    "ticket": Anonymize<If9iqq7i64mur8>;
+};
+export type Ie5blkq940nvkd = {
+    "module_name": Binary;
+    "response_info": Anonymize<I6vsmh07hrp1rc>;
+};
+export type Iebgdf0aefd1nf = {
+    "network": Anonymize<I73beoct6oecc>;
+    "destination": Anonymize<I6d7om5l62r3h6>;
+    "xcm": Anonymize<Iqgpikad18l8f>;
+};
+export type Idsbn0vvkhdj4i = {
+    "asset": Anonymize<Iffh1nc5e1mod6>;
+    "unlocker": Anonymize<If9iqq7i64mur8>;
+};
+export type I70l2gii2hrbik = {
+    "asset": Anonymize<Iffh1nc5e1mod6>;
+    "target": Anonymize<If9iqq7i64mur8>;
+};
+export type I4d5rrublaq1fn = {
+    "asset": Anonymize<Iffh1nc5e1mod6>;
+    "owner": Anonymize<If9iqq7i64mur8>;
+};
+export type Imh2n1s2lr5v4 = {
+    "asset": Anonymize<Iffh1nc5e1mod6>;
+    "locker": Anonymize<If9iqq7i64mur8>;
+};
+export type I6apoeqjvad59g = {
+    "weight_limit": XcmV3WeightLimit;
+    "check_origin"?: Anonymize<I4pai6qnfk426l>;
+};
+export type I9btmbcvj13kgi = {
+    "asset": Anonymize<Iffh1nc5e1mod6>;
+};
+export type Ibfttt32v5trcp = {
+    "destination": Anonymize<If9iqq7i64mur8>;
+    "remote_fees"?: Anonymize<Ibu57i57ap4ll>;
+    "preserve_origin": boolean;
+    "assets": Anonymize<If6bfvop70u5hr>;
+    "remote_xcm": Anonymize<Iqgpikad18l8f>;
+};
+export type Ibu57i57ap4ll = (Anonymize<Ifhmc9e7vpeeig>) | undefined;
+export type Ifhmc9e7vpeeig = AnonymousEnum<{
+    "Teleport": Anonymize<Iau5bveb13r5dm>;
+    "ReserveDeposit": Anonymize<Iau5bveb13r5dm>;
+    "ReserveWithdraw": Anonymize<Iau5bveb13r5dm>;
+}>;
+export type If6bfvop70u5hr = Array<Anonymize<Ifhmc9e7vpeeig>>;
+export type Ieh0r7b2fvhm5a = {
+    "descendant_origin"?: Anonymize<I8tsbjvlpig5v>;
+    "xcm": Anonymize<Iqgpikad18l8f>;
+};
+export type I8tsbjvlpig5v = (Anonymize<I6d7om5l62r3h6>) | undefined;
+export type Icl7nl1rfeog3i = {
+    "origin": Anonymize<If9iqq7i64mur8>;
+    "query_id": bigint;
+};
+export type Iasr6pj6shs0fl = {
+    "query_id": bigint;
+    "response": Anonymize<I7vucpgm2c6959>;
+};
+export type I7r6b7145022pp = {
+    "origin": Anonymize<If9iqq7i64mur8>;
+    "query_id": bigint;
+    "expected_location"?: Anonymize<I4pai6qnfk426l>;
+};
+export type Icmrn7bogp28cs = {
+    "hash": FixedSizeBinary<32>;
+    "origin": Anonymize<If9iqq7i64mur8>;
+    "assets": Anonymize<Ifedog0bf6e64f>;
+};
+export type Ifedog0bf6e64f = AnonymousEnum<{
+    "V3": Anonymize<Iai6dhqiq3bach>;
+    "V4": Anonymize<I50mli3hb64f9b>;
+    "V5": Anonymize<I4npjalvhmfuj>;
+}>;
+export type I7m9b5plj4h5ot = {
+    "destination": Anonymize<If9iqq7i64mur8>;
+    "result": number;
+    "cost": Anonymize<I4npjalvhmfuj>;
+    "message_id": FixedSizeBinary<32>;
+};
+export type I9kt8c221c83ln = {
+    "location": Anonymize<If9iqq7i64mur8>;
+    "version": number;
+};
+export type I9onhk772nfs4f = {
+    "location": Anonymize<If9iqq7i64mur8>;
+    "query_id": bigint;
+    "error": Anonymize<Id56rgs0bdb7gl>;
+};
+export type I3l6bnksrmt56r = {
+    "location": Anonymize<Ichgaqm88qcdbe>;
+    "query_id": bigint;
+};
+export type Idh09k0l2pmdcg = {
+    "origin": Anonymize<If9iqq7i64mur8>;
+    "query_id": bigint;
+    "expected_querier": Anonymize<If9iqq7i64mur8>;
+    "maybe_actual_querier"?: Anonymize<I4pai6qnfk426l>;
+};
+export type I7uoiphbm0tj4r = {
+    "destination": Anonymize<If9iqq7i64mur8>;
+    "cost": Anonymize<I4npjalvhmfuj>;
+    "message_id": FixedSizeBinary<32>;
+};
+export type I512p1n7qt24l8 = {
+    "paying": Anonymize<If9iqq7i64mur8>;
+    "fees": Anonymize<I4npjalvhmfuj>;
+};
+export type I1dcjapt414ijf = AnonymousEnum<{
+    "AssetRateCreated": Anonymize<I9c4d50jrp7as1>;
+    "AssetRateRemoved": Anonymize<Ifplevr9hp8jo3>;
+    "AssetRateUpdated": Anonymize<Idrugh2blv81ia>;
+}>;
+export type I9c4d50jrp7as1 = {
+    "asset_kind": Anonymize<I2q3ri6itcjj5u>;
+    "rate": bigint;
+};
+export type Ifplevr9hp8jo3 = {
+    "asset_kind": Anonymize<I2q3ri6itcjj5u>;
+};
+export type Idrugh2blv81ia = {
+    "asset_kind": Anonymize<I2q3ri6itcjj5u>;
+    "old": bigint;
+    "new": bigint;
+};
+export type RootTestingEvent = Enum<{
+    /**
+     *Event dispatched when the trigger_defensive extrinsic is called.
+     */
+    "DefensiveTestCall": undefined;
+}>;
+export declare const RootTestingEvent: GetEnum<RootTestingEvent>;
+export type PolkadotRuntimeCommonIdentityMigratorEvent = Enum<{
+    /**
+     *The identity and all sub accounts were reaped for `who`.
+     */
+    "IdentityReaped": Anonymize<I4cbvqmqadhrea>;
+    /**
+     *The deposits held for `who` were updated. `identity` is the new deposit held for
+     *identity info, and `subs` is the new deposit held for the sub-accounts.
+     */
+    "DepositUpdated": Anonymize<I4i3u9uui7ktsd>;
+}>;
+export declare const PolkadotRuntimeCommonIdentityMigratorEvent: GetEnum<PolkadotRuntimeCommonIdentityMigratorEvent>;
+export type I4i3u9uui7ktsd = {
+    "who": SS58String;
+    "identity": bigint;
+    "subs": bigint;
+};
+export type I3h14fm1k2p4iq = Array<Anonymize<I42ant0hrobfqa>>;
+export type I42ant0hrobfqa = {
+    "id": Anonymize<Ib5vaqjrpjbuth>;
+    "amount": bigint;
+};
+export type Ib5vaqjrpjbuth = AnonymousEnum<{
+    "Preimage": PreimagePalletHoldReason;
+    "DelegatedStaking": Anonymize<Ib6ve2drlnapui>;
+}>;
+export type Ib6ve2drlnapui = AnonymousEnum<{
+    "StakingDelegation": undefined;
+}>;
+export type I4ftk0glls7946 = {
+    "judgements": Anonymize<I5lbssihti472g>;
+    "deposit": bigint;
+    "info": Anonymize<I1o57snqt6f4v5>;
+};
+export type I5lbssihti472g = Array<Anonymize<I7uhmpkgp9kq6>>;
+export type I7uhmpkgp9kq6 = [number, Anonymize<IdentityJudgement>];
+export type IdentityJudgement = Enum<{
+    "Unknown": undefined;
+    "FeePaid": bigint;
+    "Reasonable": undefined;
+    "KnownGood": undefined;
+    "OutOfDate": undefined;
+    "LowQuality": undefined;
+    "Erroneous": undefined;
+}>;
+export declare const IdentityJudgement: GetEnum<IdentityJudgement>;
+export type I1o57snqt6f4v5 = {
+    "additional": Anonymize<I9rp1vd8cfo0na>;
+    "display": Anonymize<IdentityData>;
+    "legal": Anonymize<IdentityData>;
+    "web": Anonymize<IdentityData>;
+    "riot": Anonymize<IdentityData>;
+    "email": Anonymize<IdentityData>;
+    "pgp_fingerprint"?: Anonymize<If7b8240vgt2q5>;
+    "image": Anonymize<IdentityData>;
+    "twitter": Anonymize<IdentityData>;
+};
+export type I9rp1vd8cfo0na = Array<Anonymize<Ifqv6alck9pqqn>>;
+export type Ifqv6alck9pqqn = FixedSizeArray<2, Anonymize<IdentityData>>;
+export type IdentityData = Enum<{
+    "None": undefined;
+    "Raw0": undefined;
+    "Raw1": number;
+    "Raw2": FixedSizeBinary<2>;
+    "Raw3": FixedSizeBinary<3>;
+    "Raw4": FixedSizeBinary<4>;
+    "Raw5": FixedSizeBinary<5>;
+    "Raw6": FixedSizeBinary<6>;
+    "Raw7": FixedSizeBinary<7>;
+    "Raw8": FixedSizeBinary<8>;
+    "Raw9": FixedSizeBinary<9>;
+    "Raw10": FixedSizeBinary<10>;
+    "Raw11": FixedSizeBinary<11>;
+    "Raw12": FixedSizeBinary<12>;
+    "Raw13": FixedSizeBinary<13>;
+    "Raw14": FixedSizeBinary<14>;
+    "Raw15": FixedSizeBinary<15>;
+    "Raw16": FixedSizeBinary<16>;
+    "Raw17": FixedSizeBinary<17>;
+    "Raw18": FixedSizeBinary<18>;
+    "Raw19": FixedSizeBinary<19>;
+    "Raw20": FixedSizeBinary<20>;
+    "Raw21": FixedSizeBinary<21>;
+    "Raw22": FixedSizeBinary<22>;
+    "Raw23": FixedSizeBinary<23>;
+    "Raw24": FixedSizeBinary<24>;
+    "Raw25": FixedSizeBinary<25>;
+    "Raw26": FixedSizeBinary<26>;
+    "Raw27": FixedSizeBinary<27>;
+    "Raw28": FixedSizeBinary<28>;
+    "Raw29": FixedSizeBinary<29>;
+    "Raw30": FixedSizeBinary<30>;
+    "Raw31": FixedSizeBinary<31>;
+    "Raw32": FixedSizeBinary<32>;
+    "BlakeTwo256": FixedSizeBinary<32>;
+    "Sha256": FixedSizeBinary<32>;
+    "Keccak256": FixedSizeBinary<32>;
+    "ShaThree256": FixedSizeBinary<32>;
+}>;
+export declare const IdentityData: GetEnum<IdentityData>;
+export type If7b8240vgt2q5 = (FixedSizeBinary<20>) | undefined;
+export type I910puuahutflf = [SS58String, Anonymize<IdentityData>];
+export type I4nfjdef0ibh44 = [bigint, Anonymize<Ia2lhg7l2hilo3>];
+export type I74af64m08r6as = Array<Anonymize<I48v3sekdprq30>>;
+export type I48v3sekdprq30 = (Anonymize<Icj8lp9f0lq0bm>) | undefined;
+export type Icj8lp9f0lq0bm = {
+    "account": SS58String;
+    "fee": bigint;
+    "fields": bigint;
+};
+export type Ic8ann3kre6vdm = {
+    "account_id": SS58String;
+    "allocation": number;
+};
+export type I1j72qfgdejqsv = {
+    "owner": SS58String;
+    "provider": Anonymize<Idib8jf3ve40bj>;
+};
+export type Idib8jf3ve40bj = AnonymousEnum<{
+    "Allocation": undefined;
+    "AuthorityDeposit": bigint;
+    "System": undefined;
+}>;
+export type I60biiepd74113 = [SS58String, number, Anonymize<Idib8jf3ve40bj>];
+export type Ibprd8oi8phm62 = {
+    "delay_period": number;
+    "deposit": bigint;
+    "friends": Anonymize<Ia2lhg7l2hilo3>;
+    "threshold": number;
+};
+export type Idlqqo993i780l = {
+    "created": number;
+    "deposit": bigint;
+    "friends": Anonymize<Ia2lhg7l2hilo3>;
+};
+export type I7e2fq6u6l250o = Array<Anonymize<I3g3fimcakg27h>>;
+export type I3g3fimcakg27h = (Anonymize<I4dgvoparf05t8>) | undefined;
+export type I4dgvoparf05t8 = {
+    "maybe_id"?: Anonymize<I4s6vifaf8k998>;
+    "priority": number;
+    "call": PreimagesBounded;
+    "maybe_periodic"?: Anonymize<Iep7au1720bm0e>;
+    "origin": Anonymize<Icgo40grj87fvv>;
+};
+export type Icgo40grj87fvv = AnonymousEnum<{
+    "system": DispatchRawOrigin;
+    "Origins": WestendRuntimeGovernanceOriginsPalletCustomOriginsOrigin;
+    "ParachainsOrigin": ParachainsOrigin;
+    "XcmPallet": Anonymize<Icvilmd7qu30i4>;
+    "Void": undefined;
+}>;
+export type WestendRuntimeGovernanceOriginsPalletCustomOriginsOrigin = Enum<{
+    "StakingAdmin": undefined;
+    "Treasurer": undefined;
+    "FellowshipAdmin": undefined;
+    "GeneralAdmin": undefined;
+    "AuctionAdmin": undefined;
+    "LeaseAdmin": undefined;
+    "ReferendumCanceller": undefined;
+    "ReferendumKiller": undefined;
+    "SmallTipper": undefined;
+    "BigTipper": undefined;
+    "SmallSpender": undefined;
+    "MediumSpender": undefined;
+    "BigSpender": undefined;
+    "WhitelistedCaller": undefined;
+    "FellowshipInitiates": undefined;
+    "Fellows": undefined;
+    "FellowshipExperts": undefined;
+    "FellowshipMasters": undefined;
+    "Fellowship1Dan": undefined;
+    "Fellowship2Dan": undefined;
+    "Fellowship3Dan": undefined;
+    "Fellowship4Dan": undefined;
+    "Fellowship5Dan": undefined;
+    "Fellowship6Dan": undefined;
+    "Fellowship7Dan": undefined;
+    "Fellowship8Dan": undefined;
+    "Fellowship9Dan": undefined;
+}>;
+export declare const WestendRuntimeGovernanceOriginsPalletCustomOriginsOrigin: GetEnum<WestendRuntimeGovernanceOriginsPalletCustomOriginsOrigin>;
+export type Icvilmd7qu30i4 = AnonymousEnum<{
+    "Xcm": Anonymize<If9iqq7i64mur8>;
+    "Response": Anonymize<If9iqq7i64mur8>;
+}>;
+export type I3t3dslakdgllg = [Anonymize<Ieieu9kvje97a2>, bigint];
+export type Ieieu9kvje97a2 = Array<Anonymize<I2s53rdninie8u>>;
+export type I2s53rdninie8u = {
+    "delegate": SS58String;
+    "proxy_type": WestendRuntimeProxyType;
+    "delay": number;
+};
+export type I8jdl8esnb0lnu = AnonymousEnum<{
+    "Ongoing": Anonymize<Ifoj4kfasb3a8g>;
+    "Approved": Anonymize<Ini94eljn5lj8>;
+    "Rejected": Anonymize<Ini94eljn5lj8>;
+    "Cancelled": Anonymize<Ini94eljn5lj8>;
+    "TimedOut": Anonymize<Ini94eljn5lj8>;
+    "Killed": number;
+}>;
+export type Ifoj4kfasb3a8g = {
+    "track": number;
+    "origin": Anonymize<Icgo40grj87fvv>;
+    "proposal": PreimagesBounded;
+    "enactment": TraitsScheduleDispatchTime;
+    "submitted": number;
+    "submission_deposit": Anonymize<Id5fm4p8lj5qgi>;
+    "decision_deposit"?: Anonymize<Ibd24caul84kv2>;
+    "deciding"?: Anonymize<Ibcbcndfmk0jd9>;
+    "tally": Anonymize<Ifsk7cbmtit1jd>;
+    "in_queue": boolean;
+    "alarm"?: Anonymize<I3aj03qk2o5mdm>;
+};
+export type I3s9vvjt0el98d = {
+    "asset_kind": Anonymize<I2q3ri6itcjj5u>;
+    "amount": bigint;
+    "beneficiary": Anonymize<Ichgaqm88qcdbe>;
+    "valid_from": number;
+    "expire_at": number;
+    "status": TreasuryPaymentState;
+};
+export type I542q009qbgt8k = {
+    "agent": SS58String;
+    "amount": bigint;
+};
+export type I4e5ujckjq61g8 = {
+    "payee": SS58String;
+    "total_delegated": bigint;
+    "unclaimed_withdrawals": bigint;
+    "pending_slash": bigint;
+};
+export type I2d4k4cqluhq5i = {
+    "buffer": Anonymize<Iatpn2emmr5i52>;
+    "latest_number": number;
+};
+export type Iatpn2emmr5i52 = Array<Anonymize<I2l15hoj5fe0mk>>;
+export type I2l15hoj5fe0mk = {
+    "relay_parent": FixedSizeBinary<32>;
+    "state_root": FixedSizeBinary<32>;
+    "claim_queue": Anonymize<Ij277dgaqsjje>;
+};
+export type Ij277dgaqsjje = Array<Anonymize<I4p3ju2mesd9m1>>;
+export type I4p3ju2mesd9m1 = [number, Anonymize<I9olhgo2o08h7b>];
+export type I91e9aiuocql92 = Array<Anonymize<I1ibeo05ogqsc7>>;
+export type I1ibeo05ogqsc7 = {
+    "core": number;
+    "hash": FixedSizeBinary<32>;
+    "descriptor": Anonymize<Ibnq2mkuf1plno>;
+    "commitments": Anonymize<Ic1d4u2opv3fst>;
+    "availability_votes": {
+        bytes: Uint8Array;
+        bitsLen: number;
+    };
+    "backers": {
+        bytes: Uint8Array;
+        bitsLen: number;
+    };
+    "relay_parent_number": number;
+    "backed_in_number": number;
+    "backing_group": number;
+};
+export type Ia1viqq9k85bv1 = {
+    "session": number;
+    "backing_validators_per_candidate": Anonymize<I54vphn2b5i7j0>;
+    "disputes": Anonymize<Ibt1op6l47p1r2>;
+};
+export type I54vphn2b5i7j0 = Array<Anonymize<I46eo7fu63lvs0>>;
+export type I46eo7fu63lvs0 = [Anonymize<Iceqied2dhrjit>, Anonymize<I1jjanul21h2e0>];
+export type Idp9imcf15rli1 = Array<Anonymize<I1lbvimkpgjd5>>;
+export type I1lbvimkpgjd5 = [number, Anonymize<I87vihqtpi4hb3>];
+export type I87vihqtpi4hb3 = Array<PolkadotRuntimeParachainsSchedulerCommonAssignment>;
+export type I6ucbdbrsslk4l = {
+    "manager": SS58String;
+    "period_begin": number;
+    "period_count": number;
+    "last_lease"?: Anonymize<I4arjljr6dpflb>;
+    "lease_count": number;
+};
+export type Iepbsvlk3qceij = AnonymousEnum<{
+    "Active": Anonymize<Iessq0bats6ofh>;
+    "Stuck": undefined;
+}>;
+export type Iessq0bats6ofh = {
+    "index": number;
+    "inner_cursor"?: Anonymize<Iabpgqcjikia83>;
+    "started_at": number;
+};
+export type I5qfubnuvrnqn6 = AnonymousEnum<{
+    "Pending": Anonymize<I8n1p8t37t4406>;
+    "VersionNotifier": Anonymize<Invrgr8s9n09r>;
+    "Ready": Anonymize<I2ssu86ioj11k3>;
+}>;
+export type I8n1p8t37t4406 = {
+    "responder": Anonymize<Ichgaqm88qcdbe>;
+    "maybe_match_querier"?: Anonymize<I1k8uk4m0m3gr4>;
+    "maybe_notify"?: Anonymize<I1faufi0iffstp>;
+    "timeout": number;
+};
+export type I1k8uk4m0m3gr4 = (Anonymize<Ichgaqm88qcdbe>) | undefined;
+export type Invrgr8s9n09r = {
+    "origin": Anonymize<Ichgaqm88qcdbe>;
+    "is_active": boolean;
+};
+export type I2ssu86ioj11k3 = {
+    "response": Anonymize<I9um3bb0cui9cs>;
+    "at": number;
+};
+export type I9um3bb0cui9cs = AnonymousEnum<{
+    "V3": XcmV3Response;
+    "V4": XcmV4Response;
+    "V5": Anonymize<I7vucpgm2c6959>;
+}>;
+export type I8t3u2dv73ahbd = [number, Anonymize<Ichgaqm88qcdbe>];
+export type Ie0rpl5bahldfk = Array<Anonymize<I609v0gelr96h6>>;
+export type I609v0gelr96h6 = [Anonymize<Ichgaqm88qcdbe>, number];
+export type I7e5oaj2qi4kl1 = {
+    "amount": bigint;
+    "owner": Anonymize<Ichgaqm88qcdbe>;
+    "locker": Anonymize<Ichgaqm88qcdbe>;
+    "consumers": Anonymize<I2ia97v5nng96b>;
+};
+export type Ie849h3gncgvok = [number, SS58String, Anonymize<I47gh5t4ppbcdj>];
+export type I47gh5t4ppbcdj = AnonymousEnum<{
+    "V3": XcmV3MultiassetAssetId;
+    "V4": Anonymize<I4c0s5cioidn76>;
+    "V5": Anonymize<If9iqq7i64mur8>;
+}>;
+export type Iat62vud7hlod2 = Array<Anonymize<I55s5m6u4mntoo>>;
+export type I55s5m6u4mntoo = [bigint, Anonymize<Ichgaqm88qcdbe>];
+export type I4fo08joqmcqnm = {
+    "spec_name": string;
+    "impl_name": string;
+    "authoring_version": number;
+    "spec_version": number;
+    "impl_version": number;
+    "apis": Anonymize<Ic9hg6pp5pkea5>;
+    "transaction_version": number;
+    "system_version": number;
+};
+export type Iaof5m7dfleov7 = AnonymousEnum<{
+    /**
+     *Send a batch of dispatch calls.
+     *
+     *May be called from any origin except `None`.
+     *
+     *- `calls`: The calls to be dispatched from the same origin. The number of call must not
+     *  exceed the constant: `batched_calls_limit` (available in constant metadata).
+     *
+     *If origin is root then the calls are dispatched without checking origin filter. (This
+     *includes bypassing `frame_system::Config::BaseCallFilter`).
+     *
+     *## Complexity
+     *- O(C) where C is the number of calls to be batched.
+     *
+     *This will return `Ok` in all circumstances. To determine the success of the batch, an
+     *event is deposited. If a call failed and the batch was interrupted, then the
+     *`BatchInterrupted` event is deposited, along with the number of successful calls made
+     *and the error of the failed call. If all were successful, then the `BatchCompleted`
+     *event is deposited.
+     */
+    "batch": Anonymize<I7h2u1mc3rf98r>;
+    /**
+     *Send a call through an indexed pseudonym of the sender.
+     *
+     *Filter from origin are passed along. The call will be dispatched with an origin which
+     *use the same filter as the origin of this call.
+     *
+     *NOTE: If you need to ensure that any account-based filtering is not honored (i.e.
+     *because you expect `proxy` to have been used prior in the call stack and you do not want
+     *the call restrictions to apply to any sub-accounts), then use `as_multi_threshold_1`
+     *in the Multisig pallet instead.
+     *
+     *NOTE: Prior to version *12, this was called `as_limited_sub`.
+     *
+     *The dispatch origin for this call must be _Signed_.
+     */
+    "as_derivative": Anonymize<I3e5ofpe7ic72u>;
+    /**
+     *Send a batch of dispatch calls and atomically execute them.
+     *The whole transaction will rollback and fail if any of the calls failed.
+     *
+     *May be called from any origin except `None`.
+     *
+     *- `calls`: The calls to be dispatched from the same origin. The number of call must not
+     *  exceed the constant: `batched_calls_limit` (available in constant metadata).
+     *
+     *If origin is root then the calls are dispatched without checking origin filter. (This
+     *includes bypassing `frame_system::Config::BaseCallFilter`).
+     *
+     *## Complexity
+     *- O(C) where C is the number of calls to be batched.
+     */
+    "batch_all": Anonymize<I7h2u1mc3rf98r>;
+    /**
+     *Dispatches a function call with a provided origin.
+     *
+     *The dispatch origin for this call must be _Root_.
+     *
+     *## Complexity
+     *- O(1).
+     */
+    "dispatch_as": Anonymize<I57oe19187g89v>;
+    /**
+     *Send a batch of dispatch calls.
+     *Unlike `batch`, it allows errors and won't interrupt.
+     *
+     *May be called from any origin except `None`.
+     *
+     *- `calls`: The calls to be dispatched from the same origin. The number of call must not
+     *  exceed the constant: `batched_calls_limit` (available in constant metadata).
+     *
+     *If origin is root then the calls are dispatch without checking origin filter. (This
+     *includes bypassing `frame_system::Config::BaseCallFilter`).
+     *
+     *## Complexity
+     *- O(C) where C is the number of calls to be batched.
+     */
+    "force_batch": Anonymize<I7h2u1mc3rf98r>;
+    /**
+     *Dispatch a function call with a specified weight.
+     *
+     *This function does not check the weight of the call, and instead allows the
+     *Root origin to specify the weight of the call.
+     *
+     *The dispatch origin for this call must be _Root_.
+     */
+    "with_weight": Anonymize<I4l97ms6f1qgl6>;
+}>;
+export type I7h2u1mc3rf98r = {
+    "calls": Anonymize<I3ag204u1r8dag>;
+};
+export type I3ag204u1r8dag = Array<TxCallData>;
+export type I3e5ofpe7ic72u = {
+    "index": number;
+    "call": TxCallData;
+};
+export type I57oe19187g89v = {
+    "as_origin": Anonymize<Icgo40grj87fvv>;
+    "call": TxCallData;
+};
+export type I4l97ms6f1qgl6 = {
+    "call": TxCallData;
+    "weight": Anonymize<I4q39t5hn830vp>;
+};
+export type Iceqdqk5ub0l9g = AnonymousEnum<{
+    /**
+     *Add a registrar to the system.
+     *
+     *The dispatch origin for this call must be `T::RegistrarOrigin`.
+     *
+     *- `account`: the account of the registrar.
+     *
+     *Emits `RegistrarAdded` if successful.
+     */
+    "add_registrar": Anonymize<Ic6cqd9g0t65v0>;
+    /**
+     *Set an account's identity information and reserve the appropriate deposit.
+     *
+     *If the account already has identity information, the deposit is taken as part payment
+     *for the new deposit.
+     *
+     *The dispatch origin for this call must be _Signed_.
+     *
+     *- `info`: The identity information.
+     *
+     *Emits `IdentitySet` if successful.
+     */
+    "set_identity": Anonymize<I2kds5jji7slh8>;
+    /**
+     *Set the sub-accounts of the sender.
+     *
+     *Payment: Any aggregate balance reserved by previous `set_subs` calls will be returned
+     *and an amount `SubAccountDeposit` will be reserved for each item in `subs`.
+     *
+     *The dispatch origin for this call must be _Signed_ and the sender must have a registered
+     *identity.
+     *
+     *- `subs`: The identity's (new) sub-accounts.
+     */
+    "set_subs": Anonymize<Ia9mkdf6l44shb>;
+    /**
+     *Clear an account's identity info and all sub-accounts and return all deposits.
+     *
+     *Payment: All reserved balances on the account are returned.
+     *
+     *The dispatch origin for this call must be _Signed_ and the sender must have a registered
+     *identity.
+     *
+     *Emits `IdentityCleared` if successful.
+     */
+    "clear_identity": undefined;
+    /**
+     *Request a judgement from a registrar.
+     *
+     *Payment: At most `max_fee` will be reserved for payment to the registrar if judgement
+     *given.
+     *
+     *The dispatch origin for this call must be _Signed_ and the sender must have a
+     *registered identity.
+     *
+     *- `reg_index`: The index of the registrar whose judgement is requested.
+     *- `max_fee`: The maximum fee that may be paid. This should just be auto-populated as:
+     *
+     *```nocompile
+     *Registrars::<T>::get().get(reg_index).unwrap().fee
+     *```
+     *
+     *Emits `JudgementRequested` if successful.
+     */
+    "request_judgement": Anonymize<I9l2s4klu0831o>;
+    /**
+     *Cancel a previous request.
+     *
+     *Payment: A previously reserved deposit is returned on success.
+     *
+     *The dispatch origin for this call must be _Signed_ and the sender must have a
+     *registered identity.
+     *
+     *- `reg_index`: The index of the registrar whose judgement is no longer requested.
+     *
+     *Emits `JudgementUnrequested` if successful.
+     */
+    "cancel_request": Anonymize<I2ctrt5nqb8o7c>;
+    /**
+     *Set the fee required for a judgement to be requested from a registrar.
+     *
+     *The dispatch origin for this call must be _Signed_ and the sender must be the account
+     *of the registrar whose index is `index`.
+     *
+     *- `index`: the index of the registrar whose fee is to be set.
+     *- `fee`: the new fee.
+     */
+    "set_fee": Anonymize<I711qahikocb1c>;
+    /**
+     *Change the account associated with a registrar.
+     *
+     *The dispatch origin for this call must be _Signed_ and the sender must be the account
+     *of the registrar whose index is `index`.
+     *
+     *- `index`: the index of the registrar whose fee is to be set.
+     *- `new`: the new account ID.
+     */
+    "set_account_id": Anonymize<I6o1er683vod1j>;
+    /**
+     *Set the field information for a registrar.
+     *
+     *The dispatch origin for this call must be _Signed_ and the sender must be the account
+     *of the registrar whose index is `index`.
+     *
+     *- `index`: the index of the registrar whose fee is to be set.
+     *- `fields`: the fields that the registrar concerns themselves with.
+     */
+    "set_fields": Anonymize<Id6gojh30v9ib2>;
+    /**
+     *Provide a judgement for an account's identity.
+     *
+     *The dispatch origin for this call must be _Signed_ and the sender must be the account
+     *of the registrar whose index is `reg_index`.
+     *
+     *- `reg_index`: the index of the registrar whose judgement is being made.
+     *- `target`: the account whose identity the judgement is upon. This must be an account
+     *  with a registered identity.
+     *- `judgement`: the judgement of the registrar of index `reg_index` about `target`.
+     *- `identity`: The hash of the [`IdentityInformationProvider`] for that the judgement is
+     *  provided.
+     *
+     *Note: Judgements do not apply to a username.
+     *
+     *Emits `JudgementGiven` if successful.
+     */
+    "provide_judgement": Anonymize<Ide1bahhh47lj9>;
+    /**
+     *Remove an account's identity and sub-account information and slash the deposits.
+     *
+     *Payment: Reserved balances from `set_subs` and `set_identity` are slashed and handled by
+     *`Slash`. Verification request deposits are not returned; they should be cancelled
+     *manually using `cancel_request`.
+     *
+     *The dispatch origin for this call must match `T::ForceOrigin`.
+     *
+     *- `target`: the account whose identity the judgement is upon. This must be an account
+     *  with a registered identity.
+     *
+     *Emits `IdentityKilled` if successful.
+     */
+    "kill_identity": Anonymize<Id9uqtigc0il3v>;
+    /**
+     *Add the given account to the sender's subs.
+     *
+     *Payment: Balance reserved by a previous `set_subs` call for one sub will be repatriated
+     *to the sender.
+     *
+     *The dispatch origin for this call must be _Signed_ and the sender must have a registered
+     *sub identity of `sub`.
+     */
+    "add_sub": Anonymize<Ic68lsi7chpv5k>;
+    /**
+     *Alter the associated name of the given sub-account.
+     *
+     *The dispatch origin for this call must be _Signed_ and the sender must have a registered
+     *sub identity of `sub`.
+     */
+    "rename_sub": Anonymize<Ic68lsi7chpv5k>;
+    /**
+     *Remove the given account from the sender's subs.
+     *
+     *Payment: Balance reserved by a previous `set_subs` call for one sub will be repatriated
+     *to the sender.
+     *
+     *The dispatch origin for this call must be _Signed_ and the sender must have a registered
+     *sub identity of `sub`.
+     */
+    "remove_sub": Anonymize<Iek0boln8pgnko>;
+    /**
+     *Remove the sender as a sub-account.
+     *
+     *Payment: Balance reserved by a previous `set_subs` call for one sub will be repatriated
+     *to the sender (*not* the original depositor).
+     *
+     *The dispatch origin for this call must be _Signed_ and the sender must have a registered
+     *super-identity.
+     *
+     *NOTE: This should not normally be used, but is provided in the case that the non-
+     *controller of an account is maliciously registered as a sub-account.
+     */
+    "quit_sub": undefined;
+    /**
+     *Add an `AccountId` with permission to grant usernames with a given `suffix` appended.
+     *
+     *The authority can grant up to `allocation` usernames. To top up the allocation or
+     *change the account used to grant usernames, this call can be used with the updated
+     *parameters to overwrite the existing configuration.
+     */
+    "add_username_authority": Anonymize<I452bkd71b385t>;
+    /**
+     *Remove `authority` from the username authorities.
+     */
+    "remove_username_authority": Anonymize<Ie83f0p0ke1f4u>;
+    /**
+     *Set the username for `who`. Must be called by a username authority.
+     *
+     *If `use_allocation` is set, the authority must have a username allocation available to
+     *spend. Otherwise, the authority will need to put up a deposit for registering the
+     *username.
+     *
+     *Users can either pre-sign their usernames or
+     *accept them later.
+     *
+     *Usernames must:
+     *  - Only contain lowercase ASCII characters or digits.
+     *  - When combined with the suffix of the issuing authority be _less than_ the
+     *    `MaxUsernameLength`.
+     */
+    "set_username_for": Anonymize<I93hi4ed10h5sc>;
+    /**
+     *Accept a given username that an `authority` granted. The call must include the full
+     *username, as in `username.suffix`.
+     */
+    "accept_username": Anonymize<Ie5l999tf7t2te>;
+    /**
+     *Remove an expired username approval. The username was approved by an authority but never
+     *accepted by the user and must now be beyond its expiration. The call must include the
+     *full username, as in `username.suffix`.
+     */
+    "remove_expired_approval": Anonymize<Ie5l999tf7t2te>;
+    /**
+     *Set a given username as the primary. The username should include the suffix.
+     */
+    "set_primary_username": Anonymize<Ie5l999tf7t2te>;
+    /**
+     *Start the process of removing a username by placing it in the unbinding usernames map.
+     *Once the grace period has passed, the username can be deleted by calling
+     *[remove_username](crate::Call::remove_username).
+     */
+    "unbind_username": Anonymize<Ie5l999tf7t2te>;
+    /**
+     *Permanently delete a username which has been unbinding for longer than the grace period.
+     *Caller is refunded the fee if the username expired and the removal was successful.
+     */
+    "remove_username": Anonymize<Ie5l999tf7t2te>;
+    /**
+     *Call with [ForceOrigin](crate::Config::ForceOrigin) privileges which deletes a username
+     *and slashes any deposit associated with it.
+     */
+    "kill_username": Anonymize<Ie5l999tf7t2te>;
+}>;
+export type Ic6cqd9g0t65v0 = {
+    "account": MultiAddress;
+};
+export type I2kds5jji7slh8 = {
+    "info": Anonymize<I1o57snqt6f4v5>;
+};
+export type Ia9mkdf6l44shb = {
+    "subs": Anonymize<I2ugvgusn08dsq>;
+};
+export type I2ugvgusn08dsq = Array<Anonymize<I910puuahutflf>>;
+export type I9l2s4klu0831o = {
+    "reg_index": number;
+    "max_fee": bigint;
+};
+export type I2ctrt5nqb8o7c = {
+    "reg_index": number;
+};
+export type I711qahikocb1c = {
+    "index": number;
+    "fee": bigint;
+};
+export type Id6gojh30v9ib2 = {
+    "index": number;
+    "fields": bigint;
+};
+export type Ide1bahhh47lj9 = {
+    "reg_index": number;
+    "target": MultiAddress;
+    "judgement": Anonymize<IdentityJudgement>;
+    "identity": FixedSizeBinary<32>;
+};
+export type Ic68lsi7chpv5k = {
+    "sub": MultiAddress;
+    "data": Anonymize<IdentityData>;
+};
+export type Iek0boln8pgnko = {
+    "sub": MultiAddress;
+};
+export type I452bkd71b385t = {
+    "authority": MultiAddress;
+    "suffix": Binary;
+    "allocation": number;
+};
+export type Ie83f0p0ke1f4u = {
+    "suffix": Binary;
+    "authority": MultiAddress;
+};
+export type I93hi4ed10h5sc = {
+    "who": MultiAddress;
+    "username": Binary;
+    "signature"?: Anonymize<I86cdjmsf3a81s>;
+    "use_allocation": boolean;
+};
+export type I7udjr67pjo763 = AnonymousEnum<{
+    /**
+     *Send a call through a recovered account.
+     *
+     *The dispatch origin for this call must be _Signed_ and registered to
+     *be able to make calls on behalf of the recovered account.
+     *
+     *Parameters:
+     *- `account`: The recovered account you want to make a call on-behalf-of.
+     *- `call`: The call you want to make with the recovered account.
+     */
+    "as_recovered": Anonymize<I6e4d81al6tnhg>;
+    /**
+     *Allow ROOT to bypass the recovery process and set an a rescuer account
+     *for a lost account directly.
+     *
+     *The dispatch origin for this call must be _ROOT_.
+     *
+     *Parameters:
+     *- `lost`: The "lost account" to be recovered.
+     *- `rescuer`: The "rescuer account" which can call as the lost account.
+     */
+    "set_recovered": Anonymize<I7pqmhr25d3dqq>;
+    /**
+     *Create a recovery configuration for your account. This makes your account recoverable.
+     *
+     *Payment: `ConfigDepositBase` + `FriendDepositFactor` * #_of_friends balance
+     *will be reserved for storing the recovery configuration. This deposit is returned
+     *in full when the user calls `remove_recovery`.
+     *
+     *The dispatch origin for this call must be _Signed_.
+     *
+     *Parameters:
+     *- `friends`: A list of friends you trust to vouch for recovery attempts. Should be
+     *  ordered and contain no duplicate values.
+     *- `threshold`: The number of friends that must vouch for a recovery attempt before the
+     *  account can be recovered. Should be less than or equal to the length of the list of
+     *  friends.
+     *- `delay_period`: The number of blocks after a recovery attempt is initialized that
+     *  needs to pass before the account can be recovered.
+     */
+    "create_recovery": Anonymize<I6s6ihmfj6j5qq>;
+    /**
+     *Initiate the process for recovering a recoverable account.
+     *
+     *Payment: `RecoveryDeposit` balance will be reserved for initiating the
+     *recovery process. This deposit will always be repatriated to the account
+     *trying to be recovered. See `close_recovery`.
+     *
+     *The dispatch origin for this call must be _Signed_.
+     *
+     *Parameters:
+     *- `account`: The lost account that you want to recover. This account needs to be
+     *  recoverable (i.e. have a recovery configuration).
+     */
+    "initiate_recovery": Anonymize<Ic6cqd9g0t65v0>;
+    /**
+     *Allow a "friend" of a recoverable account to vouch for an active recovery
+     *process for that account.
+     *
+     *The dispatch origin for this call must be _Signed_ and must be a "friend"
+     *for the recoverable account.
+     *
+     *Parameters:
+     *- `lost`: The lost account that you want to recover.
+     *- `rescuer`: The account trying to rescue the lost account that you want to vouch for.
+     *
+     *The combination of these two parameters must point to an active recovery
+     *process.
+     */
+    "vouch_recovery": Anonymize<I7pqmhr25d3dqq>;
+    /**
+     *Allow a successful rescuer to claim their recovered account.
+     *
+     *The dispatch origin for this call must be _Signed_ and must be a "rescuer"
+     *who has successfully completed the account recovery process: collected
+     *`threshold` or more vouches, waited `delay_period` blocks since initiation.
+     *
+     *Parameters:
+     *- `account`: The lost account that you want to claim has been successfully recovered by
+     *  you.
+     */
+    "claim_recovery": Anonymize<Ic6cqd9g0t65v0>;
+    /**
+     *As the controller of a recoverable account, close an active recovery
+     *process for your account.
+     *
+     *Payment: By calling this function, the recoverable account will receive
+     *the recovery deposit `RecoveryDeposit` placed by the rescuer.
+     *
+     *The dispatch origin for this call must be _Signed_ and must be a
+     *recoverable account with an active recovery process for it.
+     *
+     *Parameters:
+     *- `rescuer`: The account trying to rescue this recoverable account.
+     */
+    "close_recovery": Anonymize<I7ka1pdlbuevh2>;
+    /**
+     *Remove the recovery process for your account. Recovered accounts are still accessible.
+     *
+     *NOTE: The user must make sure to call `close_recovery` on all active
+     *recovery attempts before calling this function else it will fail.
+     *
+     *Payment: By calling this function the recoverable account will unreserve
+     *their recovery configuration deposit.
+     *(`ConfigDepositBase` + `FriendDepositFactor` * #_of_friends)
+     *
+     *The dispatch origin for this call must be _Signed_ and must be a
+     *recoverable account (i.e. has a recovery configuration).
+     */
+    "remove_recovery": undefined;
+    /**
+     *Cancel the ability to use `as_recovered` for `account`.
+     *
+     *The dispatch origin for this call must be _Signed_ and registered to
+     *be able to make calls on behalf of the recovered account.
+     *
+     *Parameters:
+     *- `account`: The recovered account you are able to call on-behalf-of.
+     */
+    "cancel_recovered": Anonymize<Ic6cqd9g0t65v0>;
+}>;
+export type I6e4d81al6tnhg = {
+    "account": MultiAddress;
+    "call": TxCallData;
+};
+export type I7pqmhr25d3dqq = {
+    "lost": MultiAddress;
+    "rescuer": MultiAddress;
+};
+export type I6s6ihmfj6j5qq = {
+    "friends": Anonymize<Ia2lhg7l2hilo3>;
+    "threshold": number;
+    "delay_period": number;
+};
+export type I7ka1pdlbuevh2 = {
+    "rescuer": MultiAddress;
+};
+export type I3hok25hvb7dov = AnonymousEnum<{
+    /**
+     *Anonymously schedule a task.
+     */
+    "schedule": Anonymize<If1l350tvru1r4>;
+    /**
+     *Cancel an anonymously scheduled task.
+     */
+    "cancel": Anonymize<I5n4sebgkfr760>;
+    /**
+     *Schedule a named task.
+     */
+    "schedule_named": Anonymize<I2ruhehjg9j6u2>;
+    /**
+     *Cancel a named scheduled task.
+     */
+    "cancel_named": Anonymize<Ifs1i5fk9cqvr6>;
+    /**
+     *Anonymously schedule a task after a delay.
+     */
+    "schedule_after": Anonymize<I9bk14f0cb43o5>;
+    /**
+     *Schedule a named task after a delay.
+     */
+    "schedule_named_after": Anonymize<I4rb2eiv6hsa8>;
+    /**
+     *Set a retry configuration for a task so that, in case its scheduled run fails, it will
+     *be retried after `period` blocks, for a total amount of `retries` retries or until it
+     *succeeds.
+     *
+     *Tasks which need to be scheduled for a retry are still subject to weight metering and
+     *agenda space, same as a regular task. If a periodic task fails, it will be scheduled
+     *normally while the task is retrying.
+     *
+     *Tasks scheduled as a result of a retry for a periodic task are unnamed, non-periodic
+     *clones of the original task. Their retry configuration will be derived from the
+     *original task's configuration, but will have a lower value for `remaining` than the
+     *original `total_retries`.
+     */
+    "set_retry": Anonymize<Ieg3fd8p4pkt10>;
+    /**
+     *Set a retry configuration for a named task so that, in case its scheduled run fails, it
+     *will be retried after `period` blocks, for a total amount of `retries` retries or until
+     *it succeeds.
+     *
+     *Tasks which need to be scheduled for a retry are still subject to weight metering and
+     *agenda space, same as a regular task. If a periodic task fails, it will be scheduled
+     *normally while the task is retrying.
+     *
+     *Tasks scheduled as a result of a retry for a periodic task are unnamed, non-periodic
+     *clones of the original task. Their retry configuration will be derived from the
+     *original task's configuration, but will have a lower value for `remaining` than the
+     *original `total_retries`.
+     */
+    "set_retry_named": Anonymize<I8kg5ll427kfqq>;
+    /**
+     *Removes the retry configuration of a task.
+     */
+    "cancel_retry": Anonymize<I467333262q1l9>;
+    /**
+     *Cancel the retry configuration of a named task.
+     */
+    "cancel_retry_named": Anonymize<Ifs1i5fk9cqvr6>;
+}>;
+export type If1l350tvru1r4 = {
+    "when": number;
+    "maybe_periodic"?: Anonymize<Iep7au1720bm0e>;
+    "priority": number;
+    "call": TxCallData;
+};
+export type I2ruhehjg9j6u2 = {
+    "id": FixedSizeBinary<32>;
+    "when": number;
+    "maybe_periodic"?: Anonymize<Iep7au1720bm0e>;
+    "priority": number;
+    "call": TxCallData;
+};
+export type I9bk14f0cb43o5 = {
+    "after": number;
+    "maybe_periodic"?: Anonymize<Iep7au1720bm0e>;
+    "priority": number;
+    "call": TxCallData;
+};
+export type I4rb2eiv6hsa8 = {
+    "id": FixedSizeBinary<32>;
+    "after": number;
+    "maybe_periodic"?: Anonymize<Iep7au1720bm0e>;
+    "priority": number;
+    "call": TxCallData;
+};
+export type Ia64bpk23qn7l2 = AnonymousEnum<{
+    /**
+     *Authenticates the sudo key and dispatches a function call with `Root` origin.
+     */
+    "sudo": Anonymize<I2q6qeu5f68lv7>;
+    /**
+     *Authenticates the sudo key and dispatches a function call with `Root` origin.
+     *This function does not check the weight of the call, and instead allows the
+     *Sudo user to specify the weight of the call.
+     *
+     *The dispatch origin for this call must be _Signed_.
+     */
+    "sudo_unchecked_weight": Anonymize<I4l97ms6f1qgl6>;
+    /**
+     *Authenticates the current sudo key and sets the given AccountId (`new`) as the new sudo
+     *key.
+     */
+    "set_key": Anonymize<I8k3rnvpeeh4hv>;
+    /**
+     *Authenticates the sudo key and dispatches a function call with `Signed` origin from
+     *a given account.
+     *
+     *The dispatch origin for this call must be _Signed_.
+     */
+    "sudo_as": Anonymize<I3s57f59vuatsu>;
+    /**
+     *Permanently removes the sudo key.
+     *
+     ***This cannot be un-done.**
+     */
+    "remove_key": undefined;
+}>;
+export type I2q6qeu5f68lv7 = {
+    "call": TxCallData;
+};
+export type I3s57f59vuatsu = {
+    "who": MultiAddress;
+    "call": TxCallData;
+};
+export type I2j6el7hj3pps6 = AnonymousEnum<{
+    /**
+     *Dispatch the given `call` from an account that the sender is authorised for through
+     *`add_proxy`.
+     *
+     *The dispatch origin for this call must be _Signed_.
+     *
+     *Parameters:
+     *- `real`: The account that the proxy will make a call on behalf of.
+     *- `force_proxy_type`: Specify the exact proxy type to be used and checked for this call.
+     *- `call`: The call to be made by the `real` account.
+     */
+    "proxy": Anonymize<I159emgr7c762d>;
+    /**
+     *Register a proxy account for the sender that is able to make calls on its behalf.
+     *
+     *The dispatch origin for this call must be _Signed_.
+     *
+     *Parameters:
+     *- `proxy`: The account that the `caller` would like to make a proxy.
+     *- `proxy_type`: The permissions allowed for this proxy account.
+     *- `delay`: The announcement period required of the initial proxy. Will generally be
+     *zero.
+     */
+    "add_proxy": Anonymize<I1kauh25lsk7nb>;
+    /**
+     *Unregister a proxy account for the sender.
+     *
+     *The dispatch origin for this call must be _Signed_.
+     *
+     *Parameters:
+     *- `proxy`: The account that the `caller` would like to remove as a proxy.
+     *- `proxy_type`: The permissions currently enabled for the removed proxy account.
+     */
+    "remove_proxy": Anonymize<I1kauh25lsk7nb>;
+    /**
+     *Unregister all proxy accounts for the sender.
+     *
+     *The dispatch origin for this call must be _Signed_.
+     *
+     *WARNING: This may be called on accounts created by `pure`, however if done, then
+     *the unreserved fees will be inaccessible. **All access to this account will be lost.**
+     */
+    "remove_proxies": undefined;
+    /**
+     *Spawn a fresh new account that is guaranteed to be otherwise inaccessible, and
+     *initialize it with a proxy of `proxy_type` for `origin` sender.
+     *
+     *Requires a `Signed` origin.
+     *
+     *- `proxy_type`: The type of the proxy that the sender will be registered as over the
+     *new account. This will almost always be the most permissive `ProxyType` possible to
+     *allow for maximum flexibility.
+     *- `index`: A disambiguation index, in case this is called multiple times in the same
+     *transaction (e.g. with `utility::batch`). Unless you're using `batch` you probably just
+     *want to use `0`.
+     *- `delay`: The announcement period required of the initial proxy. Will generally be
+     *zero.
+     *
+     *Fails with `Duplicate` if this has already been called in this transaction, from the
+     *same sender, with the same parameters.
+     *
+     *Fails if there are insufficient funds to pay for deposit.
+     */
+    "create_pure": Anonymize<I9bu110nphkr25>;
+    /**
+     *Removes a previously spawned pure proxy.
+     *
+     *WARNING: **All access to this account will be lost.** Any funds held in it will be
+     *inaccessible.
+     *
+     *Requires a `Signed` origin, and the sender account must have been created by a call to
+     *`pure` with corresponding parameters.
+     *
+     *- `spawner`: The account that originally called `pure` to create this account.
+     *- `index`: The disambiguation index originally passed to `pure`. Probably `0`.
+     *- `proxy_type`: The proxy type originally passed to `pure`.
+     *- `height`: The height of the chain when the call to `pure` was processed.
+     *- `ext_index`: The extrinsic index in which the call to `pure` was processed.
+     *
+     *Fails with `NoPermission` in case the caller is not a previously created pure
+     *account whose `pure` call has corresponding parameters.
+     */
+    "kill_pure": Anonymize<I5hpuplkql7qkc>;
+    /**
+     *Publish the hash of a proxy-call that will be made in the future.
+     *
+     *This must be called some number of blocks before the corresponding `proxy` is attempted
+     *if the delay associated with the proxy relationship is greater than zero.
+     *
+     *No more than `MaxPending` announcements may be made at any one time.
+     *
+     *This will take a deposit of `AnnouncementDepositFactor` as well as
+     *`AnnouncementDepositBase` if there are no other pending announcements.
+     *
+     *The dispatch origin for this call must be _Signed_ and a proxy of `real`.
+     *
+     *Parameters:
+     *- `real`: The account that the proxy will make a call on behalf of.
+     *- `call_hash`: The hash of the call to be made by the `real` account.
+     */
+    "announce": Anonymize<I2eb501t8s6hsq>;
+    /**
+     *Remove a given announcement.
+     *
+     *May be called by a proxy account to remove a call they previously announced and return
+     *the deposit.
+     *
+     *The dispatch origin for this call must be _Signed_.
+     *
+     *Parameters:
+     *- `real`: The account that the proxy will make a call on behalf of.
+     *- `call_hash`: The hash of the call to be made by the `real` account.
+     */
+    "remove_announcement": Anonymize<I2eb501t8s6hsq>;
+    /**
+     *Remove the given announcement of a delegate.
+     *
+     *May be called by a target (proxied) account to remove a call that one of their delegates
+     *(`delegate`) has announced they want to execute. The deposit is returned.
+     *
+     *The dispatch origin for this call must be _Signed_.
+     *
+     *Parameters:
+     *- `delegate`: The account that previously announced the call.
+     *- `call_hash`: The hash of the call to be made.
+     */
+    "reject_announcement": Anonymize<Ianmuoljk2sk1u>;
+    /**
+     *Dispatch the given `call` from an account that the sender is authorized for through
+     *`add_proxy`.
+     *
+     *Removes any corresponding announcement(s).
+     *
+     *The dispatch origin for this call must be _Signed_.
+     *
+     *Parameters:
+     *- `real`: The account that the proxy will make a call on behalf of.
+     *- `force_proxy_type`: Specify the exact proxy type to be used and checked for this call.
+     *- `call`: The call to be made by the `real` account.
+     */
+    "proxy_announced": Anonymize<I9um7nj6kvsnrg>;
+}>;
+export type I159emgr7c762d = {
+    "real": MultiAddress;
+    "force_proxy_type"?: Anonymize<Idlkj5job825fk>;
+    "call": TxCallData;
+};
+export type Idlkj5job825fk = (WestendRuntimeProxyType) | undefined;
+export type I1kauh25lsk7nb = {
+    "delegate": MultiAddress;
+    "proxy_type": WestendRuntimeProxyType;
+    "delay": number;
+};
+export type I9bu110nphkr25 = {
+    "proxy_type": WestendRuntimeProxyType;
+    "delay": number;
+    "index": number;
+};
+export type I5hpuplkql7qkc = {
+    "spawner": MultiAddress;
+    "proxy_type": WestendRuntimeProxyType;
+    "index": number;
+    "height": number;
+    "ext_index": number;
+};
+export type I9um7nj6kvsnrg = {
+    "delegate": MultiAddress;
+    "real": MultiAddress;
+    "force_proxy_type"?: Anonymize<Idlkj5job825fk>;
+    "call": TxCallData;
+};
+export type I76ofq5mlfvh67 = AnonymousEnum<{
+    /**
+     *Immediately dispatch a multi-signature call using a single approval from the caller.
+     *
+     *The dispatch origin for this call must be _Signed_.
+     *
+     *- `other_signatories`: The accounts (other than the sender) who are part of the
+     *multi-signature, but do not participate in the approval process.
+     *- `call`: The call to be executed.
+     *
+     *Result is equivalent to the dispatched result.
+     *
+     *## Complexity
+     *O(Z + C) where Z is the length of the call and C its execution weight.
+     */
+    "as_multi_threshold_1": Anonymize<Ier61p6akem2ub>;
+    /**
+     *Register approval for a dispatch to be made from a deterministic composite account if
+     *approved by a total of `threshold - 1` of `other_signatories`.
+     *
+     *If there are enough, then dispatch the call.
+     *
+     *Payment: `DepositBase` will be reserved if this is the first approval, plus
+     *`threshold` times `DepositFactor`. It is returned once this dispatch happens or
+     *is cancelled.
+     *
+     *The dispatch origin for this call must be _Signed_.
+     *
+     *- `threshold`: The total number of approvals for this dispatch before it is executed.
+     *- `other_signatories`: The accounts (other than the sender) who can approve this
+     *dispatch. May not be empty.
+     *- `maybe_timepoint`: If this is the first approval, then this must be `None`. If it is
+     *not the first approval, then it must be `Some`, with the timepoint (block number and
+     *transaction index) of the first approval transaction.
+     *- `call`: The call to be executed.
+     *
+     *NOTE: Unless this is the final approval, you will generally want to use
+     *`approve_as_multi` instead, since it only requires a hash of the call.
+     *
+     *Result is equivalent to the dispatched result if `threshold` is exactly `1`. Otherwise
+     *on success, result is `Ok` and the result from the interior call, if it was executed,
+     *may be found in the deposited `MultisigExecuted` event.
+     *
+     *## Complexity
+     *- `O(S + Z + Call)`.
+     *- Up to one balance-reserve or unreserve operation.
+     *- One passthrough operation, one insert, both `O(S)` where `S` is the number of
+     *  signatories. `S` is capped by `MaxSignatories`, with weight being proportional.
+     *- One call encode & hash, both of complexity `O(Z)` where `Z` is tx-len.
+     *- One encode & hash, both of complexity `O(S)`.
+     *- Up to one binary search and insert (`O(logS + S)`).
+     *- I/O: 1 read `O(S)`, up to 1 mutate `O(S)`. Up to one remove.
+     *- One event.
+     *- The weight of the `call`.
+     *- Storage: inserts one item, value size bounded by `MaxSignatories`, with a deposit
+     *  taken for its lifetime of `DepositBase + threshold * DepositFactor`.
+     */
+    "as_multi": Anonymize<I9qpqmgcjn9lcv>;
+    /**
+     *Register approval for a dispatch to be made from a deterministic composite account if
+     *approved by a total of `threshold - 1` of `other_signatories`.
+     *
+     *Payment: `DepositBase` will be reserved if this is the first approval, plus
+     *`threshold` times `DepositFactor`. It is returned once this dispatch happens or
+     *is cancelled.
+     *
+     *The dispatch origin for this call must be _Signed_.
+     *
+     *- `threshold`: The total number of approvals for this dispatch before it is executed.
+     *- `other_signatories`: The accounts (other than the sender) who can approve this
+     *dispatch. May not be empty.
+     *- `maybe_timepoint`: If this is the first approval, then this must be `None`. If it is
+     *not the first approval, then it must be `Some`, with the timepoint (block number and
+     *transaction index) of the first approval transaction.
+     *- `call_hash`: The hash of the call to be executed.
+     *
+     *NOTE: If this is the final approval, you will want to use `as_multi` instead.
+     *
+     *## Complexity
+     *- `O(S)`.
+     *- Up to one balance-reserve or unreserve operation.
+     *- One passthrough operation, one insert, both `O(S)` where `S` is the number of
+     *  signatories. `S` is capped by `MaxSignatories`, with weight being proportional.
+     *- One encode & hash, both of complexity `O(S)`.
+     *- Up to one binary search and insert (`O(logS + S)`).
+     *- I/O: 1 read `O(S)`, up to 1 mutate `O(S)`. Up to one remove.
+     *- One event.
+     *- Storage: inserts one item, value size bounded by `MaxSignatories`, with a deposit
+     *  taken for its lifetime of `DepositBase + threshold * DepositFactor`.
+     */
+    "approve_as_multi": Anonymize<Ideaemvoneh309>;
+    /**
+     *Cancel a pre-existing, on-going multisig transaction. Any deposit reserved previously
+     *for this operation will be unreserved on success.
+     *
+     *The dispatch origin for this call must be _Signed_.
+     *
+     *- `threshold`: The total number of approvals for this dispatch before it is executed.
+     *- `other_signatories`: The accounts (other than the sender) who can approve this
+     *dispatch. May not be empty.
+     *- `timepoint`: The timepoint (block number and transaction index) of the first approval
+     *transaction for this dispatch.
+     *- `call_hash`: The hash of the call to be executed.
+     *
+     *## Complexity
+     *- `O(S)`.
+     *- Up to one balance-reserve or unreserve operation.
+     *- One passthrough operation, one insert, both `O(S)` where `S` is the number of
+     *  signatories. `S` is capped by `MaxSignatories`, with weight being proportional.
+     *- One encode & hash, both of complexity `O(S)`.
+     *- One event.
+     *- I/O: 1 read `O(S)`, one remove.
+     *- Storage: removes one item.
+     */
+    "cancel_as_multi": Anonymize<I3d9o9d7epp66v>;
+}>;
+export type Ier61p6akem2ub = {
+    "other_signatories": Anonymize<Ia2lhg7l2hilo3>;
+    "call": TxCallData;
+};
+export type I9qpqmgcjn9lcv = {
+    "threshold": number;
+    "other_signatories": Anonymize<Ia2lhg7l2hilo3>;
+    "maybe_timepoint"?: Anonymize<I95jfd8j5cr5eh>;
+    "call": TxCallData;
+    "max_weight": Anonymize<I4q39t5hn830vp>;
+};
+export type I6quhu0vhj0lbf = AnonymousEnum<{
+    /**
+     *Propose a referendum on a privileged action.
+     *
+     *- `origin`: must be `SubmitOrigin` and the account must have `SubmissionDeposit` funds
+     *  available.
+     *- `proposal_origin`: The origin from which the proposal should be executed.
+     *- `proposal`: The proposal.
+     *- `enactment_moment`: The moment that the proposal should be enacted.
+     *
+     *Emits `Submitted`.
+     */
+    "submit": Anonymize<I6cdta625r3okg>;
+    /**
+     *Post the Decision Deposit for a referendum.
+     *
+     *- `origin`: must be `Signed` and the account must have funds available for the
+     *  referendum's track's Decision Deposit.
+     *- `index`: The index of the submitted referendum whose Decision Deposit is yet to be
+     *  posted.
+     *
+     *Emits `DecisionDepositPlaced`.
+     */
+    "place_decision_deposit": Anonymize<I666bl2fqjkejo>;
+    /**
+     *Refund the Decision Deposit for a closed referendum back to the depositor.
+     *
+     *- `origin`: must be `Signed` or `Root`.
+     *- `index`: The index of a closed referendum whose Decision Deposit has not yet been
+     *  refunded.
+     *
+     *Emits `DecisionDepositRefunded`.
+     */
+    "refund_decision_deposit": Anonymize<I666bl2fqjkejo>;
+    /**
+     *Cancel an ongoing referendum.
+     *
+     *- `origin`: must be the `CancelOrigin`.
+     *- `index`: The index of the referendum to be cancelled.
+     *
+     *Emits `Cancelled`.
+     */
+    "cancel": Anonymize<I666bl2fqjkejo>;
+    /**
+     *Cancel an ongoing referendum and slash the deposits.
+     *
+     *- `origin`: must be the `KillOrigin`.
+     *- `index`: The index of the referendum to be cancelled.
+     *
+     *Emits `Killed` and `DepositSlashed`.
+     */
+    "kill": Anonymize<I666bl2fqjkejo>;
+    /**
+     *Advance a referendum onto its next logical state. Only used internally.
+     *
+     *- `origin`: must be `Root`.
+     *- `index`: the referendum to be advanced.
+     */
+    "nudge_referendum": Anonymize<I666bl2fqjkejo>;
+    /**
+     *Advance a track onto its next logical state. Only used internally.
+     *
+     *- `origin`: must be `Root`.
+     *- `track`: the track to be advanced.
+     *
+     *Action item for when there is now one fewer referendum in the deciding phase and the
+     *`DecidingCount` is not yet updated. This means that we should either:
+     *- begin deciding another referendum (and leave `DecidingCount` alone); or
+     *- decrement `DecidingCount`.
+     */
+    "one_fewer_deciding": Anonymize<Icbio0e1f0034b>;
+    /**
+     *Refund the Submission Deposit for a closed referendum back to the depositor.
+     *
+     *- `origin`: must be `Signed` or `Root`.
+     *- `index`: The index of a closed referendum whose Submission Deposit has not yet been
+     *  refunded.
+     *
+     *Emits `SubmissionDepositRefunded`.
+     */
+    "refund_submission_deposit": Anonymize<I666bl2fqjkejo>;
+    /**
+     *Set or clear metadata of a referendum.
+     *
+     *Parameters:
+     *- `origin`: Must be `Signed` by a creator of a referendum or by anyone to clear a
+     *  metadata of a finished referendum.
+     *- `index`:  The index of a referendum to set or clear metadata for.
+     *- `maybe_hash`: The hash of an on-chain stored preimage. `None` to clear a metadata.
+     */
+    "set_metadata": Anonymize<I8c0vkqjjipnuj>;
+}>;
+export type I6cdta625r3okg = {
+    "proposal_origin": Anonymize<Icgo40grj87fvv>;
+    "proposal": PreimagesBounded;
+    "enactment_moment": TraitsScheduleDispatchTime;
+};
+export type Iaguicbcdce862 = AnonymousEnum<{
+    "whitelist_call": Anonymize<I1adbcfi5uc62r>;
+    "remove_whitelisted_call": Anonymize<I1adbcfi5uc62r>;
+    "dispatch_whitelisted_call": Anonymize<Ibf6ucefn8fh49>;
+    "dispatch_whitelisted_call_with_preimage": Anonymize<I2q6qeu5f68lv7>;
+}>;
+export type I6jnp85onk3m8j = AnonymousEnum<{
+    /**
+     *Propose and approve a spend of treasury funds.
+     *
+     *## Dispatch Origin
+     *
+     *Must be [`Config::SpendOrigin`] with the `Success` value being at least `amount`.
+     *
+     *### Details
+     *NOTE: For record-keeping purposes, the proposer is deemed to be equivalent to the
+     *beneficiary.
+     *
+     *### Parameters
+     *- `amount`: The amount to be transferred from the treasury to the `beneficiary`.
+     *- `beneficiary`: The destination account for the transfer.
+     *
+     *## Events
+     *
+     *Emits [`Event::SpendApproved`] if successful.
+     */
+    "spend_local": Anonymize<Icnrv1mfbd3in1>;
+    /**
+     *Force a previously approved proposal to be removed from the approval queue.
+     *
+     *## Dispatch Origin
+     *
+     *Must be [`Config::RejectOrigin`].
+     *
+     *## Details
+     *
+     *The original deposit will no longer be returned.
+     *
+     *### Parameters
+     *- `proposal_id`: The index of a proposal
+     *
+     *### Complexity
+     *- O(A) where `A` is the number of approvals
+     *
+     *### Errors
+     *- [`Error::ProposalNotApproved`]: The `proposal_id` supplied was not found in the
+     *  approval queue, i.e., the proposal has not been approved. This could also mean the
+     *  proposal does not exist altogether, thus there is no way it would have been approved
+     *  in the first place.
+     */
+    "remove_approval": Anonymize<Icm9m0qeemu66d>;
+    /**
+     *Propose and approve a spend of treasury funds.
+     *
+     *## Dispatch Origin
+     *
+     *Must be [`Config::SpendOrigin`] with the `Success` value being at least
+     *`amount` of `asset_kind` in the native asset. The amount of `asset_kind` is converted
+     *for assertion using the [`Config::BalanceConverter`].
+     *
+     *## Details
+     *
+     *Create an approved spend for transferring a specific `amount` of `asset_kind` to a
+     *designated beneficiary. The spend must be claimed using the `payout` dispatchable within
+     *the [`Config::PayoutPeriod`].
+     *
+     *### Parameters
+     *- `asset_kind`: An indicator of the specific asset class to be spent.
+     *- `amount`: The amount to be transferred from the treasury to the `beneficiary`.
+     *- `beneficiary`: The beneficiary of the spend.
+     *- `valid_from`: The block number from which the spend can be claimed. It can refer to
+     *  the past if the resulting spend has not yet expired according to the
+     *  [`Config::PayoutPeriod`]. If `None`, the spend can be claimed immediately after
+     *  approval.
+     *
+     *## Events
+     *
+     *Emits [`Event::AssetSpendApproved`] if successful.
+     */
+    "spend": Anonymize<I3pnhorh539dti>;
+    /**
+     *Claim a spend.
+     *
+     *## Dispatch Origin
+     *
+     *Must be signed
+     *
+     *## Details
+     *
+     *Spends must be claimed within some temporal bounds. A spend may be claimed within one
+     *[`Config::PayoutPeriod`] from the `valid_from` block.
+     *In case of a payout failure, the spend status must be updated with the `check_status`
+     *dispatchable before retrying with the current function.
+     *
+     *### Parameters
+     *- `index`: The spend index.
+     *
+     *## Events
+     *
+     *Emits [`Event::Paid`] if successful.
+     */
+    "payout": Anonymize<I666bl2fqjkejo>;
+    /**
+     *Check the status of the spend and remove it from the storage if processed.
+     *
+     *## Dispatch Origin
+     *
+     *Must be signed.
+     *
+     *## Details
+     *
+     *The status check is a prerequisite for retrying a failed payout.
+     *If a spend has either succeeded or expired, it is removed from the storage by this
+     *function. In such instances, transaction fees are refunded.
+     *
+     *### Parameters
+     *- `index`: The spend index.
+     *
+     *## Events
+     *
+     *Emits [`Event::PaymentFailed`] if the spend payout has failed.
+     *Emits [`Event::SpendProcessed`] if the spend payout has succeed.
+     */
+    "check_status": Anonymize<I666bl2fqjkejo>;
+    /**
+     *Void previously approved spend.
+     *
+     *## Dispatch Origin
+     *
+     *Must be [`Config::RejectOrigin`].
+     *
+     *## Details
+     *
+     *A spend void is only possible if the payout has not been attempted yet.
+     *
+     *### Parameters
+     *- `index`: The spend index.
+     *
+     *## Events
+     *
+     *Emits [`Event::AssetSpendVoided`] if successful.
+     */
+    "void_spend": Anonymize<I666bl2fqjkejo>;
+}>;
+export type I3pnhorh539dti = {
+    "asset_kind": Anonymize<I2q3ri6itcjj5u>;
+    "amount": bigint;
+    "beneficiary": Anonymize<Ichgaqm88qcdbe>;
+    "valid_from"?: Anonymize<I4arjljr6dpflb>;
+};
+export type I3ah0kpgrv4i88 = AnonymousEnum<{
+    /**
+     *Set the validation upgrade cooldown.
+     */
+    "set_validation_upgrade_cooldown": Anonymize<I3vh014cqgmrfd>;
+    /**
+     *Set the validation upgrade delay.
+     */
+    "set_validation_upgrade_delay": Anonymize<I3vh014cqgmrfd>;
+    /**
+     *Set the acceptance period for an included candidate.
+     */
+    "set_code_retention_period": Anonymize<I3vh014cqgmrfd>;
+    /**
+     *Set the max validation code size for incoming upgrades.
+     */
+    "set_max_code_size": Anonymize<I3vh014cqgmrfd>;
+    /**
+     *Set the max POV block size for incoming upgrades.
+     */
+    "set_max_pov_size": Anonymize<I3vh014cqgmrfd>;
+    /**
+     *Set the max head data size for paras.
+     */
+    "set_max_head_data_size": Anonymize<I3vh014cqgmrfd>;
+    /**
+     *Set the number of coretime execution cores.
+     *
+     *NOTE: that this configuration is managed by the coretime chain. Only manually change
+     *this, if you really know what you are doing!
+     */
+    "set_coretime_cores": Anonymize<I3vh014cqgmrfd>;
+    /**
+     *Set the parachain validator-group rotation frequency
+     */
+    "set_group_rotation_frequency": Anonymize<I3vh014cqgmrfd>;
+    /**
+     *Set the availability period for paras.
+     */
+    "set_paras_availability_period": Anonymize<I3vh014cqgmrfd>;
+    /**
+     *Set the scheduling lookahead, in expected number of blocks at peak throughput.
+     */
+    "set_scheduling_lookahead": Anonymize<I3vh014cqgmrfd>;
+    /**
+     *Set the maximum number of validators to assign to any core.
+     */
+    "set_max_validators_per_core": Anonymize<Id581arok0b1nj>;
+    /**
+     *Set the maximum number of validators to use in parachain consensus.
+     */
+    "set_max_validators": Anonymize<Id581arok0b1nj>;
+    /**
+     *Set the dispute period, in number of sessions to keep for disputes.
+     */
+    "set_dispute_period": Anonymize<I3vh014cqgmrfd>;
+    /**
+     *Set the dispute post conclusion acceptance period.
+     */
+    "set_dispute_post_conclusion_acceptance_period": Anonymize<I3vh014cqgmrfd>;
+    /**
+     *Set the no show slots, in number of number of consensus slots.
+     *Must be at least 1.
+     */
+    "set_no_show_slots": Anonymize<I3vh014cqgmrfd>;
+    /**
+     *Set the total number of delay tranches.
+     */
+    "set_n_delay_tranches": Anonymize<I3vh014cqgmrfd>;
+    /**
+     *Set the zeroth delay tranche width.
+     */
+    "set_zeroth_delay_tranche_width": Anonymize<I3vh014cqgmrfd>;
+    /**
+     *Set the number of validators needed to approve a block.
+     */
+    "set_needed_approvals": Anonymize<I3vh014cqgmrfd>;
+    /**
+     *Set the number of samples to do of the `RelayVRFModulo` approval assignment criterion.
+     */
+    "set_relay_vrf_modulo_samples": Anonymize<I3vh014cqgmrfd>;
+    /**
+     *Sets the maximum items that can present in a upward dispatch queue at once.
+     */
+    "set_max_upward_queue_count": Anonymize<I3vh014cqgmrfd>;
+    /**
+     *Sets the maximum total size of items that can present in a upward dispatch queue at
+     *once.
+     */
+    "set_max_upward_queue_size": Anonymize<I3vh014cqgmrfd>;
+    /**
+     *Set the critical downward message size.
+     */
+    "set_max_downward_message_size": Anonymize<I3vh014cqgmrfd>;
+    /**
+     *Sets the maximum size of an upward message that can be sent by a candidate.
+     */
+    "set_max_upward_message_size": Anonymize<I3vh014cqgmrfd>;
+    /**
+     *Sets the maximum number of messages that a candidate can contain.
+     */
+    "set_max_upward_message_num_per_candidate": Anonymize<I3vh014cqgmrfd>;
+    /**
+     *Sets the number of sessions after which an HRMP open channel request expires.
+     */
+    "set_hrmp_open_request_ttl": Anonymize<I3vh014cqgmrfd>;
+    /**
+     *Sets the amount of funds that the sender should provide for opening an HRMP channel.
+     */
+    "set_hrmp_sender_deposit": Anonymize<I9jsikd1ghmc7l>;
+    /**
+     *Sets the amount of funds that the recipient should provide for accepting opening an HRMP
+     *channel.
+     */
+    "set_hrmp_recipient_deposit": Anonymize<I9jsikd1ghmc7l>;
+    /**
+     *Sets the maximum number of messages allowed in an HRMP channel at once.
+     */
+    "set_hrmp_channel_max_capacity": Anonymize<I3vh014cqgmrfd>;
+    /**
+     *Sets the maximum total size of messages in bytes allowed in an HRMP channel at once.
+     */
+    "set_hrmp_channel_max_total_size": Anonymize<I3vh014cqgmrfd>;
+    /**
+     *Sets the maximum number of inbound HRMP channels a parachain is allowed to accept.
+     */
+    "set_hrmp_max_parachain_inbound_channels": Anonymize<I3vh014cqgmrfd>;
+    /**
+     *Sets the maximum size of a message that could ever be put into an HRMP channel.
+     */
+    "set_hrmp_channel_max_message_size": Anonymize<I3vh014cqgmrfd>;
+    /**
+     *Sets the maximum number of outbound HRMP channels a parachain is allowed to open.
+     */
+    "set_hrmp_max_parachain_outbound_channels": Anonymize<I3vh014cqgmrfd>;
+    /**
+     *Sets the maximum number of outbound HRMP messages can be sent by a candidate.
+     */
+    "set_hrmp_max_message_num_per_candidate": Anonymize<I3vh014cqgmrfd>;
+    /**
+     *Set the number of session changes after which a PVF pre-checking voting is rejected.
+     */
+    "set_pvf_voting_ttl": Anonymize<I3vh014cqgmrfd>;
+    /**
+     *Sets the minimum delay between announcing the upgrade block for a parachain until the
+     *upgrade taking place.
+     *
+     *See the field documentation for information and constraints for the new value.
+     */
+    "set_minimum_validation_upgrade_delay": Anonymize<I3vh014cqgmrfd>;
+    /**
+     *Setting this to true will disable consistency checks for the configuration setters.
+     *Use with caution.
+     */
+    "set_bypass_consistency_check": Anonymize<I2f6mha3v4ooda>;
+    /**
+     *Set the asynchronous backing parameters.
+     */
+    "set_async_backing_params": Anonymize<Iasqjdhasi408s>;
+    /**
+     *Set PVF executor parameters.
+     */
+    "set_executor_params": Anonymize<I6krn2lsleo87n>;
+    /**
+     *Set the on demand (parathreads) base fee.
+     */
+    "set_on_demand_base_fee": Anonymize<I9jsikd1ghmc7l>;
+    /**
+     *Set the on demand (parathreads) fee variability.
+     */
+    "set_on_demand_fee_variability": Anonymize<I3vh014cqgmrfd>;
+    /**
+     *Set the on demand (parathreads) queue max size.
+     */
+    "set_on_demand_queue_max_size": Anonymize<I3vh014cqgmrfd>;
+    /**
+     *Set the on demand (parathreads) fee variability.
+     */
+    "set_on_demand_target_queue_utilization": Anonymize<I3vh014cqgmrfd>;
+    /**
+     *Set the minimum backing votes threshold.
+     */
+    "set_minimum_backing_votes": Anonymize<I3vh014cqgmrfd>;
+    /**
+     *Set/Unset a node feature.
+     */
+    "set_node_feature": Anonymize<Iaid4btmkr5thp>;
+    /**
+     *Set approval-voting-params.
+     */
+    "set_approval_voting_params": Anonymize<I3vh014cqgmrfd>;
+    /**
+     *Set scheduler-params.
+     */
+    "set_scheduler_params": Anonymize<I559fv6um7nmhd>;
+}>;
+export type I1nu19212e8egv = AnonymousEnum<{
+    /**
+     *Enter the paras inherent. This will process bitfields and backed candidates.
+     */
+    "enter": Anonymize<I5m2irgeihn4i4>;
+}>;
+export type I5m2irgeihn4i4 = {
+    "data": Anonymize<I622jkh704fgsa>;
+};
+export type I622jkh704fgsa = {
+    "bitfields": Anonymize<Ib0ijj1h4o8bcq>;
+    "backed_candidates": Anonymize<I8vrvimkt7rkvr>;
+    "disputes": Anonymize<Ibt1op6l47p1r2>;
+    "parent_header": Anonymize<Ic952bubvq4k7d>;
+};
+export type I8vrvimkt7rkvr = Array<Anonymize<I1r92i04ndj503>>;
+export type I1r92i04ndj503 = {
+    "candidate": Anonymize<I35p841butcer2>;
+    "validity_votes": Anonymize<Id0g95rku62vif>;
+    "validator_indices": {
+        bytes: Uint8Array;
+        bitsLen: number;
+    };
+};
+export type I35p841butcer2 = {
+    "descriptor": Anonymize<Ibnq2mkuf1plno>;
+    "commitments": Anonymize<Ic1d4u2opv3fst>;
+};
+export type Iegfn7201fceql = AnonymousEnum<{
+    /**
+     *Schedule a para to be initialized at the start of the next session.
+     *
+     *This should only be used for TESTING and not on PRODUCTION chains. It automatically
+     *assigns Coretime to the chain and increases the number of cores. Thus, there is no
+     *running coretime chain required.
+     */
+    "sudo_schedule_para_initialize": Anonymize<I9geq5evbpu4im>;
+    /**
+     *Schedule a para to be cleaned up at the start of the next session.
+     */
+    "sudo_schedule_para_cleanup": Anonymize<Ic5b47dj4coa3r>;
+    /**
+     *Upgrade a parathread (on-demand parachain) to a lease holding parachain
+     */
+    "sudo_schedule_parathread_upgrade": Anonymize<Ic5b47dj4coa3r>;
+    /**
+     *Downgrade a lease holding parachain to an on-demand parachain
+     */
+    "sudo_schedule_parachain_downgrade": Anonymize<Ic5b47dj4coa3r>;
+    /**
+     *Send a downward XCM to the given para.
+     *
+     *The given parachain should exist and the payload should not exceed the preconfigured
+     *size `config.max_downward_message_size`.
+     */
+    "sudo_queue_downward_xcm": Anonymize<Idkd1bprhtg83o>;
+    /**
+     *Forcefully establish a channel from the sender to the recipient.
+     *
+     *This is equivalent to sending an `Hrmp::hrmp_init_open_channel` extrinsic followed by
+     *`Hrmp::hrmp_accept_open_channel`.
+     */
+    "sudo_establish_hrmp_channel": Anonymize<Ic3430470j4mbv>;
+}>;
+export type Idkd1bprhtg83o = {
+    "id": number;
+    "xcm": Anonymize<Idi8en2lkuicdt>;
+};
+export type Idi8en2lkuicdt = AnonymousEnum<{
+    "V3": Anonymize<Ianvng4e08j9ii>;
+    "V4": Anonymize<Iegrepoo0c1jc5>;
+    "V5": Anonymize<Iqgpikad18l8f>;
+}>;
+export type Idlqs78vqqscm0 = AnonymousEnum<{
+    /**
+     *Assign a permanent parachain slot and immediately create a lease for it.
+     */
+    "assign_perm_parachain_slot": Anonymize<Ic5b47dj4coa3r>;
+    /**
+     *Assign a temporary parachain slot. The function tries to create a lease for it
+     *immediately if `SlotLeasePeriodStart::Current` is specified, and if the number
+     *of currently active temporary slots is below `MaxTemporarySlotPerLeasePeriod`.
+     */
+    "assign_temp_parachain_slot": Anonymize<I6d2lhsacea7au>;
+    /**
+     *Unassign a permanent or temporary parachain slot
+     */
+    "unassign_parachain_slot": Anonymize<Ic5b47dj4coa3r>;
+    /**
+     *Sets the storage value [`MaxPermanentSlots`].
+     */
+    "set_max_permanent_slots": Anonymize<I9d5h5irbki7mm>;
+    /**
+     *Sets the storage value [`MaxTemporarySlots`].
+     */
+    "set_max_temporary_slots": Anonymize<I9d5h5irbki7mm>;
+}>;
+export type I6d2lhsacea7au = {
+    "id": number;
+    "lease_period_start": PolkadotRuntimeCommonAssignedSlotsSlotLeasePeriodStart;
+};
+export type PolkadotRuntimeCommonAssignedSlotsSlotLeasePeriodStart = Enum<{
+    "Current": undefined;
+    "Next": undefined;
+}>;
+export declare const PolkadotRuntimeCommonAssignedSlotsSlotLeasePeriodStart: GetEnum<PolkadotRuntimeCommonAssignedSlotsSlotLeasePeriodStart>;
+export type I4oqb168b2d4er = AnonymousEnum<{
+    /**
+     *Allows root to set a cursor to forcefully start, stop or forward the migration process.
+     *
+     *Should normally not be needed and is only in place as emergency measure. Note that
+     *restarting the migration process in this manner will not call the
+     *[`MigrationStatusHandler::started`] hook or emit an `UpgradeStarted` event.
+     */
+    "force_set_cursor": Anonymize<Ibou4u1engb441>;
+    /**
+     *Allows root to set an active cursor to forcefully start/forward the migration process.
+     *
+     *This is an edge-case version of [`Self::force_set_cursor`] that allows to set the
+     *`started_at` value to the next block number. Otherwise this would not be possible, since
+     *`force_set_cursor` takes an absolute block number. Setting `started_at` to `None`
+     *indicates that the current block number plus one should be used.
+     */
+    "force_set_active_cursor": Anonymize<Id6nbvqoqdj4o2>;
+    /**
+     *Forces the onboarding of the migrations.
+     *
+     *This process happens automatically on a runtime upgrade. It is in place as an emergency
+     *measurement. The cursor needs to be `None` for this to succeed.
+     */
+    "force_onboard_mbms": undefined;
+    /**
+     *Clears the `Historic` set.
+     *
+     *`map_cursor` must be set to the last value that was returned by the
+     *`HistoricCleared` event. The first time `None` can be used. `limit` must be chosen in a
+     *way that will result in a sensible weight.
+     */
+    "clear_historic": Anonymize<I95iqep3b8snn9>;
+}>;
+export type Ibou4u1engb441 = {
+    "cursor"?: Anonymize<Icmmmo81k3r2n7>;
+};
+export type Icmmmo81k3r2n7 = (Anonymize<Iepbsvlk3qceij>) | undefined;
+export type Id6nbvqoqdj4o2 = {
+    "index": number;
+    "inner_cursor"?: Anonymize<Iabpgqcjikia83>;
+    "started_at"?: Anonymize<I4arjljr6dpflb>;
+};
+export type I95iqep3b8snn9 = {
+    "selector": Anonymize<I2il0noe6jkb0o>;
+};
+export type I2il0noe6jkb0o = AnonymousEnum<{
+    "Specific": Anonymize<Itom7fk49o0c9>;
+    "Wildcard": Anonymize<Id9494tkgood2r>;
+}>;
+export type Id9494tkgood2r = {
+    "limit"?: Anonymize<I4arjljr6dpflb>;
+    "previous_cursor"?: Anonymize<Iabpgqcjikia83>;
+};
+export type Ibapagg3i6rfro = AnonymousEnum<{
+    "send": Anonymize<Icn5e7dohdkja>;
+    /**
+     *Teleport some assets from the local chain to some destination chain.
+     *
+     ***This function is deprecated: Use `limited_teleport_assets` instead.**
+     *
+     *Fee payment on the destination side is made from the asset in the `assets` vector of
+     *index `fee_asset_item`. The weight limit for fees is not provided and thus is unlimited,
+     *with all fees taken as needed from the asset.
+     *
+     *- `origin`: Must be capable of withdrawing the `assets` and executing XCM.
+     *- `dest`: Destination context for the assets. Will typically be `[Parent,
+     *  Parachain(..)]` to send from parachain to parachain, or `[Parachain(..)]` to send from
+     *  relay to parachain.
+     *- `beneficiary`: A beneficiary location for the assets in the context of `dest`. Will
+     *  generally be an `AccountId32` value.
+     *- `assets`: The assets to be withdrawn. This should include the assets used to pay the
+     *  fee on the `dest` chain.
+     *- `fee_asset_item`: The index into `assets` of the item which should be used to pay
+     *  fees.
+     */
+    "teleport_assets": Anonymize<I21jsa919m88fd>;
+    /**
+     *Transfer some assets from the local chain to the destination chain through their local,
+     *destination or remote reserve.
+     *
+     *`assets` must have same reserve location and may not be teleportable to `dest`.
+     * - `assets` have local reserve: transfer assets to sovereign account of destination
+     *   chain and forward a notification XCM to `dest` to mint and deposit reserve-based
+     *   assets to `beneficiary`.
+     * - `assets` have destination reserve: burn local assets and forward a notification to
+     *   `dest` chain to withdraw the reserve assets from this chain's sovereign account and
+     *   deposit them to `beneficiary`.
+     * - `assets` have remote reserve: burn local assets, forward XCM to reserve chain to move
+     *   reserves from this chain's SA to `dest` chain's SA, and forward another XCM to `dest`
+     *   to mint and deposit reserve-based assets to `beneficiary`.
+     *
+     ***This function is deprecated: Use `limited_reserve_transfer_assets` instead.**
+     *
+     *Fee payment on the destination side is made from the asset in the `assets` vector of
+     *index `fee_asset_item`. The weight limit for fees is not provided and thus is unlimited,
+     *with all fees taken as needed from the asset.
+     *
+     *- `origin`: Must be capable of withdrawing the `assets` and executing XCM.
+     *- `dest`: Destination context for the assets. Will typically be `[Parent,
+     *  Parachain(..)]` to send from parachain to parachain, or `[Parachain(..)]` to send from
+     *  relay to parachain.
+     *- `beneficiary`: A beneficiary location for the assets in the context of `dest`. Will
+     *  generally be an `AccountId32` value.
+     *- `assets`: The assets to be withdrawn. This should include the assets used to pay the
+     *  fee on the `dest` (and possibly reserve) chains.
+     *- `fee_asset_item`: The index into `assets` of the item which should be used to pay
+     *  fees.
+     */
+    "reserve_transfer_assets": Anonymize<I21jsa919m88fd>;
+    /**
+     *Execute an XCM message from a local, signed, origin.
+     *
+     *An event is deposited indicating whether `msg` could be executed completely or only
+     *partially.
+     *
+     *No more than `max_weight` will be used in its attempted execution. If this is less than
+     *the maximum amount of weight that the message could take to be executed, then no
+     *execution attempt will be made.
+     */
+    "execute": Anonymize<I3l9jt91ld298o>;
+    /**
+     *Extoll that a particular destination can be communicated with through a particular
+     *version of XCM.
+     *
+     *- `origin`: Must be an origin specified by AdminOrigin.
+     *- `location`: The destination that is being described.
+     *- `xcm_version`: The latest version of XCM that `location` supports.
+     */
+    "force_xcm_version": Anonymize<I9kt8c221c83ln>;
+    /**
+     *Set a safe XCM version (the version that XCM should be encoded with if the most recent
+     *version a destination can accept is unknown).
+     *
+     *- `origin`: Must be an origin specified by AdminOrigin.
+     *- `maybe_xcm_version`: The default XCM encoding version, or `None` to disable.
+     */
+    "force_default_xcm_version": Anonymize<Ic76kfh5ebqkpl>;
+    /**
+     *Ask a location to notify us regarding their XCM version and any changes to it.
+     *
+     *- `origin`: Must be an origin specified by AdminOrigin.
+     *- `location`: The location to which we should subscribe for XCM version notifications.
+     */
+    "force_subscribe_version_notify": Anonymize<Icscpmubum33bq>;
+    /**
+     *Require that a particular destination should no longer notify us regarding any XCM
+     *version changes.
+     *
+     *- `origin`: Must be an origin specified by AdminOrigin.
+     *- `location`: The location to which we are currently subscribed for XCM version
+     *  notifications which we no longer desire.
+     */
+    "force_unsubscribe_version_notify": Anonymize<Icscpmubum33bq>;
+    /**
+     *Transfer some assets from the local chain to the destination chain through their local,
+     *destination or remote reserve.
+     *
+     *`assets` must have same reserve location and may not be teleportable to `dest`.
+     * - `assets` have local reserve: transfer assets to sovereign account of destination
+     *   chain and forward a notification XCM to `dest` to mint and deposit reserve-based
+     *   assets to `beneficiary`.
+     * - `assets` have destination reserve: burn local assets and forward a notification to
+     *   `dest` chain to withdraw the reserve assets from this chain's sovereign account and
+     *   deposit them to `beneficiary`.
+     * - `assets` have remote reserve: burn local assets, forward XCM to reserve chain to move
+     *   reserves from this chain's SA to `dest` chain's SA, and forward another XCM to `dest`
+     *   to mint and deposit reserve-based assets to `beneficiary`.
+     *
+     *Fee payment on the destination side is made from the asset in the `assets` vector of
+     *index `fee_asset_item`, up to enough to pay for `weight_limit` of weight. If more weight
+     *is needed than `weight_limit`, then the operation will fail and the sent assets may be
+     *at risk.
+     *
+     *- `origin`: Must be capable of withdrawing the `assets` and executing XCM.
+     *- `dest`: Destination context for the assets. Will typically be `[Parent,
+     *  Parachain(..)]` to send from parachain to parachain, or `[Parachain(..)]` to send from
+     *  relay to parachain.
+     *- `beneficiary`: A beneficiary location for the assets in the context of `dest`. Will
+     *  generally be an `AccountId32` value.
+     *- `assets`: The assets to be withdrawn. This should include the assets used to pay the
+     *  fee on the `dest` (and possibly reserve) chains.
+     *- `fee_asset_item`: The index into `assets` of the item which should be used to pay
+     *  fees.
+     *- `weight_limit`: The remote-side weight limit, if any, for the XCM fee purchase.
+     */
+    "limited_reserve_transfer_assets": Anonymize<I21d2olof7eb60>;
+    /**
+     *Teleport some assets from the local chain to some destination chain.
+     *
+     *Fee payment on the destination side is made from the asset in the `assets` vector of
+     *index `fee_asset_item`, up to enough to pay for `weight_limit` of weight. If more weight
+     *is needed than `weight_limit`, then the operation will fail and the sent assets may be
+     *at risk.
+     *
+     *- `origin`: Must be capable of withdrawing the `assets` and executing XCM.
+     *- `dest`: Destination context for the assets. Will typically be `[Parent,
+     *  Parachain(..)]` to send from parachain to parachain, or `[Parachain(..)]` to send from
+     *  relay to parachain.
+     *- `beneficiary`: A beneficiary location for the assets in the context of `dest`. Will
+     *  generally be an `AccountId32` value.
+     *- `assets`: The assets to be withdrawn. This should include the assets used to pay the
+     *  fee on the `dest` chain.
+     *- `fee_asset_item`: The index into `assets` of the item which should be used to pay
+     *  fees.
+     *- `weight_limit`: The remote-side weight limit, if any, for the XCM fee purchase.
+     */
+    "limited_teleport_assets": Anonymize<I21d2olof7eb60>;
+    /**
+     *Set or unset the global suspension state of the XCM executor.
+     *
+     *- `origin`: Must be an origin specified by AdminOrigin.
+     *- `suspended`: `true` to suspend, `false` to resume.
+     */
+    "force_suspension": Anonymize<Ibgm4rnf22lal1>;
+    /**
+     *Transfer some assets from the local chain to the destination chain through their local,
+     *destination or remote reserve, or through teleports.
+     *
+     *Fee payment on the destination side is made from the asset in the `assets` vector of
+     *index `fee_asset_item` (hence referred to as `fees`), up to enough to pay for
+     *`weight_limit` of weight. If more weight is needed than `weight_limit`, then the
+     *operation will fail and the sent assets may be at risk.
+     *
+     *`assets` (excluding `fees`) must have same reserve location or otherwise be teleportable
+     *to `dest`, no limitations imposed on `fees`.
+     * - for local reserve: transfer assets to sovereign account of destination chain and
+     *   forward a notification XCM to `dest` to mint and deposit reserve-based assets to
+     *   `beneficiary`.
+     * - for destination reserve: burn local assets and forward a notification to `dest` chain
+     *   to withdraw the reserve assets from this chain's sovereign account and deposit them
+     *   to `beneficiary`.
+     * - for remote reserve: burn local assets, forward XCM to reserve chain to move reserves
+     *   from this chain's SA to `dest` chain's SA, and forward another XCM to `dest` to mint
+     *   and deposit reserve-based assets to `beneficiary`.
+     * - for teleports: burn local assets and forward XCM to `dest` chain to mint/teleport
+     *   assets and deposit them to `beneficiary`.
+     *
+     *- `origin`: Must be capable of withdrawing the `assets` and executing XCM.
+     *- `dest`: Destination context for the assets. Will typically be `X2(Parent,
+     *  Parachain(..))` to send from parachain to parachain, or `X1(Parachain(..))` to send
+     *  from relay to parachain.
+     *- `beneficiary`: A beneficiary location for the assets in the context of `dest`. Will
+     *  generally be an `AccountId32` value.
+     *- `assets`: The assets to be withdrawn. This should include the assets used to pay the
+     *  fee on the `dest` (and possibly reserve) chains.
+     *- `fee_asset_item`: The index into `assets` of the item which should be used to pay
+     *  fees.
+     *- `weight_limit`: The remote-side weight limit, if any, for the XCM fee purchase.
+     */
+    "transfer_assets": Anonymize<I21d2olof7eb60>;
+    /**
+     *Claims assets trapped on this pallet because of leftover assets during XCM execution.
+     *
+     *- `origin`: Anyone can call this extrinsic.
+     *- `assets`: The exact assets that were trapped. Use the version to specify what version
+     *was the latest when they were trapped.
+     *- `beneficiary`: The location/account where the claimed assets will be deposited.
+     */
+    "claim_assets": Anonymize<Ie68np0vpihith>;
+    /**
+     *Transfer assets from the local chain to the destination chain using explicit transfer
+     *types for assets and fees.
+     *
+     *`assets` must have same reserve location or may be teleportable to `dest`. Caller must
+     *provide the `assets_transfer_type` to be used for `assets`:
+     * - `TransferType::LocalReserve`: transfer assets to sovereign account of destination
+     *   chain and forward a notification XCM to `dest` to mint and deposit reserve-based
+     *   assets to `beneficiary`.
+     * - `TransferType::DestinationReserve`: burn local assets and forward a notification to
+     *   `dest` chain to withdraw the reserve assets from this chain's sovereign account and
+     *   deposit them to `beneficiary`.
+     * - `TransferType::RemoteReserve(reserve)`: burn local assets, forward XCM to `reserve`
+     *   chain to move reserves from this chain's SA to `dest` chain's SA, and forward another
+     *   XCM to `dest` to mint and deposit reserve-based assets to `beneficiary`. Typically
+     *   the remote `reserve` is Asset Hub.
+     * - `TransferType::Teleport`: burn local assets and forward XCM to `dest` chain to
+     *   mint/teleport assets and deposit them to `beneficiary`.
+     *
+     *On the destination chain, as well as any intermediary hops, `BuyExecution` is used to
+     *buy execution using transferred `assets` identified by `remote_fees_id`.
+     *Make sure enough of the specified `remote_fees_id` asset is included in the given list
+     *of `assets`. `remote_fees_id` should be enough to pay for `weight_limit`. If more weight
+     *is needed than `weight_limit`, then the operation will fail and the sent assets may be
+     *at risk.
+     *
+     *`remote_fees_id` may use different transfer type than rest of `assets` and can be
+     *specified through `fees_transfer_type`.
+     *
+     *The caller needs to specify what should happen to the transferred assets once they reach
+     *the `dest` chain. This is done through the `custom_xcm_on_dest` parameter, which
+     *contains the instructions to execute on `dest` as a final step.
+     *  This is usually as simple as:
+     *  `Xcm(vec![DepositAsset { assets: Wild(AllCounted(assets.len())), beneficiary }])`,
+     *  but could be something more exotic like sending the `assets` even further.
+     *
+     *- `origin`: Must be capable of withdrawing the `assets` and executing XCM.
+     *- `dest`: Destination context for the assets. Will typically be `[Parent,
+     *  Parachain(..)]` to send from parachain to parachain, or `[Parachain(..)]` to send from
+     *  relay to parachain, or `(parents: 2, (GlobalConsensus(..), ..))` to send from
+     *  parachain across a bridge to another ecosystem destination.
+     *- `assets`: The assets to be withdrawn. This should include the assets used to pay the
+     *  fee on the `dest` (and possibly reserve) chains.
+     *- `assets_transfer_type`: The XCM `TransferType` used to transfer the `assets`.
+     *- `remote_fees_id`: One of the included `assets` to be used to pay fees.
+     *- `fees_transfer_type`: The XCM `TransferType` used to transfer the `fees` assets.
+     *- `custom_xcm_on_dest`: The XCM to be executed on `dest` chain as the last step of the
+     *  transfer, which also determines what happens to the assets on the destination chain.
+     *- `weight_limit`: The remote-side weight limit, if any, for the XCM fee purchase.
+     */
+    "transfer_assets_using_type_and_then": Anonymize<Is3mfs2k2bf6o>;
+}>;
+export type Icn5e7dohdkja = {
+    "dest": Anonymize<Ichgaqm88qcdbe>;
+    "message": Anonymize<Idi8en2lkuicdt>;
+};
+export type I21jsa919m88fd = {
+    "dest": Anonymize<Ichgaqm88qcdbe>;
+    "beneficiary": Anonymize<Ichgaqm88qcdbe>;
+    "assets": Anonymize<Ifedog0bf6e64f>;
+    "fee_asset_item": number;
+};
+export type I3l9jt91ld298o = {
+    "message": Anonymize<Idi8en2lkuicdt>;
+    "max_weight": Anonymize<I4q39t5hn830vp>;
+};
+export type Icscpmubum33bq = {
+    "location": Anonymize<Ichgaqm88qcdbe>;
+};
+export type I21d2olof7eb60 = {
+    "dest": Anonymize<Ichgaqm88qcdbe>;
+    "beneficiary": Anonymize<Ichgaqm88qcdbe>;
+    "assets": Anonymize<Ifedog0bf6e64f>;
+    "fee_asset_item": number;
+    "weight_limit": XcmV3WeightLimit;
+};
+export type Ie68np0vpihith = {
+    "assets": Anonymize<Ifedog0bf6e64f>;
+    "beneficiary": Anonymize<Ichgaqm88qcdbe>;
+};
+export type Is3mfs2k2bf6o = {
+    "dest": Anonymize<Ichgaqm88qcdbe>;
+    "assets": Anonymize<Ifedog0bf6e64f>;
+    "assets_transfer_type": Anonymize<I4gnu4rrr0ftsf>;
+    "remote_fees_id": Anonymize<I47gh5t4ppbcdj>;
+    "fees_transfer_type": Anonymize<I4gnu4rrr0ftsf>;
+    "custom_xcm_on_dest": Anonymize<Idi8en2lkuicdt>;
+    "weight_limit": XcmV3WeightLimit;
+};
+export type I4gnu4rrr0ftsf = AnonymousEnum<{
+    "Teleport": undefined;
+    "LocalReserve": undefined;
+    "DestinationReserve": undefined;
+    "RemoteReserve": Anonymize<Ichgaqm88qcdbe>;
+}>;
+export type If582h5gr5gh6f = AnonymousEnum<{
+    /**
+     *Initialize a conversion rate to native balance for the given asset.
+     *
+     *## Complexity
+     *- O(1)
+     */
+    "create": Anonymize<I9c4d50jrp7as1>;
+    /**
+     *Update the conversion rate to native balance for the given asset.
+     *
+     *## Complexity
+     *- O(1)
+     */
+    "update": Anonymize<I9c4d50jrp7as1>;
+    /**
+     *Remove an existing conversion rate to native balance for the given asset.
+     *
+     *## Complexity
+     *- O(1)
+     */
+    "remove": Anonymize<Ifplevr9hp8jo3>;
+}>;
+export type I9rkc7eqejp3rj = AnonymousEnum<{
+    /**
+     *A dispatch that will fill the block weight up to the given ratio.
+     */
+    "fill_block": Anonymize<Ienjibnb78vnl0>;
+    "trigger_defensive": undefined;
+}>;
+export type Ienjibnb78vnl0 = {
+    "ratio": number;
+};
+export type Idmcmrk34p8gic = AnonymousEnum<{
+    /**
+     *Report voter equivocation/misbehavior. This method will verify the
+     *equivocation proof and validate the given key ownership proof
+     *against the extracted offender. If both are valid, the offence
+     *will be reported.
+     */
+    "report_double_voting": Anonymize<I3pirohb0sp3ic>;
+    /**
+     *Report voter equivocation/misbehavior. This method will verify the
+     *equivocation proof and validate the given key ownership proof
+     *against the extracted offender. If both are valid, the offence
+     *will be reported.
+     *
+     *This extrinsic must be called unsigned and it is expected that only
+     *block authors will call it (validated in `ValidateUnsigned`), as such
+     *if the block author is defined it will be defined as the equivocation
+     *reporter.
+     */
+    "report_double_voting_unsigned": Anonymize<I3pirohb0sp3ic>;
+    /**
+     *Reset BEEFY consensus by setting a new BEEFY genesis at `delay_in_blocks` blocks in the
+     *future.
+     *
+     *Note: `delay_in_blocks` has to be at least 1.
+     */
+    "set_new_genesis": Anonymize<Iemqna2uucuei9>;
+    /**
+     *Report fork voting equivocation. This method will verify the equivocation proof
+     *and validate the given key ownership proof against the extracted offender.
+     *If both are valid, the offence will be reported.
+     */
+    "report_fork_voting": Anonymize<Idrvp50hbkv2k2>;
+    /**
+     *Report fork voting equivocation. This method will verify the equivocation proof
+     *and validate the given key ownership proof against the extracted offender.
+     *If both are valid, the offence will be reported.
+     *
+     *This extrinsic must be called unsigned and it is expected that only
+     *block authors will call it (validated in `ValidateUnsigned`), as such
+     *if the block author is defined it will be defined as the equivocation
+     *reporter.
+     */
+    "report_fork_voting_unsigned": Anonymize<Idrvp50hbkv2k2>;
+    /**
+     *Report future block voting equivocation. This method will verify the equivocation proof
+     *and validate the given key ownership proof against the extracted offender.
+     *If both are valid, the offence will be reported.
+     */
+    "report_future_block_voting": Anonymize<Ie11u326g2gsj3>;
+    /**
+     *Report future block voting equivocation. This method will verify the equivocation proof
+     *and validate the given key ownership proof against the extracted offender.
+     *If both are valid, the offence will be reported.
+     *
+     *This extrinsic must be called unsigned and it is expected that only
+     *block authors will call it (validated in `ValidateUnsigned`), as such
+     *if the block author is defined it will be defined as the equivocation
+     *reporter.
+     */
+    "report_future_block_voting_unsigned": Anonymize<Ie11u326g2gsj3>;
+}>;
+export type Idrvp50hbkv2k2 = {
+    "equivocation_proof": Anonymize<Ie1uhej0oopvs5>;
+    "key_owner_proof": Anonymize<I3ia7aufsoj0l1>;
+};
+export type Ie1uhej0oopvs5 = {
+    "vote": Anonymize<I3eao7ea0kppv8>;
+    "ancestry_proof": Anonymize<I499ogutcm86mj>;
+    "header": Anonymize<Ic952bubvq4k7d>;
+};
+export type I499ogutcm86mj = {
+    "prev_peaks": Anonymize<Ic5m5lp1oioo8r>;
+    "prev_leaf_count": bigint;
+    "leaf_count": bigint;
+    "items": Anonymize<I7b7fp94l51vcq>;
+};
+export type I7b7fp94l51vcq = Array<Anonymize<Idsa6q9es8ufjv>>;
+export type Idsa6q9es8ufjv = [bigint, FixedSizeBinary<32>];
+export type Ie11u326g2gsj3 = {
+    "equivocation_proof": Anonymize<I3eao7ea0kppv8>;
+    "key_owner_proof": Anonymize<I3ia7aufsoj0l1>;
+};
+export type I67t4bps9r5c4k = AnonymousEnum<{
+    /**
+     *Reap the `IdentityInfo` of `who` from the Identity pallet of `T`, unreserving any
+     *deposits held and removing storage items associated with `who`.
+     */
+    "reap_identity": Anonymize<I4cbvqmqadhrea>;
+    /**
+     *Update the deposit of `who`. Meant to be called by the system with an XCM `Transact`
+     *Instruction.
+     */
+    "poke_deposit": Anonymize<I4cbvqmqadhrea>;
+}>;
+export type Ibbibn8ittmsu7 = ResultPayload<Anonymize<Ifdink61fv1n9v>, Anonymize<I5nrjkj9qumobs>>;
+export type I5nrjkj9qumobs = AnonymousEnum<{
+    "Invalid": Anonymize<Ijr7mckqs242k>;
+    "Unknown": TransactionValidityUnknownTransaction;
+}>;
+export type Ijr7mckqs242k = AnonymousEnum<{
+    "Call": undefined;
+    "Payment": undefined;
+    "Future": undefined;
+    "Stale": undefined;
+    "BadProof": undefined;
+    "AncientBirthBlock": undefined;
+    "ExhaustsResources": undefined;
+    "Custom": number;
+    "BadMandatory": undefined;
+    "MandatoryValidation": undefined;
+    "BadSigner": undefined;
+    "IndeterminateImplicit": undefined;
+    "UnknownOrigin": undefined;
+}>;
+export type I9ask1o4tfvcvs = ResultPayload<Anonymize<I6g5lcd9vf2cr0>, Anonymize<I5nrjkj9qumobs>>;
+export type I1v2gv5pb5e508 = Array<Anonymize<Ifoo6dq4385dqu>>;
+export type Ifoo6dq4385dqu = AnonymousEnum<{
+    "Occupied": Anonymize<I24aelqm08mash>;
+    "Scheduled": Anonymize<I4fn9prq249c92>;
+    "Free": undefined;
+}>;
+export type I24aelqm08mash = {
+    "next_up_on_available"?: Anonymize<I7o5sh7g5s2102>;
+    "occupied_since": number;
+    "time_out_at": number;
+    "next_up_on_time_out"?: Anonymize<I7o5sh7g5s2102>;
+    "availability": {
+        bytes: Uint8Array;
+        bitsLen: number;
+    };
+    "group_responsible": number;
+    "candidate_hash": FixedSizeBinary<32>;
+    "candidate_descriptor": Anonymize<Ibnq2mkuf1plno>;
+};
+export type I92i81n5kpcgte = (Anonymize<I35p841butcer2>) | undefined;
+export type Ifb5bd3f9a1lu8 = Array<Anonymize<I897qba6lnil66>>;
+export type I897qba6lnil66 = AnonymousEnum<{
+    "CandidateBacked": Anonymize<I4s0gvfhejmdp2>;
+    "CandidateIncluded": Anonymize<I4s0gvfhejmdp2>;
+    "CandidateTimedOut": Anonymize<I9njsgm2qsgnil>;
+}>;
+export type I9aev4k6tfeeom = (Anonymize<Ia1viqq9k85bv1>) | undefined;
+export type I2eq6ah7t620fb = (Anonymize<Ia9lae907oki50>) | undefined;
+export type Ia9lae907oki50 = {
+    "constraints": Anonymize<I20qrdh8gc2a98>;
+    "pending_availability": Anonymize<I3mtrfd5bfr7au>;
+};
+export type I3mtrfd5bfr7au = Array<Anonymize<I95qanb0nuj7cm>>;
+export type I95qanb0nuj7cm = {
+    "candidate_hash": FixedSizeBinary<32>;
+    "descriptor": Anonymize<Ibnq2mkuf1plno>;
+    "commitments": Anonymize<Ic1d4u2opv3fst>;
+    "relay_parent_number": number;
+    "max_pov_size": number;
+};
+export type Ieskfd0vl6pk5b = Array<Anonymize<I35p841butcer2>>;
+export type I25plekc1moieu = {
+    "vote": Anonymize<I3eao7ea0kppv8>;
+    "ancestry_proof": Binary;
+    "header": Anonymize<Ic952bubvq4k7d>;
+};
+export type I2o87kbhjpov7u = AnonymousEnum<{
+    "System": Anonymize<Iekve0i6djpd9f>;
+    "Babe": Anonymize<I1jeo0dpbkma5g>;
+    "Timestamp": Anonymize<I7d75gqfg6jh9c>;
+    "Indices": Anonymize<I66vlm8f4l1oll>;
+    "Balances": Anonymize<I9svldsp29mh87>;
+    "Staking": Anonymize<I5jvuh9dlbdd20>;
+    "Parameters": Anonymize<Ic5v5ffa0cr70p>;
+    "Session": Anonymize<Iceajactc9a8pc>;
+    "Grandpa": Anonymize<I5u9ggmn8umfqm>;
+    "Utility": Anonymize<Iaof5m7dfleov7>;
+    "Identity": Anonymize<Iceqdqk5ub0l9g>;
+    "Recovery": Anonymize<I7udjr67pjo763>;
+    "Vesting": Anonymize<Icgf8vmtkbnu4u>;
+    "Scheduler": Anonymize<I3hok25hvb7dov>;
+    "Preimage": Anonymize<If81ks88t5mpk5>;
+    "Sudo": Anonymize<Ia64bpk23qn7l2>;
+    "Proxy": Anonymize<I2j6el7hj3pps6>;
+    "Multisig": Anonymize<I76ofq5mlfvh67>;
+    "ElectionProviderMultiPhase": Anonymize<I15soeogelbbbh>;
+    "VoterList": Anonymize<Ifvfo1l0vu2o7e>;
+    "NominationPools": Anonymize<I57mljkkr28m9p>;
+    "FastUnstake": Anonymize<I44snhj1gahvrd>;
+    "ConvictionVoting": Anonymize<Ie5kd08tutk56t>;
+    "Referenda": Anonymize<I6quhu0vhj0lbf>;
+    "Whitelist": Anonymize<Iaguicbcdce862>;
+    "Treasury": Anonymize<I6jnp85onk3m8j>;
+    "Configuration": Anonymize<I3ah0kpgrv4i88>;
+    "ParasShared": undefined;
+    "ParaInclusion": undefined;
+    "ParaInherent": Anonymize<I1nu19212e8egv>;
+    "Paras": Anonymize<Ie2dden5k4kk7t>;
+    "Initializer": Anonymize<Ieggtnkc96vvt7>;
+    "Hrmp": Anonymize<I45adic8nko129>;
+    "ParasDisputes": Anonymize<Ifkh1ep7g9h3rv>;
+    "ParasSlashing": Anonymize<I3jj054kp2bjol>;
+    "OnDemandAssignmentProvider": Anonymize<I9s7urueli180g>;
+    "Registrar": Anonymize<Icclqj5sge2nc7>;
+    "Slots": Anonymize<Iafhis924j14hg>;
+    "ParasSudoWrapper": Anonymize<Iegfn7201fceql>;
+    "Auctions": Anonymize<I4a8qeimc5p3qn>;
+    "Crowdloan": Anonymize<Iaj4q75nu5v2i2>;
+    "AssignedSlots": Anonymize<Idlqs78vqqscm0>;
+    "Coretime": Anonymize<Idu7bbtd2jtnb9>;
+    "MultiBlockMigrations": Anonymize<I4oqb168b2d4er>;
+    "XcmPallet": Anonymize<Ibapagg3i6rfro>;
+    "MessageQueue": Anonymize<I3lic4llm6egbr>;
+    "AssetRate": Anonymize<If582h5gr5gh6f>;
+    "RootTesting": Anonymize<I9rkc7eqejp3rj>;
+    "Beefy": Anonymize<Idmcmrk34p8gic>;
+    "IdentityMigrator": Anonymize<I67t4bps9r5c4k>;
+}>;
+export type Iftvbctbo05fu4 = ResultPayload<Anonymize<I4lvocd376nkvl>, Anonymize<Iavct6f844hfju>>;
+export type I4lvocd376nkvl = Array<Anonymize<I47gh5t4ppbcdj>>;
+export type Iek7ha36da9mf5 = ResultPayload<Anonymize<Ifedog0bf6e64f>, Anonymize<Iavct6f844hfju>>;
+export type Io5enofhuqai4 = ResultPayload<Anonymize<I9h4mlr7fldq7r>, Anonymize<I55ku9c5gk50hb>>;
+export type I9h4mlr7fldq7r = {
+    "execution_result": Anonymize<Ifd9b8t0ogi3fg>;
+    "emitted_events": Anonymize<I3m1ugusjb1sa6>;
+    "local_xcm"?: Anonymize<I8d6t9ltc3r2c7>;
+    "forwarded_xcms": Anonymize<I5bmn62gohr9tf>;
+};
+export type I3m1ugusjb1sa6 = Array<Anonymize<Ieu7lkv7gb5kv2>>;
+export type I8d6t9ltc3r2c7 = (Anonymize<Idi8en2lkuicdt>) | undefined;
+export type I5bmn62gohr9tf = Array<Anonymize<I37pun07nkiusp>>;
+export type I37pun07nkiusp = [Anonymize<Ichgaqm88qcdbe>, Anonymize<I62uje7utrfial>];
+export type I62uje7utrfial = Array<Anonymize<Idi8en2lkuicdt>>;
+export type Iadfiaaiof9d12 = ResultPayload<Anonymize<If1n49o1bjs0qv>, Anonymize<I55ku9c5gk50hb>>;
+export type If1n49o1bjs0qv = {
+    "execution_result": Anonymize<I6uq5gb4s805s7>;
+    "emitted_events": Anonymize<I3m1ugusjb1sa6>;
+    "forwarded_xcms": Anonymize<I5bmn62gohr9tf>;
+};
+export type Iclvofdpge58e1 = AnonymousEnum<{
+    "V3": Anonymize<Idcm24504c8bkk>;
+    "V4": Anonymize<Ia5l7mu5a6v49o>;
+    "V5": Anonymize<Iffh1nc5e1mod6>;
+}>;
+export type Icujp6hmv35vbn = ResultPayload<boolean, Anonymize<I3886purtlrjg1>>;
+export type I3886purtlrjg1 = AnonymousEnum<{
+    "VersionedAssetConversionFailed": undefined;
+    "VersionedLocationConversionFailed": undefined;
+}>;
+export type Iajegvv2vvsbcp = Array<Anonymize<Iek2ke5cgcm7fg>>;
+export type Iek2ke5cgcm7fg = {
+    "phase": Phase;
+    "event": Anonymize<Id0ntnip5kotog>;
+    "topics": Anonymize<Ic5m5lp1oioo8r>;
+};
+export type Id0ntnip5kotog = AnonymousEnum<{
+    "System": Anonymize<Ib5tve89dmgs5a>;
+    "ParachainSystem": Anonymize<Icbsekf57miplo>;
+    "Balances": Anonymize<Iao8h4hv7atnq3>;
+    "TransactionPayment": TransactionPaymentEvent;
+    "AssetTxPayment": Anonymize<I78bosroad52fa>;
+    "CollatorSelection": Anonymize<I4srakrmf0fspo>;
+    "Session": SessionEvent;
+    "XcmpQueue": Anonymize<Idsqc7mhp6nnle>;
+    "PolkadotXcm": Anonymize<I3v8stpdt56ml>;
+    "CumulusXcm": Anonymize<Ihpdgvt7vs2cb>;
+    "ToRococoXcmRouter": Anonymize<Ift4p4jnj5bri1>;
+    "MessageQueue": Anonymize<I2kosejppk3jon>;
+    "Utility": Anonymize<I2fo808ufgdi1l>;
+    "Multisig": Anonymize<Ibg70r9a8duakk>;
+    "Proxy": Anonymize<Ieh18tvba3ag6l>;
+    "Assets": Anonymize<I6avancvg8fd05>;
+    "Uniques": Anonymize<Ia0j71vjrjqu9p>;
+    "Nfts": Anonymize<I6qicn8jn4fftj>;
+    "ForeignAssets": Anonymize<I95qdjot35qdnr>;
+    "NftFractionalization": Anonymize<I41s7j0hsp2u0b>;
+    "PoolAssets": Anonymize<I6avancvg8fd05>;
+    "AssetConversion": Anonymize<Ievo2o32gc42ng>;
+    "AssetsFreezer": Anonymize<I7omheqbc53plq>;
+    "ForeignAssetsFreezer": Anonymize<I7bdov8cfj9qk8>;
+    "PoolAssetsFreezer": Anonymize<I7omheqbc53plq>;
+    "Revive": Anonymize<I1jo9ctv03grf7>;
+    "StateTrieMigration": Anonymize<I61dksvl51aujo>;
+    "AssetConversionMigration": Anonymize<Ifiu844mj7r2h6>;
+}>;
+export type Ib5tve89dmgs5a = AnonymousEnum<{
+    /**
+     *An extrinsic completed successfully.
+     */
+    "ExtrinsicSuccess": Anonymize<Ia82mnkmeo2rhc>;
+    /**
+     *An extrinsic failed.
+     */
+    "ExtrinsicFailed": Anonymize<I3d83o1nfro5r8>;
+    /**
+     *`:code` was updated.
+     */
+    "CodeUpdated": undefined;
+    /**
+     *A new account was created.
+     */
+    "NewAccount": Anonymize<Icbccs0ug47ilf>;
+    /**
+     *An account was reaped.
+     */
+    "KilledAccount": Anonymize<Icbccs0ug47ilf>;
+    /**
+     *On on-chain remark happened.
+     */
+    "Remarked": Anonymize<I855j4i3kr8ko1>;
+    /**
+     *An upgrade was authorized.
+     */
+    "UpgradeAuthorized": Anonymize<Ibgl04rn6nbfm6>;
+}>;
+export type I3d83o1nfro5r8 = {
+    "dispatch_error": Anonymize<Ie6oldllmbqqc7>;
+    "dispatch_info": Anonymize<Ic9s8f85vjtncc>;
+};
+export type Ie6oldllmbqqc7 = AnonymousEnum<{
+    "Other": undefined;
+    "CannotLookup": undefined;
+    "BadOrigin": undefined;
+    "Module": Anonymize<Iu4kpn7soob3p>;
+    "ConsumerRemaining": undefined;
+    "NoProviders": undefined;
+    "TooManyConsumers": undefined;
+    "Token": TokenError;
+    "Arithmetic": ArithmeticError;
+    "Transactional": TransactionalError;
+    "Exhausted": undefined;
+    "Corruption": undefined;
+    "Unavailable": undefined;
+    "RootNotAllowed": undefined;
+    "Trie": Anonymize<Idh4cj79bvroj8>;
+}>;
+export type Iu4kpn7soob3p = AnonymousEnum<{
+    "System": Anonymize<I5o0s7c8q1cc9b>;
+    "ParachainSystem": Anonymize<I9p95gln24a0rn>;
+    "Timestamp": undefined;
+    "ParachainInfo": undefined;
+    "Balances": Anonymize<Idj13i7adlomht>;
+    "TransactionPayment": undefined;
+    "AssetTxPayment": undefined;
+    "Authorship": undefined;
+    "CollatorSelection": Anonymize<I36bcffk2387dv>;
+    "Session": Anonymize<I1e07dgbaqd1sq>;
+    "Aura": undefined;
+    "AuraExt": undefined;
+    "XcmpQueue": Anonymize<Idnnbndsjjeqqs>;
+    "PolkadotXcm": Anonymize<I87j95aq93d7dq>;
+    "CumulusXcm": undefined;
+    "ToRococoXcmRouter": undefined;
+    "MessageQueue": Anonymize<I5iupade5ag2dp>;
+    "Utility": Anonymize<I8dt2g2hcrgh36>;
+    "Multisig": Anonymize<Ia76qmhhg4jvb9>;
+    "Proxy": Anonymize<Iuvt54ei4cehc>;
+    "Assets": Anonymize<Iapedqb0veh71>;
+    "Uniques": Anonymize<Ienq2ge2rhv4jm>;
+    "Nfts": Anonymize<I58r1150kmj18u>;
+    "ForeignAssets": Anonymize<Iapedqb0veh71>;
+    "NftFractionalization": Anonymize<Ib24bvufha821j>;
+    "PoolAssets": Anonymize<Iapedqb0veh71>;
+    "AssetConversion": Anonymize<I4u78hb23uhvi2>;
+    "AssetsFreezer": Anonymize<I4dd4ctqfnk5kr>;
+    "ForeignAssetsFreezer": Anonymize<I4dd4ctqfnk5kr>;
+    "PoolAssetsFreezer": Anonymize<I4dd4ctqfnk5kr>;
+    "Revive": Anonymize<Iqt5sfsjk39ht>;
+    "StateTrieMigration": Anonymize<I96objte63brjr>;
+    "AssetConversionMigration": Anonymize<I1t0slqjho4lh4>;
+}>;
+export type Ib24bvufha821j = AnonymousEnum<{
+    /**
+     *Asset ID does not correspond to locked NFT.
+     */
+    "IncorrectAssetId": undefined;
+    /**
+     *The signing account has no permission to do the operation.
+     */
+    "NoPermission": undefined;
+    /**
+     *NFT doesn't exist.
+     */
+    "NftNotFound": undefined;
+    /**
+     *NFT has not yet been fractionalised.
+     */
+    "NftNotFractionalized": undefined;
+}>;
+export type I4dd4ctqfnk5kr = AnonymousEnum<{
+    /**
+     *Number of freezes on an account would exceed `MaxFreezes`.
+     */
+    "TooManyFreezes": undefined;
+}>;
+export type Iqt5sfsjk39ht = AnonymousEnum<{
+    /**
+     *Invalid schedule supplied, e.g. with zero weight of a basic operation.
+     */
+    "InvalidSchedule": undefined;
+    /**
+     *Invalid combination of flags supplied to `seal_call` or `seal_delegate_call`.
+     */
+    "InvalidCallFlags": undefined;
+    /**
+     *The executed contract exhausted its gas limit.
+     */
+    "OutOfGas": undefined;
+    /**
+     *Performing the requested transfer failed. Probably because there isn't enough
+     *free balance in the sender's account.
+     */
+    "TransferFailed": undefined;
+    /**
+     *Performing a call was denied because the calling depth reached the limit
+     *of what is specified in the schedule.
+     */
+    "MaxCallDepthReached": undefined;
+    /**
+     *No contract was found at the specified address.
+     */
+    "ContractNotFound": undefined;
+    /**
+     *No code could be found at the supplied code hash.
+     */
+    "CodeNotFound": undefined;
+    /**
+     *No code info could be found at the supplied code hash.
+     */
+    "CodeInfoNotFound": undefined;
+    /**
+     *A buffer outside of sandbox memory was passed to a contract API function.
+     */
+    "OutOfBounds": undefined;
+    /**
+     *Input passed to a contract API function failed to decode as expected type.
+     */
+    "DecodingFailed": undefined;
+    /**
+     *Contract trapped during execution.
+     */
+    "ContractTrapped": undefined;
+    /**
+     *The size defined in `T::MaxValueSize` was exceeded.
+     */
+    "ValueTooLarge": undefined;
+    /**
+     *Termination of a contract is not allowed while the contract is already
+     *on the call stack. Can be triggered by `seal_terminate`.
+     */
+    "TerminatedWhileReentrant": undefined;
+    /**
+     *`seal_call` forwarded this contracts input. It therefore is no longer available.
+     */
+    "InputForwarded": undefined;
+    /**
+     *The amount of topics passed to `seal_deposit_events` exceeds the limit.
+     */
+    "TooManyTopics": undefined;
+    /**
+     *The chain does not provide a chain extension. Calling the chain extension results
+     *in this error. Note that this usually  shouldn't happen as deploying such contracts
+     *is rejected.
+     */
+    "NoChainExtension": undefined;
+    /**
+     *Failed to decode the XCM program.
+     */
+    "XCMDecodeFailed": undefined;
+    /**
+     *A contract with the same AccountId already exists.
+     */
+    "DuplicateContract": undefined;
+    /**
+     *A contract self destructed in its constructor.
+     *
+     *This can be triggered by a call to `seal_terminate`.
+     */
+    "TerminatedInConstructor": undefined;
+    /**
+     *A call tried to invoke a contract that is flagged as non-reentrant.
+     */
+    "ReentranceDenied": undefined;
+    /**
+     *A contract called into the runtime which then called back into this pallet.
+     */
+    "ReenteredPallet": undefined;
+    /**
+     *A contract attempted to invoke a state modifying API while being in read-only mode.
+     */
+    "StateChangeDenied": undefined;
+    /**
+     *Origin doesn't have enough balance to pay the required storage deposits.
+     */
+    "StorageDepositNotEnoughFunds": undefined;
+    /**
+     *More storage was created than allowed by the storage deposit limit.
+     */
+    "StorageDepositLimitExhausted": undefined;
+    /**
+     *Code removal was denied because the code is still in use by at least one contract.
+     */
+    "CodeInUse": undefined;
+    /**
+     *The contract ran to completion but decided to revert its storage changes.
+     *Please note that this error is only returned from extrinsics. When called directly
+     *or via RPC an `Ok` will be returned. In this case the caller needs to inspect the flags
+     *to determine whether a reversion has taken place.
+     */
+    "ContractReverted": undefined;
+    /**
+     *The contract failed to compile or is missing the correct entry points.
+     *
+     *A more detailed error can be found on the node console if debug messages are enabled
+     *by supplying `-lruntime::revive=debug`.
+     */
+    "CodeRejected": undefined;
+    /**
+     *The code blob supplied is larger than [`limits::code::BLOB_BYTES`].
+     */
+    "BlobTooLarge": undefined;
+    /**
+     *The static memory consumption of the blob will be larger than
+     *[`limits::code::STATIC_MEMORY_BYTES`].
+     */
+    "StaticMemoryTooLarge": undefined;
+    /**
+     *The program contains a basic block that is larger than allowed.
+     */
+    "BasicBlockTooLarge": undefined;
+    /**
+     *The program contains an invalid instruction.
+     */
+    "InvalidInstruction": undefined;
+    /**
+     *The contract has reached its maximum number of delegate dependencies.
+     */
+    "MaxDelegateDependenciesReached": undefined;
+    /**
+     *The dependency was not found in the contract's delegate dependencies.
+     */
+    "DelegateDependencyNotFound": undefined;
+    /**
+     *The contract already depends on the given delegate dependency.
+     */
+    "DelegateDependencyAlreadyExists": undefined;
+    /**
+     *Can not add a delegate dependency to the code hash of the contract itself.
+     */
+    "CannotAddSelfAsDelegateDependency": undefined;
+    /**
+     *Can not add more data to transient storage.
+     */
+    "OutOfTransientStorage": undefined;
+    /**
+     *The contract tried to call a syscall which does not exist (at its current api level).
+     */
+    "InvalidSyscall": undefined;
+    /**
+     *Invalid storage flags were passed to one of the storage syscalls.
+     */
+    "InvalidStorageFlags": undefined;
+    /**
+     *PolkaVM failed during code execution. Probably due to a malformed program.
+     */
+    "ExecutionFailed": undefined;
+    /**
+     *Failed to convert a U256 to a Balance.
+     */
+    "BalanceConversionFailed": undefined;
+    /**
+     *Failed to convert an EVM balance to a native balance.
+     */
+    "DecimalPrecisionLoss": undefined;
+    /**
+     *Immutable data can only be set during deploys and only be read during calls.
+     *Additionally, it is only valid to set the data once and it must not be empty.
+     */
+    "InvalidImmutableAccess": undefined;
+    /**
+     *An `AccountID32` account tried to interact with the pallet without having a mapping.
+     *
+     *Call [`Pallet::map_account`] in order to create a mapping for the account.
+     */
+    "AccountUnmapped": undefined;
+    /**
+     *Tried to map an account that is already mapped.
+     */
+    "AccountAlreadyMapped": undefined;
+}>;
+export type I1t0slqjho4lh4 = AnonymousEnum<{
+    /**
+     *Provided asset pair is not supported for pool.
+     */
+    "InvalidAssetPair": undefined;
+    /**
+     *The pool doesn't exist.
+     */
+    "PoolNotFound": undefined;
+    /**
+     *Pool's balance cannot be zero.
+     */
+    "ZeroBalance": undefined;
+    /**
+     *Indicates a partial transfer of balance to the new account during a migration.
+     */
+    "PartialTransfer": undefined;
+}>;
+export type I78bosroad52fa = AnonymousEnum<{
+    /**
+     *A transaction fee `actual_fee`, of which `tip` was added to the minimum inclusion fee,
+     *has been paid by `who` in an asset `asset_id`.
+     */
+    "AssetTxFeePaid": Anonymize<Imhre0s2vm68p>;
+    /**
+     *A swap of the refund in native currency back to asset failed.
+     */
+    "AssetRefundFailed": Anonymize<Icjchvrijclvlv>;
+}>;
+export type Imhre0s2vm68p = {
+    "who": SS58String;
+    "actual_fee": bigint;
+    "tip": bigint;
+    "asset_id": Anonymize<If9iqq7i64mur8>;
+};
+export type Ihpdgvt7vs2cb = AnonymousEnum<{
+    /**
+     *Downward message is invalid XCM.
+     *\[ id \]
+     */
+    "InvalidFormat": FixedSizeBinary<32>;
+    /**
+     *Downward message is unsupported version of XCM.
+     *\[ id \]
+     */
+    "UnsupportedVersion": FixedSizeBinary<32>;
+    /**
+     *Downward message executed with the given outcome.
+     *\[ id, outcome \]
+     */
+    "ExecutedDownward": Anonymize<Ibeto40kl3r5j7>;
+}>;
+export type Ibeto40kl3r5j7 = [FixedSizeBinary<32>, Anonymize<I6uq5gb4s805s7>];
+export type Ift4p4jnj5bri1 = AnonymousEnum<{
+    /**
+     *Delivery fee factor has been decreased.
+     */
+    "DeliveryFeeFactorDecreased": Anonymize<Ie8hpsm3jhsvo3>;
+    /**
+     *Delivery fee factor has been increased.
+     */
+    "DeliveryFeeFactorIncreased": Anonymize<Ie8hpsm3jhsvo3>;
+}>;
+export type Ie8hpsm3jhsvo3 = {
+    /**
+     *New value of the `DeliveryFeeFactor`.
+     */
+    "new_value": bigint;
+};
+export type I2fo808ufgdi1l = AnonymousEnum<{
+    /**
+     *Batch of dispatches did not complete fully. Index of first failing dispatch given, as
+     *well as the error.
+     */
+    "BatchInterrupted": Anonymize<I2lo3aok2dl7og>;
+    /**
+     *Batch of dispatches completed fully with no error.
+     */
+    "BatchCompleted": undefined;
+    /**
+     *Batch of dispatches completed but has errors.
+     */
+    "BatchCompletedWithErrors": undefined;
+    /**
+     *A single item within a Batch of dispatches has completed with no error.
+     */
+    "ItemCompleted": undefined;
+    /**
+     *A single item within a Batch of dispatches has completed with error.
+     */
+    "ItemFailed": Anonymize<Ibm4pctdklrem8>;
+    /**
+     *A call was dispatched.
+     */
+    "DispatchedAs": Anonymize<I8t4mbs0r3a5n>;
+}>;
+export type I2lo3aok2dl7og = {
+    "index": number;
+    "error": Anonymize<Ie6oldllmbqqc7>;
+};
+export type Ibm4pctdklrem8 = {
+    "error": Anonymize<Ie6oldllmbqqc7>;
+};
+export type I8t4mbs0r3a5n = {
+    "result": Anonymize<Idk1k6qmd0cc53>;
+};
+export type Idk1k6qmd0cc53 = ResultPayload<undefined, Anonymize<Ie6oldllmbqqc7>>;
+export type Ibg70r9a8duakk = AnonymousEnum<{
+    /**
+     *A new multisig operation has begun.
+     */
+    "NewMultisig": Anonymize<Iep27ialq4a7o7>;
+    /**
+     *A multisig operation has been approved by someone.
+     */
+    "MultisigApproval": Anonymize<Iasu5jvoqr43mv>;
+    /**
+     *A multisig operation has been executed.
+     */
+    "MultisigExecuted": Anonymize<I95m4obs4qldu1>;
+    /**
+     *A multisig operation has been cancelled.
+     */
+    "MultisigCancelled": Anonymize<I5qolde99acmd1>;
+}>;
+export type I95m4obs4qldu1 = {
+    "approving": SS58String;
+    "timepoint": Anonymize<Itvprrpb0nm3o>;
+    "multisig": SS58String;
+    "call_hash": FixedSizeBinary<32>;
+    "result": Anonymize<Idk1k6qmd0cc53>;
+};
+export type Ieh18tvba3ag6l = AnonymousEnum<{
+    /**
+     *A proxy was executed correctly, with the given.
+     */
+    "ProxyExecuted": Anonymize<I8t4mbs0r3a5n>;
+    /**
+     *A pure account has been created by new proxy with given
+     *disambiguation index and proxy type.
+     */
+    "PureCreated": Anonymize<Ie7cuj84ohvg56>;
+    /**
+     *An announcement was placed to make a call in the future.
+     */
+    "Announced": Anonymize<I2ur0oeqg495j8>;
+    /**
+     *A proxy was added.
+     */
+    "ProxyAdded": Anonymize<I8ioopvokvl3ud>;
+    /**
+     *A proxy was removed.
+     */
+    "ProxyRemoved": Anonymize<I8ioopvokvl3ud>;
+}>;
+export type I95qdjot35qdnr = AnonymousEnum<{
+    /**
+     *Some asset class was created.
+     */
+    "Created": Anonymize<Icqe266pmnr25o>;
+    /**
+     *Some assets were issued.
+     */
+    "Issued": Anonymize<I5hoiph0lqphp>;
+    /**
+     *Some assets were transferred.
+     */
+    "Transferred": Anonymize<I5k7oropl9ofc7>;
+    /**
+     *Some assets were destroyed.
+     */
+    "Burned": Anonymize<I48vagp1omigob>;
+    /**
+     *The management team changed.
+     */
+    "TeamChanged": Anonymize<Ib5tst4ppem1g6>;
+    /**
+     *The owner changed.
+     */
+    "OwnerChanged": Anonymize<Ibn64edsrg3737>;
+    /**
+     *Some account `who` was frozen.
+     */
+    "Frozen": Anonymize<I83r9d02dh47j9>;
+    /**
+     *Some account `who` was thawed.
+     */
+    "Thawed": Anonymize<I83r9d02dh47j9>;
+    /**
+     *Some asset `asset_id` was frozen.
+     */
+    "AssetFrozen": Anonymize<I22bm4d7re21j9>;
+    /**
+     *Some asset `asset_id` was thawed.
+     */
+    "AssetThawed": Anonymize<I22bm4d7re21j9>;
+    /**
+     *Accounts were destroyed for given asset.
+     */
+    "AccountsDestroyed": Anonymize<I3jnhifvaeuama>;
+    /**
+     *Approvals were destroyed for given asset.
+     */
+    "ApprovalsDestroyed": Anonymize<I8n1gia0lo42ok>;
+    /**
+     *An asset class is in the process of being destroyed.
+     */
+    "DestructionStarted": Anonymize<I22bm4d7re21j9>;
+    /**
+     *An asset class was destroyed.
+     */
+    "Destroyed": Anonymize<I22bm4d7re21j9>;
+    /**
+     *Some asset class was force-created.
+     */
+    "ForceCreated": Anonymize<Ibn64edsrg3737>;
+    /**
+     *New metadata has been set for an asset.
+     */
+    "MetadataSet": Anonymize<I6gb0o7lqjfdjq>;
+    /**
+     *Metadata has been cleared for an asset.
+     */
+    "MetadataCleared": Anonymize<I22bm4d7re21j9>;
+    /**
+     *(Additional) funds have been approved for transfer to a destination account.
+     */
+    "ApprovedTransfer": Anonymize<Idh36v6iegkmpq>;
+    /**
+     *An approval for account `delegate` was cancelled by `owner`.
+     */
+    "ApprovalCancelled": Anonymize<I27hnueutmchbe>;
+    /**
+     *An `amount` was transferred in its entirety from `owner` to `destination` by
+     *the approved `delegate`.
+     */
+    "TransferredApproved": Anonymize<Iectm2em66uhao>;
+    /**
+     *An asset has had its attributes changed by the `Force` origin.
+     */
+    "AssetStatusChanged": Anonymize<I22bm4d7re21j9>;
+    /**
+     *The min_balance of an asset has been updated by the asset owner.
+     */
+    "AssetMinBalanceChanged": Anonymize<I7q57goff3j72h>;
+    /**
+     *Some account `who` was created with a deposit from `depositor`.
+     */
+    "Touched": Anonymize<Ibe49veu9i9nro>;
+    /**
+     *Some account `who` was blocked.
+     */
+    "Blocked": Anonymize<I83r9d02dh47j9>;
+    /**
+     *Some assets were deposited (e.g. for transaction fees).
+     */
+    "Deposited": Anonymize<I1rnkmiu7usb82>;
+    /**
+     *Some assets were withdrawn from the account (e.g. for transaction fees).
+     */
+    "Withdrawn": Anonymize<I1rnkmiu7usb82>;
+}>;
+export type Icqe266pmnr25o = {
+    "asset_id": Anonymize<If9iqq7i64mur8>;
+    "creator": SS58String;
+    "owner": SS58String;
+};
+export type I5hoiph0lqphp = {
+    "asset_id": Anonymize<If9iqq7i64mur8>;
+    "owner": SS58String;
+    "amount": bigint;
+};
+export type I5k7oropl9ofc7 = {
+    "asset_id": Anonymize<If9iqq7i64mur8>;
+    "from": SS58String;
+    "to": SS58String;
+    "amount": bigint;
+};
+export type I48vagp1omigob = {
+    "asset_id": Anonymize<If9iqq7i64mur8>;
+    "owner": SS58String;
+    "balance": bigint;
+};
+export type Ib5tst4ppem1g6 = {
+    "asset_id": Anonymize<If9iqq7i64mur8>;
+    "issuer": SS58String;
+    "admin": SS58String;
+    "freezer": SS58String;
+};
+export type Ibn64edsrg3737 = {
+    "asset_id": Anonymize<If9iqq7i64mur8>;
+    "owner": SS58String;
+};
+export type I83r9d02dh47j9 = {
+    "asset_id": Anonymize<If9iqq7i64mur8>;
+    "who": SS58String;
+};
+export type I22bm4d7re21j9 = {
+    "asset_id": Anonymize<If9iqq7i64mur8>;
+};
+export type I3jnhifvaeuama = {
+    "asset_id": Anonymize<If9iqq7i64mur8>;
+    "accounts_destroyed": number;
+    "accounts_remaining": number;
+};
+export type I8n1gia0lo42ok = {
+    "asset_id": Anonymize<If9iqq7i64mur8>;
+    "approvals_destroyed": number;
+    "approvals_remaining": number;
+};
+export type I6gb0o7lqjfdjq = {
+    "asset_id": Anonymize<If9iqq7i64mur8>;
+    "name": Binary;
+    "symbol": Binary;
+    "decimals": number;
+    "is_frozen": boolean;
+};
+export type Idh36v6iegkmpq = {
+    "asset_id": Anonymize<If9iqq7i64mur8>;
+    "source": SS58String;
+    "delegate": SS58String;
+    "amount": bigint;
+};
+export type I27hnueutmchbe = {
+    "asset_id": Anonymize<If9iqq7i64mur8>;
+    "owner": SS58String;
+    "delegate": SS58String;
+};
+export type Iectm2em66uhao = {
+    "asset_id": Anonymize<If9iqq7i64mur8>;
+    "owner": SS58String;
+    "delegate": SS58String;
+    "destination": SS58String;
+    "amount": bigint;
+};
+export type I7q57goff3j72h = {
+    "asset_id": Anonymize<If9iqq7i64mur8>;
+    "new_min_balance": bigint;
+};
+export type Ibe49veu9i9nro = {
+    "asset_id": Anonymize<If9iqq7i64mur8>;
+    "who": SS58String;
+    "depositor": SS58String;
+};
+export type I1rnkmiu7usb82 = {
+    "asset_id": Anonymize<If9iqq7i64mur8>;
+    "who": SS58String;
+    "amount": bigint;
+};
+export type I41s7j0hsp2u0b = AnonymousEnum<{
+    /**
+     *An NFT was successfully fractionalized.
+     */
+    "NftFractionalized": Anonymize<Ib67harsthtcvr>;
+    /**
+     *An NFT was successfully returned back.
+     */
+    "NftUnified": Anonymize<Ic7ok3lq0728f7>;
+}>;
+export type Ib67harsthtcvr = {
+    "nft_collection": number;
+    "nft": number;
+    "fractions": bigint;
+    "asset": number;
+    "beneficiary": SS58String;
+};
+export type Ic7ok3lq0728f7 = {
+    "nft_collection": number;
+    "nft": number;
+    "asset": number;
+    "beneficiary": SS58String;
+};
+export type Ievo2o32gc42ng = AnonymousEnum<{
+    /**
+     *A successful call of the `CreatePool` extrinsic will create this event.
+     */
+    "PoolCreated": Anonymize<I1q546n7mmm8nk>;
+    /**
+     *A successful call of the `AddLiquidity` extrinsic will create this event.
+     */
+    "LiquidityAdded": Anonymize<If7i5aoh4lk0a1>;
+    /**
+     *A successful call of the `RemoveLiquidity` extrinsic will create this event.
+     */
+    "LiquidityRemoved": Anonymize<If9prqbk25189q>;
+    /**
+     *Assets have been converted from one to another. Both `SwapExactTokenForToken`
+     *and `SwapTokenForExactToken` will generate this event.
+     */
+    "SwapExecuted": Anonymize<Icugn66dlnp8rd>;
+    /**
+     *Assets have been converted from one to another.
+     */
+    "SwapCreditExecuted": Anonymize<I1bfrt15apsnp>;
+    /**
+     *Pool has been touched in order to fulfill operational requirements.
+     */
+    "Touched": Anonymize<Id3old33tr9erj>;
+}>;
+export type I1q546n7mmm8nk = {
+    /**
+     *The account that created the pool.
+     */
+    "creator": SS58String;
+    /**
+     *The pool id associated with the pool. Note that the order of the assets may not be
+     *the same as the order specified in the create pool extrinsic.
+     */
+    "pool_id": Anonymize<If21n82i0516em>;
+    /**
+     *The account ID of the pool.
+     */
+    "pool_account": SS58String;
+    /**
+     *The id of the liquidity tokens that will be minted when assets are added to this
+     *pool.
+     */
+    "lp_token": number;
+};
+export type If21n82i0516em = FixedSizeArray<2, Anonymize<If9iqq7i64mur8>>;
+export type If7i5aoh4lk0a1 = {
+    /**
+     *The account that the liquidity was taken from.
+     */
+    "who": SS58String;
+    /**
+     *The account that the liquidity tokens were minted to.
+     */
+    "mint_to": SS58String;
+    /**
+     *The pool id of the pool that the liquidity was added to.
+     */
+    "pool_id": Anonymize<If21n82i0516em>;
+    /**
+     *The amount of the first asset that was added to the pool.
+     */
+    "amount1_provided": bigint;
+    /**
+     *The amount of the second asset that was added to the pool.
+     */
+    "amount2_provided": bigint;
+    /**
+     *The id of the lp token that was minted.
+     */
+    "lp_token": number;
+    /**
+     *The amount of lp tokens that were minted of that id.
+     */
+    "lp_token_minted": bigint;
+};
+export type If9prqbk25189q = {
+    /**
+     *The account that the liquidity tokens were burned from.
+     */
+    "who": SS58String;
+    /**
+     *The account that the assets were transferred to.
+     */
+    "withdraw_to": SS58String;
+    /**
+     *The pool id that the liquidity was removed from.
+     */
+    "pool_id": Anonymize<If21n82i0516em>;
+    /**
+     *The amount of the first asset that was removed from the pool.
+     */
+    "amount1": bigint;
+    /**
+     *The amount of the second asset that was removed from the pool.
+     */
+    "amount2": bigint;
+    /**
+     *The id of the lp token that was burned.
+     */
+    "lp_token": number;
+    /**
+     *The amount of lp tokens that were burned of that id.
+     */
+    "lp_token_burned": bigint;
+    /**
+     *Liquidity withdrawal fee (%).
+     */
+    "withdrawal_fee": number;
+};
+export type Icugn66dlnp8rd = {
+    /**
+     *Which account was the instigator of the swap.
+     */
+    "who": SS58String;
+    /**
+     *The account that the assets were transferred to.
+     */
+    "send_to": SS58String;
+    /**
+     *The amount of the first asset that was swapped.
+     */
+    "amount_in": bigint;
+    /**
+     *The amount of the second asset that was received.
+     */
+    "amount_out": bigint;
+    /**
+     *The route of asset IDs with amounts that the swap went through.
+     *E.g. (A, amount_in) -> (Dot, amount_out) -> (B, amount_out)
+     */
+    "path": Anonymize<I7egh93q89718t>;
+};
+export type I7egh93q89718t = Array<Anonymize<I3n8fv9mo53kq5>>;
+export type I3n8fv9mo53kq5 = [Anonymize<If9iqq7i64mur8>, bigint];
+export type I1bfrt15apsnp = {
+    /**
+     *The amount of the first asset that was swapped.
+     */
+    "amount_in": bigint;
+    /**
+     *The amount of the second asset that was received.
+     */
+    "amount_out": bigint;
+    /**
+     *The route of asset IDs with amounts that the swap went through.
+     *E.g. (A, amount_in) -> (Dot, amount_out) -> (B, amount_out)
+     */
+    "path": Anonymize<I7egh93q89718t>;
+};
+export type Id3old33tr9erj = {
+    /**
+     *The ID of the pool.
+     */
+    "pool_id": Anonymize<If21n82i0516em>;
+    /**
+     *The account initiating the touch.
+     */
+    "who": SS58String;
+};
+export type I7omheqbc53plq = AnonymousEnum<{
+    "Frozen": Anonymize<Idusmq77988cmt>;
+    "Thawed": Anonymize<Idusmq77988cmt>;
+}>;
+export type I7bdov8cfj9qk8 = AnonymousEnum<{
+    "Frozen": Anonymize<I1rnkmiu7usb82>;
+    "Thawed": Anonymize<I1rnkmiu7usb82>;
+}>;
+export type I1jo9ctv03grf7 = AnonymousEnum<{
+    /**
+     *Contract deployed by address at the specified address.
+     */
+    "Instantiated": Anonymize<I8jhsbaiultviu>;
+    /**
+     *Contract has been removed.
+     *
+     *# Note
+     *
+     *The only way for a contract to be removed and emitting this event is by calling
+     *`seal_terminate`.
+     */
+    "Terminated": Anonymize<I2kh24hh747r7a>;
+    /**
+     *Code with the specified hash has been stored.
+     */
+    "CodeStored": Anonymize<Iadkk9fja0v9gb>;
+    /**
+     *A custom event emitted by the contract.
+     */
+    "ContractEmitted": Anonymize<I7svbvm6hg57aj>;
+    /**
+     *A code with the specified hash was removed.
+     */
+    "CodeRemoved": Anonymize<I36kcene7j10ck>;
+    /**
+     *A contract's code was updated.
+     */
+    "ContractCodeUpdated": Anonymize<Idj4m9dgi2uob4>;
+    /**
+     *A contract was called either by a plain account or another contract.
+     *
+     *# Note
+     *
+     *Please keep in mind that like all events this is only emitted for successful
+     *calls. This is because on failure all storage changes including events are
+     *rolled back.
+     */
+    "Called": Anonymize<I5mt66p7ke9kv1>;
+    /**
+     *A contract delegate called a code hash.
+     *
+     *# Note
+     *
+     *Please keep in mind that like all events this is only emitted for successful
+     *calls. This is because on failure all storage changes including events are
+     *rolled back.
+     */
+    "DelegateCalled": Anonymize<I6jtuvng77672>;
+    /**
+     *Some funds have been transferred and held as storage deposit.
+     */
+    "StorageDepositTransferredAndHeld": Anonymize<Ielefh9fukpeue>;
+    /**
+     *Some storage deposit funds have been transferred and released.
+     */
+    "StorageDepositTransferredAndReleased": Anonymize<Ielefh9fukpeue>;
+}>;
+export type I8jhsbaiultviu = {
+    "deployer": FixedSizeBinary<20>;
+    "contract": FixedSizeBinary<20>;
+};
+export type I2kh24hh747r7a = {
+    /**
+     *The contract that was terminated.
+     */
+    "contract": FixedSizeBinary<20>;
+    /**
+     *The account that received the contracts remaining balance
+     */
+    "beneficiary": FixedSizeBinary<20>;
+};
+export type Iadkk9fja0v9gb = {
+    "code_hash": FixedSizeBinary<32>;
+    "deposit_held": bigint;
+    "uploader": FixedSizeBinary<20>;
+};
+export type I7svbvm6hg57aj = {
+    /**
+     *The contract that emitted the event.
+     */
+    "contract": FixedSizeBinary<20>;
+    /**
+     *Data supplied by the contract. Metadata generated during contract compilation
+     *is needed to decode it.
+     */
+    "data": Binary;
+    /**
+     *A list of topics used to index the event.
+     *Number of topics is capped by [`limits::NUM_EVENT_TOPICS`].
+     */
+    "topics": Anonymize<Ic5m5lp1oioo8r>;
+};
+export type I36kcene7j10ck = {
+    "code_hash": FixedSizeBinary<32>;
+    "deposit_released": bigint;
+    "remover": FixedSizeBinary<20>;
+};
+export type Idj4m9dgi2uob4 = {
+    /**
+     *The contract that has been updated.
+     */
+    "contract": FixedSizeBinary<20>;
+    /**
+     *New code hash that was set for the contract.
+     */
+    "new_code_hash": FixedSizeBinary<32>;
+    /**
+     *Previous code hash of the contract.
+     */
+    "old_code_hash": FixedSizeBinary<32>;
+};
+export type I5mt66p7ke9kv1 = {
+    /**
+     *The caller of the `contract`.
+     */
+    "caller": Anonymize<I7d474666mmg78>;
+    /**
+     *The contract that was called.
+     */
+    "contract": FixedSizeBinary<20>;
+};
+export type I7d474666mmg78 = AnonymousEnum<{
+    "Root": undefined;
+    "Signed": SS58String;
+}>;
+export type I6jtuvng77672 = {
+    /**
+     *The contract that performed the delegate call and hence in whose context
+     *the `code_hash` is executed.
+     */
+    "contract": FixedSizeBinary<20>;
+    /**
+     *The code hash that was delegate called.
+     */
+    "code_hash": FixedSizeBinary<32>;
+};
+export type Ielefh9fukpeue = {
+    "from": FixedSizeBinary<20>;
+    "to": FixedSizeBinary<20>;
+    "amount": bigint;
+};
+export type Ifiu844mj7r2h6 = AnonymousEnum<{
+    /**
+     *Indicates that a pool has been migrated to the new account ID.
+     */
+    "MigratedToNewAccount": Anonymize<I9al0v2qskkktj>;
+}>;
+export type I9al0v2qskkktj = {
+    /**
+     *Pool's ID.
+     */
+    "pool_id": Anonymize<If21n82i0516em>;
+    /**
+     *Pool's prior account ID.
+     */
+    "prior_account": SS58String;
+    /**
+     *Pool's new account ID.
+     */
+    "new_account": SS58String;
+};
+export type I3nu0n7r0ge8u4 = Array<Anonymize<Iv44ks810huvd>>;
+export type Iv44ks810huvd = {
+    "id": Anonymize<Id8062blvhtnbk>;
+    "amount": bigint;
+};
+export type Id8062blvhtnbk = AnonymousEnum<{
+    "NftFractionalization": Anonymize<I8bf8ma56td7eh>;
+    "Revive": Anonymize<I364se861k3md3>;
+    "StateTrieMigration": Anonymize<I7lf1val3vmpq0>;
+}>;
+export type I8bf8ma56td7eh = AnonymousEnum<{
+    "Fractionalized": undefined;
+}>;
+export type I364se861k3md3 = AnonymousEnum<{
+    "CodeUploadDepositReserve": undefined;
+    "StorageDepositReserve": undefined;
+    "AddressMapping": undefined;
+}>;
+export type I4v5g6i7bmt06o = [Anonymize<If9iqq7i64mur8>, SS58String];
+export type I84bhscllvv07n = [Anonymize<If9iqq7i64mur8>, SS58String, SS58String];
+export type I1b2ckfeib3nig = {
+    "asset": number;
+    "fractions": bigint;
+    "deposit": bigint;
+    "asset_creator": SS58String;
+};
+export type Ifffvds72jdcre = {
+    "owner": SS58String;
+    "deposit": bigint;
+    "refcount": bigint;
+    "code_len": number;
+    "api_version": number;
+    "behaviour_version": number;
+};
+export type I3eg7tau01jhnb = {
+    "trie_id": Binary;
+    "code_hash": FixedSizeBinary<32>;
+    "storage_bytes": number;
+    "storage_items": number;
+    "storage_byte_deposit": bigint;
+    "storage_item_deposit": bigint;
+    "storage_base_deposit": bigint;
+    "delegate_dependencies": Anonymize<I3geksg000c171>;
+    "immutable_data_len": number;
+};
+export type I8t4pajubp34g3 = {
+    "insert_counter": number;
+    "delete_counter": number;
+};
+export type I5kev21p7u6ajb = AnonymousEnum<{
+    /**
+     *Set the current validation data.
+     *
+     *This should be invoked exactly once per block. It will panic at the finalization
+     *phase if the call was not invoked.
+     *
+     *The dispatch origin for this call must be `Inherent`
+     *
+     *As a side effect, this function upgrades the current validation function
+     *if the appropriate time has come.
+     */
+    "set_validation_data": Anonymize<I60v7bikk54tpu>;
+    "sudo_send_upward_message": Anonymize<Ifpj261e8s63m3>;
+}>;
+export type Ie0ljrh1n9907r = AnonymousEnum<{
+    /**
+     *Send a batch of dispatch calls.
+     *
+     *May be called from any origin except `None`.
+     *
+     *- `calls`: The calls to be dispatched from the same origin. The number of call must not
+     *  exceed the constant: `batched_calls_limit` (available in constant metadata).
+     *
+     *If origin is root then the calls are dispatched without checking origin filter. (This
+     *includes bypassing `frame_system::Config::BaseCallFilter`).
+     *
+     *## Complexity
+     *- O(C) where C is the number of calls to be batched.
+     *
+     *This will return `Ok` in all circumstances. To determine the success of the batch, an
+     *event is deposited. If a call failed and the batch was interrupted, then the
+     *`BatchInterrupted` event is deposited, along with the number of successful calls made
+     *and the error of the failed call. If all were successful, then the `BatchCompleted`
+     *event is deposited.
+     */
+    "batch": Anonymize<I7dauql1on1dm8>;
+    /**
+     *Send a call through an indexed pseudonym of the sender.
+     *
+     *Filter from origin are passed along. The call will be dispatched with an origin which
+     *use the same filter as the origin of this call.
+     *
+     *NOTE: If you need to ensure that any account-based filtering is not honored (i.e.
+     *because you expect `proxy` to have been used prior in the call stack and you do not want
+     *the call restrictions to apply to any sub-accounts), then use `as_multi_threshold_1`
+     *in the Multisig pallet instead.
+     *
+     *NOTE: Prior to version *12, this was called `as_limited_sub`.
+     *
+     *The dispatch origin for this call must be _Signed_.
+     */
+    "as_derivative": Anonymize<Ic1ob0pdjd41k1>;
+    /**
+     *Send a batch of dispatch calls and atomically execute them.
+     *The whole transaction will rollback and fail if any of the calls failed.
+     *
+     *May be called from any origin except `None`.
+     *
+     *- `calls`: The calls to be dispatched from the same origin. The number of call must not
+     *  exceed the constant: `batched_calls_limit` (available in constant metadata).
+     *
+     *If origin is root then the calls are dispatched without checking origin filter. (This
+     *includes bypassing `frame_system::Config::BaseCallFilter`).
+     *
+     *## Complexity
+     *- O(C) where C is the number of calls to be batched.
+     */
+    "batch_all": Anonymize<I7dauql1on1dm8>;
+    /**
+     *Dispatches a function call with a provided origin.
+     *
+     *The dispatch origin for this call must be _Root_.
+     *
+     *## Complexity
+     *- O(1).
+     */
+    "dispatch_as": Anonymize<I401c0aavsl13c>;
+    /**
+     *Send a batch of dispatch calls.
+     *Unlike `batch`, it allows errors and won't interrupt.
+     *
+     *May be called from any origin except `None`.
+     *
+     *- `calls`: The calls to be dispatched from the same origin. The number of call must not
+     *  exceed the constant: `batched_calls_limit` (available in constant metadata).
+     *
+     *If origin is root then the calls are dispatch without checking origin filter. (This
+     *includes bypassing `frame_system::Config::BaseCallFilter`).
+     *
+     *## Complexity
+     *- O(C) where C is the number of calls to be batched.
+     */
+    "force_batch": Anonymize<I7dauql1on1dm8>;
+    /**
+     *Dispatch a function call with a specified weight.
+     *
+     *This function does not check the weight of the call, and instead allows the
+     *Root origin to specify the weight of the call.
+     *
+     *The dispatch origin for this call must be _Root_.
+     */
+    "with_weight": Anonymize<I2lu348lgjviba>;
+}>;
+export type I7dauql1on1dm8 = {
+    "calls": Anonymize<I40kdtouh3f61v>;
+};
+export type I40kdtouh3f61v = Array<TxCallData>;
+export type Ic1ob0pdjd41k1 = {
+    "index": number;
+    "call": TxCallData;
+};
+export type I401c0aavsl13c = {
+    "as_origin": Anonymize<I59s4q2sbs1vv1>;
+    "call": TxCallData;
+};
+export type I59s4q2sbs1vv1 = AnonymousEnum<{
+    "system": DispatchRawOrigin;
+    "PolkadotXcm": Anonymize<Icvilmd7qu30i4>;
+    "CumulusXcm": Anonymize<I3in0d0lb61qi8>;
+    "Void": undefined;
+}>;
+export type I2lu348lgjviba = {
+    "call": TxCallData;
+    "weight": Anonymize<I4q39t5hn830vp>;
+};
+export type I9rseea83k454i = AnonymousEnum<{
+    /**
+     *Immediately dispatch a multi-signature call using a single approval from the caller.
+     *
+     *The dispatch origin for this call must be _Signed_.
+     *
+     *- `other_signatories`: The accounts (other than the sender) who are part of the
+     *multi-signature, but do not participate in the approval process.
+     *- `call`: The call to be executed.
+     *
+     *Result is equivalent to the dispatched result.
+     *
+     *## Complexity
+     *O(Z + C) where Z is the length of the call and C its execution weight.
+     */
+    "as_multi_threshold_1": Anonymize<I1nn1g2tudlpmk>;
+    /**
+     *Register approval for a dispatch to be made from a deterministic composite account if
+     *approved by a total of `threshold - 1` of `other_signatories`.
+     *
+     *If there are enough, then dispatch the call.
+     *
+     *Payment: `DepositBase` will be reserved if this is the first approval, plus
+     *`threshold` times `DepositFactor`. It is returned once this dispatch happens or
+     *is cancelled.
+     *
+     *The dispatch origin for this call must be _Signed_.
+     *
+     *- `threshold`: The total number of approvals for this dispatch before it is executed.
+     *- `other_signatories`: The accounts (other than the sender) who can approve this
+     *dispatch. May not be empty.
+     *- `maybe_timepoint`: If this is the first approval, then this must be `None`. If it is
+     *not the first approval, then it must be `Some`, with the timepoint (block number and
+     *transaction index) of the first approval transaction.
+     *- `call`: The call to be executed.
+     *
+     *NOTE: Unless this is the final approval, you will generally want to use
+     *`approve_as_multi` instead, since it only requires a hash of the call.
+     *
+     *Result is equivalent to the dispatched result if `threshold` is exactly `1`. Otherwise
+     *on success, result is `Ok` and the result from the interior call, if it was executed,
+     *may be found in the deposited `MultisigExecuted` event.
+     *
+     *## Complexity
+     *- `O(S + Z + Call)`.
+     *- Up to one balance-reserve or unreserve operation.
+     *- One passthrough operation, one insert, both `O(S)` where `S` is the number of
+     *  signatories. `S` is capped by `MaxSignatories`, with weight being proportional.
+     *- One call encode & hash, both of complexity `O(Z)` where `Z` is tx-len.
+     *- One encode & hash, both of complexity `O(S)`.
+     *- Up to one binary search and insert (`O(logS + S)`).
+     *- I/O: 1 read `O(S)`, up to 1 mutate `O(S)`. Up to one remove.
+     *- One event.
+     *- The weight of the `call`.
+     *- Storage: inserts one item, value size bounded by `MaxSignatories`, with a deposit
+     *  taken for its lifetime of `DepositBase + threshold * DepositFactor`.
+     */
+    "as_multi": Anonymize<I1bdlfq0v3c75a>;
+    /**
+     *Register approval for a dispatch to be made from a deterministic composite account if
+     *approved by a total of `threshold - 1` of `other_signatories`.
+     *
+     *Payment: `DepositBase` will be reserved if this is the first approval, plus
+     *`threshold` times `DepositFactor`. It is returned once this dispatch happens or
+     *is cancelled.
+     *
+     *The dispatch origin for this call must be _Signed_.
+     *
+     *- `threshold`: The total number of approvals for this dispatch before it is executed.
+     *- `other_signatories`: The accounts (other than the sender) who can approve this
+     *dispatch. May not be empty.
+     *- `maybe_timepoint`: If this is the first approval, then this must be `None`. If it is
+     *not the first approval, then it must be `Some`, with the timepoint (block number and
+     *transaction index) of the first approval transaction.
+     *- `call_hash`: The hash of the call to be executed.
+     *
+     *NOTE: If this is the final approval, you will want to use `as_multi` instead.
+     *
+     *## Complexity
+     *- `O(S)`.
+     *- Up to one balance-reserve or unreserve operation.
+     *- One passthrough operation, one insert, both `O(S)` where `S` is the number of
+     *  signatories. `S` is capped by `MaxSignatories`, with weight being proportional.
+     *- One encode & hash, both of complexity `O(S)`.
+     *- Up to one binary search and insert (`O(logS + S)`).
+     *- I/O: 1 read `O(S)`, up to 1 mutate `O(S)`. Up to one remove.
+     *- One event.
+     *- Storage: inserts one item, value size bounded by `MaxSignatories`, with a deposit
+     *  taken for its lifetime of `DepositBase + threshold * DepositFactor`.
+     */
+    "approve_as_multi": Anonymize<Ideaemvoneh309>;
+    /**
+     *Cancel a pre-existing, on-going multisig transaction. Any deposit reserved previously
+     *for this operation will be unreserved on success.
+     *
+     *The dispatch origin for this call must be _Signed_.
+     *
+     *- `threshold`: The total number of approvals for this dispatch before it is executed.
+     *- `other_signatories`: The accounts (other than the sender) who can approve this
+     *dispatch. May not be empty.
+     *- `timepoint`: The timepoint (block number and transaction index) of the first approval
+     *transaction for this dispatch.
+     *- `call_hash`: The hash of the call to be executed.
+     *
+     *## Complexity
+     *- `O(S)`.
+     *- Up to one balance-reserve or unreserve operation.
+     *- One passthrough operation, one insert, both `O(S)` where `S` is the number of
+     *  signatories. `S` is capped by `MaxSignatories`, with weight being proportional.
+     *- One encode & hash, both of complexity `O(S)`.
+     *- One event.
+     *- I/O: 1 read `O(S)`, one remove.
+     *- Storage: removes one item.
+     */
+    "cancel_as_multi": Anonymize<I3d9o9d7epp66v>;
+}>;
+export type I1nn1g2tudlpmk = {
+    "other_signatories": Anonymize<Ia2lhg7l2hilo3>;
+    "call": TxCallData;
+};
+export type I1bdlfq0v3c75a = {
+    "threshold": number;
+    "other_signatories": Anonymize<Ia2lhg7l2hilo3>;
+    "maybe_timepoint"?: Anonymize<I95jfd8j5cr5eh>;
+    "call": TxCallData;
+    "max_weight": Anonymize<I4q39t5hn830vp>;
+};
+export type I9t6cao9bgkfvn = AnonymousEnum<{
+    /**
+     *Dispatch the given `call` from an account that the sender is authorised for through
+     *`add_proxy`.
+     *
+     *The dispatch origin for this call must be _Signed_.
+     *
+     *Parameters:
+     *- `real`: The account that the proxy will make a call on behalf of.
+     *- `force_proxy_type`: Specify the exact proxy type to be used and checked for this call.
+     *- `call`: The call to be made by the `real` account.
+     */
+    "proxy": Anonymize<Ie6la13bctdep7>;
+    /**
+     *Register a proxy account for the sender that is able to make calls on its behalf.
+     *
+     *The dispatch origin for this call must be _Signed_.
+     *
+     *Parameters:
+     *- `proxy`: The account that the `caller` would like to make a proxy.
+     *- `proxy_type`: The permissions allowed for this proxy account.
+     *- `delay`: The announcement period required of the initial proxy. Will generally be
+     *zero.
+     */
+    "add_proxy": Anonymize<Iovrcu9bfelfq>;
+    /**
+     *Unregister a proxy account for the sender.
+     *
+     *The dispatch origin for this call must be _Signed_.
+     *
+     *Parameters:
+     *- `proxy`: The account that the `caller` would like to remove as a proxy.
+     *- `proxy_type`: The permissions currently enabled for the removed proxy account.
+     */
+    "remove_proxy": Anonymize<Iovrcu9bfelfq>;
+    /**
+     *Unregister all proxy accounts for the sender.
+     *
+     *The dispatch origin for this call must be _Signed_.
+     *
+     *WARNING: This may be called on accounts created by `pure`, however if done, then
+     *the unreserved fees will be inaccessible. **All access to this account will be lost.**
+     */
+    "remove_proxies": undefined;
+    /**
+     *Spawn a fresh new account that is guaranteed to be otherwise inaccessible, and
+     *initialize it with a proxy of `proxy_type` for `origin` sender.
+     *
+     *Requires a `Signed` origin.
+     *
+     *- `proxy_type`: The type of the proxy that the sender will be registered as over the
+     *new account. This will almost always be the most permissive `ProxyType` possible to
+     *allow for maximum flexibility.
+     *- `index`: A disambiguation index, in case this is called multiple times in the same
+     *transaction (e.g. with `utility::batch`). Unless you're using `batch` you probably just
+     *want to use `0`.
+     *- `delay`: The announcement period required of the initial proxy. Will generally be
+     *zero.
+     *
+     *Fails with `Duplicate` if this has already been called in this transaction, from the
+     *same sender, with the same parameters.
+     *
+     *Fails if there are insufficient funds to pay for deposit.
+     */
+    "create_pure": Anonymize<Iefr8jgtgfk8um>;
+    /**
+     *Removes a previously spawned pure proxy.
+     *
+     *WARNING: **All access to this account will be lost.** Any funds held in it will be
+     *inaccessible.
+     *
+     *Requires a `Signed` origin, and the sender account must have been created by a call to
+     *`pure` with corresponding parameters.
+     *
+     *- `spawner`: The account that originally called `pure` to create this account.
+     *- `index`: The disambiguation index originally passed to `pure`. Probably `0`.
+     *- `proxy_type`: The proxy type originally passed to `pure`.
+     *- `height`: The height of the chain when the call to `pure` was processed.
+     *- `ext_index`: The extrinsic index in which the call to `pure` was processed.
+     *
+     *Fails with `NoPermission` in case the caller is not a previously created pure
+     *account whose `pure` call has corresponding parameters.
+     */
+    "kill_pure": Anonymize<I3j05hul54uj7q>;
+    /**
+     *Publish the hash of a proxy-call that will be made in the future.
+     *
+     *This must be called some number of blocks before the corresponding `proxy` is attempted
+     *if the delay associated with the proxy relationship is greater than zero.
+     *
+     *No more than `MaxPending` announcements may be made at any one time.
+     *
+     *This will take a deposit of `AnnouncementDepositFactor` as well as
+     *`AnnouncementDepositBase` if there are no other pending announcements.
+     *
+     *The dispatch origin for this call must be _Signed_ and a proxy of `real`.
+     *
+     *Parameters:
+     *- `real`: The account that the proxy will make a call on behalf of.
+     *- `call_hash`: The hash of the call to be made by the `real` account.
+     */
+    "announce": Anonymize<I2eb501t8s6hsq>;
+    /**
+     *Remove a given announcement.
+     *
+     *May be called by a proxy account to remove a call they previously announced and return
+     *the deposit.
+     *
+     *The dispatch origin for this call must be _Signed_.
+     *
+     *Parameters:
+     *- `real`: The account that the proxy will make a call on behalf of.
+     *- `call_hash`: The hash of the call to be made by the `real` account.
+     */
+    "remove_announcement": Anonymize<I2eb501t8s6hsq>;
+    /**
+     *Remove the given announcement of a delegate.
+     *
+     *May be called by a target (proxied) account to remove a call that one of their delegates
+     *(`delegate`) has announced they want to execute. The deposit is returned.
+     *
+     *The dispatch origin for this call must be _Signed_.
+     *
+     *Parameters:
+     *- `delegate`: The account that previously announced the call.
+     *- `call_hash`: The hash of the call to be made.
+     */
+    "reject_announcement": Anonymize<Ianmuoljk2sk1u>;
+    /**
+     *Dispatch the given `call` from an account that the sender is authorized for through
+     *`add_proxy`.
+     *
+     *Removes any corresponding announcement(s).
+     *
+     *The dispatch origin for this call must be _Signed_.
+     *
+     *Parameters:
+     *- `real`: The account that the proxy will make a call on behalf of.
+     *- `force_proxy_type`: Specify the exact proxy type to be used and checked for this call.
+     *- `call`: The call to be made by the `real` account.
+     */
+    "proxy_announced": Anonymize<I4u40lq9ccfa38>;
+}>;
+export type Ie6la13bctdep7 = {
+    "real": MultiAddress;
+    "force_proxy_type"?: Anonymize<I7rk1n3vg3et43>;
+    "call": TxCallData;
+};
+export type I4u40lq9ccfa38 = {
+    "delegate": MultiAddress;
+    "real": MultiAddress;
+    "force_proxy_type"?: Anonymize<I7rk1n3vg3et43>;
+    "call": TxCallData;
+};
+export type I84851acvod2ic = AnonymousEnum<{
+    /**
+     *Issue a new class of fungible assets from a public origin.
+     *
+     *This new asset class has no assets initially and its owner is the origin.
+     *
+     *The origin must conform to the configured `CreateOrigin` and have sufficient funds free.
+     *
+     *Funds of sender are reserved by `AssetDeposit`.
+     *
+     *Parameters:
+     *- `id`: The identifier of the new asset. This must not be currently in use to identify
+     *an existing asset. If [`NextAssetId`] is set, then this must be equal to it.
+     *- `admin`: The admin of this class of assets. The admin is the initial address of each
+     *member of the asset class's admin team.
+     *- `min_balance`: The minimum balance of this new asset that any single account must
+     *have. If an account's balance is reduced below this, then it collapses to zero.
+     *
+     *Emits `Created` event when successful.
+     *
+     *Weight: `O(1)`
+     */
+    "create": Anonymize<Ic357tcepuvo5c>;
+    /**
+     *Issue a new class of fungible assets from a privileged origin.
+     *
+     *This new asset class has no assets initially.
+     *
+     *The origin must conform to `ForceOrigin`.
+     *
+     *Unlike `create`, no funds are reserved.
+     *
+     *- `id`: The identifier of the new asset. This must not be currently in use to identify
+     *an existing asset. If [`NextAssetId`] is set, then this must be equal to it.
+     *- `owner`: The owner of this class of assets. The owner has full superuser permissions
+     *over this asset, but may later change and configure the permissions using
+     *`transfer_ownership` and `set_team`.
+     *- `min_balance`: The minimum balance of this new asset that any single account must
+     *have. If an account's balance is reduced below this, then it collapses to zero.
+     *
+     *Emits `ForceCreated` event when successful.
+     *
+     *Weight: `O(1)`
+     */
+    "force_create": Anonymize<I2rnoam876ruhj>;
+    /**
+     *Start the process of destroying a fungible asset class.
+     *
+     *`start_destroy` is the first in a series of extrinsics that should be called, to allow
+     *destruction of an asset class.
+     *
+     *The origin must conform to `ForceOrigin` or must be `Signed` by the asset's `owner`.
+     *
+     *- `id`: The identifier of the asset to be destroyed. This must identify an existing
+     *  asset.
+     */
+    "start_destroy": Anonymize<Ic5b47dj4coa3r>;
+    /**
+     *Destroy all accounts associated with a given asset.
+     *
+     *`destroy_accounts` should only be called after `start_destroy` has been called, and the
+     *asset is in a `Destroying` state.
+     *
+     *Due to weight restrictions, this function may need to be called multiple times to fully
+     *destroy all accounts. It will destroy `RemoveItemsLimit` accounts at a time.
+     *
+     *- `id`: The identifier of the asset to be destroyed. This must identify an existing
+     *  asset.
+     *
+     *Each call emits the `Event::DestroyedAccounts` event.
+     */
+    "destroy_accounts": Anonymize<Ic5b47dj4coa3r>;
+    /**
+     *Destroy all approvals associated with a given asset up to the max (T::RemoveItemsLimit).
+     *
+     *`destroy_approvals` should only be called after `start_destroy` has been called, and the
+     *asset is in a `Destroying` state.
+     *
+     *Due to weight restrictions, this function may need to be called multiple times to fully
+     *destroy all approvals. It will destroy `RemoveItemsLimit` approvals at a time.
+     *
+     *- `id`: The identifier of the asset to be destroyed. This must identify an existing
+     *  asset.
+     *
+     *Each call emits the `Event::DestroyedApprovals` event.
+     */
+    "destroy_approvals": Anonymize<Ic5b47dj4coa3r>;
+    /**
+     *Complete destroying asset and unreserve currency.
+     *
+     *`finish_destroy` should only be called after `start_destroy` has been called, and the
+     *asset is in a `Destroying` state. All accounts or approvals should be destroyed before
+     *hand.
+     *
+     *- `id`: The identifier of the asset to be destroyed. This must identify an existing
+     *  asset.
+     *
+     *Each successful call emits the `Event::Destroyed` event.
+     */
+    "finish_destroy": Anonymize<Ic5b47dj4coa3r>;
+    /**
+     *Mint assets of a particular class.
+     *
+     *The origin must be Signed and the sender must be the Issuer of the asset `id`.
+     *
+     *- `id`: The identifier of the asset to have some amount minted.
+     *- `beneficiary`: The account to be credited with the minted assets.
+     *- `amount`: The amount of the asset to be minted.
+     *
+     *Emits `Issued` event when successful.
+     *
+     *Weight: `O(1)`
+     *Modes: Pre-existing balance of `beneficiary`; Account pre-existence of `beneficiary`.
+     */
+    "mint": Anonymize<Ib3qnc19gu633c>;
+    /**
+     *Reduce the balance of `who` by as much as possible up to `amount` assets of `id`.
+     *
+     *Origin must be Signed and the sender should be the Manager of the asset `id`.
+     *
+     *Bails with `NoAccount` if the `who` is already dead.
+     *
+     *- `id`: The identifier of the asset to have some amount burned.
+     *- `who`: The account to be debited from.
+     *- `amount`: The maximum amount by which `who`'s balance should be reduced.
+     *
+     *Emits `Burned` with the actual amount burned. If this takes the balance to below the
+     *minimum for the asset, then the amount burned is increased to take it to zero.
+     *
+     *Weight: `O(1)`
+     *Modes: Post-existence of `who`; Pre & post Zombie-status of `who`.
+     */
+    "burn": Anonymize<Ifira6u9hi7cu1>;
+    /**
+     *Move some assets from the sender account to another.
+     *
+     *Origin must be Signed.
+     *
+     *- `id`: The identifier of the asset to have some amount transferred.
+     *- `target`: The account to be credited.
+     *- `amount`: The amount by which the sender's balance of assets should be reduced and
+     *`target`'s balance increased. The amount actually transferred may be slightly greater in
+     *the case that the transfer would otherwise take the sender balance above zero but below
+     *the minimum balance. Must be greater than zero.
+     *
+     *Emits `Transferred` with the actual amount transferred. If this takes the source balance
+     *to below the minimum for the asset, then the amount transferred is increased to take it
+     *to zero.
+     *
+     *Weight: `O(1)`
+     *Modes: Pre-existence of `target`; Post-existence of sender; Account pre-existence of
+     *`target`.
+     */
+    "transfer": Anonymize<I72tqocvdoqfff>;
+    /**
+     *Move some assets from the sender account to another, keeping the sender account alive.
+     *
+     *Origin must be Signed.
+     *
+     *- `id`: The identifier of the asset to have some amount transferred.
+     *- `target`: The account to be credited.
+     *- `amount`: The amount by which the sender's balance of assets should be reduced and
+     *`target`'s balance increased. The amount actually transferred may be slightly greater in
+     *the case that the transfer would otherwise take the sender balance above zero but below
+     *the minimum balance. Must be greater than zero.
+     *
+     *Emits `Transferred` with the actual amount transferred. If this takes the source balance
+     *to below the minimum for the asset, then the amount transferred is increased to take it
+     *to zero.
+     *
+     *Weight: `O(1)`
+     *Modes: Pre-existence of `target`; Post-existence of sender; Account pre-existence of
+     *`target`.
+     */
+    "transfer_keep_alive": Anonymize<I72tqocvdoqfff>;
+    /**
+     *Move some assets from one account to another.
+     *
+     *Origin must be Signed and the sender should be the Admin of the asset `id`.
+     *
+     *- `id`: The identifier of the asset to have some amount transferred.
+     *- `source`: The account to be debited.
+     *- `dest`: The account to be credited.
+     *- `amount`: The amount by which the `source`'s balance of assets should be reduced and
+     *`dest`'s balance increased. The amount actually transferred may be slightly greater in
+     *the case that the transfer would otherwise take the `source` balance above zero but
+     *below the minimum balance. Must be greater than zero.
+     *
+     *Emits `Transferred` with the actual amount transferred. If this takes the source balance
+     *to below the minimum for the asset, then the amount transferred is increased to take it
+     *to zero.
+     *
+     *Weight: `O(1)`
+     *Modes: Pre-existence of `dest`; Post-existence of `source`; Account pre-existence of
+     *`dest`.
+     */
+    "force_transfer": Anonymize<I2i27f3sfmvc05>;
+    /**
+     *Disallow further unprivileged transfers of an asset `id` from an account `who`. `who`
+     *must already exist as an entry in `Account`s of the asset. If you want to freeze an
+     *account that does not have an entry, use `touch_other` first.
+     *
+     *Origin must be Signed and the sender should be the Freezer of the asset `id`.
+     *
+     *- `id`: The identifier of the asset to be frozen.
+     *- `who`: The account to be frozen.
+     *
+     *Emits `Frozen`.
+     *
+     *Weight: `O(1)`
+     */
+    "freeze": Anonymize<I1nlrtd1epki2d>;
+    /**
+     *Allow unprivileged transfers to and from an account again.
+     *
+     *Origin must be Signed and the sender should be the Admin of the asset `id`.
+     *
+     *- `id`: The identifier of the asset to be frozen.
+     *- `who`: The account to be unfrozen.
+     *
+     *Emits `Thawed`.
+     *
+     *Weight: `O(1)`
+     */
+    "thaw": Anonymize<I1nlrtd1epki2d>;
+    /**
+     *Disallow further unprivileged transfers for the asset class.
+     *
+     *Origin must be Signed and the sender should be the Freezer of the asset `id`.
+     *
+     *- `id`: The identifier of the asset to be frozen.
+     *
+     *Emits `Frozen`.
+     *
+     *Weight: `O(1)`
+     */
+    "freeze_asset": Anonymize<Ic5b47dj4coa3r>;
+    /**
+     *Allow unprivileged transfers for the asset again.
+     *
+     *Origin must be Signed and the sender should be the Admin of the asset `id`.
+     *
+     *- `id`: The identifier of the asset to be thawed.
+     *
+     *Emits `Thawed`.
+     *
+     *Weight: `O(1)`
+     */
+    "thaw_asset": Anonymize<Ic5b47dj4coa3r>;
+    /**
+     *Change the Owner of an asset.
+     *
+     *Origin must be Signed and the sender should be the Owner of the asset `id`.
+     *
+     *- `id`: The identifier of the asset.
+     *- `owner`: The new Owner of this asset.
+     *
+     *Emits `OwnerChanged`.
+     *
+     *Weight: `O(1)`
+     */
+    "transfer_ownership": Anonymize<I3abtumcmempjs>;
+    /**
+     *Change the Issuer, Admin and Freezer of an asset.
+     *
+     *Origin must be Signed and the sender should be the Owner of the asset `id`.
+     *
+     *- `id`: The identifier of the asset to be frozen.
+     *- `issuer`: The new Issuer of this asset.
+     *- `admin`: The new Admin of this asset.
+     *- `freezer`: The new Freezer of this asset.
+     *
+     *Emits `TeamChanged`.
+     *
+     *Weight: `O(1)`
+     */
+    "set_team": Anonymize<Id81m8flopt8ha>;
+    /**
+     *Set the metadata for an asset.
+     *
+     *Origin must be Signed and the sender should be the Owner of the asset `id`.
+     *
+     *Funds of sender are reserved according to the formula:
+     *`MetadataDepositBase + MetadataDepositPerByte * (name.len + symbol.len)` taking into
+     *account any already reserved funds.
+     *
+     *- `id`: The identifier of the asset to update.
+     *- `name`: The user friendly name of this asset. Limited in length by `StringLimit`.
+     *- `symbol`: The exchange symbol for this asset. Limited in length by `StringLimit`.
+     *- `decimals`: The number of decimals this asset uses to represent one unit.
+     *
+     *Emits `MetadataSet`.
+     *
+     *Weight: `O(1)`
+     */
+    "set_metadata": Anonymize<I8hff7chabggkd>;
+    /**
+     *Clear the metadata for an asset.
+     *
+     *Origin must be Signed and the sender should be the Owner of the asset `id`.
+     *
+     *Any deposit is freed for the asset owner.
+     *
+     *- `id`: The identifier of the asset to clear.
+     *
+     *Emits `MetadataCleared`.
+     *
+     *Weight: `O(1)`
+     */
+    "clear_metadata": Anonymize<Ic5b47dj4coa3r>;
+    /**
+     *Force the metadata for an asset to some value.
+     *
+     *Origin must be ForceOrigin.
+     *
+     *Any deposit is left alone.
+     *
+     *- `id`: The identifier of the asset to update.
+     *- `name`: The user friendly name of this asset. Limited in length by `StringLimit`.
+     *- `symbol`: The exchange symbol for this asset. Limited in length by `StringLimit`.
+     *- `decimals`: The number of decimals this asset uses to represent one unit.
+     *
+     *Emits `MetadataSet`.
+     *
+     *Weight: `O(N + S)` where N and S are the length of the name and symbol respectively.
+     */
+    "force_set_metadata": Anonymize<I49i39mtj1ivbs>;
+    /**
+     *Clear the metadata for an asset.
+     *
+     *Origin must be ForceOrigin.
+     *
+     *Any deposit is returned.
+     *
+     *- `id`: The identifier of the asset to clear.
+     *
+     *Emits `MetadataCleared`.
+     *
+     *Weight: `O(1)`
+     */
+    "force_clear_metadata": Anonymize<Ic5b47dj4coa3r>;
+    /**
+     *Alter the attributes of a given asset.
+     *
+     *Origin must be `ForceOrigin`.
+     *
+     *- `id`: The identifier of the asset.
+     *- `owner`: The new Owner of this asset.
+     *- `issuer`: The new Issuer of this asset.
+     *- `admin`: The new Admin of this asset.
+     *- `freezer`: The new Freezer of this asset.
+     *- `min_balance`: The minimum balance of this new asset that any single account must
+     *have. If an account's balance is reduced below this, then it collapses to zero.
+     *- `is_sufficient`: Whether a non-zero balance of this asset is deposit of sufficient
+     *value to account for the state bloat associated with its balance storage. If set to
+     *`true`, then non-zero balances may be stored without a `consumer` reference (and thus
+     *an ED in the Balances pallet or whatever else is used to control user-account state
+     *growth).
+     *- `is_frozen`: Whether this asset class is frozen except for permissioned/admin
+     *instructions.
+     *
+     *Emits `AssetStatusChanged` with the identity of the asset.
+     *
+     *Weight: `O(1)`
+     */
+    "force_asset_status": Anonymize<Ifkr2kcak2vto1>;
+    /**
+     *Approve an amount of asset for transfer by a delegated third-party account.
+     *
+     *Origin must be Signed.
+     *
+     *Ensures that `ApprovalDeposit` worth of `Currency` is reserved from signing account
+     *for the purpose of holding the approval. If some non-zero amount of assets is already
+     *approved from signing account to `delegate`, then it is topped up or unreserved to
+     *meet the right value.
+     *
+     *NOTE: The signing account does not need to own `amount` of assets at the point of
+     *making this call.
+     *
+     *- `id`: The identifier of the asset.
+     *- `delegate`: The account to delegate permission to transfer asset.
+     *- `amount`: The amount of asset that may be transferred by `delegate`. If there is
+     *already an approval in place, then this acts additively.
+     *
+     *Emits `ApprovedTransfer` on success.
+     *
+     *Weight: `O(1)`
+     */
+    "approve_transfer": Anonymize<I1ju6r8q0cs9jt>;
+    /**
+     *Cancel all of some asset approved for delegated transfer by a third-party account.
+     *
+     *Origin must be Signed and there must be an approval in place between signer and
+     *`delegate`.
+     *
+     *Unreserves any deposit previously reserved by `approve_transfer` for the approval.
+     *
+     *- `id`: The identifier of the asset.
+     *- `delegate`: The account delegated permission to transfer asset.
+     *
+     *Emits `ApprovalCancelled` on success.
+     *
+     *Weight: `O(1)`
+     */
+    "cancel_approval": Anonymize<I4kpeq6j7cd5bu>;
+    /**
+     *Cancel all of some asset approved for delegated transfer by a third-party account.
+     *
+     *Origin must be either ForceOrigin or Signed origin with the signer being the Admin
+     *account of the asset `id`.
+     *
+     *Unreserves any deposit previously reserved by `approve_transfer` for the approval.
+     *
+     *- `id`: The identifier of the asset.
+     *- `delegate`: The account delegated permission to transfer asset.
+     *
+     *Emits `ApprovalCancelled` on success.
+     *
+     *Weight: `O(1)`
+     */
+    "force_cancel_approval": Anonymize<I5na1ka76k6811>;
+    /**
+     *Transfer some asset balance from a previously delegated account to some third-party
+     *account.
+     *
+     *Origin must be Signed and there must be an approval in place by the `owner` to the
+     *signer.
+     *
+     *If the entire amount approved for transfer is transferred, then any deposit previously
+     *reserved by `approve_transfer` is unreserved.
+     *
+     *- `id`: The identifier of the asset.
+     *- `owner`: The account which previously approved for a transfer of at least `amount` and
+     *from which the asset balance will be withdrawn.
+     *- `destination`: The account to which the asset balance of `amount` will be transferred.
+     *- `amount`: The amount of assets to transfer.
+     *
+     *Emits `TransferredApproved` on success.
+     *
+     *Weight: `O(1)`
+     */
+    "transfer_approved": Anonymize<I59mhdb9omdqfa>;
+    /**
+     *Create an asset account for non-provider assets.
+     *
+     *A deposit will be taken from the signer account.
+     *
+     *- `origin`: Must be Signed; the signer account must have sufficient funds for a deposit
+     *  to be taken.
+     *- `id`: The identifier of the asset for the account to be created.
+     *
+     *Emits `Touched` event when successful.
+     */
+    "touch": Anonymize<Ic5b47dj4coa3r>;
+    /**
+     *Return the deposit (if any) of an asset account or a consumer reference (if any) of an
+     *account.
+     *
+     *The origin must be Signed.
+     *
+     *- `id`: The identifier of the asset for which the caller would like the deposit
+     *  refunded.
+     *- `allow_burn`: If `true` then assets may be destroyed in order to complete the refund.
+     *
+     *Emits `Refunded` event when successful.
+     */
+    "refund": Anonymize<I9vl5kpk0fpakt>;
+    /**
+     *Sets the minimum balance of an asset.
+     *
+     *Only works if there aren't any accounts that are holding the asset or if
+     *the new value of `min_balance` is less than the old one.
+     *
+     *Origin must be Signed and the sender has to be the Owner of the
+     *asset `id`.
+     *
+     *- `id`: The identifier of the asset.
+     *- `min_balance`: The new value of `min_balance`.
+     *
+     *Emits `AssetMinBalanceChanged` event when successful.
+     */
+    "set_min_balance": Anonymize<I717jt61hu19b4>;
+    /**
+     *Create an asset account for `who`.
+     *
+     *A deposit will be taken from the signer account.
+     *
+     *- `origin`: Must be Signed by `Freezer` or `Admin` of the asset `id`; the signer account
+     *  must have sufficient funds for a deposit to be taken.
+     *- `id`: The identifier of the asset for the account to be created.
+     *- `who`: The account to be created.
+     *
+     *Emits `Touched` event when successful.
+     */
+    "touch_other": Anonymize<I1nlrtd1epki2d>;
+    /**
+     *Return the deposit (if any) of a target asset account. Useful if you are the depositor.
+     *
+     *The origin must be Signed and either the account owner, depositor, or asset `Admin`. In
+     *order to burn a non-zero balance of the asset, the caller must be the account and should
+     *use `refund`.
+     *
+     *- `id`: The identifier of the asset for the account holding a deposit.
+     *- `who`: The account to refund.
+     *
+     *Emits `Refunded` event when successful.
+     */
+    "refund_other": Anonymize<I1nlrtd1epki2d>;
+    /**
+     *Disallow further unprivileged transfers of an asset `id` to and from an account `who`.
+     *
+     *Origin must be Signed and the sender should be the Freezer of the asset `id`.
+     *
+     *- `id`: The identifier of the account's asset.
+     *- `who`: The account to be unblocked.
+     *
+     *Emits `Blocked`.
+     *
+     *Weight: `O(1)`
+     */
+    "block": Anonymize<I1nlrtd1epki2d>;
+    /**
+     *Transfer the entire transferable balance from the caller asset account.
+     *
+     *NOTE: This function only attempts to transfer _transferable_ balances. This means that
+     *any held, frozen, or minimum balance (when `keep_alive` is `true`), will not be
+     *transferred by this function. To ensure that this function results in a killed account,
+     *you might need to prepare the account by removing any reference counters, storage
+     *deposits, etc...
+     *
+     *The dispatch origin of this call must be Signed.
+     *
+     *- `id`: The identifier of the asset for the account holding a deposit.
+     *- `dest`: The recipient of the transfer.
+     *- `keep_alive`: A boolean to determine if the `transfer_all` operation should send all
+     *  of the funds the asset account has, causing the sender asset account to be killed
+     *  (false), or transfer everything except at least the minimum balance, which will
+     *  guarantee to keep the sender asset account alive (true).
+     */
+    "transfer_all": Anonymize<I7f7v8192r1lmq>;
+}>;
+export type I7f7v8192r1lmq = {
+    "id": number;
+    "dest": MultiAddress;
+    "keep_alive": boolean;
+};
+export type I1botoq1mmhfag = AnonymousEnum<{
+    /**
+     *Issue a new class of fungible assets from a public origin.
+     *
+     *This new asset class has no assets initially and its owner is the origin.
+     *
+     *The origin must conform to the configured `CreateOrigin` and have sufficient funds free.
+     *
+     *Funds of sender are reserved by `AssetDeposit`.
+     *
+     *Parameters:
+     *- `id`: The identifier of the new asset. This must not be currently in use to identify
+     *an existing asset. If [`NextAssetId`] is set, then this must be equal to it.
+     *- `admin`: The admin of this class of assets. The admin is the initial address of each
+     *member of the asset class's admin team.
+     *- `min_balance`: The minimum balance of this new asset that any single account must
+     *have. If an account's balance is reduced below this, then it collapses to zero.
+     *
+     *Emits `Created` event when successful.
+     *
+     *Weight: `O(1)`
+     */
+    "create": Anonymize<I7t2thek61ghou>;
+    /**
+     *Issue a new class of fungible assets from a privileged origin.
+     *
+     *This new asset class has no assets initially.
+     *
+     *The origin must conform to `ForceOrigin`.
+     *
+     *Unlike `create`, no funds are reserved.
+     *
+     *- `id`: The identifier of the new asset. This must not be currently in use to identify
+     *an existing asset. If [`NextAssetId`] is set, then this must be equal to it.
+     *- `owner`: The owner of this class of assets. The owner has full superuser permissions
+     *over this asset, but may later change and configure the permissions using
+     *`transfer_ownership` and `set_team`.
+     *- `min_balance`: The minimum balance of this new asset that any single account must
+     *have. If an account's balance is reduced below this, then it collapses to zero.
+     *
+     *Emits `ForceCreated` event when successful.
+     *
+     *Weight: `O(1)`
+     */
+    "force_create": Anonymize<I61tdrsafr1vf3>;
+    /**
+     *Start the process of destroying a fungible asset class.
+     *
+     *`start_destroy` is the first in a series of extrinsics that should be called, to allow
+     *destruction of an asset class.
+     *
+     *The origin must conform to `ForceOrigin` or must be `Signed` by the asset's `owner`.
+     *
+     *- `id`: The identifier of the asset to be destroyed. This must identify an existing
+     *  asset.
+     */
+    "start_destroy": Anonymize<Ibsk5g3rhm45pu>;
+    /**
+     *Destroy all accounts associated with a given asset.
+     *
+     *`destroy_accounts` should only be called after `start_destroy` has been called, and the
+     *asset is in a `Destroying` state.
+     *
+     *Due to weight restrictions, this function may need to be called multiple times to fully
+     *destroy all accounts. It will destroy `RemoveItemsLimit` accounts at a time.
+     *
+     *- `id`: The identifier of the asset to be destroyed. This must identify an existing
+     *  asset.
+     *
+     *Each call emits the `Event::DestroyedAccounts` event.
+     */
+    "destroy_accounts": Anonymize<Ibsk5g3rhm45pu>;
+    /**
+     *Destroy all approvals associated with a given asset up to the max (T::RemoveItemsLimit).
+     *
+     *`destroy_approvals` should only be called after `start_destroy` has been called, and the
+     *asset is in a `Destroying` state.
+     *
+     *Due to weight restrictions, this function may need to be called multiple times to fully
+     *destroy all approvals. It will destroy `RemoveItemsLimit` approvals at a time.
+     *
+     *- `id`: The identifier of the asset to be destroyed. This must identify an existing
+     *  asset.
+     *
+     *Each call emits the `Event::DestroyedApprovals` event.
+     */
+    "destroy_approvals": Anonymize<Ibsk5g3rhm45pu>;
+    /**
+     *Complete destroying asset and unreserve currency.
+     *
+     *`finish_destroy` should only be called after `start_destroy` has been called, and the
+     *asset is in a `Destroying` state. All accounts or approvals should be destroyed before
+     *hand.
+     *
+     *- `id`: The identifier of the asset to be destroyed. This must identify an existing
+     *  asset.
+     *
+     *Each successful call emits the `Event::Destroyed` event.
+     */
+    "finish_destroy": Anonymize<Ibsk5g3rhm45pu>;
+    /**
+     *Mint assets of a particular class.
+     *
+     *The origin must be Signed and the sender must be the Issuer of the asset `id`.
+     *
+     *- `id`: The identifier of the asset to have some amount minted.
+     *- `beneficiary`: The account to be credited with the minted assets.
+     *- `amount`: The amount of the asset to be minted.
+     *
+     *Emits `Issued` event when successful.
+     *
+     *Weight: `O(1)`
+     *Modes: Pre-existing balance of `beneficiary`; Account pre-existence of `beneficiary`.
+     */
+    "mint": Anonymize<Icfoe9q8d4vs8f>;
+    /**
+     *Reduce the balance of `who` by as much as possible up to `amount` assets of `id`.
+     *
+     *Origin must be Signed and the sender should be the Manager of the asset `id`.
+     *
+     *Bails with `NoAccount` if the `who` is already dead.
+     *
+     *- `id`: The identifier of the asset to have some amount burned.
+     *- `who`: The account to be debited from.
+     *- `amount`: The maximum amount by which `who`'s balance should be reduced.
+     *
+     *Emits `Burned` with the actual amount burned. If this takes the balance to below the
+     *minimum for the asset, then the amount burned is increased to take it to zero.
+     *
+     *Weight: `O(1)`
+     *Modes: Post-existence of `who`; Pre & post Zombie-status of `who`.
+     */
+    "burn": Anonymize<Ibrfmvjrg4trnb>;
+    /**
+     *Move some assets from the sender account to another.
+     *
+     *Origin must be Signed.
+     *
+     *- `id`: The identifier of the asset to have some amount transferred.
+     *- `target`: The account to be credited.
+     *- `amount`: The amount by which the sender's balance of assets should be reduced and
+     *`target`'s balance increased. The amount actually transferred may be slightly greater in
+     *the case that the transfer would otherwise take the sender balance above zero but below
+     *the minimum balance. Must be greater than zero.
+     *
+     *Emits `Transferred` with the actual amount transferred. If this takes the source balance
+     *to below the minimum for the asset, then the amount transferred is increased to take it
+     *to zero.
+     *
+     *Weight: `O(1)`
+     *Modes: Pre-existence of `target`; Post-existence of sender; Account pre-existence of
+     *`target`.
+     */
+    "transfer": Anonymize<Iedih7t34maii9>;
+    /**
+     *Move some assets from the sender account to another, keeping the sender account alive.
+     *
+     *Origin must be Signed.
+     *
+     *- `id`: The identifier of the asset to have some amount transferred.
+     *- `target`: The account to be credited.
+     *- `amount`: The amount by which the sender's balance of assets should be reduced and
+     *`target`'s balance increased. The amount actually transferred may be slightly greater in
+     *the case that the transfer would otherwise take the sender balance above zero but below
+     *the minimum balance. Must be greater than zero.
+     *
+     *Emits `Transferred` with the actual amount transferred. If this takes the source balance
+     *to below the minimum for the asset, then the amount transferred is increased to take it
+     *to zero.
+     *
+     *Weight: `O(1)`
+     *Modes: Pre-existence of `target`; Post-existence of sender; Account pre-existence of
+     *`target`.
+     */
+    "transfer_keep_alive": Anonymize<Iedih7t34maii9>;
+    /**
+     *Move some assets from one account to another.
+     *
+     *Origin must be Signed and the sender should be the Admin of the asset `id`.
+     *
+     *- `id`: The identifier of the asset to have some amount transferred.
+     *- `source`: The account to be debited.
+     *- `dest`: The account to be credited.
+     *- `amount`: The amount by which the `source`'s balance of assets should be reduced and
+     *`dest`'s balance increased. The amount actually transferred may be slightly greater in
+     *the case that the transfer would otherwise take the `source` balance above zero but
+     *below the minimum balance. Must be greater than zero.
+     *
+     *Emits `Transferred` with the actual amount transferred. If this takes the source balance
+     *to below the minimum for the asset, then the amount transferred is increased to take it
+     *to zero.
+     *
+     *Weight: `O(1)`
+     *Modes: Pre-existence of `dest`; Post-existence of `source`; Account pre-existence of
+     *`dest`.
+     */
+    "force_transfer": Anonymize<I4e902qbfel1f1>;
+    /**
+     *Disallow further unprivileged transfers of an asset `id` from an account `who`. `who`
+     *must already exist as an entry in `Account`s of the asset. If you want to freeze an
+     *account that does not have an entry, use `touch_other` first.
+     *
+     *Origin must be Signed and the sender should be the Freezer of the asset `id`.
+     *
+     *- `id`: The identifier of the asset to be frozen.
+     *- `who`: The account to be frozen.
+     *
+     *Emits `Frozen`.
+     *
+     *Weight: `O(1)`
+     */
+    "freeze": Anonymize<Ie4met0joi8sv0>;
+    /**
+     *Allow unprivileged transfers to and from an account again.
+     *
+     *Origin must be Signed and the sender should be the Admin of the asset `id`.
+     *
+     *- `id`: The identifier of the asset to be frozen.
+     *- `who`: The account to be unfrozen.
+     *
+     *Emits `Thawed`.
+     *
+     *Weight: `O(1)`
+     */
+    "thaw": Anonymize<Ie4met0joi8sv0>;
+    /**
+     *Disallow further unprivileged transfers for the asset class.
+     *
+     *Origin must be Signed and the sender should be the Freezer of the asset `id`.
+     *
+     *- `id`: The identifier of the asset to be frozen.
+     *
+     *Emits `Frozen`.
+     *
+     *Weight: `O(1)`
+     */
+    "freeze_asset": Anonymize<Ibsk5g3rhm45pu>;
+    /**
+     *Allow unprivileged transfers for the asset again.
+     *
+     *Origin must be Signed and the sender should be the Admin of the asset `id`.
+     *
+     *- `id`: The identifier of the asset to be thawed.
+     *
+     *Emits `Thawed`.
+     *
+     *Weight: `O(1)`
+     */
+    "thaw_asset": Anonymize<Ibsk5g3rhm45pu>;
+    /**
+     *Change the Owner of an asset.
+     *
+     *Origin must be Signed and the sender should be the Owner of the asset `id`.
+     *
+     *- `id`: The identifier of the asset.
+     *- `owner`: The new Owner of this asset.
+     *
+     *Emits `OwnerChanged`.
+     *
+     *Weight: `O(1)`
+     */
+    "transfer_ownership": Anonymize<I1t8vq6a06ohhu>;
+    /**
+     *Change the Issuer, Admin and Freezer of an asset.
+     *
+     *Origin must be Signed and the sender should be the Owner of the asset `id`.
+     *
+     *- `id`: The identifier of the asset to be frozen.
+     *- `issuer`: The new Issuer of this asset.
+     *- `admin`: The new Admin of this asset.
+     *- `freezer`: The new Freezer of this asset.
+     *
+     *Emits `TeamChanged`.
+     *
+     *Weight: `O(1)`
+     */
+    "set_team": Anonymize<Icvt3pdunbinm7>;
+    /**
+     *Set the metadata for an asset.
+     *
+     *Origin must be Signed and the sender should be the Owner of the asset `id`.
+     *
+     *Funds of sender are reserved according to the formula:
+     *`MetadataDepositBase + MetadataDepositPerByte * (name.len + symbol.len)` taking into
+     *account any already reserved funds.
+     *
+     *- `id`: The identifier of the asset to update.
+     *- `name`: The user friendly name of this asset. Limited in length by `StringLimit`.
+     *- `symbol`: The exchange symbol for this asset. Limited in length by `StringLimit`.
+     *- `decimals`: The number of decimals this asset uses to represent one unit.
+     *
+     *Emits `MetadataSet`.
+     *
+     *Weight: `O(1)`
+     */
+    "set_metadata": Anonymize<I9ui3n41balr2q>;
+    /**
+     *Clear the metadata for an asset.
+     *
+     *Origin must be Signed and the sender should be the Owner of the asset `id`.
+     *
+     *Any deposit is freed for the asset owner.
+     *
+     *- `id`: The identifier of the asset to clear.
+     *
+     *Emits `MetadataCleared`.
+     *
+     *Weight: `O(1)`
+     */
+    "clear_metadata": Anonymize<Ibsk5g3rhm45pu>;
+    /**
+     *Force the metadata for an asset to some value.
+     *
+     *Origin must be ForceOrigin.
+     *
+     *Any deposit is left alone.
+     *
+     *- `id`: The identifier of the asset to update.
+     *- `name`: The user friendly name of this asset. Limited in length by `StringLimit`.
+     *- `symbol`: The exchange symbol for this asset. Limited in length by `StringLimit`.
+     *- `decimals`: The number of decimals this asset uses to represent one unit.
+     *
+     *Emits `MetadataSet`.
+     *
+     *Weight: `O(N + S)` where N and S are the length of the name and symbol respectively.
+     */
+    "force_set_metadata": Anonymize<I89sl7btgl24g2>;
+    /**
+     *Clear the metadata for an asset.
+     *
+     *Origin must be ForceOrigin.
+     *
+     *Any deposit is returned.
+     *
+     *- `id`: The identifier of the asset to clear.
+     *
+     *Emits `MetadataCleared`.
+     *
+     *Weight: `O(1)`
+     */
+    "force_clear_metadata": Anonymize<Ibsk5g3rhm45pu>;
+    /**
+     *Alter the attributes of a given asset.
+     *
+     *Origin must be `ForceOrigin`.
+     *
+     *- `id`: The identifier of the asset.
+     *- `owner`: The new Owner of this asset.
+     *- `issuer`: The new Issuer of this asset.
+     *- `admin`: The new Admin of this asset.
+     *- `freezer`: The new Freezer of this asset.
+     *- `min_balance`: The minimum balance of this new asset that any single account must
+     *have. If an account's balance is reduced below this, then it collapses to zero.
+     *- `is_sufficient`: Whether a non-zero balance of this asset is deposit of sufficient
+     *value to account for the state bloat associated with its balance storage. If set to
+     *`true`, then non-zero balances may be stored without a `consumer` reference (and thus
+     *an ED in the Balances pallet or whatever else is used to control user-account state
+     *growth).
+     *- `is_frozen`: Whether this asset class is frozen except for permissioned/admin
+     *instructions.
+     *
+     *Emits `AssetStatusChanged` with the identity of the asset.
+     *
+     *Weight: `O(1)`
+     */
+    "force_asset_status": Anonymize<I3u6g26k9kn96u>;
+    /**
+     *Approve an amount of asset for transfer by a delegated third-party account.
+     *
+     *Origin must be Signed.
+     *
+     *Ensures that `ApprovalDeposit` worth of `Currency` is reserved from signing account
+     *for the purpose of holding the approval. If some non-zero amount of assets is already
+     *approved from signing account to `delegate`, then it is topped up or unreserved to
+     *meet the right value.
+     *
+     *NOTE: The signing account does not need to own `amount` of assets at the point of
+     *making this call.
+     *
+     *- `id`: The identifier of the asset.
+     *- `delegate`: The account to delegate permission to transfer asset.
+     *- `amount`: The amount of asset that may be transferred by `delegate`. If there is
+     *already an approval in place, then this acts additively.
+     *
+     *Emits `ApprovedTransfer` on success.
+     *
+     *Weight: `O(1)`
+     */
+    "approve_transfer": Anonymize<If1invp94rsjms>;
+    /**
+     *Cancel all of some asset approved for delegated transfer by a third-party account.
+     *
+     *Origin must be Signed and there must be an approval in place between signer and
+     *`delegate`.
+     *
+     *Unreserves any deposit previously reserved by `approve_transfer` for the approval.
+     *
+     *- `id`: The identifier of the asset.
+     *- `delegate`: The account delegated permission to transfer asset.
+     *
+     *Emits `ApprovalCancelled` on success.
+     *
+     *Weight: `O(1)`
+     */
+    "cancel_approval": Anonymize<Ie5nc19gtiv5sv>;
+    /**
+     *Cancel all of some asset approved for delegated transfer by a third-party account.
+     *
+     *Origin must be either ForceOrigin or Signed origin with the signer being the Admin
+     *account of the asset `id`.
+     *
+     *Unreserves any deposit previously reserved by `approve_transfer` for the approval.
+     *
+     *- `id`: The identifier of the asset.
+     *- `delegate`: The account delegated permission to transfer asset.
+     *
+     *Emits `ApprovalCancelled` on success.
+     *
+     *Weight: `O(1)`
+     */
+    "force_cancel_approval": Anonymize<Iald3dgvt1hjkb>;
+    /**
+     *Transfer some asset balance from a previously delegated account to some third-party
+     *account.
+     *
+     *Origin must be Signed and there must be an approval in place by the `owner` to the
+     *signer.
+     *
+     *If the entire amount approved for transfer is transferred, then any deposit previously
+     *reserved by `approve_transfer` is unreserved.
+     *
+     *- `id`: The identifier of the asset.
+     *- `owner`: The account which previously approved for a transfer of at least `amount` and
+     *from which the asset balance will be withdrawn.
+     *- `destination`: The account to which the asset balance of `amount` will be transferred.
+     *- `amount`: The amount of assets to transfer.
+     *
+     *Emits `TransferredApproved` on success.
+     *
+     *Weight: `O(1)`
+     */
+    "transfer_approved": Anonymize<Iurrhahet4gno>;
+    /**
+     *Create an asset account for non-provider assets.
+     *
+     *A deposit will be taken from the signer account.
+     *
+     *- `origin`: Must be Signed; the signer account must have sufficient funds for a deposit
+     *  to be taken.
+     *- `id`: The identifier of the asset for the account to be created.
+     *
+     *Emits `Touched` event when successful.
+     */
+    "touch": Anonymize<Ibsk5g3rhm45pu>;
+    /**
+     *Return the deposit (if any) of an asset account or a consumer reference (if any) of an
+     *account.
+     *
+     *The origin must be Signed.
+     *
+     *- `id`: The identifier of the asset for which the caller would like the deposit
+     *  refunded.
+     *- `allow_burn`: If `true` then assets may be destroyed in order to complete the refund.
+     *
+     *Emits `Refunded` event when successful.
+     */
+    "refund": Anonymize<I5tamv2nk8bj8o>;
+    /**
+     *Sets the minimum balance of an asset.
+     *
+     *Only works if there aren't any accounts that are holding the asset or if
+     *the new value of `min_balance` is less than the old one.
+     *
+     *Origin must be Signed and the sender has to be the Owner of the
+     *asset `id`.
+     *
+     *- `id`: The identifier of the asset.
+     *- `min_balance`: The new value of `min_balance`.
+     *
+     *Emits `AssetMinBalanceChanged` event when successful.
+     */
+    "set_min_balance": Anonymize<I8apq8e7c7qcpp>;
+    /**
+     *Create an asset account for `who`.
+     *
+     *A deposit will be taken from the signer account.
+     *
+     *- `origin`: Must be Signed by `Freezer` or `Admin` of the asset `id`; the signer account
+     *  must have sufficient funds for a deposit to be taken.
+     *- `id`: The identifier of the asset for the account to be created.
+     *- `who`: The account to be created.
+     *
+     *Emits `Touched` event when successful.
+     */
+    "touch_other": Anonymize<Ie4met0joi8sv0>;
+    /**
+     *Return the deposit (if any) of a target asset account. Useful if you are the depositor.
+     *
+     *The origin must be Signed and either the account owner, depositor, or asset `Admin`. In
+     *order to burn a non-zero balance of the asset, the caller must be the account and should
+     *use `refund`.
+     *
+     *- `id`: The identifier of the asset for the account holding a deposit.
+     *- `who`: The account to refund.
+     *
+     *Emits `Refunded` event when successful.
+     */
+    "refund_other": Anonymize<Ie4met0joi8sv0>;
+    /**
+     *Disallow further unprivileged transfers of an asset `id` to and from an account `who`.
+     *
+     *Origin must be Signed and the sender should be the Freezer of the asset `id`.
+     *
+     *- `id`: The identifier of the account's asset.
+     *- `who`: The account to be unblocked.
+     *
+     *Emits `Blocked`.
+     *
+     *Weight: `O(1)`
+     */
+    "block": Anonymize<Ie4met0joi8sv0>;
+    /**
+     *Transfer the entire transferable balance from the caller asset account.
+     *
+     *NOTE: This function only attempts to transfer _transferable_ balances. This means that
+     *any held, frozen, or minimum balance (when `keep_alive` is `true`), will not be
+     *transferred by this function. To ensure that this function results in a killed account,
+     *you might need to prepare the account by removing any reference counters, storage
+     *deposits, etc...
+     *
+     *The dispatch origin of this call must be Signed.
+     *
+     *- `id`: The identifier of the asset for the account holding a deposit.
+     *- `dest`: The recipient of the transfer.
+     *- `keep_alive`: A boolean to determine if the `transfer_all` operation should send all
+     *  of the funds the asset account has, causing the sender asset account to be killed
+     *  (false), or transfer everything except at least the minimum balance, which will
+     *  guarantee to keep the sender asset account alive (true).
+     */
+    "transfer_all": Anonymize<Id1e31ij0c35fv>;
+}>;
+export type I7t2thek61ghou = {
+    "id": Anonymize<If9iqq7i64mur8>;
+    "admin": MultiAddress;
+    "min_balance": bigint;
+};
+export type I61tdrsafr1vf3 = {
+    "id": Anonymize<If9iqq7i64mur8>;
+    "owner": MultiAddress;
+    "is_sufficient": boolean;
+    "min_balance": bigint;
+};
+export type Ibsk5g3rhm45pu = {
+    "id": Anonymize<If9iqq7i64mur8>;
+};
+export type Icfoe9q8d4vs8f = {
+    "id": Anonymize<If9iqq7i64mur8>;
+    "beneficiary": MultiAddress;
+    "amount": bigint;
+};
+export type Ibrfmvjrg4trnb = {
+    "id": Anonymize<If9iqq7i64mur8>;
+    "who": MultiAddress;
+    "amount": bigint;
+};
+export type Iedih7t34maii9 = {
+    "id": Anonymize<If9iqq7i64mur8>;
+    "target": MultiAddress;
+    "amount": bigint;
+};
+export type I4e902qbfel1f1 = {
+    "id": Anonymize<If9iqq7i64mur8>;
+    "source": MultiAddress;
+    "dest": MultiAddress;
+    "amount": bigint;
+};
+export type Ie4met0joi8sv0 = {
+    "id": Anonymize<If9iqq7i64mur8>;
+    "who": MultiAddress;
+};
+export type I1t8vq6a06ohhu = {
+    "id": Anonymize<If9iqq7i64mur8>;
+    "owner": MultiAddress;
+};
+export type Icvt3pdunbinm7 = {
+    "id": Anonymize<If9iqq7i64mur8>;
+    "issuer": MultiAddress;
+    "admin": MultiAddress;
+    "freezer": MultiAddress;
+};
+export type I9ui3n41balr2q = {
+    "id": Anonymize<If9iqq7i64mur8>;
+    "name": Binary;
+    "symbol": Binary;
+    "decimals": number;
+};
+export type I89sl7btgl24g2 = {
+    "id": Anonymize<If9iqq7i64mur8>;
+    "name": Binary;
+    "symbol": Binary;
+    "decimals": number;
+    "is_frozen": boolean;
+};
+export type I3u6g26k9kn96u = {
+    "id": Anonymize<If9iqq7i64mur8>;
+    "owner": MultiAddress;
+    "issuer": MultiAddress;
+    "admin": MultiAddress;
+    "freezer": MultiAddress;
+    "min_balance": bigint;
+    "is_sufficient": boolean;
+    "is_frozen": boolean;
+};
+export type If1invp94rsjms = {
+    "id": Anonymize<If9iqq7i64mur8>;
+    "delegate": MultiAddress;
+    "amount": bigint;
+};
+export type Ie5nc19gtiv5sv = {
+    "id": Anonymize<If9iqq7i64mur8>;
+    "delegate": MultiAddress;
+};
+export type Iald3dgvt1hjkb = {
+    "id": Anonymize<If9iqq7i64mur8>;
+    "owner": MultiAddress;
+    "delegate": MultiAddress;
+};
+export type Iurrhahet4gno = {
+    "id": Anonymize<If9iqq7i64mur8>;
+    "owner": MultiAddress;
+    "destination": MultiAddress;
+    "amount": bigint;
+};
+export type I5tamv2nk8bj8o = {
+    "id": Anonymize<If9iqq7i64mur8>;
+    "allow_burn": boolean;
+};
+export type I8apq8e7c7qcpp = {
+    "id": Anonymize<If9iqq7i64mur8>;
+    "min_balance": bigint;
+};
+export type Id1e31ij0c35fv = {
+    "id": Anonymize<If9iqq7i64mur8>;
+    "dest": MultiAddress;
+    "keep_alive": boolean;
+};
+export type Ifrervtb291iin = AnonymousEnum<{
+    /**
+     *Lock the NFT and mint a new fungible asset.
+     *
+     *The dispatch origin for this call must be Signed.
+     *The origin must be the owner of the NFT they are trying to lock.
+     *
+     *`Deposit` funds of sender are reserved.
+     *
+     *- `nft_collection_id`: The ID used to identify the collection of the NFT.
+     *Is used within the context of `pallet_nfts`.
+     *- `nft_id`: The ID used to identify the NFT within the given collection.
+     *Is used within the context of `pallet_nfts`.
+     *- `asset_id`: The ID of the new asset. It must not exist.
+     *Is used within the context of `pallet_assets`.
+     *- `beneficiary`: The account that will receive the newly created asset.
+     *- `fractions`: The total issuance of the newly created asset class.
+     *
+     *Emits `NftFractionalized` event when successful.
+     */
+    "fractionalize": Anonymize<I9gf2bs80kgbnk>;
+    /**
+     *Burn the total issuance of the fungible asset and return (unlock) the locked NFT.
+     *
+     *The dispatch origin for this call must be Signed.
+     *
+     *`Deposit` funds will be returned to `asset_creator`.
+     *
+     *- `nft_collection_id`: The ID used to identify the collection of the NFT.
+     *Is used within the context of `pallet_nfts`.
+     *- `nft_id`: The ID used to identify the NFT within the given collection.
+     *Is used within the context of `pallet_nfts`.
+     *- `asset_id`: The ID of the asset being returned and destroyed. Must match
+     *the original ID of the created asset, corresponding to the NFT.
+     *Is used within the context of `pallet_assets`.
+     *- `beneficiary`: The account that will receive the unified NFT.
+     *
+     *Emits `NftUnified` event when successful.
+     */
+    "unify": Anonymize<I5urb3tva4ave5>;
+}>;
+export type I9gf2bs80kgbnk = {
+    "nft_collection_id": number;
+    "nft_id": number;
+    "asset_id": number;
+    "beneficiary": MultiAddress;
+    "fractions": bigint;
+};
+export type I5urb3tva4ave5 = {
+    "nft_collection_id": number;
+    "nft_id": number;
+    "asset_id": number;
+    "beneficiary": MultiAddress;
+};
+export type Ia06pia7pbkurh = AnonymousEnum<{
+    /**
+     *Creates an empty liquidity pool and an associated new `lp_token` asset
+     *(the id of which is returned in the `Event::PoolCreated` event).
+     *
+     *Once a pool is created, someone may [`Pallet::add_liquidity`] to it.
+     */
+    "create_pool": Anonymize<I3ip09dj7i1e8n>;
+    /**
+     *Provide liquidity into the pool of `asset1` and `asset2`.
+     *NOTE: an optimal amount of asset1 and asset2 will be calculated and
+     *might be different than the provided `amount1_desired`/`amount2_desired`
+     *thus you should provide the min amount you're happy to provide.
+     *Params `amount1_min`/`amount2_min` represent that.
+     *`mint_to` will be sent the liquidity tokens that represent this share of the pool.
+     *
+     *NOTE: when encountering an incorrect exchange rate and non-withdrawable pool liquidity,
+     *batch an atomic call with [`Pallet::add_liquidity`] and
+     *[`Pallet::swap_exact_tokens_for_tokens`] or [`Pallet::swap_tokens_for_exact_tokens`]
+     *calls to render the liquidity withdrawable and rectify the exchange rate.
+     *
+     *Once liquidity is added, someone may successfully call
+     *[`Pallet::swap_exact_tokens_for_tokens`].
+     */
+    "add_liquidity": Anonymize<Ide34bfv94bvut>;
+    /**
+     *Allows you to remove liquidity by providing the `lp_token_burn` tokens that will be
+     *burned in the process. With the usage of `amount1_min_receive`/`amount2_min_receive`
+     *it's possible to control the min amount of returned tokens you're happy with.
+     */
+    "remove_liquidity": Anonymize<I6c7mabde89bp>;
+    /**
+     *Swap the exact amount of `asset1` into `asset2`.
+     *`amount_out_min` param allows you to specify the min amount of the `asset2`
+     *you're happy to receive.
+     *
+     *[`AssetConversionApi::quote_price_exact_tokens_for_tokens`] runtime call can be called
+     *for a quote.
+     */
+    "swap_exact_tokens_for_tokens": Anonymize<I9sbpodgd8ilku>;
+    /**
+     *Swap any amount of `asset1` to get the exact amount of `asset2`.
+     *`amount_in_max` param allows to specify the max amount of the `asset1`
+     *you're happy to provide.
+     *
+     *[`AssetConversionApi::quote_price_tokens_for_exact_tokens`] runtime call can be called
+     *for a quote.
+     */
+    "swap_tokens_for_exact_tokens": Anonymize<Ialnqi1f4kpb>;
+    /**
+     *Touch an existing pool to fulfill prerequisites before providing liquidity, such as
+     *ensuring that the pool's accounts are in place. It is typically useful when a pool
+     *creator removes the pool's accounts and does not provide a liquidity. This action may
+     *involve holding assets from the caller as a deposit for creating the pool's accounts.
+     *
+     *The origin must be Signed.
+     *
+     *- `asset1`: The asset ID of an existing pool with a pair (asset1, asset2).
+     *- `asset2`: The asset ID of an existing pool with a pair (asset1, asset2).
+     *
+     *Emits `Touched` event when successful.
+     */
+    "touch": Anonymize<I3ip09dj7i1e8n>;
+}>;
+export type I3ip09dj7i1e8n = {
+    "asset1": Anonymize<If9iqq7i64mur8>;
+    "asset2": Anonymize<If9iqq7i64mur8>;
+};
+export type Ide34bfv94bvut = {
+    "asset1": Anonymize<If9iqq7i64mur8>;
+    "asset2": Anonymize<If9iqq7i64mur8>;
+    "amount1_desired": bigint;
+    "amount2_desired": bigint;
+    "amount1_min": bigint;
+    "amount2_min": bigint;
+    "mint_to": SS58String;
+};
+export type I6c7mabde89bp = {
+    "asset1": Anonymize<If9iqq7i64mur8>;
+    "asset2": Anonymize<If9iqq7i64mur8>;
+    "lp_token_burn": bigint;
+    "amount1_min_receive": bigint;
+    "amount2_min_receive": bigint;
+    "withdraw_to": SS58String;
+};
+export type I9sbpodgd8ilku = {
+    "path": Anonymize<I40r0k8147eovg>;
+    "amount_in": bigint;
+    "amount_out_min": bigint;
+    "send_to": SS58String;
+    "keep_alive": boolean;
+};
+export type I40r0k8147eovg = Array<Anonymize<If9iqq7i64mur8>>;
+export type Ialnqi1f4kpb = {
+    "path": Anonymize<I40r0k8147eovg>;
+    "amount_out": bigint;
+    "amount_in_max": bigint;
+    "send_to": SS58String;
+    "keep_alive": boolean;
+};
+export type I6dp248499733f = AnonymousEnum<{
+    /**
+     *A raw EVM transaction, typically dispatched by an Ethereum JSON-RPC server.
+     *
+     *# Parameters
+     *
+     ** `payload`: The encoded [`crate::evm::TransactionSigned`].
+     ** `gas_limit`: The gas limit enforced during contract execution.
+     ** `storage_deposit_limit`: The maximum balance that can be charged to the caller for
+     *  storage usage.
+     *
+     *# Note
+     *
+     *This call cannot be dispatched directly; attempting to do so will result in a failed
+     *transaction. It serves as a wrapper for an Ethereum transaction. When submitted, the
+     *runtime converts it into a [`sp_runtime::generic::CheckedExtrinsic`] by recovering the
+     *signer and validating the transaction.
+     */
+    "eth_transact": Anonymize<I1r5bjl4so2h37>;
+    /**
+     *Makes a call to an account, optionally transferring some balance.
+     *
+     *# Parameters
+     *
+     ** `dest`: Address of the contract to call.
+     ** `value`: The balance to transfer from the `origin` to `dest`.
+     ** `gas_limit`: The gas limit enforced when executing the constructor.
+     ** `storage_deposit_limit`: The maximum amount of balance that can be charged from the
+     *  caller to pay for the storage consumed.
+     ** `data`: The input data to pass to the contract.
+     *
+     ** If the account is a smart-contract account, the associated code will be
+     *executed and any value will be transferred.
+     ** If the account is a regular account, any value will be transferred.
+     ** If no account exists and the call value is not less than `existential_deposit`,
+     *a regular account will be created and any value will be transferred.
+     */
+    "call": Anonymize<Idsg8aod8e8fqn>;
+    /**
+     *Instantiates a contract from a previously deployed wasm binary.
+     *
+     *This function is identical to [`Self::instantiate_with_code`] but without the
+     *code deployment step. Instead, the `code_hash` of an on-chain deployed wasm binary
+     *must be supplied.
+     */
+    "instantiate": Anonymize<I46nktn22m6hbi>;
+    /**
+     *Instantiates a new contract from the supplied `code` optionally transferring
+     *some balance.
+     *
+     *This dispatchable has the same effect as calling [`Self::upload_code`] +
+     *[`Self::instantiate`]. Bundling them together provides efficiency gains. Please
+     *also check the documentation of [`Self::upload_code`].
+     *
+     *# Parameters
+     *
+     ** `value`: The balance to transfer from the `origin` to the newly created contract.
+     ** `gas_limit`: The gas limit enforced when executing the constructor.
+     ** `storage_deposit_limit`: The maximum amount of balance that can be charged/reserved
+     *  from the caller to pay for the storage consumed.
+     ** `code`: The contract code to deploy in raw bytes.
+     ** `data`: The input data to pass to the contract constructor.
+     ** `salt`: Used for the address derivation. If `Some` is supplied then `CREATE2`
+     *	semantics are used. If `None` then `CRATE1` is used.
+     *
+     *
+     *Instantiation is executed as follows:
+     *
+     *- The supplied `code` is deployed, and a `code_hash` is created for that code.
+     *- If the `code_hash` already exists on the chain the underlying `code` will be shared.
+     *- The destination address is computed based on the sender, code_hash and the salt.
+     *- The smart-contract account is created at the computed address.
+     *- The `value` is transferred to the new account.
+     *- The `deploy` function is executed in the context of the newly-created account.
+     */
+    "instantiate_with_code": Anonymize<Ibgj1cthra7lte>;
+    /**
+     *Upload new `code` without instantiating a contract from it.
+     *
+     *If the code does not already exist a deposit is reserved from the caller
+     *and unreserved only when [`Self::remove_code`] is called. The size of the reserve
+     *depends on the size of the supplied `code`.
+     *
+     *# Note
+     *
+     *Anyone can instantiate a contract from any uploaded code and thus prevent its removal.
+     *To avoid this situation a constructor could employ access control so that it can
+     *only be instantiated by permissioned entities. The same is true when uploading
+     *through [`Self::instantiate_with_code`].
+     */
+    "upload_code": Anonymize<I10ra4g1rl6k2f>;
+    /**
+     *Remove the code stored under `code_hash` and refund the deposit to its owner.
+     *
+     *A code can only be removed by its original uploader (its owner) and only if it is
+     *not used by any contract.
+     */
+    "remove_code": Anonymize<Ib51vk42m1po4n>;
+    /**
+     *Privileged function that changes the code of an existing contract.
+     *
+     *This takes care of updating refcounts and all other necessary operations. Returns
+     *an error if either the `code_hash` or `dest` do not exist.
+     *
+     *# Note
+     *
+     *This does **not** change the address of the contract in question. This means
+     *that the contract address is no longer derived from its code hash after calling
+     *this dispatchable.
+     */
+    "set_code": Anonymize<I1uihehkdsggvp>;
+    /**
+     *Register the callers account id so that it can be used in contract interactions.
+     *
+     *This will error if the origin is already mapped or is a eth native `Address20`. It will
+     *take a deposit that can be released by calling [`Self::unmap_account`].
+     */
+    "map_account": undefined;
+    /**
+     *Unregister the callers account id in order to free the deposit.
+     *
+     *There is no reason to ever call this function other than freeing up the deposit.
+     *This is only useful when the account should no longer be used.
+     */
+    "unmap_account": undefined;
+    /**
+     *Dispatch an `call` with the origin set to the callers fallback address.
+     *
+     *Every `AccountId32` can control its corresponding fallback account. The fallback account
+     *is the `AccountId20` with the last 12 bytes set to `0xEE`. This is essentially a
+     *recovery function in case an `AccountId20` was used without creating a mapping first.
+     */
+    "dispatch_as_fallback_account": Anonymize<I2aun9cf6q2nrc>;
+}>;
+export type I1r5bjl4so2h37 = {
+    "payload": Binary;
+    "gas_limit": Anonymize<I4q39t5hn830vp>;
+    "storage_deposit_limit": bigint;
+};
+export type Idsg8aod8e8fqn = {
+    "dest": FixedSizeBinary<20>;
+    "value": bigint;
+    "gas_limit": Anonymize<I4q39t5hn830vp>;
+    "storage_deposit_limit": bigint;
+    "data": Binary;
+};
+export type I46nktn22m6hbi = {
+    "value": bigint;
+    "gas_limit": Anonymize<I4q39t5hn830vp>;
+    "storage_deposit_limit": bigint;
+    "code_hash": FixedSizeBinary<32>;
+    "data": Binary;
+    "salt"?: Anonymize<I4s6vifaf8k998>;
+};
+export type Ibgj1cthra7lte = {
+    "value": bigint;
+    "gas_limit": Anonymize<I4q39t5hn830vp>;
+    "storage_deposit_limit": bigint;
+    "code": Binary;
+    "data": Binary;
+    "salt"?: Anonymize<I4s6vifaf8k998>;
+};
+export type I10ra4g1rl6k2f = {
+    "code": Binary;
+    "storage_deposit_limit": bigint;
+};
+export type I1uihehkdsggvp = {
+    "dest": FixedSizeBinary<20>;
+    "code_hash": FixedSizeBinary<32>;
+};
+export type I2aun9cf6q2nrc = {
+    "call": TxCallData;
+};
+export type Ib85ihi0vt50bd = AnonymousEnum<{
+    /**
+     *Migrates an existing pool to a new account ID derivation method for a given asset pair.
+     *If the migration is successful, transaction fees are refunded to the caller.
+     *
+     *Must be signed.
+     */
+    "migrate_to_new_account": Anonymize<I3ip09dj7i1e8n>;
+}>;
+export type I9n16voft98f63 = ResultPayload<Anonymize<Idk1k6qmd0cc53>, Anonymize<I5nrjkj9qumobs>>;
+export type I7n1bt6a8gvovi = AnonymousEnum<{
+    "System": Anonymize<Iekve0i6djpd9f>;
+    "ParachainSystem": Anonymize<I5kev21p7u6ajb>;
+    "Timestamp": Anonymize<I7d75gqfg6jh9c>;
+    "ParachainInfo": undefined;
+    "Balances": Anonymize<I9svldsp29mh87>;
+    "CollatorSelection": Anonymize<I9dpq5287dur8b>;
+    "Session": Anonymize<I77dda7hps0u37>;
+    "XcmpQueue": Anonymize<Ib7tahn20bvsep>;
+    "PolkadotXcm": Anonymize<Ibapagg3i6rfro>;
+    "CumulusXcm": undefined;
+    "MessageQueue": Anonymize<Ic2uoe7jdksosp>;
+    "Utility": Anonymize<Ie0ljrh1n9907r>;
+    "Multisig": Anonymize<I9rseea83k454i>;
+    "Proxy": Anonymize<I9t6cao9bgkfvn>;
+    "Assets": Anonymize<I84851acvod2ic>;
+    "Uniques": Anonymize<Icu49uv7rfej74>;
+    "Nfts": Anonymize<I1k4il7i5elhc7>;
+    "ForeignAssets": Anonymize<I1botoq1mmhfag>;
+    "NftFractionalization": Anonymize<Ifrervtb291iin>;
+    "PoolAssets": Anonymize<I84851acvod2ic>;
+    "AssetConversion": Anonymize<Ia06pia7pbkurh>;
+    "Revive": Anonymize<I6dp248499733f>;
+    "StateTrieMigration": Anonymize<I39l72gdmkk30t>;
+    "AssetConversionMigration": Anonymize<Ib85ihi0vt50bd>;
+}>;
+export type I5713krsd9lt5q = ResultPayload<Anonymize<I9jhphp0l9sg2g>, Anonymize<I55ku9c5gk50hb>>;
+export type I9jhphp0l9sg2g = {
+    "execution_result": Anonymize<I4ottstrkkrl9v>;
+    "emitted_events": Anonymize<I7r4qkjnf3eab>;
+    "local_xcm"?: Anonymize<I8d6t9ltc3r2c7>;
+    "forwarded_xcms": Anonymize<I5bmn62gohr9tf>;
+};
+export type I4ottstrkkrl9v = ResultPayload<Anonymize<Ia1u1r3n74r13c>, Anonymize<Iekjf4ka2e3uu3>>;
+export type Iekjf4ka2e3uu3 = {
+    "post_info": Anonymize<Ia1u1r3n74r13c>;
+    "error": Anonymize<Ie6oldllmbqqc7>;
+};
+export type I7r4qkjnf3eab = Array<Anonymize<Id0ntnip5kotog>>;
+export type I636hph3kc61n3 = ResultPayload<Anonymize<I9d344tlkti2t6>, Anonymize<I55ku9c5gk50hb>>;
+export type I9d344tlkti2t6 = {
+    "execution_result": Anonymize<I6uq5gb4s805s7>;
+    "emitted_events": Anonymize<I7r4qkjnf3eab>;
+    "forwarded_xcms": Anonymize<I5bmn62gohr9tf>;
+};
+export type I8fk5filgollou = ResultPayload<Anonymize<Ifedog0bf6e64f>, Anonymize<I5tspd7e422fr9>>;
+export type I4totqt881mlti = FixedSizeArray<4, bigint>;
+export type Ia4kcq0hm9vs65 = {
+    "gas_consumed": Anonymize<I4q39t5hn830vp>;
+    "gas_required": Anonymize<I4q39t5hn830vp>;
+    "storage_deposit": Anonymize<If7bmpttbdmqu4>;
+    "debug_message": Binary;
+    "result": Anonymize<I25ni7fveeakdd>;
+    "events"?: Anonymize<Ieb4jc56mirv4o>;
+};
+export type If7bmpttbdmqu4 = AnonymousEnum<{
+    "Refund": bigint;
+    "Charge": bigint;
+}>;
+export type I25ni7fveeakdd = ResultPayload<Anonymize<I620n7irgfspm4>, Anonymize<Ie6oldllmbqqc7>>;
+export type I620n7irgfspm4 = {
+    "flags": number;
+    "data": Binary;
+};
+export type Ieb4jc56mirv4o = (Anonymize<Iajegvv2vvsbcp>) | undefined;
+export type I9sijb8gfrns29 = AnonymousEnum<{
+    "Upload": Binary;
+    "Existing": FixedSizeBinary<32>;
+}>;
+export type Ick2j2p6vmgsth = {
+    "gas_consumed": Anonymize<I4q39t5hn830vp>;
+    "gas_required": Anonymize<I4q39t5hn830vp>;
+    "storage_deposit": Anonymize<If7bmpttbdmqu4>;
+    "debug_message": Binary;
+    "result": Anonymize<Iave1jpdl2t15r>;
+    "events"?: Anonymize<Ieb4jc56mirv4o>;
+};
+export type Iave1jpdl2t15r = ResultPayload<Anonymize<I6cm3omaniofs7>, Anonymize<Ie6oldllmbqqc7>>;
+export type I6cm3omaniofs7 = {
+    "result": Anonymize<I620n7irgfspm4>;
+    "addr": FixedSizeBinary<20>;
+};
+export type Iafjplr55l4f68 = {
+    "access_list"?: Anonymize<I6n992ikreen29>;
+    "blob_versioned_hashes": Anonymize<Ic5m5lp1oioo8r>;
+    "blobs": Anonymize<Itom7fk49o0c9>;
+    "chain_id"?: Anonymize<Ic4rgfgksgmm3e>;
+    "from"?: Anonymize<If7b8240vgt2q5>;
+    "gas"?: Anonymize<Ic4rgfgksgmm3e>;
+    "gas_price"?: Anonymize<Ic4rgfgksgmm3e>;
+    "input"?: Anonymize<Iabpgqcjikia83>;
+    "max_fee_per_blob_gas"?: Anonymize<Ic4rgfgksgmm3e>;
+    "max_fee_per_gas"?: Anonymize<Ic4rgfgksgmm3e>;
+    "max_priority_fee_per_gas"?: Anonymize<Ic4rgfgksgmm3e>;
+    "nonce"?: Anonymize<Ic4rgfgksgmm3e>;
+    "to"?: Anonymize<If7b8240vgt2q5>;
+    "r#type"?: Anonymize<I4arjljr6dpflb>;
+    "value"?: Anonymize<Ic4rgfgksgmm3e>;
+};
+export type I6n992ikreen29 = (Anonymize<Ieap15h2pjii9u>) | undefined;
+export type Ieap15h2pjii9u = Array<Anonymize<Ia1jste73q15go>>;
+export type Ia1jste73q15go = {
+    "address": FixedSizeBinary<20>;
+    "storage_keys": Anonymize<Ic5m5lp1oioo8r>;
+};
+export type Ic4rgfgksgmm3e = (Anonymize<I4totqt881mlti>) | undefined;
+export type I8abab09ak4pi1 = ResultPayload<Anonymize<Ieasv39ek9fa65>, Anonymize<I8mb9f26m2cgi5>>;
+export type Ieasv39ek9fa65 = {
+    "gas_required": Anonymize<I4q39t5hn830vp>;
+    "storage_deposit": bigint;
+    "eth_gas": Anonymize<I4totqt881mlti>;
+    "data": Binary;
+};
+export type I8mb9f26m2cgi5 = AnonymousEnum<{
+    "Data": Binary;
+    "Message": string;
+}>;
+export type Id8db49j93tof6 = ResultPayload<Anonymize<Icjs1v5avc8kdj>, Anonymize<Ie6oldllmbqqc7>>;
+export type Icjs1v5avc8kdj = {
+    "code_hash": FixedSizeBinary<32>;
+    "deposit": bigint;
+};
+export type Iehnkjehe1oeva = ResultPayload<Anonymize<Iabpgqcjikia83>, Anonymize<Iflr0uqg4l065m>>;
+export type Iflr0uqg4l065m = AnonymousEnum<{
+    "DoesntExist": undefined;
+    "KeyDecodingFailed": undefined;
+}>;
 export {};
