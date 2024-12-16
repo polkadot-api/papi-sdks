@@ -6,7 +6,12 @@ import {
   XcmVersionedXcm,
 } from "@/descriptors"
 import type { Result } from "@polkadot-api/common-sdk-utils"
-import { Enum, PolkadotClient, type SS58String } from "polkadot-api"
+import {
+  Enum,
+  PolkadotClient,
+  Transaction,
+  type SS58String,
+} from "polkadot-api"
 import {
   accId32ToLocation,
   filterV2,
@@ -139,7 +144,9 @@ export const createTeleport = (
     }).getEstimatedFees(sender)
     return { weight, localFee, remoteFee, deliveryFee }
   }
-  const createTx = async (sender: SS58String) => {
+  const createTx = async (
+    sender: SS58String,
+  ): Promise<Transaction<any, any, any, any>> => {
     const { remoteFee, weight } = await getEstimatedFees(sender)
     return originApi.tx.XcmPallet.execute({
       message: msg(remoteFee),
