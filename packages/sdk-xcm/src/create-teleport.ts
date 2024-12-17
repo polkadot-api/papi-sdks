@@ -9,9 +9,10 @@ import type { Result } from "@polkadot-api/common-sdk-utils"
 import {
   Enum,
   PolkadotClient,
-  Transaction,
   type SS58String,
+  Transaction,
 } from "polkadot-api"
+import { unwrap } from "./utils"
 import {
   accId32ToLocation,
   filterV2,
@@ -19,16 +20,6 @@ import {
   locationsAreEq,
   routeRelative,
 } from "./utils/location"
-
-interface Unwrap {
-  <T>(res: Result<T>): T
-  <T>(res: Promise<Result<T>>): Promise<T>
-}
-const unwrap: Unwrap = (res) => {
-  if ("then" in res) return res.then(unwrap)
-  if (res.success) return res.value
-  throw null
-}
 
 // TODO: investigate typings
 export const createTeleport = (
@@ -78,7 +69,7 @@ export const createTeleport = (
 
   const calculateFees = async (sender: SS58String, remoteFeeHint?: bigint) => {
     const message = msg(remoteFeeHint)
-    let weight = await unwrap(
+    const localWeight = await unwrap(
       originApi.apis.XcmPaymentApi.query_xcm_weight(message) as Promise<
         Result<{
           ref_time: bigint
@@ -86,23 +77,26 @@ export const createTeleport = (
         }>
       >,
     )
-    let call = originApi.tx.XcmPallet.execute({
-      message: message,
-      max_weight: weight,
-    })
-    const destFromOrigin = routeRelative(origin, dest)
-    // TODO: remove any
-    let forwarded = unwrap(
+    const dryRun = unwrap(
       (await originApi.apis.DryRunApi.dry_run_call(
         Enum("system", Enum("Signed", sender)),
-        call.decodedCall,
-      )) as Result<{ forwarded_xcms: Array<any> }>,
-    ).forwarded_xcms.find(([x]) =>
+        originApi.tx.XcmPallet.execute({
+          message: message,
+          max_weight: localWeight,
+        }).decodedCall,
+      )) as Result<
+        (Awaited<ReturnType<typeof originApi.apis.DryRunApi.dry_run_call>> & {
+          success: true
+        })["value"]
+      >,
+    )
+    const destFromOrigin = routeRelative(origin, dest)
+    const forwarded = dryRun.forwarded_xcms.find(([x]) =>
       locationsAreEq(destFromOrigin, filterV2(x).value),
     )
     if (!forwarded || forwarded[1].length !== 1)
       throw new Error(`Found no or more than 1 msg ${forwarded}`)
-    let deliveryFees = await unwrap(
+    const deliveryFees = await unwrap(
       originApi.apis.XcmPaymentApi.query_delivery_fees(
         forwarded[0],
         forwarded[1][0],
@@ -129,28 +123,28 @@ export const createTeleport = (
         ) as Promise<Result<bigint>>,
       ),
     )
-    return { weight, deliveryFee, remoteFee }
+    return { localWeight, deliveryFee, remoteFee }
   }
 
   const getEstimatedFees = async (sender: SS58String) => {
     // we calculate twice the fees to ensure the message length is right
-    const { weight, remoteFee, deliveryFee } = await calculateFees(
+    const { localWeight, remoteFee, deliveryFee } = await calculateFees(
       sender,
       (await calculateFees(sender)).remoteFee,
     )
     const localFee = await originApi.tx.XcmPallet.execute({
       message: msg(remoteFee),
-      max_weight: weight,
+      max_weight: localWeight,
     }).getEstimatedFees(sender)
-    return { weight, localFee, remoteFee, deliveryFee }
+    return { localWeight, localFee, remoteFee, deliveryFee }
   }
   const createTx = async (
     sender: SS58String,
   ): Promise<Transaction<any, any, any, any>> => {
-    const { remoteFee, weight } = await getEstimatedFees(sender)
+    const { remoteFee, localWeight } = await getEstimatedFees(sender)
     return originApi.tx.XcmPallet.execute({
       message: msg(remoteFee),
-      max_weight: weight,
+      max_weight: localWeight,
     })
   }
   return { getEstimatedFees, createTx }
