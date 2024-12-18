@@ -1,17 +1,15 @@
 import {
-  pah,
-  pas,
+  relayDesc,
   XcmV4Instruction,
   type XcmVersionedAssets,
   XcmVersionedXcm,
 } from "@/descriptors"
-import type { Result } from "@polkadot-api/common-sdk-utils"
 import {
-  Enum,
-  PolkadotClient,
-  type SS58String,
-  Transaction,
-} from "polkadot-api"
+  wrapAsyncTx,
+  type AsyncTransaction,
+  type Result,
+} from "@polkadot-api/common-sdk-utils"
+import { Enum, PolkadotClient, type SS58String } from "polkadot-api"
 import { unwrap } from "./utils"
 import {
   accId32ToLocation,
@@ -20,19 +18,19 @@ import {
   locationsAreEq,
   routeRelative,
 } from "./utils/location"
+import { getApi } from "./getApi"
 
 // TODO: investigate typings
 export const createTeleport = (
-  origin: Location,
-  originClient: PolkadotClient,
-  dest: Location,
-  destClient: PolkadotClient,
+  originId: string,
+  originLocation: Location,
+  destId: string,
+  destLocation: Location,
   token: Location,
+  getClient: (id: string) => PolkadotClient,
   amount: bigint,
   beneficiary: SS58String,
 ) => {
-  const originApi = originClient.getTypedApi(pas)
-  const destApi = destClient.getTypedApi(pah)
   // TODO: check compatibility with V3
   // we might need to tweak instructions
   const msg = (remoteFee: bigint = 0n) =>
@@ -42,7 +40,7 @@ export const createTeleport = (
       XcmV4Instruction.SetFeesMode({ jit_withdraw: true }),
       XcmV4Instruction.WithdrawAsset([
         {
-          id: routeRelative(origin, token),
+          id: routeRelative(originLocation, token),
           fun: Enum("Fungible", amount + remoteFee),
         },
       ]),
@@ -53,7 +51,7 @@ export const createTeleport = (
         xcm: [
           Enum("BuyExecution", {
             fees: {
-              id: routeRelative(dest, token),
+              id: routeRelative(destLocation, token),
               fun: Enum("Fungible", remoteFee ? remoteFee : amount / 2n),
             },
             weight_limit: Enum("Unlimited"),
@@ -63,12 +61,17 @@ export const createTeleport = (
             beneficiary: accId32ToLocation(beneficiary),
           }),
         ],
-        dest: routeRelative(origin, dest),
+        dest: routeRelative(originLocation, destLocation),
       }),
     ])
 
   const calculateFees = async (sender: SS58String, remoteFeeHint?: bigint) => {
     const message = msg(remoteFeeHint)
+    const { api: originApi, pallet: originPallet } = await getApi(
+      originId,
+      getClient,
+    )
+    const { api: destApi } = await getApi(destId, getClient)
     const localWeight = await unwrap(
       originApi.apis.XcmPaymentApi.query_xcm_weight(message) as Promise<
         Result<{
@@ -80,17 +83,17 @@ export const createTeleport = (
     const dryRun = unwrap(
       (await originApi.apis.DryRunApi.dry_run_call(
         Enum("system", Enum("Signed", sender)),
-        originApi.tx.XcmPallet.execute({
+        originApi.tx[originPallet].execute({
           message: message,
           max_weight: localWeight,
         }).decodedCall,
       )) as Result<
-        (Awaited<ReturnType<typeof originApi.apis.DryRunApi.dry_run_call>> & {
+        ((typeof relayDesc)["descriptors"]["apis"]["DryRunApi"]["dry_run_call"][1] & {
           success: true
         })["value"]
       >,
     )
-    const destFromOrigin = routeRelative(origin, dest)
+    const destFromOrigin = routeRelative(originLocation, destLocation)
     const forwarded = dryRun.forwarded_xcms.find(([x]) =>
       locationsAreEq(destFromOrigin, filterV2(x).value),
     )
@@ -102,6 +105,7 @@ export const createTeleport = (
         forwarded[1][0],
       ) as Promise<Result<XcmVersionedAssets>>,
     )
+
     if (
       deliveryFees.value.length !== 1 ||
       deliveryFees.value[0].fun.type !== "Fungible"
@@ -119,7 +123,7 @@ export const createTeleport = (
       unwrap(
         destApi.apis.XcmPaymentApi.query_weight_to_asset_fee(
           weight,
-          Enum("V4", routeRelative(dest, token)),
+          Enum("V4", routeRelative(destLocation, token)),
         ) as Promise<Result<bigint>>,
       ),
     )
@@ -132,20 +136,24 @@ export const createTeleport = (
       sender,
       (await calculateFees(sender)).remoteFee,
     )
-    const localFee = await originApi.tx.XcmPallet.execute({
-      message: msg(remoteFee),
-      max_weight: localWeight,
-    }).getEstimatedFees(sender)
+    const { api, pallet } = await getApi(originId, getClient)
+    const localFee = await api.tx[pallet]
+      .execute({
+        message: msg(remoteFee),
+        max_weight: localWeight,
+      })
+      .getEstimatedFees(sender)
     return { localWeight, localFee, remoteFee, deliveryFee }
   }
-  const createTx = async (
-    sender: SS58String,
-  ): Promise<Transaction<any, any, any, any>> => {
-    const { remoteFee, localWeight } = await getEstimatedFees(sender)
-    return originApi.tx.XcmPallet.execute({
-      message: msg(remoteFee),
-      max_weight: localWeight,
+  const createTx = (sender: SS58String): AsyncTransaction<any, any, any, any> =>
+    wrapAsyncTx(async () => {
+      const { remoteFee, localWeight } = await getEstimatedFees(sender)
+      const { api, pallet } = await getApi(originId, getClient)
+      return api.tx[pallet].execute({
+        message: msg(remoteFee),
+        max_weight: localWeight,
+      })
     })
-  }
+
   return { getEstimatedFees, createTx }
 }

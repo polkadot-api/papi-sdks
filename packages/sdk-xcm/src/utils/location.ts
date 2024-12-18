@@ -8,6 +8,19 @@ import { Binary, Enum, getSs58AddressInfo, type SS58String } from "polkadot-api"
 type ExcludeV2<T> = Exclude<T, { type: "V2" }>
 export type Location = ExcludeV2<XcmVersionedLocation>["value"]
 
+export const junctionsToLocation = (junctions: XcmV3Junction[]): Location => {
+  if (junctions.length > 8) throw new Error("Max junctions reached")
+  return {
+    parents: 0,
+    interior:
+      junctions.length === 0
+        ? Enum("Here")
+        : junctions.length === 1
+          ? Enum("X1", junctions[0])
+          : (Enum(`X${junctions.length}`, junctions) as any),
+  }
+}
+
 export const filterV2 = <T extends { type: string }>(val: T): ExcludeV2<T> => {
   if (val.type === "V2") throw null
   return val as any

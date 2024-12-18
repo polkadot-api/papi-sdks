@@ -1,9 +1,11 @@
-export { pas as relayDesc } from "./innerDescriptors"
-export { pah as ahDesc } from "./innerDescriptors"
-
 export {
+  pah as ahDesc,
+  pas as relayDesc,
   XcmV3Junction,
-  XcmV3Junctions,
   XcmV3JunctionNetworkId,
+  XcmV3Junctions,
+  XcmV4Instruction,
+  XcmVersionedAssets,
   XcmVersionedLocation,
-} from "./innerDescriptors"
+  XcmVersionedXcm,
+} from "@/innerDescriptors"
