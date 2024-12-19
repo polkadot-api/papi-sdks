@@ -1,6 +1,8 @@
 export {
-  pah as ahDesc,
-  pas as relayDesc,
+  pas as relay,
+  wnd as nextRelay,
+  pah as ah,
+  wah as nextAh,
   XcmV3Junction,
   XcmV3JunctionNetworkId,
   XcmV3Junctions,

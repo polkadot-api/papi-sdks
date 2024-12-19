@@ -4,14 +4,14 @@ import {
   SS58String,
   TypedApi,
 } from "polkadot-api"
-import { ahDesc, relayDesc, XcmV3Junction } from "./descriptors"
+import { ah, relay, XcmV3Junction } from "./descriptors"
 import { junctionsToLocation, locationsAreEq } from "./utils/location"
 import { createTeleport } from "./create-teleport"
 import { AsyncTransaction } from "@polkadot-api/common-sdk-utils"
 
 export type XcmApi =
-  | { api: TypedApi<typeof relayDesc>; pallet: "XcmPallet" }
-  | { api: TypedApi<typeof ahDesc>; pallet: "PolkadotXcm" }
+  | { api: TypedApi<typeof relay>; pallet: "XcmPallet" }
+  | { api: TypedApi<typeof ah>; pallet: "PolkadotXcm" }
 
 export type XcmSdk<
   Chains extends Record<string, Array<XcmV3Junction>>,
@@ -44,7 +44,7 @@ export const createXcmSdk = <
     const cached = apiCache.get(id)
     if (cached) return cached
     const client = getClient(id)
-    const relayApi = client.getTypedApi(relayDesc)
+    const relayApi = client.getTypedApi(relay)
     if (
       await relayApi.tx.XcmPallet.execute.isCompatible(
         CompatibilityLevel.Partial,
@@ -55,7 +55,7 @@ export const createXcmSdk = <
       return api
     }
 
-    const paraApi = client.getTypedApi(ahDesc)
+    const paraApi = client.getTypedApi(ah)
     if (
       await paraApi.tx.PolkadotXcm.execute.isCompatible(
         CompatibilityLevel.Partial,

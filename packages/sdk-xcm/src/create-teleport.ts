@@ -1,5 +1,5 @@
 import {
-  relayDesc,
+  relay,
   XcmV4Instruction,
   type XcmVersionedAssets,
   XcmVersionedXcm,
@@ -65,12 +65,15 @@ export const createTeleport = (
       }),
     ])
 
-  const calculateFees = async (sender: SS58String, remoteFeeHint?: bigint) => {
+  const calculateXcmFees = async (
+    sender: SS58String,
+    remoteFeeHint?: bigint,
+  ) => {
     const message = msg(remoteFeeHint)
+    const destApi = getApi(destId)
     const { api: originApi, pallet: originPallet } = (await getApi(
       originId,
     )) as XcmApi & { pallet: "XcmPallet" }
-    const { api: destApi } = await getApi(destId)
     const localWeight = await unwrap(
       originApi.apis.XcmPaymentApi.query_xcm_weight(message) as Promise<
         Result<{
@@ -87,7 +90,7 @@ export const createTeleport = (
           max_weight: localWeight,
         }).decodedCall,
       )) as Result<
-        ((typeof relayDesc)["descriptors"]["apis"]["DryRunApi"]["dry_run_call"][1] & {
+        ((typeof relay)["descriptors"]["apis"]["DryRunApi"]["dry_run_call"][1] & {
           success: true
         })["value"]
       >,
@@ -98,42 +101,44 @@ export const createTeleport = (
     )
     if (!forwarded || forwarded[1].length !== 1)
       throw new Error(`Found no or more than 1 msg ${forwarded}`)
-    const deliveryFees = await unwrap(
+    const deliveryFee = unwrap(
       originApi.apis.XcmPaymentApi.query_delivery_fees(
         forwarded[0],
         forwarded[1][0],
       ) as Promise<Result<XcmVersionedAssets>>,
-    )
+    ).then((fees) => {
+      if (fees.value.length !== 1 || fees.value[0].fun.type !== "Fungible")
+        throw new Error("Unexpected delivery fee")
+      return fees.value[0].fun.value
+    })
 
-    if (
-      deliveryFees.value.length !== 1 ||
-      deliveryFees.value[0].fun.type !== "Fungible"
-    )
-      throw new Error(`Unexpected fee ${deliveryFees}`)
-    const deliveryFee = deliveryFees.value[0].fun.value
-    const remoteFee = await unwrap(
-      destApi.apis.XcmPaymentApi.query_xcm_weight(forwarded[1][0]) as Promise<
-        Result<{
-          ref_time: bigint
-          proof_size: bigint
-        }>
-      >,
-    ).then((weight) =>
+    const remoteFee = destApi.then(({ api }) =>
       unwrap(
-        destApi.apis.XcmPaymentApi.query_weight_to_asset_fee(
-          weight,
-          Enum("V4", routeRelative(destLocation, token)),
-        ) as Promise<Result<bigint>>,
+        api.apis.XcmPaymentApi.query_xcm_weight(forwarded[1][0]) as Promise<
+          Result<{
+            ref_time: bigint
+            proof_size: bigint
+          }>
+        >,
+      ).then((weight) =>
+        unwrap(
+          api.apis.XcmPaymentApi.query_weight_to_asset_fee(
+            weight,
+            Enum("V4", routeRelative(destLocation, token)),
+          ) as Promise<Result<bigint>>,
+        ),
       ),
     )
-    return { localWeight, deliveryFee, remoteFee }
+    return Promise.all([deliveryFee, remoteFee]).then(
+      ([deliveryFee, remoteFee]) => ({ localWeight, deliveryFee, remoteFee }),
+    )
   }
 
   const getEstimatedFees = async (sender: SS58String) => {
     // we calculate twice the fees to ensure the message length is right
-    const { localWeight, remoteFee, deliveryFee } = await calculateFees(
+    const { localWeight, remoteFee, deliveryFee } = await calculateXcmFees(
       sender,
-      (await calculateFees(sender)).remoteFee,
+      (await calculateXcmFees(sender)).remoteFee,
     )
     const { api, pallet } = (await getApi(originId)) as XcmApi & {
       pallet: "XcmPallet"
