@@ -50,8 +50,8 @@
     "rxjs": ">=7.8.0"
   },
   "devDependencies": {
-    "@polkadot-api/substrate-bindings": "^0.10.0",
-    "polkadot-api": "^1.7.8",
+    "@polkadot-api/substrate-bindings": "^0.11.0",
+    "polkadot-api": "^1.8.0",
     "rxjs": "^7.8.1"
   }
 }
