@@ -9,7 +9,7 @@ import {
   type AsyncTransaction,
   type Result,
 } from "@polkadot-api/common-sdk-utils"
-import { Enum, PolkadotClient, type SS58String } from "polkadot-api"
+import { Enum, type SS58String } from "polkadot-api"
 import { unwrap } from "./utils"
 import {
   accId32ToLocation,
@@ -18,7 +18,7 @@ import {
   locationsAreEq,
   routeRelative,
 } from "./utils/location"
-import { getApi } from "./getApi"
+import { XcmApi } from "./xcm-sdk"
 
 // TODO: investigate typings
 export const createTeleport = (
@@ -27,7 +27,7 @@ export const createTeleport = (
   destId: string,
   destLocation: Location,
   token: Location,
-  getClient: (id: string) => PolkadotClient,
+  getApi: (id: string) => Promise<XcmApi>,
   amount: bigint,
   beneficiary: SS58String,
 ) => {
@@ -67,11 +67,10 @@ export const createTeleport = (
 
   const calculateFees = async (sender: SS58String, remoteFeeHint?: bigint) => {
     const message = msg(remoteFeeHint)
-    const { api: originApi, pallet: originPallet } = await getApi(
+    const { api: originApi, pallet: originPallet } = (await getApi(
       originId,
-      getClient,
-    )
-    const { api: destApi } = await getApi(destId, getClient)
+    )) as XcmApi & { pallet: "XcmPallet" }
+    const { api: destApi } = await getApi(destId)
     const localWeight = await unwrap(
       originApi.apis.XcmPaymentApi.query_xcm_weight(message) as Promise<
         Result<{
@@ -136,7 +135,9 @@ export const createTeleport = (
       sender,
       (await calculateFees(sender)).remoteFee,
     )
-    const { api, pallet } = await getApi(originId, getClient)
+    const { api, pallet } = (await getApi(originId)) as XcmApi & {
+      pallet: "XcmPallet"
+    }
     const localFee = await api.tx[pallet]
       .execute({
         message: msg(remoteFee),
@@ -148,7 +149,9 @@ export const createTeleport = (
   const createTx = (sender: SS58String): AsyncTransaction<any, any, any, any> =>
     wrapAsyncTx(async () => {
       const { remoteFee, localWeight } = await getEstimatedFees(sender)
-      const { api, pallet } = await getApi(originId, getClient)
+      const { api, pallet } = (await getApi(originId)) as XcmApi & {
+        pallet: "XcmPallet"
+      }
       return api.tx[pallet].execute({
         message: msg(remoteFee),
         max_weight: localWeight,
