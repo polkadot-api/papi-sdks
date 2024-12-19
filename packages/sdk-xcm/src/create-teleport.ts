@@ -20,7 +20,6 @@ import {
 } from "./utils/location"
 import { XcmApi } from "./xcm-sdk"
 
-// TODO: investigate typings
 export const createTeleport = (
   originId: string,
   originLocation: Location,
