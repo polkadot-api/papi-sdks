@@ -1,0 +1,17 @@
+{
+  "name": "xcm-playground",
+  "module": "index.ts",
+  "type": "module",
+  "devDependencies": {
+    "@types/bun": "^1.1.14"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "@noble/curves": "^1.7.0",
+    "@polkadot-api/descriptors": "file:.papi/descriptors",
+    "@polkadot-api/sdk-xcm": "workspace:*",
+    "polkadot-api": "link:../../../polkadot-api/packages/client"
+  }
+}
