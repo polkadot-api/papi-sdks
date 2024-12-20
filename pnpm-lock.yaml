@@ -37,7 +37,7 @@ importers:
     dependencies:
       '@polkadot-api/descriptors':
         specifier: file:.papi/descriptors
-        version: file:examples/ink-playground/.papi/descriptors(polkadot-api@1.8.0(postcss@8.4.49)(rxjs@7.8.1))
+        version: file:examples/ink-playground/.papi/descriptors(polkadot-api@1.8.1(postcss@8.4.49)(rxjs@7.8.1))
       '@polkadot-api/sdk-ink':
         specifier: workspace:*
         version: link:../../packages/sdk-ink
@@ -48,8 +48,8 @@ importers:
         specifier: ^0.0.10
         version: 0.0.10
       polkadot-api:
-        specifier: ^1.8.0
-        version: 1.8.0(postcss@8.4.49)(rxjs@7.8.1)
+        specifier: ^1.8.1
+        version: 1.8.1(postcss@8.4.49)(rxjs@7.8.1)
       rxjs:
         specifier: 7.8.1
         version: 7.8.1
@@ -68,13 +68,13 @@ importers:
         version: 1.7.0
       '@polkadot-api/descriptors':
         specifier: file:.papi/descriptors
-        version: file:examples/xcm-playground/.papi/descriptors(polkadot-api@polkadot-api+packages+client)
+        version: file:examples/xcm-playground/.papi/descriptors(polkadot-api@1.8.1(postcss@8.4.49)(rxjs@7.8.1))
       '@polkadot-api/sdk-xcm':
         specifier: workspace:*
         version: link:../../packages/sdk-xcm
       polkadot-api:
-        specifier: link:../../../polkadot-api/packages/client
-        version: link:../../../polkadot-api/packages/client
+        specifier: ^1.8.1
+        version: 1.8.1(postcss@8.4.49)(rxjs@7.8.1)
       typescript:
         specifier: ^5.0.0
         version: 5.7.2
@@ -86,8 +86,8 @@ importers:
   packages/common-utils:
     devDependencies:
       polkadot-api:
-        specifier: ^1.8.0
-        version: 1.8.0(postcss@8.4.49)(rxjs@7.8.1)
+        specifier: ^1.8.1
+        version: 1.8.1(postcss@8.4.49)(rxjs@7.8.1)
       rxjs:
         specifier: ^7.8.1
         version: 7.8.1
@@ -102,8 +102,8 @@ importers:
         specifier: ^0.2.4
         version: 0.2.4
       polkadot-api:
-        specifier: ^1.8.0
-        version: 1.8.0(postcss@8.4.49)(rxjs@7.8.1)
+        specifier: ^1.8.1
+        version: 1.8.1(postcss@8.4.49)(rxjs@7.8.1)
       rxjs:
         specifier: ^7.8.1
         version: 7.8.1
@@ -118,8 +118,8 @@ importers:
         specifier: ^0.11.0
         version: 0.11.0
       polkadot-api:
-        specifier: ^1.8.0
-        version: 1.8.0(postcss@8.4.49)(rxjs@7.8.1)
+        specifier: ^1.8.1
+        version: 1.8.1(postcss@8.4.49)(rxjs@7.8.1)
       rxjs:
         specifier: ^7.8.1
         version: 7.8.1
@@ -1116,8 +1116,8 @@ packages:
     resolution: {integrity: sha512-saLsH7WeYYPiD25LDuLRRY/i+6HaPYr6G1OUlN39otzkSTxKnubR9RTxS3/Kk50s1g2JTgFwWQDQyplC5/SHZg==}
     engines: {node: '>= 6'}
 
-  polkadot-api@1.8.0:
-    resolution: {integrity: sha512-k15XenEsNtqWLrY/CFp9tYdX4wPrCCS5emmevaTjkEAJZBhU4eXslkzYUeiP5jPLPJVdIluauYuTiztVxM58cw==}
+  polkadot-api@1.8.1:
+    resolution: {integrity: sha512-E2Jh9tiO6eB/fjnwr68mnZAZ/UuoZPBZQKjplHSMjVgNNQEkNZSqDcFvH18Rag5x4z7oJzuEk9+Hj62u/+D1PQ==}
     hasBin: true
     peerDependencies:
       rxjs: '>=7.8.0'
@@ -1744,13 +1744,13 @@ snapshots:
       '@polkadot-api/substrate-bindings': 0.11.0
       '@polkadot-api/utils': 0.1.2
 
-  '@polkadot-api/descriptors@file:examples/ink-playground/.papi/descriptors(polkadot-api@1.8.0(postcss@8.4.49)(rxjs@7.8.1))':
+  '@polkadot-api/descriptors@file:examples/ink-playground/.papi/descriptors(polkadot-api@1.8.1(postcss@8.4.49)(rxjs@7.8.1))':
     dependencies:
-      polkadot-api: 1.8.0(postcss@8.4.49)(rxjs@7.8.1)
+      polkadot-api: 1.8.1(postcss@8.4.49)(rxjs@7.8.1)
 
-  '@polkadot-api/descriptors@file:examples/xcm-playground/.papi/descriptors(polkadot-api@polkadot-api+packages+client)':
+  '@polkadot-api/descriptors@file:examples/xcm-playground/.papi/descriptors(polkadot-api@1.8.1(postcss@8.4.49)(rxjs@7.8.1))':
     dependencies:
-      polkadot-api: link:../polkadot-api/packages/client
+      polkadot-api: 1.8.1(postcss@8.4.49)(rxjs@7.8.1)
 
   '@polkadot-api/ink-contracts@0.2.4':
     dependencies:
@@ -2377,7 +2377,7 @@ snapshots:
 
   pirates@4.0.6: {}
 
-  polkadot-api@1.8.0(postcss@8.4.49)(rxjs@7.8.1):
+  polkadot-api@1.8.1(postcss@8.4.49)(rxjs@7.8.1):
     dependencies:
       '@polkadot-api/cli': 0.10.0(postcss@8.4.49)
       '@polkadot-api/ink-contracts': 0.2.4
