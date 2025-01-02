@@ -1,5 +1,5 @@
 {
-  "name": "@polkadot-api/sdk-ink",
+  "name": "@polkadot-api/sdk-governance",
   "version": "0.0.1",
   "sideEffects": false,
   "author": "Victor Oliva (https://github.com/voliva)",
@@ -44,12 +44,12 @@
     "@polkadot-api/common-sdk-utils": "workspace:*"
   },
   "peerDependencies": {
-    "@polkadot-api/ink-contracts": ">=0.2.4",
+    "@noble/hashes": ">=1.6.1",
     "polkadot-api": ">=1.8.1",
     "rxjs": ">=7.8.0"
   },
   "devDependencies": {
-    "@polkadot-api/ink-contracts": "^0.2.4",
+    "@noble/hashes": "^1.6.1",
     "polkadot-api": "^1.8.1",
     "rxjs": "^7.8.1"
   }
