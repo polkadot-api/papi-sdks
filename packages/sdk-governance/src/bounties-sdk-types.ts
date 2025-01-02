@@ -1,12 +1,97 @@
-import { Binary } from "polkadot-api"
+import { Binary, SS58String, Transaction, TxEvent } from "polkadot-api"
 import { GroupedObservable, Observable } from "rxjs"
-import { BountyWithoutDescription, MultiAddress } from "./bounties-descriptors"
+import {
+  BountiesBountyStatus,
+  BountyWithoutDescription,
+  MultiAddress,
+} from "./bounties-descriptors"
 import { OngoingReferendum } from "./referenda-sdk-types"
 
-export interface Bounty extends BountyWithoutDescription {
+export interface GenericBounty extends BountyWithoutDescription {
+  type: BountiesBountyStatus["type"]
   id: number
   description: Binary | null
 }
+
+interface ClosableBounty {
+  close(): Transaction<any, string, string, unknown>
+}
+export interface ProposedBounty extends GenericBounty, ClosableBounty {
+  type: "Proposed"
+  approve(): Transaction<any, string, string, unknown>
+  filterApprovingReferenda(
+    referenda: OngoingReferendum[],
+  ): Promise<OngoingReferendum[]>
+  getScheduledApprovals(): Promise<number[]>
+  // TODO incoming approveWithCurator()
+}
+export interface ApprovedBounty extends GenericBounty {
+  type: "Approved"
+}
+export interface FundedBounty extends GenericBounty, ClosableBounty {
+  type: "Funded"
+  proposeCurator(
+    curator: MultiAddress,
+    fee: bigint,
+  ): Transaction<any, string, string, unknown>
+  filterProposingReferenda(referenda: OngoingReferendum[]): Promise<
+    Array<{
+      referendum: OngoingReferendum
+      proposeCuratorCalls: {
+        curator: MultiAddress
+        fee: bigint
+      }[]
+    }>
+  >
+  getScheduledProposals(): Promise<
+    Array<{
+      height: number
+      proposeCuratorCalls: {
+        curator: MultiAddress
+        fee: bigint
+      }[]
+    }>
+  >
+}
+
+interface CuratorUnassignable {
+  unassignCurator(): Transaction<any, string, string, unknown>
+}
+export interface CuratorProposedBounty
+  extends GenericBounty,
+    CuratorUnassignable,
+    ClosableBounty {
+  type: "CuratorProposed"
+  curator: SS58String
+  acceptCuratorRole(): Transaction<any, string, string, unknown>
+}
+export interface ActiveBounty
+  extends GenericBounty,
+    CuratorUnassignable,
+    ClosableBounty {
+  type: "Active"
+  curator: SS58String
+  updateDue: number
+  extendExpiry(remark?: string): Transaction<any, string, string, unknown>
+  award(beneficiary: SS58String): Transaction<any, string, string, unknown>
+}
+export interface PendingPayoutBounty
+  extends GenericBounty,
+    CuratorUnassignable {
+  type: "PendingPayout"
+  curator: SS58String
+  beneficiary: SS58String
+  unlockAt: number
+  claim(): Transaction<any, string, string, unknown>
+}
+
+export type Bounty =
+  | ProposedBounty
+  | ApprovedBounty
+  | FundedBounty
+  | CuratorProposedBounty
+  | ActiveBounty
+  | PendingPayoutBounty
 
 export interface BountiesSdk {
   watchBounties(): {
@@ -14,35 +99,7 @@ export interface BountiesSdk {
     bountyIds$: Observable<number[]>
     getBountyById$: (key: number) => GroupedObservable<number, Bounty>
   }
+  getBounty(id: number): Observable<Bounty | null>
   getBounties(): Observable<Bounty[]>
-  referendaFilter: {
-    approving: (
-      ongoingReferenda: OngoingReferendum[],
-      bountyId: number,
-    ) => Promise<OngoingReferendum[]>
-    proposingCurator: (
-      ongoingReferenda: OngoingReferendum[],
-      bountyId: number,
-    ) => Promise<
-      {
-        referendum: OngoingReferendum
-        proposeCuratorCalls: {
-          curator: MultiAddress
-          fee: bigint
-        }[]
-      }[]
-    >
-  }
-  scheduledChanges: {
-    approved: (bountyId: number) => Promise<number[]>
-    curatorProposed: (bountyId: number) => Promise<
-      {
-        height: number
-        proposeCuratorCalls: {
-          curator: MultiAddress
-          fee: bigint
-        }[]
-      }[]
-    >
-  }
+  getProposedBounty(txEvent: TxEvent): Observable<ProposedBounty | null>
 }

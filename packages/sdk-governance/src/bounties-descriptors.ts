@@ -5,8 +5,10 @@ import {
   FixedSizeArray,
   FixedSizeBinary,
   PalletsTypedef,
+  PlainDescriptor,
   SS58String,
   StorageDescriptor,
+  TxDescriptor,
   TypedApi,
 } from "polkadot-api"
 import {
@@ -90,8 +92,48 @@ type BountiesSdkPallets = PalletsTypedef<
       >
     }
   },
-  {},
-  {},
+  {
+    Bounties: {
+      approve_bounty: TxDescriptor<{
+        bounty_id: number
+      }>
+      propose_curator: TxDescriptor<{
+        bounty_id: number
+        curator: MultiAddress
+        fee: bigint
+      }>
+      unassign_curator: TxDescriptor<{
+        bounty_id: number
+      }>
+      accept_curator: TxDescriptor<{
+        bounty_id: number
+      }>
+      award_bounty: TxDescriptor<{
+        bounty_id: number
+        beneficiary: MultiAddress
+      }>
+      claim_bounty: TxDescriptor<{
+        bounty_id: number
+      }>
+      close_bounty: TxDescriptor<{
+        bounty_id: number
+      }>
+      extend_bounty_expiry: TxDescriptor<{
+        bounty_id: number
+        remark: Binary
+      }>
+    }
+  },
+  {
+    Bounties: {
+      /**
+       *New bounty proposal.
+       */
+      BountyProposed: PlainDescriptor<{
+        index: number
+      }>
+    }
+  },
   {},
   {}
 >
