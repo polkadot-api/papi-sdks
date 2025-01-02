@@ -9,8 +9,12 @@ export interface Bounty extends BountyWithoutDescription {
 }
 
 export interface BountiesSdk {
-  bountyIds$: Observable<number[]>
-  getBountyById$: (key: number) => GroupedObservable<number, Bounty>
+  watchBounties(): {
+    bounties$: Observable<Map<number, Bounty>>
+    bountyIds$: Observable<number[]>
+    getBountyById$: (key: number) => GroupedObservable<number, Bounty>
+  }
+  getBounties(): Observable<Bounty[]>
   referendaFilter: {
     approving: (
       ongoingReferenda: OngoingReferendum[],

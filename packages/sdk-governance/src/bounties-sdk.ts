@@ -1,14 +1,21 @@
-import { partitionByKey, toKeySet } from "@react-rxjs/utils"
+import { combineKeys, partitionByKey, toKeySet } from "@react-rxjs/utils"
 import {
   combineLatest,
   from,
   map,
   mergeMap,
+  Observable,
+  of,
+  shareReplay,
   skip,
   startWith,
   switchMap,
 } from "rxjs"
-import { BountiesSdkTypedApi, MultiAddress } from "./bounties-descriptors"
+import {
+  BountiesSdkTypedApi,
+  BountyWithoutDescription,
+  MultiAddress,
+} from "./bounties-descriptors"
 import { BountiesSdk, Bounty } from "./bounties-sdk-types"
 import { getPreimageResolver } from "./preimages"
 import { OngoingReferendum } from "./referenda-sdk-types"
@@ -18,36 +25,63 @@ export function createBountiesSdk(typedApi: BountiesSdkTypedApi): BountiesSdk {
     typedApi.query.Preimage.PreimageFor.getValues,
   )
 
-  const [getBountyById$, bountyKeyChanges$] = partitionByKey(
-    // TODO watchEntries
-    typedApi.query.Bounties.BountyCount.watchValue().pipe(
-      skip(1),
-      startWith(null),
-      switchMap(() => typedApi.query.Bounties.Bounties.getEntries()),
-      mergeMap((v) => v.sort((a, b) => a.keyArgs[0] - b.keyArgs[0])),
-    ),
-    (res) => res.keyArgs[0],
-    (group$, id) =>
-      combineLatest([
-        group$,
-        from(typedApi.query.Bounties.BountyDescriptions.getValue(id)).pipe(
-          startWith(null),
-        ),
-      ]).pipe(
-        map(
-          ([bounty, description]): Bounty => ({
-            ...bounty.value,
-            id,
-            description: description ?? null,
-          }),
+  const enhanceBounty$ = (
+    bounty$: Observable<BountyWithoutDescription>,
+    id: number,
+  ): Observable<Bounty> =>
+    combineLatest([
+      bounty$,
+      from(typedApi.query.Bounties.BountyDescriptions.getValue(id)).pipe(
+        startWith(null),
+      ),
+    ]).pipe(
+      map(
+        ([bounty, description]): Bounty => ({
+          ...bounty,
+          id,
+          description: description ?? null,
+        }),
+      ),
+    )
+
+  function watchBounties() {
+    const [getBountyById$, bountyKeyChanges$] = partitionByKey(
+      // TODO watchEntries
+      typedApi.query.Bounties.BountyCount.watchValue().pipe(
+        skip(1),
+        startWith(null),
+        switchMap(() => typedApi.query.Bounties.Bounties.getEntries()),
+        mergeMap((v) => v.sort((a, b) => a.keyArgs[0] - b.keyArgs[0])),
+      ),
+      (res) => res.keyArgs[0],
+      (group$, id) => enhanceBounty$(group$.pipe(map((v) => v.value)), id),
+    )
+
+    const bountyIds$ = bountyKeyChanges$.pipe(
+      toKeySet(),
+      map((set) => [...set]),
+    )
+
+    return {
+      bounties$: combineKeys(bountyIds$, getBountyById$),
+      getBountyById$,
+      bountyIds$,
+    }
+  }
+
+  function getBounties() {
+    return from(typedApi.query.Bounties.Bounties.getEntries()).pipe(
+      mergeMap((entries) =>
+        combineLatest(
+          entries
+            .map(({ keyArgs: [id], value }) => ({ bounty: value, id }))
+            .sort((a, b) => a.id - b.id)
+            .map(({ bounty, id }) => enhanceBounty$(of(bounty), id)),
         ),
       ),
-  )
-
-  const bountyIds$ = bountyKeyChanges$.pipe(
-    toKeySet(),
-    map((set) => [...set]),
-  )
+      shareReplay(1),
+    )
+  }
 
   const getDecodedSpenderReferenda = weakMemo(
     async (ongoingReferenda: OngoingReferendum[]) => {
@@ -195,8 +229,8 @@ export function createBountiesSdk(typedApi: BountiesSdkTypedApi): BountiesSdk {
   }
 
   return {
-    bountyIds$,
-    getBountyById$,
+    watchBounties,
+    getBounties,
     referendaFilter: {
       approving: findApprovingReferenda,
       proposingCurator: findProposingCuratorReferenda,
