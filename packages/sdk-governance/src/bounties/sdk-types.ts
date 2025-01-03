@@ -1,11 +1,11 @@
 import { SS58String, Transaction, TxEvent } from "polkadot-api"
 import { GroupedObservable, Observable } from "rxjs"
+import { OngoingReferendum } from "../referenda/sdk-types"
 import {
   BountiesBountyStatus,
   BountyWithoutDescription,
   MultiAddress,
-} from "./bounties-descriptors"
-import { OngoingReferendum } from "./referenda-sdk-types"
+} from "./descriptors"
 
 export interface GenericBounty extends BountyWithoutDescription {
   type: BountiesBountyStatus["type"]

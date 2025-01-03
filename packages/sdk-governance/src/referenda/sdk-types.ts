@@ -1,11 +1,11 @@
 import { Binary, Transaction, TxEvent } from "polkadot-api"
-import { Origin } from "./referenda-chainConfig"
+import { Origin } from "./chainConfig"
 import {
   PolkadotRuntimeOriginCaller,
   PreimagesBounded,
   ReferendumInfo,
   TraitsScheduleDispatchTime,
-} from "./referenda-descriptors"
+} from "./descriptors"
 
 type RawOngoingReferendum = (ReferendumInfo & { type: "Ongoing" })["value"]
 

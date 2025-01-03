@@ -1,5 +1,5 @@
 import { Binary } from "polkadot-api"
-import { PreimagesBounded } from "./referenda-descriptors"
+import { PreimagesBounded } from "./referenda/descriptors"
 
 const preimageCache = new Map<string, Promise<Binary>>()
 

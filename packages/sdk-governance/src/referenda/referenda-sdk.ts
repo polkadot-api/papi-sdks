@@ -1,18 +1,18 @@
 import { blake2b } from "@noble/hashes/blake2b"
 import { Binary, TxEvent } from "polkadot-api"
-import { keyBy } from "./keyBy"
-import { getPreimageResolver } from "./preimages"
-import { originToTrack, polkadotSpenderOrigin } from "./referenda-chainConfig"
+import { getPreimageResolver } from "../preimages"
+import { keyBy } from "../util/keyBy"
+import { originToTrack, polkadotSpenderOrigin } from "./chainConfig"
 import {
   PolkadotRuntimeOriginCaller,
   ReferendaSdkTypedApi,
   ReferendumInfo,
-} from "./referenda-descriptors"
+} from "./descriptors"
 import {
   OngoingReferendum,
   ReferendaSdk,
   ReferendaSdkConfig,
-} from "./referenda-sdk-types"
+} from "./sdk-types"
 
 const MAX_INLINE_SIZE = 128
 type RawOngoingReferendum = (ReferendumInfo & { type: "Ongoing" })["value"]

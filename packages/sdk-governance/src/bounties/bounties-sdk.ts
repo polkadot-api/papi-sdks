@@ -1,170 +1,17 @@
 import { combineKeys, partitionByKey, toKeySet } from "@react-rxjs/utils"
 import { Binary, TxEvent } from "polkadot-api"
 import { map, mergeMap, skip, startWith, switchMap } from "rxjs"
+import { BountiesSdkTypedApi, BountyWithoutDescription } from "./descriptors"
 import {
-  BountiesSdkTypedApi,
-  BountyWithoutDescription,
-  MultiAddress,
-} from "./bounties-descriptors"
-import {
-  BountiesSdk,
-  Bounty,
-  GenericBounty,
-  ProposedBounty,
-} from "./bounties-sdk-types"
-import { memo, weakMemo } from "./memo"
-import { getPreimageResolver } from "./preimages"
-import { OngoingReferendum } from "./referenda-sdk-types"
+  findApprovingReferenda,
+  findProposingCuratorReferenda,
+} from "./find-referenda"
+import { scheduledFinder } from "./find-scheduled"
+import { BountiesSdk, Bounty, GenericBounty, ProposedBounty } from "./sdk-types"
 
 export function createBountiesSdk(typedApi: BountiesSdkTypedApi): BountiesSdk {
-  const resolvePreimage = getPreimageResolver(
-    typedApi.query.Preimage.PreimageFor.getValues,
-  )
-
-  const getDecodedSpenderReferenda = weakMemo(
-    async (ongoingReferenda: OngoingReferendum[]) => {
-      const spenderReferenda = ongoingReferenda.filter(
-        (ref) =>
-          (ref.origin.type === "Origins" &&
-            spenderOrigins.includes(ref.origin.value.type)) ||
-          (ref.origin.type === "system" && ref.origin.value.type === "Root"),
-      )
-      const response = await Promise.all(
-        spenderReferenda.map((referendum) =>
-          referendum.proposal
-            .decodedCall()
-            .then((call) => ({
-              referendum,
-              call,
-            }))
-            .catch((ex) => {
-              console.error(ex)
-              return null
-            }),
-        ),
-      )
-      return response.filter((v) => !!v)
-    },
-  )
-
-  async function findApprovingReferenda(
-    ongoingReferenda: OngoingReferendum[],
-    bountyId: number,
-  ) {
-    const spenderReferenda = await getDecodedSpenderReferenda(ongoingReferenda)
-
-    return spenderReferenda
-      .filter(({ call }) =>
-        findCalls(
-          {
-            pallet: "Bounties",
-            name: "approve_bounty",
-          },
-          call,
-        ).some((v) => v?.bounty_id === bountyId),
-      )
-      .map(({ referendum }) => referendum)
-  }
-
-  async function findProposingCuratorReferenda(
-    ongoingReferenda: OngoingReferendum[],
-    bountyId: number,
-  ) {
-    const spenderReferenda = await getDecodedSpenderReferenda(ongoingReferenda)
-
-    return spenderReferenda
-      .map(({ call, referendum }) => {
-        const proposeCuratorCalls = findCalls(
-          {
-            pallet: "Bounties",
-            name: "propose_curator",
-          },
-          call,
-        )
-          .filter(
-            (v) =>
-              v?.bounty_id === bountyId &&
-              typeof v.curator === "object" &&
-              typeof v.fee === "bigint",
-          )
-          .map((v) => ({
-            curator: v.curator as MultiAddress,
-            fee: v.fee as bigint,
-          }))
-        if (!proposeCuratorCalls.length) return null
-        return { referendum, proposeCuratorCalls }
-      })
-      .filter((v) => v !== null)
-  }
-
-  const getScheduledCalls = memo(async () => {
-    const agenda = await typedApi.query.Scheduler.Agenda.getEntries()
-    const token = await typedApi.compatibilityToken
-
-    const scheduled = agenda.flatMap(
-      ({ keyArgs: [height], value: values }) =>
-        values
-          ?.filter((v) => !!v)
-          .map((value) => ({
-            height,
-            call: value.call,
-          })) ?? [],
-    )
-
-    const resolvedCalls = await Promise.all(
-      scheduled.map(({ height, call }) =>
-        resolvePreimage(call)
-          .then(
-            (callData) => typedApi.txFromCallData(callData, token).decodedCall,
-          )
-          .then((decodedCall) => ({ height, call: decodedCall }))
-          .catch((ex) => {
-            console.error(ex)
-            return null
-          }),
-      ),
-    )
-    return resolvedCalls.filter((v) => !!v)
-  })
-  async function findScheduledApproved(bountyId: number) {
-    const calls = await getScheduledCalls()
-
-    return calls
-      .filter(({ call }) =>
-        findCalls({ pallet: "Bounties", name: "approve_bounty" }, call).some(
-          (v) => v?.bounty_id === bountyId,
-        ),
-      )
-      .map(({ height }) => height)
-  }
-
-  async function findScheduledCuratorProposed(bountyId: number) {
-    const calls = await getScheduledCalls()
-
-    return calls
-      .map(({ call, height }) => {
-        const proposeCuratorCalls = findCalls(
-          {
-            pallet: "Bounties",
-            name: "propose_curator",
-          },
-          call,
-        )
-          .filter(
-            (v) =>
-              v?.bounty_id === bountyId &&
-              typeof v.curator === "object" &&
-              typeof v.fee === "bigint",
-          )
-          .map((v) => ({
-            curator: v.curator as MultiAddress,
-            fee: v.fee as bigint,
-          }))
-        if (!proposeCuratorCalls.length) return null
-        return { height, proposeCuratorCalls }
-      })
-      .filter((v) => v !== null)
-  }
+  const { findScheduledApproved, findScheduledCuratorProposed } =
+    scheduledFinder(typedApi)
 
   const enhanceBounty = (
     bounty: BountyWithoutDescription,
@@ -349,29 +196,4 @@ export function createBountiesSdk(typedApi: BountiesSdkTypedApi): BountiesSdk {
     getBounty,
     getProposedBounty,
   }
-}
-
-const spenderOrigins = [
-  "Treasurer",
-  "SmallSpender",
-  "MediumSpender",
-  "BigSpender",
-  "SmallTipper",
-  "BigTipper",
-]
-
-const findCalls = (call: { pallet: string; name: string }, obj: any): any[] => {
-  if (typeof obj !== "object") return []
-  if (Array.isArray(obj)) {
-    const approves = []
-    for (const item of obj) approves.push(...findCalls(call, item))
-    return approves
-  }
-  if (obj?.type === call.pallet && obj?.value?.type === call.name) {
-    return [obj.value.value]
-  }
-  const approves = []
-  for (const key of Object.keys(obj))
-    approves.push(...findCalls(call, obj[key]))
-  return approves
 }

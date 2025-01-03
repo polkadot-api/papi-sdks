@@ -14,7 +14,7 @@ import {
 import {
   PolkadotRuntimeOriginCaller,
   PreimagesBounded,
-} from "./referenda-descriptors"
+} from "../referenda/descriptors"
 
 export type BountiesBountyStatus = Enum<{
   Proposed: undefined
