@@ -1,3 +1,4 @@
+import { SdkDefinition } from "@polkadot-api/common-sdk-utils"
 import {
   ApisTypedef,
   Binary,
@@ -139,15 +140,6 @@ type BountiesSdkPallets = PalletsTypedef<
 >
 type BountiesSdkDefinition = SdkDefinition<BountiesSdkPallets, ApisTypedef<{}>>
 export type BountiesSdkTypedApi = TypedApi<BountiesSdkDefinition>
-
-type SdkDefinition<P, R> = {
-  descriptors: Promise<any> & {
-    pallets: P
-    apis: R
-  }
-  asset: any
-  metadataTypes: any
-}
 
 export type MultiAddress = Enum<{
   Id: SS58String
