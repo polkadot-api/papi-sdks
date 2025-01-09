@@ -1,6 +1,6 @@
 import { combineKeys, partitionByKey, toKeySet } from "@react-rxjs/utils"
 import { Binary, TxEvent } from "polkadot-api"
-import { map, mergeMap, skip, startWith, switchMap } from "rxjs"
+import { map, mergeMap, takeWhile } from "rxjs"
 import { BountiesSdkTypedApi, BountyWithoutDescription } from "./descriptors"
 import {
   findApprovingReferenda,
@@ -130,15 +130,28 @@ export function createBountiesSdk(typedApi: BountiesSdkTypedApi): BountiesSdk {
 
   function watchBounties() {
     const [getBountyById$, bountyKeyChanges$] = partitionByKey(
-      // TODO watchEntries
-      typedApi.query.Bounties.BountyCount.watchValue().pipe(
-        skip(1),
-        startWith(null),
-        switchMap(() => typedApi.query.Bounties.Bounties.getEntries()),
-        mergeMap((v) => v.sort((a, b) => a.keyArgs[0] - b.keyArgs[0])),
+      typedApi.query.Bounties.Bounties.watchEntries().pipe(
+        mergeMap((v) =>
+          v.deltas
+            ? [
+                ...v.deltas.deleted.map((d) => ({
+                  id: d.args[0],
+                  value: undefined,
+                })),
+                ...v.deltas.upserted.map((d) => ({
+                  id: d.args[0],
+                  value: d.value,
+                })),
+              ].sort((a, b) => a.id - b.id)
+            : [],
+        ),
       ),
-      (res) => res.keyArgs[0],
-      (group$, id) => group$.pipe(map((v) => enhanceBounty(v.value, id))),
+      (res) => res.id,
+      (group$, id) =>
+        group$.pipe(
+          takeWhile(({ value }) => Boolean(value), false),
+          map((v) => enhanceBounty(v.value!, id)),
+        ),
     )
 
     const bountyIds$ = bountyKeyChanges$.pipe(

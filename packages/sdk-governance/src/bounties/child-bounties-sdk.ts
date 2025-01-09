@@ -1,5 +1,5 @@
 import { combineKeys, partitionByKey, toKeySet } from "@react-rxjs/utils"
-import { map, mergeMap, skip, startWith, switchMap } from "rxjs"
+import { map, mergeMap, takeWhile } from "rxjs"
 import {
   ChildBountiesSdkTypedApi,
   ChildBountyWithoutDescription,
@@ -102,19 +102,28 @@ export function createChildBountiesSdk(
 
   function watchChildBounties(parentId: number) {
     const [getBountyById$, bountyKeyChanges$] = partitionByKey(
-      // TODO watchEntries
-      typedApi.query.ChildBounties.ParentChildBounties.watchValue(
-        parentId,
-      ).pipe(
-        skip(1),
-        startWith(null),
-        switchMap(() =>
-          typedApi.query.ChildBounties.ChildBounties.getEntries(parentId),
+      typedApi.query.ChildBounties.ChildBounties.watchEntries(parentId).pipe(
+        mergeMap((v) =>
+          v.deltas
+            ? [
+                ...v.deltas.deleted.map((d) => ({
+                  id: d.args[1],
+                  value: undefined,
+                })),
+                ...v.deltas.upserted.map((d) => ({
+                  id: d.args[1],
+                  value: d.value,
+                })),
+              ].sort((a, b) => a.id - b.id)
+            : [],
         ),
-        mergeMap((v) => v.sort((a, b) => a.keyArgs[1] - b.keyArgs[1])),
       ),
-      (res) => res.keyArgs[1],
-      (group$, id) => group$.pipe(map((v) => enhanceBounty(v.value, id))),
+      (res) => res.id,
+      (group$, id) =>
+        group$.pipe(
+          takeWhile(({ value }) => Boolean(value), false),
+          map((v) => enhanceBounty(v.value!, id)),
+        ),
     )
 
     const bountyIds$ = bountyKeyChanges$.pipe(
