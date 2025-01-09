@@ -3,6 +3,7 @@ import {
   ApisTypedef,
   Binary,
   Enum,
+  FixedSizeArray,
   PalletsTypedef,
   SS58String,
   StorageDescriptor,
@@ -50,7 +51,7 @@ type ChildBountiesSdkPallets = PalletsTypedef<
        * Child bounties that have been added.
        */
       ChildBounties: StorageDescriptor<
-        [number, number],
+        FixedSizeArray<2, number>,
         ChildBountyWithoutDescription,
         true,
         never

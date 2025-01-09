@@ -1,6 +1,15 @@
 import { KeyChanges } from "@react-rxjs/utils"
 import { Binary } from "polkadot-api"
-import { merge, mergeMap, Observable, scan, skip, startWith } from "rxjs"
+import {
+  defer,
+  merge,
+  mergeMap,
+  Observable,
+  scan,
+  shareReplay,
+  skip,
+  startWith,
+} from "rxjs"
 
 export const getBountyDescriptions$ = (
   getEntries: () => Promise<
@@ -13,7 +22,7 @@ export const getBountyDescriptions$ = (
   keyChanges$: Observable<KeyChanges<number>>,
 ) =>
   merge(
-    getEntries(),
+    defer(getEntries),
     keyChanges$.pipe(
       skip(1),
       mergeMap((changes) => {
@@ -40,4 +49,5 @@ export const getBountyDescriptions$ = (
       {} as Record<number, string>,
     ),
     startWith({} as Record<number, string>),
+    shareReplay({ bufferSize: 1, refCount: true }),
   )
