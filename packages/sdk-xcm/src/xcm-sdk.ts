@@ -39,40 +39,34 @@ export const createXcmSdk = <
   tokensInChains: Record<string, Record<string, boolean>>,
   getClient: (id: string) => PolkadotClient,
 ): XcmSdk<C, T> => {
-  // caching both client and api to avoid race-conditions
-  const clientCache = new Map<string, PolkadotClient>()
-  const apiCache = new Map<string, XcmApi>()
-  const getApi = async (id: string): Promise<XcmApi> => {
+  const apiCache = new Map<string, Promise<XcmApi>>()
+  const getApi = (id: string): Promise<XcmApi> => {
     const cachedApi = apiCache.get(id)
     if (cachedApi) return cachedApi
-    let client = clientCache.get(id)
-    if (!client) {
-      client = getClient(id)
-      clientCache.set(id, client)
-    }
-    const relayApi = client.getTypedApi(relay)
-    if (
-      await relayApi.tx.XcmPallet.execute.isCompatible(
-        CompatibilityLevel.Partial,
-      )
-    ) {
-      const api = { api: relayApi, pallet: "XcmPallet" } as const
-      apiCache.set(id, api)
-      return api
-    }
+    const client = getClient(id)
+    const promise = new Promise<XcmApi>(async (res, rej) => {
+      const relayApi = client.getTypedApi(relay)
+      if (
+        await relayApi.tx.XcmPallet.execute.isCompatible(
+          CompatibilityLevel.Partial,
+        )
+      ) {
+        res({ api: relayApi, pallet: "XcmPallet" })
+        return
+      }
 
-    const paraApi = client.getTypedApi(ah)
-    if (
-      await paraApi.tx.PolkadotXcm.execute.isCompatible(
-        CompatibilityLevel.Partial,
-      )
-    ) {
-      const api = { api: paraApi, pallet: "PolkadotXcm" } as const
-      apiCache.set(id, api)
-      return api
-    }
-
-    throw new Error("NO SUITABLE API FOUND")
+      const paraApi = client.getTypedApi(ah)
+      if (
+        await paraApi.tx.PolkadotXcm.execute.isCompatible(
+          CompatibilityLevel.Partial,
+        )
+      ) {
+        res({ api: paraApi, pallet: "PolkadotXcm" })
+      }
+      rej("NO SUITABLE API FOUND")
+    })
+    apiCache.set(id, promise)
+    return promise
   }
   return {
     createRoute(token, origin, dest) {
