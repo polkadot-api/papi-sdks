@@ -1,6 +1,13 @@
 import { combineKeys, partitionByKey, toKeySet } from "@react-rxjs/utils"
 import { Binary, TxEvent } from "polkadot-api"
-import { map, mergeMap, takeWhile } from "rxjs"
+import {
+  combineLatest,
+  distinctUntilChanged,
+  map,
+  mergeMap,
+  takeWhile,
+} from "rxjs"
+import { getBountyDescriptions$ } from "./bounty-descriptions"
 import { BountiesSdkTypedApi, BountyWithoutDescription } from "./descriptors"
 import {
   findApprovingReferenda,
@@ -15,16 +22,14 @@ export function createBountiesSdk(typedApi: BountiesSdkTypedApi): BountiesSdk {
 
   const enhanceBounty = (
     bounty: BountyWithoutDescription,
+    description: string | null,
     id: number,
   ): Bounty => {
     const generic: GenericBounty = {
       ...bounty,
       type: bounty.status.type,
       id,
-      description: () =>
-        typedApi.query.Bounties.BountyDescriptions.getValue(id).then((r) =>
-          r ? r.asText() : null,
-        ),
+      description,
     }
 
     switch (generic.status.type) {
@@ -126,6 +131,7 @@ export function createBountiesSdk(typedApi: BountiesSdkTypedApi): BountiesSdk {
           },
         }
     }
+    throw new Error("Unreachable")
   }
 
   function watchBounties() {
@@ -150,8 +156,16 @@ export function createBountiesSdk(typedApi: BountiesSdkTypedApi): BountiesSdk {
       (group$, id) =>
         group$.pipe(
           takeWhile(({ value }) => Boolean(value), false),
-          map((v) => enhanceBounty(v.value!, id)),
+          map((bounty) => ({
+            id,
+            bounty: bounty.value!,
+          })),
         ),
+    )
+    const descriptions$ = getBountyDescriptions$(
+      typedApi.query.Bounties.BountyDescriptions.getEntries,
+      typedApi.query.Bounties.BountyDescriptions.getValues,
+      bountyKeyChanges$,
     )
 
     const bountyIds$ = bountyKeyChanges$.pipe(
@@ -159,16 +173,34 @@ export function createBountiesSdk(typedApi: BountiesSdkTypedApi): BountiesSdk {
       map((set) => [...set]),
     )
 
+    const getEnhancedBountyById$ = (id: number) =>
+      combineLatest([
+        getBountyById$(id),
+        descriptions$.pipe(
+          map((r): string | null => r[id] ?? null),
+          distinctUntilChanged(),
+        ),
+      ]).pipe(
+        map(([{ id, bounty }, description]) =>
+          enhanceBounty(bounty, description, id),
+        ),
+      )
+
     return {
-      bounties$: combineKeys(bountyIds$, getBountyById$),
-      getBountyById$,
+      bounties$: combineKeys(bountyIds$, getEnhancedBountyById$),
+      getBountyById$: getEnhancedBountyById$,
       bountyIds$,
     }
   }
 
-  function getBounty(id: number) {
-    return typedApi.query.Bounties.Bounties.getValue(id).then((bounty) =>
-      bounty ? enhanceBounty(bounty, id) : null,
+  function getBounty(id: number, at?: string) {
+    return Promise.all([
+      typedApi.query.Bounties.Bounties.getValue(id, { at }),
+      typedApi.query.Bounties.BountyDescriptions.getValue(id, { at }),
+    ]).then(([bounty, description]) =>
+      bounty
+        ? enhanceBounty(bounty, description ? description.asText() : null, id)
+        : null,
     )
   }
 
@@ -187,20 +219,28 @@ export function createBountiesSdk(typedApi: BountiesSdkTypedApi): BountiesSdk {
     const id = proposedBountyEvt.index
     const at = txEvent.type === "finalized" ? undefined : txEvent.block.hash
 
-    const bounty = await typedApi.query.Bounties.Bounties.getValue(id, { at })
+    const bounty = await getBounty(id, at)
     if (!bounty) return null
 
-    const enhanced = enhanceBounty(bounty, id)
-    return enhanced.type === "Proposed" ? enhanced : null
+    return bounty.type === "Proposed" ? bounty : null
   }
 
   function getBounties() {
-    return typedApi.query.Bounties.Bounties.getEntries().then((entries) =>
-      entries
+    return Promise.all([
+      typedApi.query.Bounties.Bounties.getEntries(),
+      typedApi.query.Bounties.BountyDescriptions.getEntries(),
+    ]).then(([entries, descriptions]) => {
+      const descriptionMap = Object.fromEntries(
+        descriptions.map(({ keyArgs, value }) => [keyArgs[0], value.asText()]),
+      )
+
+      return entries
         .map(({ keyArgs: [id], value }) => ({ bounty: value, id }))
         .sort((a, b) => a.id - b.id)
-        .map(({ bounty, id }) => enhanceBounty(bounty, id)),
-    )
+        .map(({ bounty, id }) =>
+          enhanceBounty(bounty, descriptionMap[id] ?? null, id),
+        )
+    })
   }
 
   return {

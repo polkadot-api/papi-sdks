@@ -1,5 +1,12 @@
 import { combineKeys, partitionByKey, toKeySet } from "@react-rxjs/utils"
-import { map, mergeMap, takeWhile } from "rxjs"
+import {
+  combineLatest,
+  distinctUntilChanged,
+  map,
+  mergeMap,
+  takeWhile,
+} from "rxjs"
+import { getBountyDescriptions$ } from "./bounty-descriptions"
 import {
   ChildBountiesSdkTypedApi,
   ChildBountyWithoutDescription,
@@ -15,16 +22,14 @@ export function createChildBountiesSdk(
 ): ChildBountiesSdk {
   const enhanceBounty = (
     bounty: ChildBountyWithoutDescription,
+    description: string | null,
     id: number,
   ): ChildBounty => {
     const generic: GenericChildBounty = {
       ...bounty,
       type: bounty.status.type,
       id,
-      description: () =>
-        typedApi.query.ChildBounties.ChildBountyDescriptions.getValue(id).then(
-          (r) => (r ? r.asText() : null),
-        ),
+      description,
     }
 
     const idObj = {
@@ -98,6 +103,7 @@ export function createChildBountiesSdk(
           },
         }
     }
+    throw new Error("Unreachable")
   }
 
   function watchChildBounties(parentId: number) {
@@ -122,8 +128,16 @@ export function createChildBountiesSdk(
       (group$, id) =>
         group$.pipe(
           takeWhile(({ value }) => Boolean(value), false),
-          map((v) => enhanceBounty(v.value!, id)),
+          map((bounty) => ({
+            id,
+            bounty: bounty.value!,
+          })),
         ),
+    )
+    const descriptions$ = getBountyDescriptions$(
+      typedApi.query.ChildBounties.ChildBountyDescriptions.getEntries,
+      typedApi.query.ChildBounties.ChildBountyDescriptions.getValues,
+      bountyKeyChanges$,
     )
 
     const bountyIds$ = bountyKeyChanges$.pipe(
@@ -131,18 +145,35 @@ export function createChildBountiesSdk(
       map((set) => [...set]),
     )
 
+    const getEnhancedBountyById$ = (id: number) =>
+      combineLatest([
+        getBountyById$(id),
+        descriptions$.pipe(
+          map((r): string | null => r[id] ?? null),
+          distinctUntilChanged(),
+        ),
+      ]).pipe(
+        map(([{ id, bounty }, description]) =>
+          enhanceBounty(bounty, description, id),
+        ),
+      )
+
     return {
-      bounties$: combineKeys(bountyIds$, getBountyById$),
-      getBountyById$,
+      bounties$: combineKeys(bountyIds$, getEnhancedBountyById$),
+      getBountyById$: getEnhancedBountyById$,
       bountyIds$,
     }
   }
 
   function getChildBounty(parentId: number, id: number) {
-    return typedApi.query.ChildBounties.ChildBounties.getValue(
-      parentId,
-      id,
-    ).then((bounty) => (bounty ? enhanceBounty(bounty, id) : null))
+    return Promise.all([
+      typedApi.query.ChildBounties.ChildBounties.getValue(parentId, id),
+      typedApi.query.ChildBounties.ChildBountyDescriptions.getValue(id).then(
+        (r) => (r ? r.asText() : null),
+      ),
+    ]).then(([bounty, description]) =>
+      bounty ? enhanceBounty(bounty, description, id) : null,
+    )
   }
 
   return {

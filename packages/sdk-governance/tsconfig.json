@@ -4,6 +4,7 @@
   "compilerOptions": {
     "baseUrl": "src",
     "resolveJsonModule": true,
+    "skipLibCheck": true,
     "paths": {
       "@/*": ["*"]
     }

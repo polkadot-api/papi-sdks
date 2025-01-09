@@ -22,13 +22,13 @@ importers:
         version: 4.25.0
       rollup-plugin-dts:
         specifier: ^6.1.1
-        version: 6.1.1(rollup@4.25.0)(typescript@5.6.3)
+        version: 6.1.1(rollup@4.25.0)(typescript@5.7.3)
       rollup-plugin-esbuild:
         specifier: ^6.1.1
         version: 6.1.1(esbuild@0.24.2)(rollup@4.25.0)
       typescript:
-        specifier: ^5.6.3
-        version: 5.6.3
+        specifier: ^5.7.3
+        version: 5.7.3
       vitest:
         specifier: ^2.1.4
         version: 2.1.4
@@ -836,9 +836,9 @@ packages:
       ora: 8.1.1
       read-pkg: 9.0.1
       rxjs: 7.8.1
-      tsc-prog: 2.3.0(typescript@5.7.2)
-      tsup: 8.3.5(typescript@5.7.2)
-      typescript: 5.7.2
+      tsc-prog: 2.3.0(typescript@5.7.3)
+      tsup: 8.3.5(typescript@5.7.3)
+      typescript: 5.7.3
       write-package: 7.1.0
     transitivePeerDependencies:
       - '@microsoft/api-extractor'
@@ -2430,7 +2430,7 @@ packages:
       onetime: 7.0.0
       signal-exit: 4.1.0
 
-  /rollup-plugin-dts@6.1.1(rollup@4.25.0)(typescript@5.6.3):
+  /rollup-plugin-dts@6.1.1(rollup@4.25.0)(typescript@5.7.3):
     resolution: {integrity: sha512-aSHRcJ6KG2IHIioYlvAOcEq6U99sVtqDDKVhnwt70rW6tsz3tv5OSjEiWcgzfsHdLyGXZ/3b/7b/+Za3Y6r1XA==}
     engines: {node: '>=16'}
     peerDependencies:
@@ -2439,7 +2439,7 @@ packages:
     dependencies:
       magic-string: 0.30.12
       rollup: 4.25.0
-      typescript: 5.6.3
+      typescript: 5.7.3
     optionalDependencies:
       '@babel/code-frame': 7.26.2
     dev: true
@@ -2729,13 +2729,13 @@ packages:
     dependencies:
       typescript: 5.6.3
 
-  /tsc-prog@2.3.0(typescript@5.7.2):
+  /tsc-prog@2.3.0(typescript@5.7.3):
     resolution: {integrity: sha512-ycET2d75EgcX7y8EmG4KiZkLAwUzbY4xRhA6NU0uVbHkY4ZjrAAuzTMxXI85kOwATqPnBI5C/7y7rlpY0xdqHA==}
     engines: {node: '>=12'}
     peerDependencies:
       typescript: '>=4'
     dependencies:
-      typescript: 5.7.2
+      typescript: 5.7.3
     dev: true
 
   /tslib@2.8.1:
@@ -2783,7 +2783,7 @@ packages:
       - tsx
       - yaml
 
-  /tsup@8.3.5(typescript@5.7.2):
+  /tsup@8.3.5(typescript@5.7.3):
     resolution: {integrity: sha512-Tunf6r6m6tnZsG9GYWndg0z8dEV7fD733VBFzFJ5Vcm1FtlXB8xBD/rtrBi2a3YKEV7hHtxiZtW5EAVADoe1pA==}
     engines: {node: '>=18'}
     hasBin: true
@@ -2818,7 +2818,7 @@ packages:
       tinyexec: 0.3.1
       tinyglobby: 0.2.10
       tree-kill: 1.2.2
-      typescript: 5.7.2
+      typescript: 5.7.3
     transitivePeerDependencies:
       - jiti
       - supports-color
@@ -2835,8 +2835,8 @@ packages:
     engines: {node: '>=14.17'}
     hasBin: true
 
-  /typescript@5.7.2:
-    resolution: {integrity: sha512-i5t66RHxDvVN40HfDd1PsEThGNnlMCMT3jMUuoh9/0TaqWevNontacunWyN02LA9/fIbEWlcHZcgTKb9QoaLfg==}
+  /typescript@5.7.3:
+    resolution: {integrity: sha512-84MVSjMEHP+FQRPy3pX9sTVV/INIex71s9TL2Gm5FG/WG1SqXeKyZ0k7/blY/4FdOzI12CBy1vGc4og/eus0fw==}
     engines: {node: '>=14.17'}
     hasBin: true
     dev: true

@@ -1,5 +1,5 @@
 import { SS58String, Transaction } from "polkadot-api"
-import { GroupedObservable, Observable } from "rxjs"
+import { Observable } from "rxjs"
 import {
   BountiesChildBountyStatus,
   ChildBountyWithoutDescription,
@@ -9,7 +9,7 @@ import { MultiAddress } from "./descriptors"
 export interface GenericChildBounty extends ChildBountyWithoutDescription {
   type: BountiesChildBountyStatus["type"]
   id: number
-  description: () => Promise<string | null>
+  description: string | null
 }
 
 interface ClosableBounty {
@@ -62,7 +62,7 @@ export interface ChildBountiesSdk {
   watchChildBounties(parentId: number): {
     bounties$: Observable<Map<number, ChildBounty>>
     bountyIds$: Observable<number[]>
-    getBountyById$: (key: number) => GroupedObservable<number, ChildBounty>
+    getBountyById$: (key: number) => Observable<ChildBounty>
   }
   getChildBounty(parentId: number, id: number): Promise<ChildBounty | null>
 }

@@ -1,5 +1,5 @@
 import { SS58String, Transaction, TxEvent } from "polkadot-api"
-import { GroupedObservable, Observable } from "rxjs"
+import { Observable } from "rxjs"
 import { OngoingReferendum } from "../referenda/sdk-types"
 import {
   BountiesBountyStatus,
@@ -10,7 +10,7 @@ import {
 export interface GenericBounty extends BountyWithoutDescription {
   type: BountiesBountyStatus["type"]
   id: number
-  description: () => Promise<string | null>
+  description: string | null
 }
 
 interface ClosableBounty {
@@ -97,7 +97,7 @@ export interface BountiesSdk {
   watchBounties(): {
     bounties$: Observable<Map<number, Bounty>>
     bountyIds$: Observable<number[]>
-    getBountyById$: (key: number) => GroupedObservable<number, Bounty>
+    getBountyById$: (key: number) => Observable<Bounty>
   }
   getBounty(id: number): Promise<Bounty | null>
   getBounties(): Promise<Bounty[]>
