@@ -4,7 +4,6 @@ import {
   BountiesChildBountyStatus,
   ChildBountyWithoutDescription,
 } from "./child-descriptors"
-import { MultiAddress } from "./descriptors"
 
 export interface GenericChildBounty extends ChildBountyWithoutDescription {
   type: BountiesChildBountyStatus["type"]
@@ -18,7 +17,7 @@ interface ClosableBounty {
 export interface AddedChildBounty extends GenericChildBounty, ClosableBounty {
   type: "Added"
   proposeCurator(
-    curator: MultiAddress,
+    curator: SS58String,
     fee: bigint,
   ): Transaction<any, string, string, unknown>
 }

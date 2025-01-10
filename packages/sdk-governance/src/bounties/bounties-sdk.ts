@@ -59,7 +59,10 @@ export function createBountiesSdk(typedApi: BountiesSdkTypedApi): BountiesSdk {
           proposeCurator(curator, fee) {
             return typedApi.tx.Bounties.propose_curator({
               bounty_id: id,
-              curator,
+              curator: {
+                type: "Id",
+                value: curator,
+              },
               fee,
             })
           },

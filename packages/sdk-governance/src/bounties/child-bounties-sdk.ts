@@ -44,7 +44,10 @@ export function createChildBountiesSdk(
           proposeCurator(curator, fee) {
             return typedApi.tx.ChildBounties.propose_curator({
               ...idObj,
-              curator,
+              curator: {
+                type: "Id",
+                value: curator,
+              },
               fee,
             })
           },

@@ -31,7 +31,7 @@ export interface ApprovedBounty extends GenericBounty {
 export interface FundedBounty extends GenericBounty, ClosableBounty {
   type: "Funded"
   proposeCurator(
-    curator: MultiAddress,
+    curator: SS58String,
     fee: bigint,
   ): Transaction<any, string, string, unknown>
   filterProposingReferenda(referenda: OngoingReferendum[]): Promise<
