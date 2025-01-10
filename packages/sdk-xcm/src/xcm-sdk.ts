@@ -1,13 +1,14 @@
+import { AsyncTransaction } from "@polkadot-api/common-sdk-utils"
 import {
   CompatibilityLevel,
   PolkadotClient,
   SS58String,
   TypedApi,
 } from "polkadot-api"
+import { createReserve } from "./create-reserve"
+import { createTeleport } from "./create-teleport"
 import { ah, relay, XcmV3Junction } from "./descriptors"
 import { junctionsToLocation, locationsAreEq } from "./utils/location"
-import { createTeleport } from "./create-teleport"
-import { AsyncTransaction } from "@polkadot-api/common-sdk-utils"
 
 export type XcmApi =
   | { api: TypedApi<typeof relay>; pallet: "XcmPallet" }
@@ -36,7 +37,7 @@ export const createXcmSdk = <
 >(
   chains: C,
   tokens: T,
-  tokensInChains: Record<string, Record<string, boolean>>,
+  tokensInChains: Record<string, Record<string, Array<XcmV3Junction> | true>>,
   getClient: (id: string) => PolkadotClient,
 ): XcmSdk<C, T> => {
   const apiCache = new Map<string, Promise<XcmApi>>()
@@ -92,7 +93,10 @@ export const createXcmSdk = <
         // TODO: balances transfer // assets transfer!
         return {} as any
         // teleportable
-      } else if (tokensInChains[token][origin] && tokensInChains[token][dest]) {
+      } else if (
+        tokensInChains[token][origin] === true &&
+        tokensInChains[token][dest] === true
+      ) {
         return (amount, beneficiary) =>
           createTeleport(
             origin,
@@ -104,10 +108,40 @@ export const createXcmSdk = <
             amount,
             beneficiary,
           )
-        // TODO: teleport
       } else {
-        // TODO: reserve transfer
-        return {} as any
+        const reserve =
+          tokensInChains[token][origin] === true &&
+          locationsAreEq(
+            junctionsToLocation(tokensInChains[token][dest] as any),
+            aLoc,
+          )
+            ? aLoc
+            : tokensInChains[token][dest] === true &&
+                locationsAreEq(
+                  junctionsToLocation(tokensInChains[token][origin] as any),
+                  bLoc,
+                )
+              ? bLoc
+              : locationsAreEq(
+                    junctionsToLocation(tokensInChains[token][origin] as any),
+                    junctionsToLocation(tokensInChains[token][dest] as any),
+                  )
+                ? junctionsToLocation(tokensInChains[token][origin] as any)
+                : null
+        if (reserve == null)
+          throw new Error("Reserve location is not compatible")
+        return (amount, beneficiary) =>
+          createReserve(
+            origin,
+            aLoc,
+            dest,
+            bLoc,
+            tokenLoc,
+            reserve,
+            getApi,
+            amount,
+            beneficiary,
+          )
       }
     },
   }

@@ -12,9 +12,11 @@ const PASEO: XcmV3Junction[] = [
   ),
 ]
 const PASEO_AH: XcmV3Junction[] = [...PASEO, XcmV3Junction.Parachain(1000)]
+const PASEO_HYDR: XcmV3Junction[] = [...PASEO, XcmV3Junction.Parachain(2034)]
 export const CHAINS = {
   paseo: PASEO,
   paseoAssetHub: PASEO_AH,
+  paseoHydra: PASEO_HYDR,
 }
 
 export const TOKENS = {
@@ -23,7 +25,8 @@ export const TOKENS = {
 
 export const TOKENS_IN_CHAINS = {
   PAS: {
-    paseo: true,
-    paseoAssetHub: true,
+    paseo: true as const,
+    paseoAssetHub: true as const,
+    paseoHydra: PASEO_AH,
   },
 }
