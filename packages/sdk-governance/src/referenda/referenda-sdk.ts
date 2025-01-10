@@ -1,7 +1,6 @@
 import { blake2b } from "@noble/hashes/blake2b"
 import { Binary, TxEvent } from "polkadot-api"
 import { getPreimageResolver } from "../preimages"
-import { keyBy } from "../util/keyBy"
 import { originToTrack, polkadotSpenderOrigin } from "./chainConfig"
 import {
   PolkadotRuntimeOriginCaller,
@@ -13,6 +12,7 @@ import {
   ReferendaSdk,
   ReferendaSdkConfig,
 } from "./sdk-types"
+import { trackFetcher } from "./track"
 
 const MAX_INLINE_SIZE = 128
 type RawOngoingReferendum = (ReferendumInfo & { type: "Ongoing" })["value"]
@@ -28,12 +28,42 @@ export function createReferendaSdk(
   const resolvePreimage = getPreimageResolver(
     typedApi.query.Preimage.PreimageFor.getValues,
   )
+  const getTrack = trackFetcher(typedApi)
 
   function enhanceOngoingReferendum(
     id: number,
     referendum: RawOngoingReferendum,
   ): OngoingReferendum {
     const resolveProposal = () => resolvePreimage(referendum.proposal)
+
+    async function getConfirmationStart() {
+      const totalVotes = referendum.tally.ayes + referendum.tally.nays
+      if (totalVotes == 0n || !referendum.deciding) {
+        return null
+      }
+      if (referendum.deciding.confirming) {
+        return referendum.deciding.confirming
+      }
+
+      const approvals = Number(referendum.tally.ayes) / Number(totalVotes)
+
+      const [track, totalIssuance] = await Promise.all([
+        getTrack(referendum.track),
+        typedApi.query.Balances.TotalIssuance.getValue(),
+      ])
+      if (!track) return null
+      const approvalBlock = Math.max(0, track.minApproval.getBlock(approvals))
+      const supportBlock = Math.max(
+        0,
+        track.minSupport.getBlock(
+          Number(referendum.tally.support) / Number(totalIssuance),
+        ),
+      )
+      const block = Math.max(approvalBlock, supportBlock)
+      if (block === Number.POSITIVE_INFINITY) return null
+
+      return referendum.deciding.since + block
+    }
 
     return {
       ...referendum,
@@ -66,6 +96,19 @@ export function createReferendaSdk(
         return {
           title: result.data.title,
         }
+      },
+      getConfirmationStart,
+      async getConfirmationEnd() {
+        if (!referendum.deciding) return null
+
+        const track = await getTrack(referendum.track)
+        if (!track) return null
+
+        const confirmationStart =
+          referendum.deciding.confirming ?? (await getConfirmationStart())
+        if (!confirmationStart) return null
+
+        return confirmationStart + track.confirm_period
       },
     }
   }
@@ -100,18 +143,14 @@ export function createReferendaSdk(
 
     return {
       origin,
-      enactment: async () => {
-        const referendaTracks = await typedApi.constants.Referenda.Tracks()
-        const tracks = keyBy(
-          referendaTracks.map(([_, track]) => track),
-          (track) => track.name,
-        )
-        const rootEnactment = tracks["root"].min_enactment_period
-        if (!spenderOriginType) return rootEnactment
-
-        const track = originToTrack[spenderOriginType] ?? ""
-        return tracks[track]?.min_enactment_period ?? rootEnactment
-      },
+      track: getTrack(
+        spenderOriginType ? originToTrack[spenderOriginType] : "root",
+      ).then((r) => {
+        if (!r) {
+          throw new Error(`Track ${spenderOriginType ?? "root"} not found`)
+        }
+        return r
+      }),
     }
   }
 
@@ -179,6 +218,7 @@ export function createReferendaSdk(
   return {
     getOngoingReferenda,
     getSpenderTrack,
+    getTrack,
     createReferenda,
     createSpenderReferenda,
     getSubmittedReferendum,

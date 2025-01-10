@@ -3,6 +3,8 @@ import { Origin } from "./chainConfig"
 import {
   PolkadotRuntimeOriginCaller,
   PreimagesBounded,
+  ReferendaTrack as ReferendaTrackDescriptor,
+  ReferendaTypesCurve,
   ReferendumInfo,
   TraitsScheduleDispatchTime,
 } from "./descriptors"
@@ -27,18 +29,43 @@ export type OngoingReferendum = Omit<RawOngoingReferendum, "proposal"> & {
     }>
   }
   getDetails: (apiKey: string) => Promise<ReferendumDetails>
+  getConfirmationStart: () => Promise<number | null>
+  getConfirmationEnd: () => Promise<number | null>
 }
 
 export interface ReferendaSdkConfig {
   spenderOrigin: (value: bigint) => Origin | null
 }
 
+/**
+ * threshold are in percentage [0-1]
+ */
+export interface TrackFunctionDetails {
+  curve: ReferendaTypesCurve
+  getThreshold(block: number): number
+  getBlock(threshold: number): number
+  getData(step?: number): Array<{
+    block: number
+    threshold: number
+  }>
+}
+export type ReferendaTrack = Omit<
+  ReferendaTrackDescriptor,
+  "min_approval" | "min_support"
+> & {
+  minApproval: TrackFunctionDetails
+  minSupport: TrackFunctionDetails
+}
+
 export interface ReferendaSdk {
   getOngoingReferenda(): Promise<OngoingReferendum[]>
   getSpenderTrack(value: bigint): {
     origin: PolkadotRuntimeOriginCaller
-    enactment: () => Promise<number>
+    track: Promise<ReferendaTrack>
   }
+
+  getTrack(id: number | string): Promise<ReferendaTrack | null>
+
   createReferenda(
     origin: PolkadotRuntimeOriginCaller,
     enactment: TraitsScheduleDispatchTime,

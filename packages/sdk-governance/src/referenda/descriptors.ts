@@ -115,6 +115,18 @@ export type ReferendaTypesCurve = Enum<{
   }
 }>
 
+export type ReferendaTrack = {
+  name: string
+  max_deciding: number
+  decision_deposit: bigint
+  prepare_period: number
+  decision_period: number
+  confirm_period: number
+  min_enactment_period: number
+  min_approval: ReferendaTypesCurve
+  min_support: ReferendaTypesCurve
+}
+
 type ReferendaSdkPallets = PalletsTypedef<
   {
     Preimage: {
@@ -135,6 +147,9 @@ type ReferendaSdkPallets = PalletsTypedef<
         true,
         never
       >
+    }
+    Balances: {
+      TotalIssuance: StorageDescriptor<[], bigint, false, never>
     }
   },
   {
@@ -168,24 +183,7 @@ type ReferendaSdkPallets = PalletsTypedef<
   {},
   {
     Referenda: {
-      Tracks: PlainDescriptor<
-        Array<
-          [
-            number,
-            {
-              name: string
-              max_deciding: number
-              decision_deposit: bigint
-              prepare_period: number
-              decision_period: number
-              confirm_period: number
-              min_enactment_period: number
-              min_approval: ReferendaTypesCurve
-              min_support: ReferendaTypesCurve
-            },
-          ]
-        >
-      >
+      Tracks: PlainDescriptor<Array<[number, ReferendaTrack]>>
     }
   }
 >
