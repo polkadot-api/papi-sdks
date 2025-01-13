@@ -7,7 +7,7 @@ import {
 } from "polkadot-api"
 import { createReserve } from "./create-reserve"
 import { createTeleport } from "./create-teleport"
-import { ah, relay, XcmV3Junction } from "./descriptors"
+import type { ah, relay, XcmV3Junction } from "./descriptors"
 import { junctionsToLocation, locationsAreEq } from "./utils/location"
 
 export type XcmApi =
@@ -46,25 +46,44 @@ export const createXcmSdk = <
     if (cachedApi) return cachedApi
     const client = getClient(id)
     const promise = new Promise<XcmApi>(async (res, rej) => {
+      const { relay, nextRelay, ah, nextAh } = await import("./descriptors")
       const relayApi = client.getTypedApi(relay)
-      if (
-        await relayApi.tx.XcmPallet.execute.isCompatible(
-          CompatibilityLevel.Partial,
-        )
-      ) {
+      const relayCompat =
+        await relayApi.tx.XcmPallet.execute.getCompatibilityLevel()
+      if (relayCompat > CompatibilityLevel.Incompatible) {
+        if (relayCompat === CompatibilityLevel.Partial) {
+          const nextApi = client.getTypedApi(nextRelay)
+          const nextCompat =
+            await nextApi.tx.XcmPallet.execute.getCompatibilityLevel()
+          res({
+            api: (nextCompat > relayCompat ? nextApi : relayApi) as any,
+            pallet: "XcmPallet",
+          })
+          return
+        }
         res({ api: relayApi, pallet: "XcmPallet" })
         return
       }
 
       const paraApi = client.getTypedApi(ah)
-      if (
-        await paraApi.tx.PolkadotXcm.execute.isCompatible(
-          CompatibilityLevel.Partial,
-        )
-      ) {
-        res({ api: paraApi, pallet: "PolkadotXcm" })
+      const paraCompat =
+        await paraApi.tx.PolkadotXcm.execute.getCompatibilityLevel()
+      if (paraCompat === CompatibilityLevel.Incompatible) {
+        rej("NO SUITABLE API FOUND")
+        return
       }
-      rej("NO SUITABLE API FOUND")
+      if (paraCompat === CompatibilityLevel.Partial) {
+        const nextApi = client.getTypedApi(nextAh)
+        const nextCompat =
+          await nextApi.tx.PolkadotXcm.execute.getCompatibilityLevel()
+        res({
+          api: (nextCompat > paraCompat ? nextApi : paraApi) as any,
+          pallet: "PolkadotXcm",
+        })
+        return
+      }
+      res({ api: paraApi, pallet: "PolkadotXcm" })
+      return
     })
     apiCache.set(id, promise)
     return promise
