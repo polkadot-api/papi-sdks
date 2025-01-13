@@ -1,6 +1,18 @@
 import { XcmV3Junction } from "@/descriptors"
 import { Binary, Enum } from "polkadot-api"
 
+const WESTEND: XcmV3Junction[] = [
+  XcmV3Junction.GlobalConsensus(
+    Enum(
+      "ByGenesis",
+      Binary.fromHex(
+        "0xe143f23803ac50e8f6f8e62695d1ce9e4e1d68aa36c1cd2cfd15340213f3423e",
+      ),
+    ),
+  ),
+]
+const WESTEND_AH: XcmV3Junction[] = [...WESTEND, XcmV3Junction.Parachain(1000)]
+const WESTEND_PP: XcmV3Junction[] = [...WESTEND, XcmV3Junction.Parachain(2042)]
 const PASEO: XcmV3Junction[] = [
   XcmV3Junction.GlobalConsensus(
     Enum(
@@ -14,16 +26,25 @@ const PASEO: XcmV3Junction[] = [
 const PASEO_AH: XcmV3Junction[] = [...PASEO, XcmV3Junction.Parachain(1000)]
 const PASEO_HYDR: XcmV3Junction[] = [...PASEO, XcmV3Junction.Parachain(2034)]
 export const CHAINS = {
+  westend: WESTEND,
+  westendAh: WESTEND_AH,
+  westendPP: WESTEND_PP,
   paseo: PASEO,
   paseoAssetHub: PASEO_AH,
   paseoHydra: PASEO_HYDR,
 }
 
 export const TOKENS = {
+  WND: WESTEND,
   PAS: PASEO,
 }
 
 export const TOKENS_IN_CHAINS = {
+  WND: {
+    westend: true as const,
+    westendAh: true as const,
+    westendPP: WESTEND,
+  },
   PAS: {
     paseo: true as const,
     paseoAssetHub: true as const,
