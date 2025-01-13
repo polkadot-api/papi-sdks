@@ -35,39 +35,68 @@ export const createReserve = (
   // we might need to tweak instructions
   const msg = (remoteFee: bigint = 0n) => {
     // TODO: missing tx kinds
-    // foreign -> reserve
-    // foreign -> foreign
-    if (!locationsAreEq(originLocation, reserve)) throw new Error("NOT IMPL")
-    return XcmVersionedXcm.V4([
-      // this one will make delivery fees for first hop withdraw from the origin
-      // NOTE: investigate getting the fees with withdraw asset
-      // TODO: delivery fees are being withdrawn twice
-      // jit_withdraw ones are getting trapped
-      XcmV4Instruction.SetFeesMode({ jit_withdraw: true }),
-      XcmV4Instruction.WithdrawAsset([
-        {
-          id: routeRelative(originLocation, token),
-          fun: Enum("Fungible", amount + remoteFee),
-        },
-      ]),
-      XcmV4Instruction.DepositReserveAsset({
-        assets: Enum("Wild", Enum("AllCounted", 1)),
-        dest: routeRelative(originLocation, destLocation),
-        xcm: [
-          Enum("BuyExecution", {
-            fees: {
-              id: routeRelative(destLocation, token),
-              fun: Enum("Fungible", remoteFee ? remoteFee : amount / 2n),
-            },
-            weight_limit: Enum("Unlimited"),
-          }),
-          XcmV4Instruction.DepositAsset({
-            assets: Enum("Wild", Enum("AllCounted", 1)),
-            beneficiary: accId32ToLocation(beneficiary),
-          }),
-        ],
-      }),
-    ])
+    // foreign -> foreign (remote reserve)
+    if (locationsAreEq(originLocation, reserve))
+      return XcmVersionedXcm.V4([
+        // this one will make delivery fees for first hop withdraw from the origin
+        // NOTE: investigate getting the fees with withdraw asset
+        // TODO: delivery fees are being withdrawn twice
+        // jit_withdraw ones are getting trapped
+        // XcmV4Instruction.SetFeesMode({ jit_withdraw: true }),
+        XcmV4Instruction.WithdrawAsset([
+          {
+            id: routeRelative(originLocation, token),
+            fun: Enum("Fungible", amount + remoteFee),
+          },
+        ]),
+        XcmV4Instruction.DepositReserveAsset({
+          assets: Enum("Wild", Enum("AllCounted", 1)),
+          dest: routeRelative(originLocation, destLocation),
+          xcm: [
+            Enum("BuyExecution", {
+              fees: {
+                id: routeRelative(destLocation, token),
+                fun: Enum("Fungible", remoteFee ? remoteFee : amount / 2n),
+              },
+              weight_limit: Enum("Unlimited"),
+            }),
+            XcmV4Instruction.DepositAsset({
+              assets: Enum("Wild", Enum("AllCounted", 1)),
+              beneficiary: accId32ToLocation(beneficiary),
+            }),
+          ],
+        }),
+      ])
+    if (locationsAreEq(destLocation, reserve))
+      return XcmVersionedXcm.V4([
+        // this one will make delivery fees for first hop withdraw from the origin
+        // NOTE: investigate getting the fees with withdraw asset
+        XcmV4Instruction.SetFeesMode({ jit_withdraw: true }),
+        XcmV4Instruction.WithdrawAsset([
+          {
+            id: routeRelative(originLocation, token),
+            fun: Enum("Fungible", amount + remoteFee),
+          },
+        ]),
+        XcmV4Instruction.InitiateReserveWithdraw({
+          assets: Enum("Wild", Enum("AllCounted", 1)),
+          reserve: routeRelative(originLocation, destLocation),
+          xcm: [
+            Enum("BuyExecution", {
+              fees: {
+                id: routeRelative(destLocation, token),
+                fun: Enum("Fungible", remoteFee ? remoteFee : amount / 2n),
+              },
+              weight_limit: Enum("Unlimited"),
+            }),
+            XcmV4Instruction.DepositAsset({
+              assets: Enum("Wild", Enum("AllCounted", 1)),
+              beneficiary: accId32ToLocation(beneficiary),
+            }),
+          ],
+        }),
+      ])
+    throw new Error("NOT IMPL")
   }
 
   const calculateXcmFees = async (
