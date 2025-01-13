@@ -32,7 +32,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        value: [common-utils, sdk-governance, sdk-ink]
+        value: [common-utils, sdk-governance, sdk-ink, sdk-accounts]
     steps:
       - uses: actions/checkout@v4
       - name: Check if version has been updated

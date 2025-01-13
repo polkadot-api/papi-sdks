@@ -1,1 +1,1 @@
-# @polkadot-api/ink-sdk
+# @polkadot-api/sdk-governance
