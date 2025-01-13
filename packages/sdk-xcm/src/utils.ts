@@ -6,7 +6,7 @@ export const unwrap: {
 } = (res) => {
   if ("then" in res) return res.then(unwrap)
   if (res.success) return res.value
-  throw null
+  throw new Error("Success `false` found")
 }
 
 export const log = (l: any) => console.dir(l, { depth: null })
