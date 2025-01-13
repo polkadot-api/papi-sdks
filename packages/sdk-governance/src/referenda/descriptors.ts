@@ -115,7 +115,7 @@ export type ReferendaTypesCurve = Enum<{
   }
 }>
 
-export type ReferendaTrack = {
+export type ReferendaTrackData = {
   name: string
   max_deciding: number
   decision_deposit: bigint
@@ -183,7 +183,7 @@ type ReferendaSdkPallets = PalletsTypedef<
   {},
   {
     Referenda: {
-      Tracks: PlainDescriptor<Array<[number, ReferendaTrack]>>
+      Tracks: PlainDescriptor<Array<[number, ReferendaTrackData]>>
     }
   }
 >

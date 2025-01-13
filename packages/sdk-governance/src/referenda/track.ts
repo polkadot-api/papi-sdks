@@ -1,7 +1,7 @@
 import { keyBy } from "@/util/keyBy"
 import {
   ReferendaSdkTypedApi,
-  ReferendaTrack as ReferendaTrackDescriptor,
+  ReferendaTrackData as ReferendaTrackDescriptor,
   ReferendaTypesCurve,
 } from "./descriptors"
 import { ReferendaTrack, TrackFunctionDetails } from "./sdk-types"

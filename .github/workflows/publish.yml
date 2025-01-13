@@ -1,0 +1,72 @@
+name: Publish
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build:
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v3
+      - name: Setup Node.js 20.x
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+          cache: pnpm
+          registry-url: https://registry.npmjs.org
+      - name: Install deps
+        run: pnpm install
+      - name: Build
+        run: pnpm build
+      - name: Lint
+        run: pnpm lint
+      - name: Test
+        run: pnpm test
+  publish:
+    needs: [build]
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        value: [sdk-governance, sdk-ink]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check if version has been updated
+        id: check
+        uses: EndBug/version-check@v2
+        with:
+          diff-search: true
+          file-name: ./packages/${{ matrix.value }}/package.json
+      - uses: actions/cache@v3
+        if: steps.check.outputs.changed == 'true'
+        with:
+          path: .turbo
+          key: ${{ runner.os }}-20.x-turbo-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-20.x-turbo-
+      - uses: pnpm/action-setup@v3
+        if: steps.check.outputs.changed == 'true'
+      - name: Setup Node.js 20.x
+        if: steps.check.outputs.changed == 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+          cache: pnpm
+          registry-url: https://registry.npmjs.org
+      - name: Install deps
+        if: steps.check.outputs.changed == 'true'
+        run: pnpm install
+      - name: Build
+        if: steps.check.outputs.changed == 'true'
+        run: pnpm build
+      - name: Publish
+        if: steps.check.outputs.changed == 'true'
+        working-directory: packages/${{ matrix.value }}
+        run: |
+          pnpm publish --no-git-checks --access=public --tag latest
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH_AUTOMATION_TOKEN }}

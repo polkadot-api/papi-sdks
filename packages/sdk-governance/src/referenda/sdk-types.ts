@@ -3,7 +3,7 @@ import { Origin } from "./chainConfig"
 import {
   PolkadotRuntimeOriginCaller,
   PreimagesBounded,
-  ReferendaTrack as ReferendaTrackDescriptor,
+  ReferendaTrackData,
   ReferendaTypesCurve,
   ReferendumInfo,
   TraitsScheduleDispatchTime,
@@ -50,7 +50,7 @@ export interface TrackFunctionDetails {
   }>
 }
 export type ReferendaTrack = Omit<
-  ReferendaTrackDescriptor,
+  ReferendaTrackData,
   "min_approval" | "min_support"
 > & {
   minApproval: TrackFunctionDetails

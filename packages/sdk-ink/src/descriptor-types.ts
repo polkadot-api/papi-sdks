@@ -114,7 +114,8 @@ export type InkSdkPallets = PalletsTypedef<
         {
           code_hash: FixedSizeBinary<32>
         },
-        true
+        true,
+        never
       >
     }
   },
