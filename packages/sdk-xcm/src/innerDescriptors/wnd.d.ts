@@ -1,5 +1,5 @@
 import { PlainDescriptor, TxDescriptor, RuntimeDescriptor, Enum, QueryFromPalletsDef, TxFromPalletsDef, EventsFromPalletsDef, ErrorsFromPalletsDef, ConstFromPalletsDef, Binary, FixedSizeBinary, FixedSizeArray } from "polkadot-api";
-import { I3l9jt91ld298o, BagsListListListError, Ie2db4l6126rkt, Iftvbctbo05fu4, Idi8en2lkuicdt, Ic0c3req3mlc1l, I4q39t5hn830vp, I47gh5t4ppbcdj, I7ocn4njqde3v5, Ichgaqm88qcdbe, Iek7ha36da9mf5, Icgo40grj87fvv, I2o87kbhjpov7u, If6h6csfopnm8l, Ie7nug7pn0ufvj } from "./common-types";
+import { Iegif7m3upfe1k, BagsListListListError, Ie2db4l6126rkt, Iftvbctbo05fu4, I3psnvvr3d6p0t, Ic0c3req3mlc1l, I4q39t5hn830vp, I47gh5t4ppbcdj, I7ocn4njqde3v5, Ichgaqm88qcdbe, Iek7ha36da9mf5, Icgo40grj87fvv, I9pj05c1lp8ovg, I7cepa2p9in6va, I199qcq7uh9tib } from "./common-types";
 type AnonymousEnum<T extends {}> = T & {
     __anonymous: true;
 };
@@ -23,7 +23,7 @@ type ICalls = {
          *the maximum amount of weight that the message could take to be executed, then no
          *execution attempt will be made.
          */
-        execute: TxDescriptor<Anonymize<I3l9jt91ld298o>>;
+        execute: TxDescriptor<Anonymize<Iegif7m3upfe1k>>;
     };
 };
 type IEvent = {};
@@ -2036,7 +2036,7 @@ type IRuntimeCalls = {
          *
          * * `message`: `VersionedXcm`.
          */
-        query_xcm_weight: RuntimeDescriptor<[message: Anonymize<Idi8en2lkuicdt>], Anonymize<Ic0c3req3mlc1l>>;
+        query_xcm_weight: RuntimeDescriptor<[message: Anonymize<I3psnvvr3d6p0t>], Anonymize<Ic0c3req3mlc1l>>;
         /**
          * Converts a weight into a fee for the specified `AssetId`.
          *
@@ -2056,7 +2056,7 @@ type IRuntimeCalls = {
          * * `destination`: The destination to send the message to. Different destinations may use
          *   different senders that charge different fees.
          */
-        query_delivery_fees: RuntimeDescriptor<[destination: Anonymize<Ichgaqm88qcdbe>, message: Anonymize<Idi8en2lkuicdt>], Anonymize<Iek7ha36da9mf5>>;
+        query_delivery_fees: RuntimeDescriptor<[destination: Anonymize<Ichgaqm88qcdbe>, message: Anonymize<I3psnvvr3d6p0t>], Anonymize<Iek7ha36da9mf5>>;
     };
     /**
      * API for dry-running extrinsics and XCM programs to get the programs that need to be passed to the fees API.
@@ -2073,11 +2073,11 @@ type IRuntimeCalls = {
         /**
          * Dry run call.
          */
-        dry_run_call: RuntimeDescriptor<[origin: Anonymize<Icgo40grj87fvv>, call: Anonymize<I2o87kbhjpov7u>], Anonymize<If6h6csfopnm8l>>;
+        dry_run_call: RuntimeDescriptor<[origin: Anonymize<Icgo40grj87fvv>, call: Anonymize<I9pj05c1lp8ovg>], Anonymize<I7cepa2p9in6va>>;
         /**
          * Dry run XCM program
          */
-        dry_run_xcm: RuntimeDescriptor<[origin_location: Anonymize<Ichgaqm88qcdbe>, xcm: Anonymize<Idi8en2lkuicdt>], Anonymize<Ie7nug7pn0ufvj>>;
+        dry_run_xcm: RuntimeDescriptor<[origin_location: Anonymize<Ichgaqm88qcdbe>, xcm: Anonymize<I3psnvvr3d6p0t>], Anonymize<I199qcq7uh9tib>>;
     };
 };
 type IAsset = PlainDescriptor<void>;
@@ -2104,7 +2104,7 @@ export type WndCalls = TxFromPalletsDef<PalletsTypedef>;
 export type WndEvents = EventsFromPalletsDef<PalletsTypedef>;
 export type WndErrors = ErrorsFromPalletsDef<PalletsTypedef>;
 export type WndConstants = ConstFromPalletsDef<PalletsTypedef>;
-export type WndCallData = Anonymize<I2o87kbhjpov7u> & {
+export type WndCallData = Anonymize<I9pj05c1lp8ovg> & {
     value: {
         type: string;
     };
