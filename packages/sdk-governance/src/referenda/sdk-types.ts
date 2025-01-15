@@ -31,6 +31,7 @@ export type OngoingReferendum = Omit<RawOngoingReferendum, "proposal"> & {
   getDetails: (apiKey: string) => Promise<ReferendumDetails>
   getConfirmationStart: () => Promise<number | null>
   getConfirmationEnd: () => Promise<number | null>
+  getTrack: () => Promise<ReferendaTrack>
 }
 
 export interface ReferendaSdkConfig {
@@ -68,8 +69,10 @@ export interface ReferendaSdk {
 
   createReferenda(
     origin: PolkadotRuntimeOriginCaller,
-    enactment: TraitsScheduleDispatchTime,
     proposal: Binary,
+    options?: Partial<{
+      enactment: TraitsScheduleDispatchTime
+    }>,
   ): Transaction<any, string, string, unknown>
   createSpenderReferenda(
     callData: Binary,
