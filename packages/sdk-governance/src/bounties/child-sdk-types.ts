@@ -58,7 +58,7 @@ export type ChildBounty =
   | PendingPayoutChildBounty
 
 export interface ChildBountiesSdk {
-  watchChildBounties(parentId: number): {
+  watch(parentId: number): {
     bounties$: Observable<Map<number, ChildBounty>>
     bountyIds$: Observable<number[]>
     getBountyById$: (key: number) => Observable<ChildBounty>

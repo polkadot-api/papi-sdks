@@ -247,7 +247,7 @@ export function createBountiesSdk(typedApi: BountiesSdkTypedApi): BountiesSdk {
   }
 
   return {
-    watchBounties,
+    watch: watchBounties(),
     getBounties,
     getBounty,
     getProposedBounty,

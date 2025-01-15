@@ -1,5 +1,5 @@
 import { OngoingReferendum } from "@/referenda/sdk-types"
-import { weakMemo } from "@/util/memo"
+import { keyedMemo } from "@/util/memo"
 import { MultiAddress } from "./descriptors"
 
 const spenderOrigins = [
@@ -11,7 +11,7 @@ const spenderOrigins = [
   "BigTipper",
 ]
 
-const getDecodedSpenderReferenda = weakMemo(
+const getDecodedSpenderReferenda = keyedMemo(
   async (ongoingReferenda: OngoingReferendum[]) => {
     const spenderReferenda = ongoingReferenda.filter(
       (ref) =>
@@ -35,6 +35,7 @@ const getDecodedSpenderReferenda = weakMemo(
     )
     return response.filter((v) => !!v)
   },
+  new WeakMap(),
 )
 
 export async function findApprovingReferenda(
