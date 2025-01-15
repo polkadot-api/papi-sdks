@@ -19,6 +19,7 @@ import {
   routeRelative,
 } from "./utils/location"
 import { XcmApi } from "./xcm-sdk"
+import { XcmVersionedAssetId } from "./innerDescriptors"
 
 export const createTeleport = (
   originId: string,
@@ -134,6 +135,23 @@ export const createTeleport = (
   }
 
   const getEstimatedFees = async (sender: SS58String) => {
+    // we ensure the asset is accepted in both chains
+    const [origin, dest] = await Promise.all(
+      [getApi(originId), getApi(destId)].map(async (prom, idx) => {
+        const { api } = await prom
+        const accepted = await unwrap(
+          api.apis.XcmPaymentApi.query_acceptable_payment_assets(4) as Promise<
+            Result<Array<XcmVersionedAssetId & { type: "V4" }>>
+          >,
+        )
+        const tok = routeRelative(idx ? destLocation : originLocation, token)
+        return accepted.some(({ value }) => locationsAreEq(tok, value))
+      }),
+    )
+    const err = "Asset is not accepted as fee in "
+    if (!origin) throw new Error(err + "origin")
+    if (!dest) throw new Error(err + "dest")
+
     // we calculate twice the fees to ensure the message length is right
     const { localWeight, remoteFee, deliveryFee } = await calculateXcmFees(
       sender,
