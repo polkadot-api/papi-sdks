@@ -8,6 +8,7 @@ import {
   ReferendumInfo,
   TraitsScheduleDispatchTime,
 } from "./descriptors"
+import { Observable } from "rxjs"
 
 type RawOngoingReferendum = (ReferendumInfo & { type: "Ongoing" })["value"]
 
@@ -60,6 +61,11 @@ export type ReferendaTrack = Omit<
 
 export interface ReferendaSdk {
   getOngoingReferenda(): Promise<OngoingReferendum[]>
+  watch: {
+    ongoingReferenda$: Observable<Map<number, OngoingReferendum>>
+    ongoingReferendaIds$: Observable<number[]>
+    getOngoingReferendumById$: (key: number) => Observable<OngoingReferendum>
+  }
   getSpenderTrack(value: bigint): {
     origin: PolkadotRuntimeOriginCaller
     track: Promise<ReferendaTrack>

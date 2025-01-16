@@ -1,5 +1,8 @@
+import { Deltas, partitionEntries } from "@/util/watchEntries"
 import { blake2b } from "@noble/hashes/blake2b"
+import { combineKeys, toKeySet } from "@react-rxjs/utils"
 import { Binary, TxEvent } from "polkadot-api"
+import { map, scan } from "rxjs"
 import { getPreimageResolver } from "../preimages"
 import { originToTrack, polkadotSpenderOrigin } from "./chainConfig"
 import {
@@ -134,6 +137,62 @@ export function createReferendaSdk(
       .filter((v) => !!v)
   }
 
+  const [rawReferendumById$, referendaKeyChange$] = partitionEntries(
+    typedApi.query.Referenda.ReferendumInfoFor.watchEntries().pipe(
+      scan(
+        (acc, v) => {
+          if (!v.deltas) return { ...acc, deltas: null }
+          const deleted = v.deltas.deleted.map((v) => ({
+            ...v,
+            value: v.value.value as RawOngoingReferendum,
+          }))
+          const upserted = v.deltas.upserted
+            .map((v) => {
+              if (v.value.type === "Ongoing") {
+                acc.referendums[v.args[0]] = v.value.value
+                return {
+                  args: v.args,
+                  value: v.value.value,
+                }
+              }
+              if (v.args[0] in acc.referendums) {
+                // An Ongoing has become closed, remove from list
+                deleted.push({
+                  args: v.args,
+                  value: acc.referendums[v.args[0]],
+                })
+                delete acc.referendums[v.args[0]]
+              }
+              return null!
+            })
+            .filter(Boolean)
+
+          return {
+            referendums: acc.referendums,
+            deltas: { deleted, upserted },
+          }
+        },
+        {
+          referendums: {} as Record<number, RawOngoingReferendum>,
+          deltas: null as Deltas<RawOngoingReferendum> | null,
+        },
+      ),
+    ),
+  )
+
+  const getOngoingReferendumById$ = (id: number) =>
+    rawReferendumById$(id).pipe(
+      map((entry) => enhanceOngoingReferendum(id, entry)),
+    )
+  const ongoingReferenda$ = combineKeys(
+    referendaKeyChange$,
+    getOngoingReferendumById$,
+  )
+  const ongoingReferendaIds$ = referendaKeyChange$.pipe(
+    toKeySet(),
+    map((set) => [...set]),
+  )
+
   const getSpenderTrack: ReferendaSdk["getSpenderTrack"] = (value) => {
     const spenderOriginType = spenderOrigin(value)
     const origin: PolkadotRuntimeOriginCaller = spenderOriginType
@@ -223,6 +282,11 @@ export function createReferendaSdk(
       : null
 
   return {
+    watch: {
+      ongoingReferenda$,
+      getOngoingReferendumById$,
+      ongoingReferendaIds$,
+    },
     getOngoingReferenda,
     getSpenderTrack,
     getTrack,
