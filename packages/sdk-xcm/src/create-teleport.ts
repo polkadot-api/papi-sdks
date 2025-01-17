@@ -1,7 +1,7 @@
 import {
   relay,
   XcmV4Instruction,
-  type XcmVersionedAssets,
+  type XcmVersionedAssetId,
   XcmVersionedXcm,
 } from "@/descriptors"
 import {
@@ -19,7 +19,6 @@ import {
   routeRelative,
 } from "./utils/location"
 import { XcmApi } from "./xcm-sdk"
-import { XcmVersionedAssetId } from "./innerDescriptors"
 
 export const createTeleport = (
   originId: string,

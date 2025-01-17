@@ -7,6 +7,7 @@ export {
   XcmV3JunctionNetworkId,
   XcmV3Junctions,
   XcmV4Instruction,
+  XcmVersionedAssetId,
   XcmVersionedAssets,
   XcmVersionedLocation,
   XcmVersionedXcm,
