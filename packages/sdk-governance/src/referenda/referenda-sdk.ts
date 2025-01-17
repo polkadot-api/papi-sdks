@@ -136,6 +136,14 @@ export function createReferendaSdk(
       })
       .filter((v) => !!v)
   }
+  async function getOngoingReferendum(id: number) {
+    const referendum =
+      await typedApi.query.Referenda.ReferendumInfoFor.getValue(id)
+    if (referendum?.type === "Ongoing") {
+      return enhanceOngoingReferendum(id, referendum.value)
+    }
+    return null
+  }
 
   const [rawReferendumById$, referendaKeyChange$] = partitionEntries(
     typedApi.query.Referenda.ReferendumInfoFor.watchEntries().pipe(
@@ -288,6 +296,7 @@ export function createReferendaSdk(
       ongoingReferendaIds$,
     },
     getOngoingReferenda,
+    getOngoingReferendum,
     getSpenderTrack,
     getTrack,
     createReferenda,

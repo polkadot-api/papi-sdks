@@ -61,6 +61,7 @@ export type ReferendaTrack = Omit<
 
 export interface ReferendaSdk {
   getOngoingReferenda(): Promise<OngoingReferendum[]>
+  getOngoingReferendum(id: number): Promise<OngoingReferendum | null>
   watch: {
     ongoingReferenda$: Observable<Map<number, OngoingReferendum>>
     ongoingReferendaIds$: Observable<number[]>
