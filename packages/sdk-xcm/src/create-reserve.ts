@@ -1,24 +1,19 @@
+import { XcmV4Instruction, XcmVersionedXcm } from "@/descriptors"
 import {
-  relay,
-  XcmV4Instruction,
-  type XcmVersionedAssets,
-  XcmVersionedXcm,
-} from "@/descriptors"
-import {
-  wrapAsyncTx,
   type AsyncTransaction,
-  type Result,
+  wrapAsyncTx,
 } from "@polkadot-api/common-sdk-utils"
 import { Enum, type SS58String } from "polkadot-api"
-import { unwrap } from "./utils"
+import { calculateXcmFees } from "./fee-estimation"
 import {
   accId32ToLocation,
-  filterV2,
   type Location,
   locationsAreEq,
   routeRelative,
 } from "./utils/location"
 import { XcmApi } from "./xcm-sdk"
+
+const sum = (arr: bigint[]) => arr.reduce((acc, val) => acc + val)
 
 export const createReserve = (
   originId: string,
@@ -33,7 +28,17 @@ export const createReserve = (
 ) => {
   // TODO: check compatibility with V3
   // we might need to tweak instructions
-  const msg = (remoteFee: bigint = 0n) => {
+  const steps: [string, Location][] = [[originId, originLocation]]
+  if (
+    locationsAreEq(originLocation, reserve) ||
+    locationsAreEq(destLocation, reserve)
+  )
+    steps.push([destId, destLocation])
+  // TODO: missing tx kinds
+  // foreign -> foreign (remote reserve)
+  else {
+  }
+  const msg = (feeHint: bigint[] = []) => {
     // TODO: missing tx kinds
     // foreign -> foreign (remote reserve)
     if (locationsAreEq(originLocation, reserve))
@@ -46,7 +51,7 @@ export const createReserve = (
         XcmV4Instruction.WithdrawAsset([
           {
             id: routeRelative(originLocation, token),
-            fun: Enum("Fungible", amount + remoteFee),
+            fun: Enum("Fungible", amount + (feeHint[0] ?? 0n)),
           },
         ]),
         XcmV4Instruction.DepositReserveAsset({
@@ -56,7 +61,7 @@ export const createReserve = (
             Enum("BuyExecution", {
               fees: {
                 id: routeRelative(destLocation, token),
-                fun: Enum("Fungible", remoteFee ? remoteFee : amount / 2n),
+                fun: Enum("Fungible", feeHint[0] ?? amount / 2n),
               },
               weight_limit: Enum("Unlimited"),
             }),
@@ -75,7 +80,7 @@ export const createReserve = (
         XcmV4Instruction.WithdrawAsset([
           {
             id: routeRelative(originLocation, token),
-            fun: Enum("Fungible", amount + remoteFee),
+            fun: Enum("Fungible", amount + (feeHint[0] ?? 0n)),
           },
         ]),
         XcmV4Instruction.InitiateReserveWithdraw({
@@ -85,7 +90,7 @@ export const createReserve = (
             Enum("BuyExecution", {
               fees: {
                 id: routeRelative(destLocation, token),
-                fun: Enum("Fungible", remoteFee ? remoteFee : amount / 2n),
+                fun: Enum("Fungible", feeHint[0] ?? amount / 2n),
               },
               weight_limit: Enum("Unlimited"),
             }),
@@ -99,100 +104,46 @@ export const createReserve = (
     throw new Error("NOT IMPL")
   }
 
-  const calculateXcmFees = async (
-    sender: SS58String,
-    remoteFeeHint?: bigint,
-  ) => {
-    const message = msg(remoteFeeHint)
-    const destApi = getApi(destId)
-    const { api: originApi, pallet: originPallet } = (await getApi(
-      originId,
-    )) as XcmApi & { pallet: "XcmPallet" }
-    const localWeight = await unwrap(
-      originApi.apis.XcmPaymentApi.query_xcm_weight(message) as Promise<
-        Result<{
-          ref_time: bigint
-          proof_size: bigint
-        }>
-      >,
-    )
-    const dryRun = unwrap(
-      (await originApi.apis.DryRunApi.dry_run_call(
-        Enum("system", Enum("Signed", sender)),
-        originApi.tx[originPallet].execute({
-          message: message,
-          max_weight: localWeight,
-        }).decodedCall,
-      )) as Result<
-        ((typeof relay)["descriptors"]["apis"]["DryRunApi"]["dry_run_call"][1] & {
-          success: true
-        })["value"]
-      >,
-    )
-    const destFromOrigin = routeRelative(originLocation, destLocation)
-    const forwarded = dryRun.forwarded_xcms.find(([x]) =>
-      locationsAreEq(destFromOrigin, filterV2(x).value),
-    )
-    if (!forwarded || forwarded[1].length !== 1)
-      throw new Error(`Found no or more than 1 msg ${forwarded}`)
-    const deliveryFee = unwrap(
-      originApi.apis.XcmPaymentApi.query_delivery_fees(
-        forwarded[0],
-        forwarded[1][0],
-      ) as Promise<Result<XcmVersionedAssets>>,
-    ).then((fees) => {
-      if (fees.value.length !== 1 || fees.value[0].fun.type !== "Fungible")
-        throw new Error("Unexpected delivery fee")
-      return fees.value[0].fun.value
-    })
-
-    const remoteFee = destApi.then(({ api }) =>
-      unwrap(
-        api.apis.XcmPaymentApi.query_xcm_weight(forwarded[1][0]) as Promise<
-          Result<{
-            ref_time: bigint
-            proof_size: bigint
-          }>
-        >,
-      ).then((weight) =>
-        unwrap(
-          api.apis.XcmPaymentApi.query_weight_to_asset_fee(
-            weight,
-            Enum("V4", routeRelative(destLocation, token)),
-          ) as Promise<Result<bigint>>,
-        ),
-      ),
-    )
-    return Promise.all([deliveryFee, remoteFee]).then(
-      ([deliveryFee, remoteFee]) => ({ localWeight, deliveryFee, remoteFee }),
-    )
-  }
-
-  const getEstimatedFees = async (sender: SS58String) => {
-    // we calculate twice the fees to ensure the message length is right
-    const { localWeight, remoteFee, deliveryFee } = await calculateXcmFees(
+  const _estimateFees = async (sender: SS58String) => {
+    const { localWeight, remoteFees, deliveryFees } = await calculateXcmFees(
+      msg,
+      steps,
+      token,
+      getApi,
       sender,
-      (await calculateXcmFees(sender)).remoteFee,
     )
     const { api, pallet } = (await getApi(originId)) as XcmApi & {
       pallet: "XcmPallet"
     }
     const localFee = await api.tx[pallet]
       .execute({
-        message: msg(remoteFee),
+        message: msg(remoteFees),
         max_weight: localWeight,
       })
       .getEstimatedFees(sender)
-    return { localWeight, localFee, remoteFee, deliveryFee }
+    return {
+      localWeight,
+      localFee,
+      remoteFees,
+      deliveryFees,
+    }
+  }
+  const getEstimatedFees = async (sender: SS58String) => {
+    const { deliveryFees, remoteFees, localFee } = await _estimateFees(sender)
+    return {
+      localFee,
+      remoteFee: sum(remoteFees),
+      deliveryFee: sum(deliveryFees),
+    }
   }
   const createTx = (sender: SS58String): AsyncTransaction<any, any, any, any> =>
     wrapAsyncTx(async () => {
-      const { remoteFee, localWeight } = await getEstimatedFees(sender)
+      const { remoteFees, localWeight } = await _estimateFees(sender)
       const { api, pallet } = (await getApi(originId)) as XcmApi & {
         pallet: "XcmPallet"
       }
       return api.tx[pallet].execute({
-        message: msg(remoteFee),
+        message: msg(remoteFees),
         max_weight: localWeight,
       })
     })
