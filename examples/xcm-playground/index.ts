@@ -1,26 +1,23 @@
-import { createClient } from "polkadot-api"
-import { paseo, paseo_asset_hub } from "polkadot-api/chains"
-import { getSmProvider } from "polkadot-api/sm-provider"
-import { start } from "polkadot-api/smoldot"
-import { pas, pah } from "@polkadot-api/descriptors"
+import { pah, pas } from "@polkadot-api/descriptors"
 import {
   CHAINS,
   createXcmSdk,
   TOKENS,
   TOKENS_IN_CHAINS,
 } from "@polkadot-api/sdk-xcm"
+import { createClient } from "polkadot-api"
+import { withPolkadotSdkCompat } from "polkadot-api/polkadot-sdk-compat"
+import { getWsProvider } from "polkadot-api/ws-provider/web"
 import { addr1, addr2, signer2 } from "./signers"
 
 const log = (l: any) => console.dir(l, { depth: null })
 
-const smoldot = start()
-const relay = smoldot.addChain({ chainSpec: paseo })
-const parachain = smoldot.addChain({
-  chainSpec: paseo_asset_hub,
-  potentialRelayChains: [await relay],
-})
-const pasClient = createClient(getSmProvider(relay))
-const pahClient = createClient(getSmProvider(parachain))
+const pasClient = createClient(
+  withPolkadotSdkCompat(getWsProvider("wss://paseo.rpc.amforc.com")),
+)
+const pahClient = createClient(
+  withPolkadotSdkCompat(getWsProvider("wss://asset-hub-paseo-rpc.dwellir.com")),
+)
 const pasApi = pasClient.getTypedApi(pas)
 const pahApi = pahClient.getTypedApi(pah)
 
