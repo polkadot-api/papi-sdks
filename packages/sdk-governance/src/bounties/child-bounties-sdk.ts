@@ -16,6 +16,7 @@ import {
   ChildBounty,
   GenericChildBounty,
 } from "./child-sdk-types"
+import { keyedMemo } from "@/util/memo"
 
 export function createChildBountiesSdk(
   typedApi: ChildBountiesSdkTypedApi,
@@ -180,7 +181,7 @@ export function createChildBountiesSdk(
   }
 
   return {
-    watchChildBounties,
+    watch: keyedMemo(watchChildBounties, new Map()),
     getChildBounty,
   }
 }

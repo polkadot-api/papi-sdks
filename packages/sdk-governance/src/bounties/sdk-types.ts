@@ -94,7 +94,7 @@ export type Bounty =
   | PendingPayoutBounty
 
 export interface BountiesSdk {
-  watchBounties(): {
+  watch: {
     bounties$: Observable<Map<number, Bounty>>
     bountyIds$: Observable<number[]>
     getBountyById$: (key: number) => Observable<Bounty>

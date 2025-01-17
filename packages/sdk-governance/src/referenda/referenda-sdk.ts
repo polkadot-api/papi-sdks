@@ -110,6 +110,14 @@ export function createReferendaSdk(
 
         return confirmationStart + track.confirm_period
       },
+      async getTrack() {
+        const track = await getTrack(referendum.track)
+        if (!track) {
+          // Should never happen
+          throw new Error("Track not found")
+        }
+        return track
+      },
     }
   }
 
@@ -156,12 +164,18 @@ export function createReferendaSdk(
 
   const createReferenda: ReferendaSdk["createReferenda"] = (
     origin,
-    enactment,
     proposal,
+    options,
   ) => {
+    // The pallet already calculates uses the earliest_allowed in case it's too small
+    const enactment_moment = options?.enactment ?? {
+      type: "After",
+      value: 0,
+    }
+
     if (proposal.asBytes().length <= MAX_INLINE_SIZE) {
       return typedApi.tx.Referenda.submit({
-        enactment_moment: enactment,
+        enactment_moment,
         proposal: {
           type: "Inline",
           value: proposal,
@@ -180,7 +194,7 @@ export function createReferendaSdk(
           bytes: proposal,
         }).decodedCall,
         typedApi.tx.Referenda.submit({
-          enactment_moment: enactment,
+          enactment_moment,
           proposal: {
             type: "Lookup",
             value: {
@@ -200,14 +214,7 @@ export function createReferendaSdk(
   ) => {
     const spenderTrack = getSpenderTrack(value)
 
-    return createReferenda(
-      spenderTrack.origin,
-      {
-        type: "After",
-        value: 0,
-      },
-      callData,
-    )
+    return createReferenda(spenderTrack.origin, callData)
   }
 
   const getSubmittedReferendum = (txEvent: TxEvent) =>
