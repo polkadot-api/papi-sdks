@@ -1,11 +1,7 @@
-import { combineKeys, partitionByKey, toKeySet } from "@react-rxjs/utils"
-import {
-  combineLatest,
-  distinctUntilChanged,
-  map,
-  mergeMap,
-  takeWhile,
-} from "rxjs"
+import { keyedMemo } from "@/util/memo"
+import { partitionEntries } from "@/util/watchEntries"
+import { combineKeys, toKeySet } from "@react-rxjs/utils"
+import { combineLatest, distinctUntilChanged, map } from "rxjs"
 import { getBountyDescriptions$ } from "./bounty-descriptions"
 import {
   ChildBountiesSdkTypedApi,
@@ -16,7 +12,6 @@ import {
   ChildBounty,
   GenericChildBounty,
 } from "./child-sdk-types"
-import { keyedMemo } from "@/util/memo"
 
 export function createChildBountiesSdk(
   typedApi: ChildBountiesSdkTypedApi,
@@ -111,32 +106,8 @@ export function createChildBountiesSdk(
   }
 
   function watchChildBounties(parentId: number) {
-    const [getBountyById$, bountyKeyChanges$] = partitionByKey(
-      typedApi.query.ChildBounties.ChildBounties.watchEntries(parentId).pipe(
-        mergeMap((v) =>
-          v.deltas
-            ? [
-                ...v.deltas.deleted.map((d) => ({
-                  id: d.args[1],
-                  value: undefined,
-                })),
-                ...v.deltas.upserted.map((d) => ({
-                  id: d.args[1],
-                  value: d.value,
-                })),
-              ].sort((a, b) => a.id - b.id)
-            : [],
-        ),
-      ),
-      (res) => res.id,
-      (group$, id) =>
-        group$.pipe(
-          takeWhile(({ value }) => Boolean(value), false),
-          map((bounty) => ({
-            id,
-            bounty: bounty.value!,
-          })),
-        ),
+    const [getBountyById$, bountyKeyChanges$] = partitionEntries(
+      typedApi.query.ChildBounties.ChildBounties.watchEntries(parentId),
     )
     const descriptions$ = getBountyDescriptions$(
       typedApi.query.ChildBounties.ChildBountyDescriptions.getEntries,
@@ -157,9 +128,7 @@ export function createChildBountiesSdk(
           distinctUntilChanged(),
         ),
       ]).pipe(
-        map(([{ id, bounty }, description]) =>
-          enhanceBounty(bounty, description, id),
-        ),
+        map(([bounty, description]) => enhanceBounty(bounty, description, id)),
       )
 
     return {

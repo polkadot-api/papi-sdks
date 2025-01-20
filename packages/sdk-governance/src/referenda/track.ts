@@ -41,6 +41,7 @@ export function trackFetcher(typedApi: ReferendaSdkTypedApi) {
 }
 
 const BILLION = 1_000_000_000_000
+const BIG_BILLION = 1_000_000_000_000n
 const blockToPerBill = (block: number, period: number) =>
   (block * BILLION) / period
 const perBillToBlock = (perBillion: number, period: number) =>
@@ -181,10 +182,14 @@ function reciprocal({
     // Below horizontal asymptote => +Infinity
     if (bigValue <= -y_offset) return Number.POSITIVE_INFINITY
     // Above y-axis cut => -Infinity
-    if (x_offset != 0n && bigValue > factor / x_offset - y_offset)
+    // It needs to be multiplied by BIG_BILLION when dividing because we're working with perbillion
+    if (
+      x_offset != 0n &&
+      bigValue > (BIG_BILLION * factor) / x_offset - y_offset
+    )
       return Number.NEGATIVE_INFINITY
 
-    return Number(factor / (bigValue + y_offset) - x_offset)
+    return Number((BIG_BILLION * factor) / (bigValue + y_offset) - x_offset)
   }
   const getData = (step: number) => {
     const result: Array<{
