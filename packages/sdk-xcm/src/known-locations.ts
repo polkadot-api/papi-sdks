@@ -39,15 +39,25 @@ export const TOKENS = {
   PAS: PASEO,
 }
 
-export const TOKENS_IN_CHAINS = {
+export const TOKENS_IN_CHAINS: Partial<
+  Record<
+    keyof typeof TOKENS & string,
+    Partial<
+      Record<
+        keyof typeof CHAINS & string,
+        (keyof typeof CHAINS & string) | true
+      >
+    >
+  >
+> = {
   WND: {
-    westend: true as const,
-    westendAh: true as const,
-    westendPP: WESTEND,
+    westend: true,
+    westendAh: true,
+    westendPP: "westend",
   },
   PAS: {
-    paseo: true as const,
-    paseoAssetHub: true as const,
-    paseoHydra: PASEO_AH,
+    paseo: true,
+    paseoAssetHub: true,
+    paseoHydra: "paseoAssetHub",
   },
 }
