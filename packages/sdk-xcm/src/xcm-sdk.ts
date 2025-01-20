@@ -133,24 +133,35 @@ export const createXcmSdk = <
             beneficiary,
           )
       } else {
-        const reserve =
+        const reserve: [keyof C & string, Location] | null =
           tokensInChains[token][origin] === true &&
           locationsAreEq(
-            junctionsToLocation(tokensInChains[token][dest] as any),
+            junctionsToLocation(chains[tokensInChains[token][dest] as string]),
             aLoc,
           )
-            ? aLoc
+            ? [origin, aLoc]
             : tokensInChains[token][dest] === true &&
                 locationsAreEq(
-                  junctionsToLocation(tokensInChains[token][origin] as any),
+                  junctionsToLocation(
+                    chains[tokensInChains[token][origin] as string],
+                  ),
                   bLoc,
                 )
-              ? bLoc
+              ? [dest, bLoc]
               : locationsAreEq(
-                    junctionsToLocation(tokensInChains[token][origin] as any),
-                    junctionsToLocation(tokensInChains[token][dest] as any),
+                    junctionsToLocation(
+                      chains[tokensInChains[token][origin] as string],
+                    ),
+                    junctionsToLocation(
+                      chains[tokensInChains[token][dest] as string],
+                    ),
                   )
-                ? junctionsToLocation(tokensInChains[token][origin] as any)
+                ? [
+                    tokensInChains[token][origin] as string,
+                    junctionsToLocation(
+                      chains[tokensInChains[token][origin] as string],
+                    ),
+                  ]
                 : null
         if (reserve == null)
           throw new Error("Reserve location is not compatible")
@@ -161,7 +172,7 @@ export const createXcmSdk = <
             dest,
             bLoc,
             tokenLoc,
-            reserve,
+            ...reserve,
             getApi,
             amount,
             beneficiary,
