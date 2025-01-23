@@ -1,9 +1,8 @@
+import { MultiAddress } from "@/bounties/descriptors"
 import { SdkDefinition } from "@polkadot-api/common-sdk-utils"
 import {
   ApisTypedef,
-  Binary,
   Enum,
-  FixedSizeBinary,
   PalletsTypedef,
   SS58String,
   StorageDescriptor,
@@ -58,7 +57,7 @@ export type ConvictionVotingVoteVoting = Enum<{
   }
 }>
 
-type BountiesSdkPallets = PalletsTypedef<
+type VotingSdkPallets = PalletsTypedef<
   {
     ConvictionVoting: {
       VotingFor: StorageDescriptor<
@@ -98,13 +97,5 @@ type BountiesSdkPallets = PalletsTypedef<
   {},
   {}
 >
-type BountiesSdkDefinition = SdkDefinition<BountiesSdkPallets, ApisTypedef<{}>>
-export type BountiesSdkTypedApi = TypedApi<BountiesSdkDefinition>
-
-export type MultiAddress = Enum<{
-  Id: SS58String
-  Index: undefined
-  Raw: Binary
-  Address32: FixedSizeBinary<32>
-  Address20: FixedSizeBinary<20>
-}>
+type VotingSdkDefinition = SdkDefinition<VotingSdkPallets, ApisTypedef<{}>>
+export type VotingSdkTypedApi = TypedApi<VotingSdkDefinition>

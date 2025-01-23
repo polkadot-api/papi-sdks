@@ -1,9 +1,24 @@
 import { SS58String, Transaction } from "polkadot-api"
+import { VotingConviction } from "./descriptors"
 
 export interface AccountVote {
   type: "vote"
   track: number
   poll: number
+
+  vote:
+    | {
+        type: "standard"
+        direction: "aye" | "nay" | "abstain"
+        balance: bigint
+        conviction: VotingConviction | null
+      }
+    | {
+        type: "split"
+        aye: bigint
+        nay: bigint
+        abstain: bigint
+      }
 
   remove(): Transaction<any, string, string, unknown>
 
@@ -17,6 +32,9 @@ export interface AccountDelegation {
   type: "delegation"
   track: number
 
+  target: SS58String
+  balance: bigint
+  conviction: VotingConviction
   remove(): Transaction<any, string, string, unknown>
 
   lock: {
@@ -50,11 +68,11 @@ export interface ConvictionVotingSdk {
 
   getTracks(
     account: SS58String,
-  ): Promise<Array<AccountVote | AccountDelegation>>
+  ): Promise<Array<AccountVote[] | AccountDelegation>>
   getTrack(
     account: SS58String,
     track: number,
-  ): Promise<AccountVote | AccountDelegation | null>
+  ): Promise<AccountVote[] | AccountDelegation | null>
 
   vote(
     poll: number,
@@ -66,8 +84,8 @@ export interface ConvictionVotingSdk {
   ): Transaction<any, string, string, unknown>
   voteWithConviction(
     poll: number,
-    vote: "aye" | "nay" | "abstain",
+    vote: "aye" | "nay",
     value: bigint,
-    conviction: number,
+    conviction: VotingConviction,
   ): Transaction<any, string, string, unknown>
 }
