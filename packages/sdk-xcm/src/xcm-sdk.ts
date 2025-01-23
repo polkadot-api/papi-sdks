@@ -134,20 +134,24 @@ export const createXcmSdk = <
           )
       } else {
         const reserve: [keyof C & string, Location] | null =
-          tokensInChains[token][origin] === true &&
-          locationsAreEq(
-            junctionsToLocation(chains[tokensInChains[token][dest] as string]),
-            aLoc,
-          )
-            ? [origin, aLoc]
-            : tokensInChains[token][dest] === true &&
-                locationsAreEq(
+          tokensInChains[token][origin] === true
+            ? locationsAreEq(
+                junctionsToLocation(
+                  chains[tokensInChains[token][dest] as string],
+                ),
+                aLoc,
+              )
+              ? [origin, aLoc]
+              : null
+            : tokensInChains[token][dest] === true
+              ? locationsAreEq(
                   junctionsToLocation(
                     chains[tokensInChains[token][origin] as string],
                   ),
                   bLoc,
                 )
-              ? [dest, bLoc]
+                ? [dest, bLoc]
+                : null
               : locationsAreEq(
                     junctionsToLocation(
                       chains[tokensInChains[token][origin] as string],
