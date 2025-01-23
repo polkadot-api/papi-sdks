@@ -41,7 +41,9 @@ const xcmFeeStep = async (
       >
     >,
   ).then(({ execution_result, forwarded_xcms }) => {
-    if (!execution_result) throw new Error(`Execution failed at ${steps[0][0]}`)
+    if (!execution_result.success) {
+      throw new Error(`Execution failed at ${steps[0][0]}`)
+    }
     const nextLoc = routeRelative(prevLoc, steps[1][1])
     const forwarded = forwarded_xcms.find(([x]) =>
       locationsAreEq(nextLoc, filterV2(x).value),
@@ -99,8 +101,9 @@ const xcmFeeStep = async (
                 >
               >,
             ).then(({ execution_result, forwarded_xcms }) => {
-              if (!execution_result)
-                throw new Error(`Execution failed at ${steps[i][0]}`)
+              if (execution_result.type !== "Complete") {
+                throw new Error(`Execution failed at ${steps[0][0]}`)
+              }
               const forwarded = forwarded_xcms.find(([x]) =>
                 locationsAreEq(
                   routeRelative(nextLoc, steps[i + 1][1]),
