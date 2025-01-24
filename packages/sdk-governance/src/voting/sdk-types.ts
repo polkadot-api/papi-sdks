@@ -1,5 +1,6 @@
 import { SS58String, Transaction } from "polkadot-api"
 import { VotingConviction } from "./descriptors"
+import { Observable } from "rxjs"
 
 export interface AccountVote {
   type: "vote"
@@ -51,28 +52,38 @@ export interface DelegationPower {
 }
 
 export interface ConvictionVotingSdk {
-  getVotes(account: SS58String): Promise<Array<AccountVote>>
-  getTrackVotes(account: SS58String, track: number): Promise<Array<AccountVote>>
+  getVotes(account: SS58String, track?: number): Promise<Array<AccountVote>>
+  votes$(account: SS58String, track?: number): Observable<Array<AccountVote>>
 
   getDelegations(account: SS58String): Promise<Array<AccountDelegation>>
-  getDelegation(
+  getDelegations(
     account: SS58String,
     track: number,
   ): Promise<AccountDelegation | null>
+  delegations$(account: SS58String): Observable<Array<AccountDelegation>>
+  delegations$(
+    account: SS58String,
+    track: number,
+  ): Observable<AccountDelegation | null>
 
   getDelegationPower(account: SS58String): Promise<Array<DelegationPower>>
   getDelegationPower(
     account: SS58String,
     track: number,
-  ): Promise<DelegationPower | null>
-
-  getTracks(
-    account: SS58String,
-  ): Promise<Array<AccountVote[] | AccountDelegation>>
-  getTrack(
+  ): Promise<DelegationPower>
+  delegationPower$(account: SS58String): Observable<Array<DelegationPower>>
+  delegationPower$(
     account: SS58String,
     track: number,
-  ): Promise<AccountVote[] | AccountDelegation | null>
+  ): Observable<DelegationPower>
+
+  getTrackVoting(
+    account: SS58String,
+  ): Promise<Array<AccountVote[] | AccountDelegation>>
+  getTrackVoting(
+    account: SS58String,
+    track: number,
+  ): Promise<AccountVote[] | AccountDelegation>
 
   vote(
     poll: number,

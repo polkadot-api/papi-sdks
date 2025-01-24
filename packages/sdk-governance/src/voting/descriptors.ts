@@ -88,7 +88,7 @@ type VotingSdkPallets = PalletsTypedef<
         target: MultiAddress
       }>
       remove_vote: TxDescriptor<{
-        class?: number | undefined
+        class: number | undefined
         index: number
       }>
     }

@@ -1,8 +1,9 @@
 import { partitionEntries } from "@/util/watchEntries"
 import { combineKeys, toKeySet } from "@react-rxjs/utils"
 import { SS58String } from "polkadot-api"
-import { firstValueFrom, map } from "rxjs"
+import { firstValueFrom, map, Observable } from "rxjs"
 import {
+  ConvictionVotingVoteAccountVote,
   ConvictionVotingVoteVoting,
   VotingConviction,
   VotingSdkTypedApi,
@@ -47,58 +48,60 @@ export function createConvictionVotingSdk(
 
     if (votingFor.type === "Casting") {
       return {
-        votes: votingFor.value.votes.map(([poll, vote]) => {
-          const getVote = (): AccountVote["vote"] => {
-            if (vote.type === "Standard") {
-              const convictionValue = vote.value.vote & 0x7f
+        votes: votingFor.value.votes.map(
+          ([poll, vote]: [number, ConvictionVotingVoteAccountVote]) => {
+            const getVote = (): AccountVote["vote"] => {
+              if (vote.type === "Standard") {
+                const convictionValue = vote.value.vote & 0x7f
 
+                return {
+                  type: "standard",
+                  direction: vote.value.vote & 0x80 ? "aye" : "nay",
+                  balance: vote.value.balance,
+                  conviction: {
+                    type: convictions[convictionValue],
+                    value: undefined,
+                  },
+                }
+              }
+              const votes = {
+                aye: vote.value.aye,
+                nay: vote.value.nay,
+                abstain: (vote.value as any).abstain ?? 0n,
+              }
+              const votesWithValue = Object.entries(votes).filter(
+                ([, v]) => v > 0n,
+              )
+              if (votesWithValue.length === 1) {
+                return {
+                  type: "standard",
+                  direction: votesWithValue[0][0] as any,
+                  balance: votesWithValue[0][1],
+                  conviction: null,
+                }
+              }
               return {
-                type: "standard",
-                direction: vote.value.vote & 0x80 ? "aye" : "nay",
-                balance: vote.value.balance,
-                conviction: {
-                  type: convictions[convictionValue],
-                  value: undefined,
-                },
+                type: "split",
+                ...votes,
               }
             }
-            const votes = {
-              aye: vote.value.aye,
-              nay: vote.value.nay,
-              abstain: (vote.value as any).abstain ?? 0n,
-            }
-            const votesWithValue = Object.entries(votes).filter(
-              ([, v]) => v > 0n,
-            )
-            if (votesWithValue.length === 1) {
-              return {
-                type: "standard",
-                direction: votesWithValue[0][0] as any,
-                balance: votesWithValue[0][1],
-                conviction: null,
-              }
-            }
+
             return {
-              type: "split",
-              ...votes,
+              type: "vote",
+              track: track,
+              poll,
+              vote: getVote(),
+              lock,
+              remove() {
+                return typedApi.tx.ConvictionVoting.remove_vote({
+                  class: track,
+                  index: poll,
+                })
+              },
+              unlock,
             }
-          }
-
-          return {
-            type: "vote",
-            track: track,
-            poll,
-            vote: getVote(),
-            lock,
-            remove() {
-              return typedApi.tx.ConvictionVoting.remove_vote({
-                class: track,
-                index: poll,
-              })
-            },
-            unlock,
-          }
-        }),
+          },
+        ),
         delegationPower,
       }
     }
@@ -158,9 +161,18 @@ export function createConvictionVotingSdk(
     return { getTrackById$: getEnhancedTrackById$, trackIds$, trackKeyChanges$ }
   }
 
-  const getTrack = (account: SS58String, track: number) =>
-    firstValueFrom(track$(account, track).pipe(map((v) => v.votes)))
-  const getTracks = (account: SS58String) => {
+  function getTrackVoting(
+    account: SS58String,
+  ): Promise<Array<AccountVote[] | AccountDelegation>>
+  function getTrackVoting(
+    account: SS58String,
+    track: number,
+  ): Promise<AccountVote[] | AccountDelegation>
+  function getTrackVoting(account: SS58String, track?: number) {
+    if (track != null) {
+      return firstValueFrom(track$(account, track).pipe(map((v) => v.votes)))
+    }
+
     const { getTrackById$, trackKeyChanges$ } = tracks$(account)
     return firstValueFrom(
       combineKeys(trackKeyChanges$, getTrackById$).pipe(
@@ -169,50 +181,73 @@ export function createConvictionVotingSdk(
     )
   }
 
-  const getVotes = async (account: SS58String) => {
-    const tracks = await getTracks(account)
-    return tracks.filter((t) => Array.isArray(t)).flat()
-  }
-  const getTrackVotes = async (account: SS58String, track: number) => {
-    const trackValue = await getTrack(account, track)
-    return Array.isArray(trackValue) ? trackValue : []
-  }
-
-  const getDelegations = async (account: SS58String) => {
-    const tracks = await getTracks(account)
-    return tracks.filter((t): t is AccountDelegation => Array.isArray(t))
-  }
-  const getDelegation = async (account: SS58String, track: number) => {
-    const trackValue = await getTrack(account, track)
-    return Array.isArray(trackValue) ? null : trackValue
-  }
-
-  function getDelegationPower(account: SS58String): Promise<DelegationPower[]>
-  function getDelegationPower(
-    account: SS58String,
-    track: number,
-  ): Promise<DelegationPower>
-  async function getDelegationPower(account: SS58String, track?: number) {
-    if (track == null) {
-      const { getTrackById$, trackKeyChanges$ } = tracks$(account)
-      return firstValueFrom(
-        combineKeys(trackKeyChanges$, getTrackById$).pipe(
-          map((map) => Array.from(map.values()).map((v) => v.delegationPower)),
-        ),
+  const votes$ = (account: SS58String, track?: number) => {
+    if (track != null) {
+      return track$(account, track).pipe(
+        map((v) => (Array.isArray(v.votes) ? v.votes : [])),
       )
     }
 
-    return (await firstValueFrom(track$(account, track))).delegationPower
+    const { getTrackById$, trackKeyChanges$ } = tracks$(account)
+    return combineKeys(trackKeyChanges$, getTrackById$).pipe(
+      map((map) =>
+        Array.from(map.values()).flatMap((v) =>
+          Array.isArray(v.votes) ? v.votes : [],
+        ),
+      ),
+    )
+  }
+
+  function delegations$(
+    account: SS58String,
+  ): Observable<Array<AccountDelegation>>
+  function delegations$(
+    account: SS58String,
+    track: number,
+  ): Observable<AccountDelegation | null>
+  function delegations$(account: SS58String, track?: number) {
+    if (track != null) {
+      return track$(account, track).pipe(
+        map((v) => (Array.isArray(v.votes) ? null : v.votes)),
+      )
+    }
+
+    const { getTrackById$, trackKeyChanges$ } = tracks$(account)
+    return combineKeys(trackKeyChanges$, getTrackById$).pipe(
+      map((map) =>
+        Array.from(map.values())
+          .map((v) => (Array.isArray(v.votes) ? null! : v.votes))
+          .filter((v) => !!v),
+      ),
+    )
+  }
+
+  function delegationPower$(
+    account: SS58String,
+  ): Observable<Array<DelegationPower>>
+  function delegationPower$(
+    account: SS58String,
+    track: number,
+  ): Observable<DelegationPower>
+  function delegationPower$(account: SS58String, track?: number) {
+    if (track != null) {
+      return track$(account, track).pipe(map((v) => v.delegationPower))
+    }
+
+    const { getTrackById$, trackKeyChanges$ } = tracks$(account)
+    return combineKeys(trackKeyChanges$, getTrackById$).pipe(
+      map((map) => Array.from(map.values()).map((v) => v.delegationPower)),
+    )
   }
 
   return {
-    getTracks,
-    getTrack,
-    getVotes,
-    getTrackVotes,
-    getDelegations,
-    getDelegation,
-    getDelegationPower,
+    getTrackVoting,
+    getVotes: promisifyDual(votes$),
+    votes$,
+    getDelegationPower: promisifyDual(delegationPower$),
+    delegationPower$,
+    getDelegations: promisifyDual(delegations$),
+    delegations$,
     vote(poll, vote) {
       const voteEntries = Object.entries(vote).filter(
         ([, value]) => (value ?? 0n) > 0n,
@@ -280,3 +315,14 @@ const convictions: VotingConviction["type"][] = [
   "Locked5x",
   "Locked6x",
 ]
+
+function promisifyDual<A, B>(fn: {
+  (account: SS58String): Observable<A>
+  (account: SS58String, track: number): Observable<B>
+}): {
+  (account: SS58String): Promise<A>
+  (account: SS58String, track: number): Promise<B>
+} {
+  return ((account: SS58String, track?: number) =>
+    firstValueFrom((fn as any)(account, track))) as any
+}
