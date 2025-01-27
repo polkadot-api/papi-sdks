@@ -4,6 +4,7 @@ import {
   ApisTypedef,
   Enum,
   PalletsTypedef,
+  PlainDescriptor,
   SS58String,
   StorageDescriptor,
   TxDescriptor,
@@ -95,7 +96,11 @@ type VotingSdkPallets = PalletsTypedef<
   },
   {},
   {},
-  {}
+  {
+    ConvictionVoting: {
+      VoteLockingPeriod: PlainDescriptor<number>
+    }
+  }
 >
 type VotingSdkDefinition = SdkDefinition<VotingSdkPallets, ApisTypedef<{}>>
 export type VotingSdkTypedApi = TypedApi<VotingSdkDefinition>

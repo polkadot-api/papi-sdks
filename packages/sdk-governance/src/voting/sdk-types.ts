@@ -1,28 +1,49 @@
+import { ReferendumInfo } from "@/referenda/descriptors"
 import { SS58String, Transaction } from "polkadot-api"
-import { VotingConviction } from "./descriptors"
 import { Observable } from "rxjs"
+import { VotingConviction } from "./descriptors"
 
-export interface AccountVote {
-  type: "vote"
-  track: number
+export type PollOutcome = {
+  ended: number
+  side: "aye" | "nay"
+} | null
+export const getReferendumOutcome = (referendum: ReferendumInfo) => {
+  if (referendum.type === "Approved" || referendum.type === "Rejected") {
+    return {
+      ended: referendum.value[0],
+      side: referendum.type === "Approved" ? "aye" : "nay",
+    }
+  }
+  return null
+}
+
+export interface StandardVote {
+  type: "standard"
   poll: number
+  direction: "aye" | "nay" | "abstain"
+  balance: bigint
+  conviction: VotingConviction | null
 
-  vote:
-    | {
-        type: "standard"
-        direction: "aye" | "nay" | "abstain"
-        balance: bigint
-        conviction: VotingConviction | null
-      }
-    | {
-        type: "split"
-        aye: bigint
-        nay: bigint
-        abstain: bigint
-      }
-
+  getLock(poll: PollOutcome): number | null
   remove(): Transaction<any, string, string, unknown>
+}
+export interface SplitVote {
+  type: "split"
+  poll: number
+  aye: bigint
+  nay: bigint
+  abstain: bigint
+  remove(): Transaction<any, string, string, unknown>
+}
 
+export type AccountVote = StandardVote | SplitVote
+export interface AccountCasting {
+  type: "casting"
+  track: number
+
+  votes: AccountVote[]
+
+  using: bigint
   lock: {
     block: number
     balance: bigint
@@ -52,8 +73,10 @@ export interface DelegationPower {
 }
 
 export interface ConvictionVotingSdk {
-  getVotes(account: SS58String, track?: number): Promise<Array<AccountVote>>
-  votes$(account: SS58String, track?: number): Observable<Array<AccountVote>>
+  getVotes(account: SS58String): Promise<Array<AccountCasting>>
+  getVotes(account: SS58String, track: number): Promise<AccountCasting | null>
+  votes$(account: SS58String): Observable<Array<AccountCasting>>
+  votes$(account: SS58String, track: number): Observable<AccountCasting | null>
 
   getDelegations(account: SS58String): Promise<Array<AccountDelegation>>
   getDelegations(
@@ -79,11 +102,11 @@ export interface ConvictionVotingSdk {
 
   getTrackVoting(
     account: SS58String,
-  ): Promise<Array<AccountVote[] | AccountDelegation>>
+  ): Promise<Array<AccountCasting | AccountDelegation>>
   getTrackVoting(
     account: SS58String,
     track: number,
-  ): Promise<AccountVote[] | AccountDelegation>
+  ): Promise<AccountCasting | AccountDelegation>
 
   vote(
     poll: number,
