@@ -8,13 +8,7 @@ import {
   VotingConviction,
   VotingSdkTypedApi,
 } from "./descriptors"
-import {
-  AccountCasting,
-  AccountDelegation,
-  AccountVote,
-  ConvictionVotingSdk,
-  DelegationPower,
-} from "./sdk-types"
+import { ConvictionVotingSdk, Vote, VotingTrack } from "./sdk-types"
 
 export function createConvictionVotingSdk(
   typedApi: VotingSdkTypedApi,
@@ -23,10 +17,7 @@ export function createConvictionVotingSdk(
     [account, track]: [SS58String, number],
     votingFor: ConvictionVotingVoteVoting,
     voteLockingPeriod: number,
-  ): {
-    votes: AccountCasting | AccountDelegation
-    delegationPower: DelegationPower
-  } => {
+  ): VotingTrack => {
     const lock = votingFor.value.prior[1]
       ? {
           block: votingFor.value.prior[0],
@@ -48,103 +39,101 @@ export function createConvictionVotingSdk(
       ...votingFor.value.delegations,
     }
 
+    const trackDetails = {
+      track,
+      delegationPower,
+      lock,
+      unlock,
+    }
+
     if (votingFor.type === "Casting") {
-      const votes = votingFor.value.votes.map(
-        ([poll, vote]: [
-          number,
-          ConvictionVotingVoteAccountVote,
-        ]): AccountVote => {
-          const remove = () =>
-            typedApi.tx.ConvictionVoting.remove_vote({
-              class: track,
-              index: poll,
-            })
+      // Rollup typescript build struggles otherwise
+      const rawVotes: [number, ConvictionVotingVoteAccountVote][] =
+        votingFor.value.votes
+      const votes = rawVotes.map(([poll, vote]): Vote => {
+        const remove = () =>
+          typedApi.tx.ConvictionVoting.remove_vote({
+            class: track,
+            index: poll,
+          })
 
-          if (vote.type === "Standard") {
-            const convictionValue = vote.value.vote & 0x7f
-            const conviction = {
-              type: convictions[convictionValue],
-              value: undefined,
-            }
-            const direction: "aye" | "nay" =
-              vote.value.vote & 0x80 ? "aye" : "nay"
+        if (vote.type === "Standard") {
+          const convictionValue = vote.value.vote & 0x7f
+          const conviction = {
+            type: convictions[convictionValue],
+            value: undefined,
+          }
+          const direction: "aye" | "nay" =
+            vote.value.vote & 0x80 ? "aye" : "nay"
 
-            return {
-              type: "standard",
-              poll,
-              direction,
-              balance: vote.value.balance,
-              conviction,
-              getLock(outcome) {
-                return convictionValue && outcome?.side === direction
-                  ? outcome.ended +
-                      convictionLockMultiplier[conviction.type] *
-                        voteLockingPeriod
-                  : null
-              },
-              remove,
-            }
-          }
-          const votes = {
-            aye: vote.value.aye,
-            nay: vote.value.nay,
-            abstain: (vote.value as any).abstain ?? 0n,
-          }
-          const votesWithValue = Object.entries(votes).filter(([, v]) => v > 0n)
-          if (votesWithValue.length === 1) {
-            return {
-              type: "standard",
-              poll,
-              direction: votesWithValue[0][0] as any,
-              balance: votesWithValue[0][1],
-              conviction: null,
-              getLock() {
-                return null
-              },
-              remove,
-            }
-          }
           return {
-            type: "split",
+            type: "standard",
             poll,
-            ...votes,
+            direction,
+            balance: vote.value.balance,
+            conviction,
+            getLock(outcome) {
+              return convictionValue && outcome?.side === direction
+                ? outcome.ended +
+                    convictionLockMultiplier[conviction.type] *
+                      voteLockingPeriod
+                : null
+            },
             remove,
           }
-        },
-      )
+        }
+        const votes = {
+          aye: vote.value.aye,
+          nay: vote.value.nay,
+          abstain: (vote.value as any).abstain ?? 0n,
+        }
+        const votesWithValue = Object.entries(votes).filter(([, v]) => v > 0n)
+        if (votesWithValue.length === 1) {
+          return {
+            type: "standard",
+            poll,
+            direction: votesWithValue[0][0] as any,
+            balance: votesWithValue[0][1],
+            conviction: {
+              type: "None",
+              value: undefined,
+            },
+            getLock() {
+              return null
+            },
+            remove,
+          }
+        }
+        return {
+          type: "split",
+          poll,
+          ...votes,
+          remove,
+        }
+      })
 
       return {
-        votes: {
-          type: "casting",
-          lock,
-          unlock,
-          track,
-          votes,
-          using: votes
-            .map((v) =>
-              v.type === "standard" ? v.balance : v.abstain + v.aye + v.nay,
-            )
-            .reduce((a, b) => a + b),
-        },
-        delegationPower,
+        type: "casting",
+        votes,
+        using: votes
+          .map((v) =>
+            v.type === "standard" ? v.balance : v.abstain + v.aye + v.nay,
+          )
+          .reduce((a, b) => a + b),
+        ...trackDetails,
       }
     }
     return {
-      votes: {
-        type: "delegation",
-        track,
-        lock,
-        target: votingFor.value.target,
-        balance: votingFor.value.balance,
-        conviction: votingFor.value.conviction,
-        remove() {
-          return typedApi.tx.ConvictionVoting.undelegate({
-            class: track,
-          })
-        },
-        unlock,
+      type: "delegation",
+      target: votingFor.value.target,
+      balance: votingFor.value.balance,
+      conviction: votingFor.value.conviction,
+      remove() {
+        return typedApi.tx.ConvictionVoting.undelegate({
+          class: track,
+        })
       },
-      delegationPower,
+      ...trackDetails,
     }
   }
 
@@ -159,7 +148,7 @@ export function createConvictionVotingSdk(
         enhanceVotingFor([account, track], v, lockPeriod),
       ),
     )
-  const tracks$ = (account: SS58String) => {
+  const watchTracks$ = (account: SS58String) => {
     const [getTrackById$, trackKeyChanges$] = partitionEntries(
       typedApi.query.ConvictionVoting.VotingFor.watchEntries(account).pipe(
         map((v) => ({
@@ -194,99 +183,26 @@ export function createConvictionVotingSdk(
     return { getTrackById$: getEnhancedTrackById$, trackIds$, trackKeyChanges$ }
   }
 
-  function getTrackVoting(
-    account: SS58String,
-  ): Promise<Array<AccountCasting | AccountDelegation>>
-  function getTrackVoting(
+  function votingTrack$(account: SS58String): Observable<Array<VotingTrack>>
+  function votingTrack$(
     account: SS58String,
     track: number,
-  ): Promise<AccountCasting | AccountDelegation>
-  function getTrackVoting(account: SS58String, track?: number) {
+  ): Observable<VotingTrack>
+  function votingTrack$(account: SS58String, track?: number) {
     if (track != null) {
-      return firstValueFrom(track$(account, track).pipe(map((v) => v.votes)))
+      return track$(account, track)
     }
 
-    const { getTrackById$, trackKeyChanges$ } = tracks$(account)
-    return firstValueFrom(
-      combineKeys(trackKeyChanges$, getTrackById$).pipe(
-        map((map) => Array.from(map.values()).map((v) => v.votes)),
-      ),
-    )
-  }
-
-  function votes$(account: SS58String): Observable<Array<AccountCasting>>
-  function votes$(
-    account: SS58String,
-    track: number,
-  ): Observable<AccountCasting | null>
-  function votes$(account: SS58String, track?: number) {
-    if (track != null) {
-      return track$(account, track).pipe(
-        map((v) => (v.votes.type === "casting" ? v.votes : null)),
-      )
-    }
-
-    const { getTrackById$, trackKeyChanges$ } = tracks$(account)
+    const { getTrackById$, trackKeyChanges$ } = watchTracks$(account)
     return combineKeys(trackKeyChanges$, getTrackById$).pipe(
-      map((map) =>
-        Array.from(map.values())
-          .map((v) => (v.votes.type === "casting" ? v.votes : null))
-          .filter((v) => !!v),
-      ),
-    )
-  }
-
-  function delegations$(
-    account: SS58String,
-  ): Observable<Array<AccountDelegation>>
-  function delegations$(
-    account: SS58String,
-    track: number,
-  ): Observable<AccountDelegation | null>
-  function delegations$(account: SS58String, track?: number) {
-    if (track != null) {
-      return track$(account, track).pipe(
-        map((v) => (v.votes.type === "delegation" ? v.votes : null)),
-      )
-    }
-
-    const { getTrackById$, trackKeyChanges$ } = tracks$(account)
-    return combineKeys(trackKeyChanges$, getTrackById$).pipe(
-      map((map) =>
-        Array.from(map.values())
-          .map((v) => (v.votes.type === "delegation" ? v.votes : null))
-          .filter((v) => !!v),
-      ),
-    )
-  }
-
-  function delegationPower$(
-    account: SS58String,
-  ): Observable<Array<DelegationPower>>
-  function delegationPower$(
-    account: SS58String,
-    track: number,
-  ): Observable<DelegationPower>
-  function delegationPower$(account: SS58String, track?: number) {
-    if (track != null) {
-      return track$(account, track).pipe(map((v) => v.delegationPower))
-    }
-
-    const { getTrackById$, trackKeyChanges$ } = tracks$(account)
-    return combineKeys(trackKeyChanges$, getTrackById$).pipe(
-      map((map) => Array.from(map.values()).map((v) => v.delegationPower)),
+      map((map) => Array.from(map.values())),
     )
   }
 
   return {
-    getTrackVoting,
-    getVotes: promisifyDual(votes$),
-    votes$,
-    getDelegationPower: promisifyDual(delegationPower$),
-    delegationPower$,
-    getDelegations: promisifyDual(delegations$),
-    delegations$,
-    vote(poll, vote) {
+    votingTrack$,
+    getVotingTrack: promisifyDual(votingTrack$),
+    voteSplit(poll, vote) {
       const voteEntries = Object.entries(vote).filter(
         ([, value]) => (value ?? 0n) > 0n,
       )
@@ -325,10 +241,10 @@ export function createConvictionVotingSdk(
               },
       })
     },
-    voteWithConviction(poll, vote, value, conviction) {
+    vote(vote, poll, value, conviction) {
       const voteValue =
         (vote === "aye" ? 0x80 : 0) |
-        Math.max(0, convictions.indexOf(conviction.type))
+        Math.max(0, convictions.indexOf(conviction ? conviction.type : "None"))
 
       return typedApi.tx.ConvictionVoting.vote({
         poll_index: poll,
@@ -337,6 +253,19 @@ export function createConvictionVotingSdk(
           value: {
             vote: voteValue,
             balance: value,
+          },
+        },
+      })
+    },
+    voteAbstain(poll, value) {
+      return typedApi.tx.ConvictionVoting.vote({
+        poll_index: poll,
+        vote: {
+          type: "SplitAbstain",
+          value: {
+            abstain: value,
+            aye: 0n,
+            nay: 0n,
           },
         },
       })
