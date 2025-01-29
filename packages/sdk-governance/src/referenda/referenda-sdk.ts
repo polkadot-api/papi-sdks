@@ -1,5 +1,8 @@
+import { Deltas, partitionEntries } from "@/util/watchEntries"
 import { blake2b } from "@noble/hashes/blake2b"
+import { combineKeys, toKeySet } from "@react-rxjs/utils"
 import { Binary, TxEvent } from "polkadot-api"
+import { map, scan } from "rxjs"
 import { getPreimageResolver } from "../preimages"
 import { originToTrack, polkadotSpenderOrigin } from "./chainConfig"
 import {
@@ -12,7 +15,7 @@ import {
   ReferendaSdk,
   ReferendaSdkConfig,
 } from "./sdk-types"
-import { trackFetcher } from "./track"
+import { BIG_BILLION, trackFetcher } from "./track"
 
 const MAX_INLINE_SIZE = 128
 type RawOngoingReferendum = (ReferendumInfo & { type: "Ongoing" })["value"]
@@ -45,20 +48,20 @@ export function createReferendaSdk(
         return referendum.deciding.confirming
       }
 
-      const approvals = Number(referendum.tally.ayes) / Number(totalVotes)
-
-      const [track, totalIssuance] = await Promise.all([
+      const [track, totalIssuance, inactiveIssuance] = await Promise.all([
         getTrack(referendum.track),
         typedApi.query.Balances.TotalIssuance.getValue(),
+        typedApi.query.Balances.InactiveIssuance.getValue(),
       ])
       if (!track) return null
-      const approvalBlock = Math.max(0, track.minApproval.getBlock(approvals))
-      const supportBlock = Math.max(
-        0,
-        track.minSupport.getBlock(
-          Number(referendum.tally.support) / Number(totalIssuance),
-        ),
-      )
+
+      const approvals = (BIG_BILLION * referendum.tally.ayes) / totalVotes
+      const support =
+        (BIG_BILLION * referendum.tally.support) /
+        (totalIssuance - inactiveIssuance)
+
+      const approvalBlock = track.minApproval.getBlock(approvals)
+      const supportBlock = track.minSupport.getBlock(support)
       const block = Math.max(approvalBlock, supportBlock)
       if (block === Number.POSITIVE_INFINITY) return null
 
@@ -133,6 +136,70 @@ export function createReferendaSdk(
       })
       .filter((v) => !!v)
   }
+  async function getOngoingReferendum(id: number) {
+    const referendum =
+      await typedApi.query.Referenda.ReferendumInfoFor.getValue(id)
+    if (referendum?.type === "Ongoing") {
+      return enhanceOngoingReferendum(id, referendum.value)
+    }
+    return null
+  }
+
+  const [rawReferendumById$, referendaKeyChange$] = partitionEntries(
+    typedApi.query.Referenda.ReferendumInfoFor.watchEntries().pipe(
+      scan(
+        (acc, v) => {
+          if (!v.deltas) return { ...acc, deltas: null }
+          const deleted = v.deltas.deleted.map((v) => ({
+            ...v,
+            value: v.value.value as RawOngoingReferendum,
+          }))
+          const upserted = v.deltas.upserted
+            .map((v) => {
+              if (v.value.type === "Ongoing") {
+                acc.referendums[v.args[0]] = v.value.value
+                return {
+                  args: v.args,
+                  value: v.value.value,
+                }
+              }
+              if (v.args[0] in acc.referendums) {
+                // An Ongoing has become closed, remove from list
+                deleted.push({
+                  args: v.args,
+                  value: acc.referendums[v.args[0]],
+                })
+                delete acc.referendums[v.args[0]]
+              }
+              return null!
+            })
+            .filter(Boolean)
+
+          return {
+            referendums: acc.referendums,
+            deltas: { deleted, upserted },
+          }
+        },
+        {
+          referendums: {} as Record<number, RawOngoingReferendum>,
+          deltas: null as Deltas<RawOngoingReferendum> | null,
+        },
+      ),
+    ),
+  )
+
+  const getOngoingReferendumById$ = (id: number) =>
+    rawReferendumById$(id).pipe(
+      map((entry) => enhanceOngoingReferendum(id, entry)),
+    )
+  const ongoingReferenda$ = combineKeys(
+    referendaKeyChange$,
+    getOngoingReferendumById$,
+  )
+  const ongoingReferendaIds$ = referendaKeyChange$.pipe(
+    toKeySet(),
+    map((set) => [...set]),
+  )
 
   const getSpenderTrack: ReferendaSdk["getSpenderTrack"] = (value) => {
     const spenderOriginType = spenderOrigin(value)
@@ -223,7 +290,13 @@ export function createReferendaSdk(
       : null
 
   return {
+    watch: {
+      ongoingReferenda$,
+      getOngoingReferendumById$,
+      ongoingReferendaIds$,
+    },
     getOngoingReferenda,
+    getOngoingReferendum,
     getSpenderTrack,
     getTrack,
     createReferenda,

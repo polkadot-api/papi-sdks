@@ -1,12 +1,7 @@
-import { combineKeys, partitionByKey, toKeySet } from "@react-rxjs/utils"
+import { partitionEntries } from "@/util/watchEntries"
+import { combineKeys, toKeySet } from "@react-rxjs/utils"
 import { Binary, TxEvent } from "polkadot-api"
-import {
-  combineLatest,
-  distinctUntilChanged,
-  map,
-  mergeMap,
-  takeWhile,
-} from "rxjs"
+import { combineLatest, distinctUntilChanged, map } from "rxjs"
 import { getBountyDescriptions$ } from "./bounty-descriptions"
 import { BountiesSdkTypedApi, BountyWithoutDescription } from "./descriptors"
 import {
@@ -138,32 +133,8 @@ export function createBountiesSdk(typedApi: BountiesSdkTypedApi): BountiesSdk {
   }
 
   function watchBounties() {
-    const [getBountyById$, bountyKeyChanges$] = partitionByKey(
-      typedApi.query.Bounties.Bounties.watchEntries().pipe(
-        mergeMap((v) =>
-          v.deltas
-            ? [
-                ...v.deltas.deleted.map((d) => ({
-                  id: d.args[0],
-                  value: undefined,
-                })),
-                ...v.deltas.upserted.map((d) => ({
-                  id: d.args[0],
-                  value: d.value,
-                })),
-              ].sort((a, b) => a.id - b.id)
-            : [],
-        ),
-      ),
-      (res) => res.id,
-      (group$, id) =>
-        group$.pipe(
-          takeWhile(({ value }) => Boolean(value), false),
-          map((bounty) => ({
-            id,
-            bounty: bounty.value!,
-          })),
-        ),
+    const [getBountyById$, bountyKeyChanges$] = partitionEntries(
+      typedApi.query.Bounties.Bounties.watchEntries(),
     )
     const descriptions$ = getBountyDescriptions$(
       typedApi.query.Bounties.BountyDescriptions.getEntries,
@@ -184,13 +155,11 @@ export function createBountiesSdk(typedApi: BountiesSdkTypedApi): BountiesSdk {
           distinctUntilChanged(),
         ),
       ]).pipe(
-        map(([{ id, bounty }, description]) =>
-          enhanceBounty(bounty, description, id),
-        ),
+        map(([bounty, description]) => enhanceBounty(bounty, description, id)),
       )
 
     return {
-      bounties$: combineKeys(bountyIds$, getEnhancedBountyById$),
+      bounties$: combineKeys(bountyKeyChanges$, getEnhancedBountyById$),
       getBountyById$: getEnhancedBountyById$,
       bountyIds$,
     }

@@ -8,6 +8,7 @@ import {
   ReferendumInfo,
   TraitsScheduleDispatchTime,
 } from "./descriptors"
+import { Observable } from "rxjs"
 
 type RawOngoingReferendum = (ReferendumInfo & { type: "Ongoing" })["value"]
 
@@ -39,12 +40,13 @@ export interface ReferendaSdkConfig {
 }
 
 /**
- * threshold are in percentage [0-1]
+ * threshold are in perbillion
  */
 export interface TrackFunctionDetails {
   curve: ReferendaTypesCurve
-  getThreshold(block: number): number
-  getBlock(threshold: number): number
+  getThreshold(block: number): bigint
+  getBlock(threshold: bigint): number
+
   getData(step?: number): Array<{
     block: number
     threshold: number
@@ -60,6 +62,12 @@ export type ReferendaTrack = Omit<
 
 export interface ReferendaSdk {
   getOngoingReferenda(): Promise<OngoingReferendum[]>
+  getOngoingReferendum(id: number): Promise<OngoingReferendum | null>
+  watch: {
+    ongoingReferenda$: Observable<Map<number, OngoingReferendum>>
+    ongoingReferendaIds$: Observable<number[]>
+    getOngoingReferendumById$: (key: number) => Observable<OngoingReferendum>
+  }
   getSpenderTrack(value: bigint): {
     origin: PolkadotRuntimeOriginCaller
     track: Promise<ReferendaTrack>
