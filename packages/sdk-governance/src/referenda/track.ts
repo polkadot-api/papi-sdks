@@ -40,12 +40,15 @@ export function trackFetcher(typedApi: ReferendaSdkTypedApi) {
   }
 }
 
-const BILLION = 1_000_000_000_000
-const BIG_BILLION = 1_000_000_000_000n
+const BILLION = 1_000_000_000
+export const BIG_BILLION = 1_000_000_000n
 const blockToPerBill = (block: number, period: number) =>
-  (block * BILLION) / period
-const perBillToBlock = (perBillion: number, period: number) =>
-  Math.ceil((perBillion * period) / BILLION)
+  (BigInt(block) * BIG_BILLION) / BigInt(period)
+const perBillToBlock = (perBillion: bigint | null, period: number) =>
+  perBillion == null
+    ? Number.POSITIVE_INFINITY
+    : Number(bigDivCeil(perBillion * BigInt(period), BIG_BILLION))
+const perBillToPct = (perBillion: bigint) => Number(perBillion) / BILLION
 
 function curveToFunctionDetails(
   period: number,
@@ -61,56 +64,71 @@ function curveToFunctionDetails(
   return {
     curve,
     getThreshold(at) {
-      return curveFn.getValue(blockToPerBill(at, period)) / BILLION
+      return curveFn.getValue(blockToPerBill(at, period))
     },
     getBlock(pct) {
-      return perBillToBlock(curveFn.getTime(pct * BILLION), period)
+      return perBillToBlock(curveFn.getTime(pct), period)
     },
     getData(step = 1) {
       return curveFn
         .getData(blockToPerBill(Math.max(step, 1), period))
         .map(({ time, value }) => ({
           block: perBillToBlock(time, period),
-          threshold: value / BILLION,
+          threshold: perBillToPct(value),
         }))
     },
   }
 }
 
-function linearDecreasing({
-  length,
-  floor,
-  ceil,
-}: {
+const bigCap = (
+  value: bigint,
+  cap: Partial<{ floor: bigint; ceil: bigint }>,
+) => {
+  if (cap.floor != null) value = value < cap.floor ? cap.floor : value
+  if (cap.ceil != null) value = value < cap.ceil ? cap.ceil : value
+  return value
+}
+const bigDivCeil = (a: bigint, b: bigint) => {
+  const floor = a / b
+  return a % b === 0n ? floor : floor + 1n
+}
+
+function linearDecreasing(params: {
   length: number
   floor: number
   ceil: number
 }) {
-  // v(x) = ceil + (x * (floor - ceil)) / length
-  const getValue = (at: number) =>
-    Math.max(
-      floor,
-      Math.min(ceil, Math.round(ceil + (at * (floor - ceil)) / length)),
-    )
+  const { length, floor, ceil } = {
+    length: BigInt(params.length),
+    floor: BigInt(params.floor),
+    ceil: BigInt(params.ceil),
+  }
 
-  const getTime = (value: number) => {
-    if (value > ceil) return Number.NEGATIVE_INFINITY
-    if (value < floor) return Number.POSITIVE_INFINITY
+  // v(x) = ceil + (x * (floor - ceil)) / length
+  const getValue = (at: bigint) =>
+    bigCap(ceil + (at * (floor - ceil)) / length, {
+      floor,
+      ceil,
+    })
+
+  const getTime = (value: bigint) => {
+    if (value > ceil) return 0n
+    if (value < floor) return null
     return ((value - ceil) * length) / (floor - ceil)
   }
   const getData = () => [
     {
-      time: 0,
+      time: 0n,
       value: ceil,
     },
     {
       time: length,
       value: floor,
     },
-    ...(BILLION > length
+    ...(BIG_BILLION > length
       ? [
           {
-            time: BILLION,
+            time: BIG_BILLION,
             value: floor,
           },
         ]
@@ -118,45 +136,51 @@ function linearDecreasing({
   ]
   return { getValue, getTime, getData }
 }
-function steppedDecreasing({
-  begin,
-  end,
-  step,
-  period,
-}: {
+function steppedDecreasing(params: {
   begin: number
   end: number
   step: number
   period: number
 }) {
-  const getValue = (at: number) =>
-    Math.max(end, Math.min(begin, begin - (at % period) * step))
-  const getTime = (value: number) => {
-    if (value > begin) return Number.NEGATIVE_INFINITY
-    if (value < end) return Number.POSITIVE_INFINITY
-    return Math.ceil((begin - value) / step)
+  const { begin, end, step, period } = {
+    begin: BigInt(params.begin),
+    end: BigInt(params.end),
+    step: BigInt(params.step),
+    period: BigInt(params.period),
+  }
+
+  const getValue = (at: bigint) =>
+    bigCap(begin - (at / period) * step, {
+      ceil: begin,
+      floor: end,
+    })
+
+  const getTime = (value: bigint) => {
+    if (value > begin) return 0n
+    if (value < end) return null
+    return ((begin - value) / step) * period
   }
   const getData = () => {
     const result: Array<{
-      time: number
-      value: number
+      time: bigint
+      value: bigint
     }> = []
 
-    for (let k = 0, value = begin; value > end; value -= step) {
+    for (let k = 0n, value = begin; value > end; value -= step) {
       result.push({
         time: k * period,
         value,
       })
     }
-    if ((begin - end) % step != 0) {
+    if ((begin - end) % step != 0n) {
       result.push({
-        time: Math.ceil((begin - end) / step),
+        time: ((begin - end) / step) * period,
         value: end,
       })
     }
-    if (result.at(-1)?.time! < BILLION) {
+    if (result.at(-1)?.time! < BIG_BILLION) {
       result.push({
-        time: BILLION,
+        time: BIG_BILLION,
         value: end,
       })
     }
@@ -175,35 +199,31 @@ function reciprocal({
   y_offset: bigint
 }) {
   // v(x) = factor/(x+x_offset)-y_offset
-  const getValue = (at: number) =>
-    Number(factor / (BigInt(Math.round(at)) + x_offset) - y_offset)
-  const getTime = (value: number) => {
-    const bigValue = BigInt(Math.round(value))
-    // Below horizontal asymptote => +Infinity
-    if (bigValue <= -y_offset) return Number.POSITIVE_INFINITY
-    // Above y-axis cut => -Infinity
+  const getValue = (at: bigint) =>
+    (BIG_BILLION * factor) / (at + x_offset) + y_offset
+  const getTime = (value: bigint) => {
+    // Below horizontal asymptote => will never intersect
+    if (value <= y_offset) return null
+    // Above y-axis cut => 0
     // It needs to be multiplied by BIG_BILLION when dividing because we're working with perbillion
-    if (
-      x_offset != 0n &&
-      bigValue > (BIG_BILLION * factor) / x_offset - y_offset
-    )
-      return Number.NEGATIVE_INFINITY
+    if (x_offset != 0n && value > (BIG_BILLION * factor) / x_offset + y_offset)
+      return 0n
 
-    return Number((BIG_BILLION * factor) / (bigValue + y_offset) - x_offset)
+    return (BIG_BILLION * factor) / (value - y_offset) - x_offset
   }
-  const getData = (step: number) => {
+  const getData = (step: bigint) => {
     const result: Array<{
-      time: number
-      value: number
+      time: bigint
+      value: bigint
     }> = []
 
-    for (let time = 0; time <= BILLION; time += step) {
+    for (let time = 0n; time <= BIG_BILLION; time += step) {
       result.push({ time, value: getValue(time) })
     }
-    if (result.at(-1)?.time! < BILLION) {
+    if (result.at(-1)?.time! < BIG_BILLION) {
       result.push({
-        time: BILLION,
-        value: getValue(BILLION),
+        time: BIG_BILLION,
+        value: getValue(BIG_BILLION),
       })
     }
 

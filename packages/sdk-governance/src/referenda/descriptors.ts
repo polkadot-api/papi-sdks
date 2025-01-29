@@ -150,6 +150,7 @@ type ReferendaSdkPallets = PalletsTypedef<
     }
     Balances: {
       TotalIssuance: StorageDescriptor<[], bigint, false, never>
+      InactiveIssuance: StorageDescriptor<[], bigint, false, never>
     }
   },
   {
