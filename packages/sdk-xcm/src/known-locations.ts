@@ -1,6 +1,16 @@
 import { XcmV3Junction } from "@/descriptors"
 import { Binary, Enum } from "polkadot-api"
 
+const POLKADOT: XcmV3Junction[] = [
+  XcmV3Junction.GlobalConsensus(Enum("Polkadot")),
+]
+const POLKADOT_AH: XcmV3Junction[] = [
+  ...POLKADOT,
+  XcmV3Junction.Parachain(1000),
+]
+const HYDRATION: XcmV3Junction[] = [...POLKADOT, XcmV3Junction.Parachain(2034)]
+const KUSAMA: XcmV3Junction[] = [XcmV3Junction.GlobalConsensus(Enum("Kusama"))]
+const KUSAMA_AH: XcmV3Junction[] = [...KUSAMA, XcmV3Junction.Parachain(1000)]
 const WESTEND: XcmV3Junction[] = [
   XcmV3Junction.GlobalConsensus(
     Enum(
@@ -25,16 +35,28 @@ const PASEO: XcmV3Junction[] = [
 ]
 const PASEO_AH: XcmV3Junction[] = [...PASEO, XcmV3Junction.Parachain(1000)]
 const PASEO_HYDR: XcmV3Junction[] = [...PASEO, XcmV3Junction.Parachain(2034)]
+const PASEO_BIFROST: XcmV3Junction[] = [...PASEO, XcmV3Junction.Parachain(2051)]
 export const CHAINS = {
+  polkadot: POLKADOT,
+  polkadotAh: POLKADOT_AH,
+  hydration: HYDRATION,
+
+  kusama: KUSAMA,
+  kusamaAh: KUSAMA_AH,
+
   westend: WESTEND,
   westendAh: WESTEND_AH,
   westendPP: WESTEND_PP,
+
   paseo: PASEO,
   paseoAssetHub: PASEO_AH,
   paseoHydra: PASEO_HYDR,
+  paseoBifrost: PASEO_BIFROST,
 }
 
 export const TOKENS = {
+  DOT: POLKADOT,
+  KSM: KUSAMA,
   WND: WESTEND,
   PAS: PASEO,
 }
@@ -50,6 +72,15 @@ export const TOKENS_IN_CHAINS: Partial<
     >
   >
 > = {
+  DOT: {
+    polkadot: true,
+    polkadotAh: true,
+    hydration: "polkadotAh",
+  },
+  KSM: {
+    kusama: true,
+    kusamaAh: true,
+  },
   WND: {
     westend: true,
     westendAh: true,
@@ -59,5 +90,6 @@ export const TOKENS_IN_CHAINS: Partial<
     paseo: true,
     paseoAssetHub: true,
     paseoHydra: "paseoAssetHub",
+    paseoBifrost: "paseo",
   },
 }
