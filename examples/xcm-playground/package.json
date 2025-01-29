@@ -3,15 +3,15 @@
   "module": "index.ts",
   "type": "module",
   "devDependencies": {
-    "@types/bun": "^1.1.16"
+    "@types/bun": "^1.2.1"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"
   },
   "dependencies": {
-    "@noble/curves": "^1.8.0",
+    "@noble/curves": "^1.8.1",
     "@polkadot-api/descriptors": "file:.papi/descriptors",
     "@polkadot-api/sdk-xcm": "workspace:*",
-    "polkadot-api": "^1.8.2"
+    "polkadot-api": "^1.8.4"
   }
 }

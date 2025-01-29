@@ -35,7 +35,7 @@
   ],
   "scripts": {
     "build": "tsc --noEmit && rollup -c ../../rollup.config.js",
-    "test": "vitest",
+    "test": "vitest run",
     "lint": "prettier --check README.md \"src/**/*.{js,jsx,ts,tsx,json,md}\"",
     "format": "prettier --write README.md \"src/**/*.{js,jsx,ts,tsx,json,md}\"",
     "prepack": "pnpm run build"
@@ -51,7 +51,7 @@
   },
   "devDependencies": {
     "@polkadot-api/substrate-bindings": "^0.11.0",
-    "polkadot-api": "^1.8.2",
+    "polkadot-api": "^1.8.4",
     "rxjs": "^7.8.1"
   }
 }
