@@ -2,6 +2,7 @@ import { partitionEntries } from "@/util/watchEntries"
 import { combineKeys, toKeySet } from "@react-rxjs/utils"
 import { Binary, TxEvent } from "polkadot-api"
 import { combineLatest, distinctUntilChanged, map } from "rxjs"
+import { getBountyAccount } from "./bounty-account"
 import { getBountyDescriptions$ } from "./bounty-descriptions"
 import { BountiesSdkTypedApi, BountyWithoutDescription } from "./descriptors"
 import {
@@ -25,6 +26,7 @@ export function createBountiesSdk(typedApi: BountiesSdkTypedApi): BountiesSdk {
       type: bounty.status.type,
       id,
       description,
+      account: getBountyAccount(id),
     }
 
     switch (generic.status.type) {

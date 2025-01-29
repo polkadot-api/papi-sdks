@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+### Added
+
+- **Bounties**
+  - Add bounty and child bounty account.
+
 ### Fixed
 
 - **Referenda**

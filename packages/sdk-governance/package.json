@@ -42,7 +42,8 @@
   "license": "MIT",
   "dependencies": {
     "@polkadot-api/common-sdk-utils": "workspace:*",
-    "@react-rxjs/utils": "^0.9.7"
+    "@react-rxjs/utils": "^0.9.7",
+    "scale-ts": "^1.6.1"
   },
   "peerDependencies": {
     "@noble/hashes": ">=1.6.1",

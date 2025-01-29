@@ -2,6 +2,7 @@ import { keyedMemo } from "@/util/memo"
 import { partitionEntries } from "@/util/watchEntries"
 import { combineKeys, toKeySet } from "@react-rxjs/utils"
 import { combineLatest, distinctUntilChanged, map } from "rxjs"
+import { getChildBountyAccount } from "./bounty-account"
 import { getBountyDescriptions$ } from "./bounty-descriptions"
 import {
   ChildBountiesSdkTypedApi,
@@ -26,6 +27,7 @@ export function createChildBountiesSdk(
       type: bounty.status.type,
       id,
       description,
+      account: getChildBountyAccount(bounty.parent_bounty, id),
     }
 
     const idObj = {
