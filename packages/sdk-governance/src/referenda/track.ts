@@ -40,14 +40,14 @@ export function trackFetcher(typedApi: ReferendaSdkTypedApi) {
   }
 }
 
-const BILLION = 1_000_000_000_000
-export const BIG_BILLION = 1_000_000_000_000n
+const BILLION = 1_000_000_000
+export const BIG_BILLION = 1_000_000_000n
 const blockToPerBill = (block: number, period: number) =>
   (BigInt(block) * BIG_BILLION) / BigInt(period)
 const perBillToBlock = (perBillion: bigint | null, period: number) =>
   perBillion == null
     ? Number.POSITIVE_INFINITY
-    : Number((perBillion * BigInt(period)) / BIG_BILLION)
+    : Number(bigDivCeil(perBillion * BigInt(period), BIG_BILLION))
 const perBillToPct = (perBillion: bigint) => Number(perBillion) / BILLION
 
 function curveToFunctionDetails(
@@ -87,6 +87,10 @@ const bigCap = (
   if (cap.floor != null) value = value < cap.floor ? cap.floor : value
   if (cap.ceil != null) value = value < cap.ceil ? cap.ceil : value
   return value
+}
+const bigDivCeil = (a: bigint, b: bigint) => {
+  const floor = a / b
+  return a % b === 0n ? floor : floor + 1n
 }
 
 function linearDecreasing(params: {
@@ -196,16 +200,16 @@ function reciprocal({
 }) {
   // v(x) = factor/(x+x_offset)-y_offset
   const getValue = (at: bigint) =>
-    (BIG_BILLION * factor) / (at + x_offset) - y_offset
+    (BIG_BILLION * factor) / (at + x_offset) + y_offset
   const getTime = (value: bigint) => {
     // Below horizontal asymptote => will never intersect
-    if (value <= -y_offset) return null
+    if (value <= y_offset) return null
     // Above y-axis cut => 0
     // It needs to be multiplied by BIG_BILLION when dividing because we're working with perbillion
-    if (x_offset != 0n && value > (BIG_BILLION * factor) / x_offset - y_offset)
+    if (x_offset != 0n && value > (BIG_BILLION * factor) / x_offset + y_offset)
       return 0n
 
-    return (BIG_BILLION * factor) / (value + y_offset) - x_offset
+    return (BIG_BILLION * factor) / (value - y_offset) - x_offset
   }
   const getData = (step: bigint) => {
     const result: Array<{

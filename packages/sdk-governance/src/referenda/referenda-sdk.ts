@@ -48,14 +48,17 @@ export function createReferendaSdk(
         return referendum.deciding.confirming
       }
 
-      const [track, totalIssuance] = await Promise.all([
+      const [track, totalIssuance, inactiveIssuance] = await Promise.all([
         getTrack(referendum.track),
         typedApi.query.Balances.TotalIssuance.getValue(),
+        typedApi.query.Balances.InactiveIssuance.getValue(),
       ])
       if (!track) return null
 
       const approvals = (BIG_BILLION * referendum.tally.ayes) / totalVotes
-      const support = (BIG_BILLION * referendum.tally.support) / totalIssuance
+      const support =
+        (BIG_BILLION * referendum.tally.support) /
+        (totalIssuance - inactiveIssuance)
 
       const approvalBlock = track.minApproval.getBlock(approvals)
       const supportBlock = track.minSupport.getBlock(support)
