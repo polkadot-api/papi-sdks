@@ -15,7 +15,7 @@ import {
   ReferendaSdk,
   ReferendaSdkConfig,
 } from "./sdk-types"
-import { trackFetcher } from "./track"
+import { BIG_BILLION, trackFetcher } from "./track"
 
 const MAX_INLINE_SIZE = 128
 type RawOngoingReferendum = (ReferendumInfo & { type: "Ongoing" })["value"]
@@ -48,20 +48,17 @@ export function createReferendaSdk(
         return referendum.deciding.confirming
       }
 
-      const approvals = Number(referendum.tally.ayes) / Number(totalVotes)
-
       const [track, totalIssuance] = await Promise.all([
         getTrack(referendum.track),
         typedApi.query.Balances.TotalIssuance.getValue(),
       ])
       if (!track) return null
-      const approvalBlock = Math.max(0, track.minApproval.getBlock(approvals))
-      const supportBlock = Math.max(
-        0,
-        track.minSupport.getBlock(
-          Number(referendum.tally.support) / Number(totalIssuance),
-        ),
-      )
+
+      const approvals = (BIG_BILLION * referendum.tally.ayes) / totalVotes
+      const support = (BIG_BILLION * referendum.tally.support) / totalIssuance
+
+      const approvalBlock = track.minApproval.getBlock(approvals)
+      const supportBlock = track.minSupport.getBlock(support)
       const block = Math.max(approvalBlock, supportBlock)
       if (block === Number.POSITIVE_INFINITY) return null
 
