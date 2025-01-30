@@ -102,9 +102,9 @@ export interface DelegationPower {
 }
 
 export interface ConvictionVotingSdk {
-  getVotingTrack(account: SS58String): Promise<Array<VotingTrack>>
+  getVotingTracks(account: SS58String): Promise<Array<VotingTrack>>
   getVotingTrack(account: SS58String, track: number): Promise<VotingTrack>
-  votingTrack$(account: SS58String): Observable<Array<VotingTrack>>
+  votingTracks$(account: SS58String): Observable<Array<VotingTrack>>
   votingTrack$(account: SS58String, track: number): Observable<VotingTrack>
 
   vote(

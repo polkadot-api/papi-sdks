@@ -217,7 +217,7 @@ export function createConvictionVotingSdk(
 
   const voteLockingPeriod$ =
     typedApi.constants.ConvictionVoting.VoteLockingPeriod()
-  const track$ = (account: SS58String, track: number) =>
+  const votingTrack$ = (account: SS58String, track: number) =>
     combineLatest([
       typedApi.query.ConvictionVoting.VotingFor.watchValue(account, track),
       voteLockingPeriod$,
@@ -261,16 +261,7 @@ export function createConvictionVotingSdk(
     return { getTrackById$: getEnhancedTrackById$, trackIds$, trackKeyChanges$ }
   }
 
-  function votingTrack$(account: SS58String): Observable<Array<VotingTrack>>
-  function votingTrack$(
-    account: SS58String,
-    track: number,
-  ): Observable<VotingTrack>
-  function votingTrack$(account: SS58String, track?: number) {
-    if (track != null) {
-      return track$(account, track)
-    }
-
+  function votingTracks$(account: SS58String): Observable<Array<VotingTrack>> {
     const { getTrackById$, trackKeyChanges$ } = watchTracks$(account)
     return combineKeys(trackKeyChanges$, getTrackById$).pipe(
       map((map) => Array.from(map.values())),
@@ -279,7 +270,13 @@ export function createConvictionVotingSdk(
 
   return {
     votingTrack$,
-    getVotingTrack: promisifyDual(votingTrack$),
+    votingTracks$,
+    getVotingTrack(account, track) {
+      return firstValueFrom(votingTrack$(account, track))
+    },
+    getVotingTracks(account) {
+      return firstValueFrom(votingTracks$(account))
+    },
     voteSplit(poll, vote) {
       const voteEntries = Object.entries(vote).filter(
         ([, value]) => (value ?? 0n) > 0n,
@@ -364,14 +361,3 @@ const convictionLockMultiplier: Record<VotingConviction["type"], number> = {
 const convictions = Object.keys(
   convictionLockMultiplier,
 ) as VotingConviction["type"][]
-
-function promisifyDual<A, B>(fn: {
-  (account: SS58String): Observable<A>
-  (account: SS58String, track: number): Observable<B>
-}): {
-  (account: SS58String): Promise<A>
-  (account: SS58String, track: number): Promise<B>
-} {
-  return ((account: SS58String, track?: number) =>
-    firstValueFrom((fn as any)(account, track))) as any
-}
