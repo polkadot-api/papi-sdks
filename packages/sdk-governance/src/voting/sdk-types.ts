@@ -17,6 +17,22 @@ export const getReferendumOutcome = (referendum: ReferendumInfo) => {
   return null
 }
 
+/**
+ * Types:
+ * - free: The funds locked by this vote will become free once the vote is removed.
+ * - locked: The funds locked by this vote will become locked once the vote is removed.
+ * - extends: Removing this vote will extend the duration of a pre-existing lock.
+ * - extended: Removing this vote before its end will have it locked for the duration of the pre-existing lock.
+ */
+export type VoteLock =
+  | {
+      type: "free"
+    }
+  | {
+      type: "locked" | "extends" | "extended"
+      end: number
+    }
+
 export interface StandardVote {
   type: "standard"
   poll: number
@@ -24,15 +40,19 @@ export interface StandardVote {
   balance: bigint
   conviction: VotingConviction
 
-  getLock(outcome: PollOutcome): number | null
+  getLock(outcome: PollOutcome): VoteLock
   remove(): Transaction<any, string, string, unknown>
 }
 export interface SplitVote {
   type: "split"
   poll: number
+  balance: bigint
+
   aye: bigint
   nay: bigint
   abstain: bigint
+
+  getLock(outcome: PollOutcome): VoteLock
   remove(): Transaction<any, string, string, unknown>
 }
 export type Vote = StandardVote | SplitVote
@@ -46,16 +66,31 @@ interface TrackDetails {
   } | null
   unlock(): Transaction<any, string, string, unknown>
 }
+export type UnlockSchedule = Array<{
+  block: number
+  balance: bigint
+  unlocks: Array<
+    | {
+        type: "poll"
+        id: number
+      }
+    | {
+        type: "lock"
+      }
+  >
+}>
+
 export interface TrackCasting extends TrackDetails {
   type: "casting"
   votes: Vote[]
-  using: bigint
+  getUnlockSchedule(pollOutcomes: Record<number, PollOutcome>): UnlockSchedule
 }
 export interface TrackDelegating extends TrackDetails {
   type: "delegation"
   target: SS58String
   balance: bigint
   conviction: VotingConviction
+  lockDuration: number
   remove(): Transaction<any, string, string, unknown>
 }
 export type VotingTrack = TrackCasting | TrackDelegating

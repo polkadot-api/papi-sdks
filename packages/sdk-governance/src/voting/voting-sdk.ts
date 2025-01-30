@@ -8,7 +8,12 @@ import {
   VotingConviction,
   VotingSdkTypedApi,
 } from "./descriptors"
-import { ConvictionVotingSdk, Vote, VotingTrack } from "./sdk-types"
+import {
+  ConvictionVotingSdk,
+  UnlockSchedule,
+  Vote,
+  VotingTrack,
+} from "./sdk-types"
 
 export function createConvictionVotingSdk(
   typedApi: VotingSdkTypedApi,
@@ -24,7 +29,7 @@ export function createConvictionVotingSdk(
           balance: votingFor.value.prior[1],
         }
       : null
-
+ 
     const unlock = () =>
       typedApi.tx.ConvictionVoting.unlock({
         class: track,
@@ -73,11 +78,22 @@ export function createConvictionVotingSdk(
             balance: vote.value.balance,
             conviction,
             getLock(outcome) {
-              return convictionValue && outcome?.side === direction
-                ? outcome.ended +
-                    convictionLockMultiplier[conviction.type] *
-                      voteLockingPeriod
-                : null
+              if (convictionValue && outcome?.side === direction) {
+                const end =
+                  outcome.ended +
+                  convictionLockMultiplier[conviction.type] * voteLockingPeriod
+
+                return {
+                  type:
+                    !trackDetails.lock || trackDetails.lock.block === end
+                      ? "locked"
+                      : trackDetails.lock.block < end
+                        ? "extends"
+                        : "extended",
+                  end,
+                }
+              }
+              return { type: "free" }
             },
             remove,
           }
@@ -85,7 +101,7 @@ export function createConvictionVotingSdk(
         const votes = {
           aye: vote.value.aye,
           nay: vote.value.nay,
-          abstain: (vote.value as any).abstain ?? 0n,
+          abstain: ((vote.value as any).abstain as bigint) ?? 0n,
         }
         const votesWithValue = Object.entries(votes).filter(([, v]) => v > 0n)
         if (votesWithValue.length === 1) {
@@ -99,7 +115,7 @@ export function createConvictionVotingSdk(
               value: undefined,
             },
             getLock() {
-              return null
+              return { type: "free" }
             },
             remove,
           }
@@ -107,7 +123,11 @@ export function createConvictionVotingSdk(
         return {
           type: "split",
           poll,
+          balance: Object.values(votes).reduce((a, b) => a + b),
           ...votes,
+          getLock() {
+            return { type: "free" }
+          },
           remove,
         }
       })
@@ -115,11 +135,66 @@ export function createConvictionVotingSdk(
       return {
         type: "casting",
         votes,
-        using: votes
-          .map((v) =>
-            v.type === "standard" ? v.balance : v.abstain + v.aye + v.nay,
-          )
-          .reduce((a, b) => a + b),
+        // using: votes
+        //   .map((v) =>
+        //     v.type === "standard" ? v.balance : v.abstain + v.aye + v.nay,
+        //   )
+        //   .reduce((a, b) => a + b, 0n),
+        getUnlockSchedule(outcomes) {
+          const unlocks = votes
+            .map((v, i) => {
+              const lock = v.getLock(outcomes[i]);
+              return ({
+                type: 'poll' as 'poll' | 'lock',
+                id: v.poll,
+                block: lock.type === "free" ? 0 : lock.end,
+                balance: v.balance,
+              })
+            })
+          if (trackDetails.lock) {
+            unlocks.push({
+              type: 'lock',
+              id: 0
+              ...trackDetails.lock
+            })
+          }
+          unlocks.sort((a, b) => Number(a.balance - b.balance))
+
+          const result: UnlockSchedule = []
+
+          let unlocked = 0
+          const getNextGroup = () => {
+            if (unlocked >= unlocks.length) return []
+
+            const start = unlocked
+            const balance = unlocks[unlocked++].balance
+            while (
+              unlocked < result.length &&
+              unlocks[unlocked].balance === balance
+            ) {
+              unlocked++
+            }
+            return unlocks.slice(start, unlocked)
+          }
+
+          let block = 0;
+          while (unlocked < unlocks.length) {
+            const group = getNextGroup();
+            const nextBalance = unlocks[unlocked]?.balance ?? 0n;
+            block = Math.max(block, ...group.map(l => l.block));
+            const balance = group[0].balance - nextBalance;
+
+            result.push({
+              block, balance,
+               unlocks: group.map(v => v.type === 'lock' ? { type: 'lock' } : {
+                type: 'poll',
+                id: v.id
+               })
+            })
+          }
+
+          return result
+        },
         ...trackDetails,
       }
     }
@@ -128,6 +203,9 @@ export function createConvictionVotingSdk(
       target: votingFor.value.target,
       balance: votingFor.value.balance,
       conviction: votingFor.value.conviction,
+      lockDuration:
+        convictionLockMultiplier[votingFor.value.conviction.type] *
+        voteLockingPeriod,
       remove() {
         return typedApi.tx.ConvictionVoting.undelegate({
           class: track,
