@@ -122,7 +122,10 @@ const xcmFeeStep = async (
 }
 
 export const calculateXcmFees = async (
-  messageFn: (remoteFeeHint?: Array<bigint>) => XcmVersionedXcm,
+  messageFn: (
+    remoteFeeHint?: bigint[],
+    deliveryFees?: bigint[],
+  ) => XcmVersionedXcm,
   _steps: Array<[string, Location]>,
   token: Location,
   getApi: (id: string) => Promise<XcmApi>,
@@ -134,6 +137,16 @@ export const calculateXcmFees = async (
   )
   // we calculate twice the fees to ensure the message length is right
   // TODO:investigate if it is interesting to run the calculations more than twice
-  const { remoteFees } = await xcmFeeStep(messageFn(), steps, token, sender)
-  return await xcmFeeStep(messageFn(remoteFees), steps, token, sender)
+  const { remoteFees, deliveryFees } = await xcmFeeStep(
+    messageFn(),
+    steps,
+    token,
+    sender,
+  )
+  return await xcmFeeStep(
+    messageFn(remoteFees, deliveryFees),
+    steps,
+    token,
+    sender,
+  )
 }

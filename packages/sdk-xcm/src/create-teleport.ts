@@ -35,8 +35,8 @@ export const createTeleport = (
   // we might need to tweak instructions
   const msg = (feeHint: bigint[] = []) =>
     XcmVersionedXcm.V4([
-      // this one will make delivery fees for first hop withdraw from the origin
-      // NOTE: investigate getting the fees with withdraw asset
+      // NOTE: InitiateTeleport does not allow until 2412 to take delivery fees
+      // from holding. Using jit_withdraw for compat
       XcmV4Instruction.SetFeesMode({ jit_withdraw: true }),
       XcmV4Instruction.WithdrawAsset([
         {

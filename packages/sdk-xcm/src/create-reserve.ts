@@ -37,18 +37,16 @@ export const createReserve = (
     steps.push([reserveId, reserveLoc])
   steps.push([destId, destLoc])
 
-  const msg = (feeHint: bigint[] = []) => {
+  const msg = (feeHint: bigint[] = [], deliveryFees: bigint[] = []) => {
     if (locationsAreEq(originLoc, reserveLoc))
       return XcmVersionedXcm.V4([
-        // this one will make delivery fees for first hop withdraw from the origin
-        // NOTE: investigate getting the fees with withdraw asset
-        // TODO: delivery fees are being withdrawn twice
-        // jit_withdraw ones are getting trapped
-        // XcmV4Instruction.SetFeesMode({ jit_withdraw: true }),
         XcmV4Instruction.WithdrawAsset([
           {
             id: routeRelative(originLoc, token),
-            fun: Enum("Fungible", amount + (feeHint[0] ?? 0n)),
+            fun: Enum(
+              "Fungible",
+              amount + (deliveryFees[0] ?? 0n) + (feeHint[0] ?? 0n),
+            ),
           },
         ]),
         XcmV4Instruction.DepositReserveAsset({
@@ -71,8 +69,8 @@ export const createReserve = (
       ])
     if (locationsAreEq(destLoc, reserveLoc))
       return XcmVersionedXcm.V4([
-        // this one will make delivery fees for first hop withdraw from the origin
-        // NOTE: investigate getting the fees with withdraw asset
+        // NOTE: InitiateReserveWithdraw does not allow until 2412 to take
+        // delivery fees from holding. Using jit_withdraw for compat
         XcmV4Instruction.SetFeesMode({ jit_withdraw: true }),
         XcmV4Instruction.WithdrawAsset([
           {
@@ -99,15 +97,18 @@ export const createReserve = (
         }),
       ])
     return XcmVersionedXcm.V4([
-      // this one will make delivery fees for first hop withdraw from the origin
-      // NOTE: investigate getting the fees with withdraw asset
+      // NOTE: InitiateReserveWithdraw does not allow until 2412 to take delivery
+      // fees from holding. Using jit_withdraw for compat (on first hop)
       XcmV4Instruction.SetFeesMode({ jit_withdraw: true }),
       XcmV4Instruction.WithdrawAsset([
         {
           id: routeRelative(originLoc, token),
           fun: Enum(
             "Fungible",
-            amount + (feeHint[0] ?? 0n) + (feeHint[1] ?? 0n),
+            amount +
+              (deliveryFees[1] ?? 0n) +
+              (feeHint[0] ?? 0n) +
+              (feeHint[1] ?? 0n),
           ),
         },
       ]),
@@ -157,7 +158,7 @@ export const createReserve = (
     }
     const localFee = await api.tx[pallet]
       .execute({
-        message: msg(remoteFees),
+        message: msg(remoteFees, deliveryFees),
         max_weight: localWeight,
       })
       .getEstimatedFees(sender)
@@ -178,12 +179,13 @@ export const createReserve = (
   }
   const createTx = (sender: SS58String): AsyncTransaction<any, any, any, any> =>
     wrapAsyncTx(async () => {
-      const { remoteFees, localWeight } = await _estimateFees(sender)
+      const { localWeight, remoteFees, deliveryFees } =
+        await _estimateFees(sender)
       const { api, pallet } = (await getApi(originId)) as XcmApi & {
         pallet: "XcmPallet"
       }
       return api.tx[pallet].execute({
-        message: msg(remoteFees),
+        message: msg(remoteFees, deliveryFees),
         max_weight: localWeight,
       })
     })
