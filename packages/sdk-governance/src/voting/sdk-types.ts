@@ -33,27 +33,25 @@ export type VoteLock =
       end: number
     }
 
-export interface StandardVote {
-  type: "standard"
+interface CommonVote {
   poll: number
-  direction: "aye" | "nay" | "abstain"
   balance: bigint
-  conviction: VotingConviction
 
   getLock(outcome: PollOutcome): VoteLock
   remove(): Transaction<any, string, string, unknown>
 }
-export interface SplitVote {
+export interface StandardVote extends CommonVote {
+  type: "standard"
+
+  direction: "aye" | "nay" | "abstain"
+  conviction: VotingConviction
+}
+export interface SplitVote extends CommonVote {
   type: "split"
-  poll: number
-  balance: bigint
 
   aye: bigint
   nay: bigint
   abstain: bigint
-
-  getLock(outcome: PollOutcome): VoteLock
-  remove(): Transaction<any, string, string, unknown>
 }
 export type Vote = StandardVote | SplitVote
 
@@ -86,7 +84,7 @@ export interface TrackCasting extends TrackDetails {
   getUnlockSchedule(pollOutcomes: Record<number, PollOutcome>): UnlockSchedule
 }
 export interface TrackDelegating extends TrackDetails {
-  type: "delegation"
+  type: "delegating"
   target: SS58String
   balance: bigint
   conviction: VotingConviction

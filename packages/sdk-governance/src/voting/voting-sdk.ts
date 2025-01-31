@@ -29,7 +29,7 @@ export function createConvictionVotingSdk(
           balance: votingFor.value.prior[1],
         }
       : null
- 
+
     const unlock = () =>
       typedApi.tx.ConvictionVoting.unlock({
         class: track,
@@ -88,8 +88,15 @@ export function createConvictionVotingSdk(
                     !trackDetails.lock || trackDetails.lock.block === end
                       ? "locked"
                       : trackDetails.lock.block < end
-                        ? "extends"
-                        : "extended",
+                        ? // Only `extends` if the outer balance is greater than the vote balance
+                          // Because it actually only has an effect if it's extending the lock of a larger amount of tokens
+                          trackDetails.lock.balance > vote.value.balance
+                          ? "extends"
+                          : "locked"
+                        : // Same reasoning
+                          trackDetails.lock.balance < vote.value.balance
+                          ? "extended"
+                          : "locked",
                   end,
                 }
               }
@@ -135,27 +142,21 @@ export function createConvictionVotingSdk(
       return {
         type: "casting",
         votes,
-        // using: votes
-        //   .map((v) =>
-        //     v.type === "standard" ? v.balance : v.abstain + v.aye + v.nay,
-        //   )
-        //   .reduce((a, b) => a + b, 0n),
         getUnlockSchedule(outcomes) {
-          const unlocks = votes
-            .map((v, i) => {
-              const lock = v.getLock(outcomes[i]);
-              return ({
-                type: 'poll' as 'poll' | 'lock',
-                id: v.poll,
-                block: lock.type === "free" ? 0 : lock.end,
-                balance: v.balance,
-              })
-            })
+          const unlocks = votes.map((v, i) => {
+            const lock = v.getLock(outcomes[i])
+            return {
+              type: "poll" as "poll" | "lock",
+              id: v.poll,
+              block: lock.type === "free" ? 0 : lock.end,
+              balance: v.balance,
+            }
+          })
           if (trackDetails.lock) {
             unlocks.push({
-              type: 'lock',
-              id: 0
-              ...trackDetails.lock
+              type: "lock",
+              id: 0,
+              ...trackDetails.lock,
             })
           }
           unlocks.sort((a, b) => Number(a.balance - b.balance))
@@ -177,19 +178,24 @@ export function createConvictionVotingSdk(
             return unlocks.slice(start, unlocked)
           }
 
-          let block = 0;
+          let block = 0
           while (unlocked < unlocks.length) {
-            const group = getNextGroup();
-            const nextBalance = unlocks[unlocked]?.balance ?? 0n;
-            block = Math.max(block, ...group.map(l => l.block));
-            const balance = group[0].balance - nextBalance;
+            const group = getNextGroup()
+            const nextBalance = unlocks[unlocked]?.balance ?? 0n
+            block = Math.max(block, ...group.map((l) => l.block))
+            const balance = group[0].balance - nextBalance
 
             result.push({
-              block, balance,
-               unlocks: group.map(v => v.type === 'lock' ? { type: 'lock' } : {
-                type: 'poll',
-                id: v.id
-               })
+              block,
+              balance,
+              unlocks: group.map((v) =>
+                v.type === "lock"
+                  ? { type: "lock" }
+                  : {
+                      type: "poll",
+                      id: v.id,
+                    },
+              ),
             })
           }
 
@@ -199,7 +205,7 @@ export function createConvictionVotingSdk(
       }
     }
     return {
-      type: "delegation",
+      type: "delegating",
       target: votingFor.value.target,
       balance: votingFor.value.balance,
       conviction: votingFor.value.conviction,
