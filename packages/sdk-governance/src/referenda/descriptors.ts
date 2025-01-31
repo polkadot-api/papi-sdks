@@ -12,11 +12,15 @@ import {
   TypedApi,
 } from "polkadot-api"
 
-type WhoAmount = {
+export type WhoAmount = {
   who: SS58String
   amount: bigint
 }
-type BasicReferndumInfo = [number, WhoAmount | undefined, WhoAmount | undefined]
+type BasicReferendumInfo = [
+  number,
+  WhoAmount | undefined,
+  WhoAmount | undefined,
+]
 
 export type PolkadotRuntimeOriginCaller = Enum<{
   system: Enum<{
@@ -89,10 +93,10 @@ export type ReferendumInfo = Enum<{
     in_queue: boolean
     alarm?: [number, FixedSizeArray<2, number>] | undefined
   }
-  Approved: BasicReferndumInfo
-  Rejected: BasicReferndumInfo
-  Cancelled: BasicReferndumInfo
-  TimedOut: BasicReferndumInfo
+  Approved: BasicReferendumInfo
+  Rejected: BasicReferendumInfo
+  Cancelled: BasicReferendumInfo
+  TimedOut: BasicReferendumInfo
   Killed: number
 }>
 
