@@ -13,3 +13,7 @@ export type * from "./bounties/sdk-types"
 export { createChildBountiesSdk } from "./bounties/child-bounties-sdk"
 export type * from "./bounties/child-descriptors"
 export type * from "./bounties/child-sdk-types"
+
+export { createConvictionVotingSdk } from "./voting/voting-sdk"
+export type * from "./voting/descriptors"
+export type * from "./voting/sdk-types"

@@ -9,6 +9,7 @@ export interface GenericChildBounty extends ChildBountyWithoutDescription {
   type: BountiesChildBountyStatus["type"]
   id: number
   description: string | null
+  account: SS58String
 }
 
 interface ClosableBounty {
