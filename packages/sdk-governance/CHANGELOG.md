@@ -6,6 +6,13 @@
 
 - **Bounties**
   - Add bounty and child bounty account.
+- **Conviction Voting**
+  - Add conviction voting SDK
+
+### Changed
+
+- **Referenda**
+  - The SDK now returns all referenda instead of only the ongoing ones.
 
 ### Fixed
 

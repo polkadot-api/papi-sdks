@@ -7,8 +7,10 @@ import {
   ReferendaTypesCurve,
   ReferendumInfo,
   TraitsScheduleDispatchTime,
+  WhoAmount,
 } from "./descriptors"
 import { Observable } from "rxjs"
+import { PollOutcome } from "@/voting/sdk-types"
 
 type RawOngoingReferendum = (ReferendumInfo & { type: "Ongoing" })["value"]
 
@@ -17,6 +19,7 @@ export interface ReferendumDetails {
 }
 
 export type OngoingReferendum = Omit<RawOngoingReferendum, "proposal"> & {
+  type: "Ongoing"
   id: number
   proposal: {
     rawValue: PreimagesBounded
@@ -33,7 +36,21 @@ export type OngoingReferendum = Omit<RawOngoingReferendum, "proposal"> & {
   getConfirmationStart: () => Promise<number | null>
   getConfirmationEnd: () => Promise<number | null>
   getTrack: () => Promise<ReferendaTrack>
+
+  // For easier TS usage, but will always be `null`
+  outcome: PollOutcome
+  getExpectedOutcome: () => Promise<PollOutcome>
 }
+
+export interface ClosedReferendum {
+  type: "Approved" | "Rejected" | "Cancelled" | "TimedOut" | "Killed"
+  outcome: PollOutcome
+  block: number
+  submission_deposit: WhoAmount | undefined
+  decision_deposit: WhoAmount | undefined
+}
+
+export type Referendum = OngoingReferendum | ClosedReferendum
 
 export interface ReferendaSdkConfig {
   spenderOrigin: (value: bigint) => Origin | null
@@ -61,12 +78,12 @@ export type ReferendaTrack = Omit<
 }
 
 export interface ReferendaSdk {
-  getOngoingReferenda(): Promise<OngoingReferendum[]>
-  getOngoingReferendum(id: number): Promise<OngoingReferendum | null>
+  getReferenda(): Promise<Referendum[]>
+  getReferendum(id: number): Promise<Referendum | null>
   watch: {
-    ongoingReferenda$: Observable<Map<number, OngoingReferendum>>
-    ongoingReferendaIds$: Observable<number[]>
-    getOngoingReferendumById$: (key: number) => Observable<OngoingReferendum>
+    referenda$: Observable<Map<number, Referendum>>
+    referendaIds$: Observable<number[]>
+    getReferendumById$: (key: number) => Observable<Referendum>
   }
   getSpenderTrack(value: bigint): {
     origin: PolkadotRuntimeOriginCaller

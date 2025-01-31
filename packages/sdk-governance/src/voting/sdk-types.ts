@@ -1,4 +1,3 @@
-import { ReferendumInfo } from "@/referenda/descriptors"
 import { SS58String, Transaction } from "polkadot-api"
 import { Observable } from "rxjs"
 import { VotingConviction } from "./descriptors"
@@ -7,15 +6,6 @@ export type PollOutcome = {
   ended: number
   side: "aye" | "nay"
 } | null
-export const getReferendumOutcome = (referendum: ReferendumInfo) => {
-  if (referendum.type === "Approved" || referendum.type === "Rejected") {
-    return {
-      ended: referendum.value[0],
-      side: referendum.type === "Approved" ? "aye" : "nay",
-    }
-  }
-  return null
-}
 
 /**
  * Types:
