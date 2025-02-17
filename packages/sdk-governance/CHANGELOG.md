@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 0.0.1-2 2025-02-17
+
 ### Added
 
 - **Bounties**
@@ -32,7 +34,6 @@
 
 - **Referenda**
   - Make `enactment` of `createReferenda` optional.
-
 - **Bounties**
   - Change watch API to share the inner subscription.
 
