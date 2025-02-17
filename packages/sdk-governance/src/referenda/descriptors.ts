@@ -1,3 +1,4 @@
+import { SdkDefinition } from "@polkadot-api/common-sdk-utils"
 import {
   ApisTypedef,
   Binary,
@@ -197,12 +198,3 @@ type ReferendaSdkDefinition = SdkDefinition<
   ApisTypedef<{}>
 >
 export type ReferendaSdkTypedApi = TypedApi<ReferendaSdkDefinition>
-
-type SdkDefinition<P, R> = {
-  descriptors: Promise<any> & {
-    pallets: P
-    apis: R
-  }
-  asset: any
-  metadataTypes: any
-}

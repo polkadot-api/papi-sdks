@@ -5,4 +5,6 @@ export type SdkDefinition<P, R> = {
   }
   asset: any
   metadataTypes: any
+  getMetadata: any
+  genesis: any
 }
