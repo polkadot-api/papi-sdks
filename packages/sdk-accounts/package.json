@@ -1,6 +1,6 @@
 {
   "name": "@polkadot-api/sdk-accounts",
-  "version": "0.0.1-0",
+  "version": "0.0.1-1",
   "sideEffects": false,
   "author": "Victor Oliva (https://github.com/voliva)",
   "repository": {
@@ -51,7 +51,7 @@
   },
   "devDependencies": {
     "@noble/hashes": "^1.7.1",
-    "polkadot-api": "^1.8.4",
+    "polkadot-api": "^1.9.1",
     "rxjs": "^7.8.1"
   }
 }

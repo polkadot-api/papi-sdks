@@ -2,10 +2,19 @@
 
 ## Unreleased
 
+## 0.0.1-2 2025-02-17
+
 ### Added
 
 - **Bounties**
   - Add bounty and child bounty account.
+- **Conviction Voting**
+  - Add conviction voting SDK
+
+### Changed
+
+- **Referenda**
+  - The SDK now returns all referenda instead of only the ongoing ones.
 
 ### Fixed
 
@@ -25,7 +34,6 @@
 
 - **Referenda**
   - Make `enactment` of `createReferenda` optional.
-
 - **Bounties**
   - Change watch API to share the inner subscription.
 

@@ -1,8 +1,8 @@
-import { Deltas, partitionEntries } from "@/util/watchEntries"
+import { partitionEntries } from "@/util/watchEntries"
 import { blake2b } from "@noble/hashes/blake2b"
 import { combineKeys, toKeySet } from "@react-rxjs/utils"
 import { Binary, TxEvent } from "polkadot-api"
-import { map, scan } from "rxjs"
+import { map } from "rxjs"
 import { getPreimageResolver } from "../preimages"
 import { originToTrack, polkadotSpenderOrigin } from "./chainConfig"
 import {
@@ -14,6 +14,7 @@ import {
   OngoingReferendum,
   ReferendaSdk,
   ReferendaSdkConfig,
+  Referendum,
 } from "./sdk-types"
 import { BIG_BILLION, trackFetcher } from "./track"
 
@@ -67,9 +68,22 @@ export function createReferendaSdk(
 
       return referendum.deciding.since + block
     }
+    async function getConfirmationEnd() {
+      if (!referendum.deciding) return null
+
+      const track = await getTrack(referendum.track)
+      if (!track) return null
+
+      const confirmationStart =
+        referendum.deciding.confirming ?? (await getConfirmationStart())
+      if (!confirmationStart) return null
+
+      return confirmationStart + track.confirm_period
+    }
 
     return {
       ...referendum,
+      type: "Ongoing",
       id,
       proposal: {
         rawValue: referendum.proposal,
@@ -101,18 +115,7 @@ export function createReferendaSdk(
         }
       },
       getConfirmationStart,
-      async getConfirmationEnd() {
-        if (!referendum.deciding) return null
-
-        const track = await getTrack(referendum.track)
-        if (!track) return null
-
-        const confirmationStart =
-          referendum.deciding.confirming ?? (await getConfirmationStart())
-        if (!confirmationStart) return null
-
-        return confirmationStart + track.confirm_period
-      },
+      getConfirmationEnd,
       async getTrack() {
         const track = await getTrack(referendum.track)
         if (!track) {
@@ -121,82 +124,72 @@ export function createReferendaSdk(
         }
         return track
       },
+      outcome: null,
+      async getExpectedOutcome() {
+        const confirmationEnd = await getConfirmationEnd()
+        return confirmationEnd
+          ? {
+              side:
+                referendum.tally.ayes > referendum.tally.nays ? "aye" : "nay",
+              ended: confirmationEnd,
+            }
+          : null
+      },
+    }
+  }
+  function enhanceReferendumInfo(id: number, info: ReferendumInfo): Referendum {
+    if (info.type === "Ongoing") return enhanceOngoingReferendum(id, info.value)
+    if (info.type === "Killed")
+      return {
+        type: "Killed",
+        block: info.value,
+        submission_deposit: undefined,
+        decision_deposit: undefined,
+        outcome: null,
+      }
+
+    const [block, submission_deposit, decision_deposit] = info.value
+    return {
+      type: info.type,
+      block,
+      submission_deposit,
+      decision_deposit,
+      outcome:
+        info.type === "Approved"
+          ? { side: "aye", ended: block }
+          : info.type === "Rejected"
+            ? {
+                side: "nay",
+                ended: block,
+              }
+            : null,
     }
   }
 
-  async function getOngoingReferenda() {
+  async function getReferenda() {
     const entries =
       await typedApi.query.Referenda.ReferendumInfoFor.getEntries()
 
-    return entries
-      .map(({ keyArgs: [id], value: info }): OngoingReferendum | null => {
-        if (info.type !== "Ongoing") return null
-
-        return enhanceOngoingReferendum(id, info.value)
-      })
-      .filter((v) => !!v)
+    return entries.map(({ keyArgs: [id], value: info }) =>
+      enhanceReferendumInfo(id, info),
+    )
   }
-  async function getOngoingReferendum(id: number) {
+  async function getReferendum(id: number) {
     const referendum =
       await typedApi.query.Referenda.ReferendumInfoFor.getValue(id)
-    if (referendum?.type === "Ongoing") {
-      return enhanceOngoingReferendum(id, referendum.value)
-    }
-    return null
+    return referendum ? enhanceReferendumInfo(id, referendum) : null
   }
 
   const [rawReferendumById$, referendaKeyChange$] = partitionEntries(
-    typedApi.query.Referenda.ReferendumInfoFor.watchEntries().pipe(
-      scan(
-        (acc, v) => {
-          if (!v.deltas) return { ...acc, deltas: null }
-          const deleted = v.deltas.deleted.map((v) => ({
-            ...v,
-            value: v.value.value as RawOngoingReferendum,
-          }))
-          const upserted = v.deltas.upserted
-            .map((v) => {
-              if (v.value.type === "Ongoing") {
-                acc.referendums[v.args[0]] = v.value.value
-                return {
-                  args: v.args,
-                  value: v.value.value,
-                }
-              }
-              if (v.args[0] in acc.referendums) {
-                // An Ongoing has become closed, remove from list
-                deleted.push({
-                  args: v.args,
-                  value: acc.referendums[v.args[0]],
-                })
-                delete acc.referendums[v.args[0]]
-              }
-              return null!
-            })
-            .filter(Boolean)
-
-          return {
-            referendums: acc.referendums,
-            deltas: { deleted, upserted },
-          }
-        },
-        {
-          referendums: {} as Record<number, RawOngoingReferendum>,
-          deltas: null as Deltas<RawOngoingReferendum> | null,
-        },
-      ),
-    ),
+    typedApi.query.Referenda.ReferendumInfoFor.watchEntries(),
   )
 
-  const getOngoingReferendumById$ = (id: number) =>
+  const getReferendumById$ = (id: number) =>
     rawReferendumById$(id).pipe(
-      map((entry) => enhanceOngoingReferendum(id, entry)),
+      map((entry) => enhanceReferendumInfo(id, entry)),
     )
-  const ongoingReferenda$ = combineKeys(
-    referendaKeyChange$,
-    getOngoingReferendumById$,
-  )
-  const ongoingReferendaIds$ = referendaKeyChange$.pipe(
+  const referenda$ = combineKeys(referendaKeyChange$, getReferendumById$)
+  const referendaIds$ = referendaKeyChange$.pipe(
     toKeySet(),
     map((set) => [...set]),
   )
@@ -291,12 +284,12 @@ export function createReferendaSdk(
 
   return {
     watch: {
-      ongoingReferenda$,
-      getOngoingReferendumById$,
-      ongoingReferendaIds$,
+      referenda$,
+      getReferendumById$,
+      referendaIds$,
     },
-    getOngoingReferenda,
-    getOngoingReferendum,
+    getReferenda,
+    getReferendum,
     getSpenderTrack,
     getTrack,
     createReferenda,
