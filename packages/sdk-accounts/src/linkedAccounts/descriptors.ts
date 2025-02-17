@@ -1,3 +1,4 @@
+import { SdkDefinition } from "@polkadot-api/common-sdk-utils"
 import {
   ApisTypedef,
   Enum,
@@ -49,12 +50,3 @@ type LinkedAccountsSdkDefinition = SdkDefinition<
   ApisTypedef<{}>
 >
 export type LinkedAccountsSdkTypedApi = TypedApi<LinkedAccountsSdkDefinition>
-
-type SdkDefinition<P, R> = {
-  descriptors: Promise<any> & {
-    pallets: P
-    apis: R
-  }
-  asset: any
-  metadataTypes: any
-}
