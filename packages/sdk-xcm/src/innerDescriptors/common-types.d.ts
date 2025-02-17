@@ -23,15 +23,15 @@ export type I7frrf3o4ab0b6 = AnonymousEnum<{
     "execute": Anonymize<If2ssl12kcglhg>;
 }>;
 export type If2ssl12kcglhg = {
-    "message": XcmVersionedXcm;
+    "message": PasXcmVersionedXcm;
     "max_weight": Anonymize<I4q39t5hn830vp>;
 };
-export type XcmVersionedXcm = Enum<{
+export type PasXcmVersionedXcm = Enum<{
     "V2": Anonymize<Iemqgk0vect4v7>;
     "V3": Anonymize<Ianvng4e08j9ii>;
     "V4": Anonymize<Iegrepoo0c1jc5>;
 }>;
-export declare const XcmVersionedXcm: GetEnum<XcmVersionedXcm>;
+export declare const PasXcmVersionedXcm: GetEnum<PasXcmVersionedXcm>;
 export type Iemqgk0vect4v7 = Array<XcmV2Instruction>;
 export type XcmV2Instruction = Enum<{
     "WithdrawAsset": Anonymize<I2sllmucln1iic>;
@@ -2663,12 +2663,12 @@ export type Iaug04qjhbli00 = AnonymousEnum<{
     "RequireSudo": undefined;
 }>;
 export type I1p1369d52j8jd = ResultPayload<Anonymize<I66cvqflm1qj24>, Anonymize<Iavct6f844hfju>>;
-export type I66cvqflm1qj24 = Array<XcmVersionedAssetId>;
-export type XcmVersionedAssetId = Enum<{
+export type I66cvqflm1qj24 = Array<PasXcmVersionedAssetId>;
+export type PasXcmVersionedAssetId = Enum<{
     "V3": XcmV3MultiassetAssetId;
     "V4": Anonymize<I4c0s5cioidn76>;
 }>;
-export declare const XcmVersionedAssetId: GetEnum<XcmVersionedAssetId>;
+export declare const PasXcmVersionedAssetId: GetEnum<PasXcmVersionedAssetId>;
 export type Iavct6f844hfju = AnonymousEnum<{
     "Unimplemented": undefined;
     "VersionedConversionFailed": undefined;
@@ -2679,19 +2679,19 @@ export type Iavct6f844hfju = AnonymousEnum<{
 }>;
 export type Ic0c3req3mlc1l = ResultPayload<Anonymize<I4q39t5hn830vp>, Anonymize<Iavct6f844hfju>>;
 export type I7ocn4njqde3v5 = ResultPayload<bigint, Anonymize<Iavct6f844hfju>>;
-export type XcmVersionedLocation = Enum<{
+export type PasXcmVersionedLocation = Enum<{
     "V2": Anonymize<I4frqunb5hj2km>;
     "V3": Anonymize<I4c0s5cioidn76>;
     "V4": Anonymize<I4c0s5cioidn76>;
 }>;
-export declare const XcmVersionedLocation: GetEnum<XcmVersionedLocation>;
-export type I5rlt6h8ph553n = ResultPayload<XcmVersionedAssets, Anonymize<Iavct6f844hfju>>;
-export type XcmVersionedAssets = Enum<{
+export declare const PasXcmVersionedLocation: GetEnum<PasXcmVersionedLocation>;
+export type I5rlt6h8ph553n = ResultPayload<PasXcmVersionedAssets, Anonymize<Iavct6f844hfju>>;
+export type PasXcmVersionedAssets = Enum<{
     "V2": Anonymize<I2sllmucln1iic>;
     "V3": Anonymize<Iai6dhqiq3bach>;
     "V4": Anonymize<I50mli3hb64f9b>;
 }>;
-export declare const XcmVersionedAssets: GetEnum<XcmVersionedAssets>;
+export declare const PasXcmVersionedAssets: GetEnum<PasXcmVersionedAssets>;
 export type PolkadotRuntimeOriginCaller = Enum<{
     "system": DispatchRawOrigin;
     "Origins": GovernanceOrigin;
@@ -4159,7 +4159,7 @@ export type Icm9m0qeemu66d = {
 export type Ibv74ul0c0qf0f = {
     "asset_kind": VersionedLocatableAsset;
     "amount": bigint;
-    "beneficiary": XcmVersionedLocation;
+    "beneficiary": PasXcmVersionedLocation;
     "valid_from"?: Anonymize<I4arjljr6dpflb>;
 };
 export type VersionedLocatableAsset = Enum<{
@@ -7661,13 +7661,13 @@ export type I9nbjvlrb9bp1g = AnonymousEnum<{
     "transfer_assets_using_type_and_then": Anonymize<I6r0pr82pbiftt>;
 }>;
 export type I9paqujeb1fpv6 = {
-    "dest": XcmVersionedLocation;
-    "message": XcmVersionedXcm;
+    "dest": PasXcmVersionedLocation;
+    "message": PasXcmVersionedXcm;
 };
 export type Iakevv83i18n4r = {
-    "dest": XcmVersionedLocation;
-    "beneficiary": XcmVersionedLocation;
-    "assets": XcmVersionedAssets;
+    "dest": PasXcmVersionedLocation;
+    "beneficiary": PasXcmVersionedLocation;
+    "assets": PasXcmVersionedAssets;
     "fee_asset_item": number;
 };
 export type Iabk8ljl5g8c86 = {
@@ -7678,12 +7678,12 @@ export type Ic76kfh5ebqkpl = {
     "maybe_xcm_version"?: Anonymize<I4arjljr6dpflb>;
 };
 export type Icrujen33bbibf = {
-    "location": XcmVersionedLocation;
+    "location": PasXcmVersionedLocation;
 };
 export type I5gi8h3e5lkbeq = {
-    "dest": XcmVersionedLocation;
-    "beneficiary": XcmVersionedLocation;
-    "assets": XcmVersionedAssets;
+    "dest": PasXcmVersionedLocation;
+    "beneficiary": PasXcmVersionedLocation;
+    "assets": PasXcmVersionedAssets;
     "fee_asset_item": number;
     "weight_limit": XcmV3WeightLimit;
 };
@@ -7691,23 +7691,23 @@ export type Ibgm4rnf22lal1 = {
     "suspended": boolean;
 };
 export type I8mmaab8je28oo = {
-    "assets": XcmVersionedAssets;
-    "beneficiary": XcmVersionedLocation;
+    "assets": PasXcmVersionedAssets;
+    "beneficiary": PasXcmVersionedLocation;
 };
 export type I6r0pr82pbiftt = {
-    "dest": XcmVersionedLocation;
-    "assets": XcmVersionedAssets;
+    "dest": PasXcmVersionedLocation;
+    "assets": PasXcmVersionedAssets;
     "assets_transfer_type": Anonymize<Ifkg2rgjl54s88>;
-    "remote_fees_id": XcmVersionedAssetId;
+    "remote_fees_id": PasXcmVersionedAssetId;
     "fees_transfer_type": Anonymize<Ifkg2rgjl54s88>;
-    "custom_xcm_on_dest": XcmVersionedXcm;
+    "custom_xcm_on_dest": PasXcmVersionedXcm;
     "weight_limit": XcmV3WeightLimit;
 };
 export type Ifkg2rgjl54s88 = AnonymousEnum<{
     "Teleport": undefined;
     "LocalReserve": undefined;
     "DestinationReserve": undefined;
-    "RemoteReserve": XcmVersionedLocation;
+    "RemoteReserve": PasXcmVersionedLocation;
 }>;
 export type I3lic4llm6egbr = AnonymousEnum<{
     /**
@@ -7877,7 +7877,7 @@ export type I2duhnt686rv0q = {
 };
 export type I7mlkc61s5tj4l = {
     "id": number;
-    "xcm": XcmVersionedXcm;
+    "xcm": PasXcmVersionedXcm;
 };
 export type I9s1em4tt8ni1d = AnonymousEnum<{
     /**
@@ -8616,7 +8616,7 @@ export type If52u7u3r3ve0n = {
     "index": number;
     "asset_kind": VersionedLocatableAsset;
     "amount": bigint;
-    "beneficiary": XcmVersionedLocation;
+    "beneficiary": PasXcmVersionedLocation;
     "valid_from": number;
     "expire_at": number;
 };
@@ -9896,7 +9896,7 @@ export type I30pg328m00nr3 = {
 export type I381dkhrurdhrs = {
     "hash": FixedSizeBinary<32>;
     "origin": Anonymize<I4c0s5cioidn76>;
-    "assets": XcmVersionedAssets;
+    "assets": PasXcmVersionedAssets;
 };
 export type Ic8hi3qr11vngc = {
     "destination": Anonymize<I4c0s5cioidn76>;
@@ -9910,7 +9910,7 @@ export type Ibjdlecumfu7q7 = {
     "error": XcmV3TraitsError;
 };
 export type Ia9ems1kg7laoc = {
-    "location": XcmVersionedLocation;
+    "location": PasXcmVersionedLocation;
     "query_id": bigint;
 };
 export type I92fq0fa45vi3 = {
@@ -10070,10 +10070,10 @@ export type I5rtkmhm2dng4u = {
      */
     "new": SS58String;
 };
-export type I3i0ce56p044d2 = (XcmVersionedXcm) | undefined;
+export type I3i0ce56p044d2 = (PasXcmVersionedXcm) | undefined;
 export type I47tkk5e5nm6g7 = Array<Anonymize<I60vv2hvlt348b>>;
-export type I60vv2hvlt348b = [XcmVersionedLocation, Anonymize<I7ao2ct6q454mu>];
-export type I7ao2ct6q454mu = Array<XcmVersionedXcm>;
+export type I60vv2hvlt348b = [PasXcmVersionedLocation, Anonymize<I7ao2ct6q454mu>];
+export type I7ao2ct6q454mu = Array<PasXcmVersionedXcm>;
 export type I55ku9c5gk50hb = AnonymousEnum<{
     "Unimplemented": undefined;
     "VersionedConversionFailed": undefined;
@@ -15542,16 +15542,17 @@ export type Ia6fc6cg87h1mc = AnonymousEnum<{
     "execute": Anonymize<Iegif7m3upfe1k>;
 }>;
 export type Iegif7m3upfe1k = {
-    "message": Anonymize<I3psnvvr3d6p0t>;
+    "message": XcmVersionedXcm;
     "max_weight": Anonymize<I4q39t5hn830vp>;
 };
-export type I3psnvvr3d6p0t = AnonymousEnum<{
+export type XcmVersionedXcm = Enum<{
     "V3": Anonymize<Ianvng4e08j9ii>;
     "V4": Anonymize<Iegrepoo0c1jc5>;
     "V5": Anonymize<Ict03eedr8de9s>;
 }>;
-export type Ict03eedr8de9s = Array<Anonymize<Ibs795i39p1rsf>>;
-export type Ibs795i39p1rsf = AnonymousEnum<{
+export declare const XcmVersionedXcm: GetEnum<XcmVersionedXcm>;
+export type Ict03eedr8de9s = Array<XcmV5Instruction>;
+export type XcmV5Instruction = Enum<{
     "WithdrawAsset": Anonymize<I4npjalvhmfuj>;
     "ReserveAssetDeposited": Anonymize<I4npjalvhmfuj>;
     "ReceiveTeleportedAsset": Anonymize<I4npjalvhmfuj>;
@@ -15563,7 +15564,7 @@ export type Ibs795i39p1rsf = AnonymousEnum<{
     "HrmpChannelAccepted": Anonymize<Ifij4jam0o7sub>;
     "HrmpChannelClosing": Anonymize<Ieeb4svd9i8fji>;
     "ClearOrigin": undefined;
-    "DescendOrigin": Anonymize<I6d7om5l62r3h6>;
+    "DescendOrigin": XcmV5Junctions;
     "ReportError": Anonymize<I6vsmh07hrp1rc>;
     "DepositAsset": Anonymize<I81oo73d6i5279>;
     "DepositReserveAsset": Anonymize<I5patag90o6n2g>;
@@ -15589,7 +15590,7 @@ export type Ibs795i39p1rsf = AnonymousEnum<{
     "ExpectPallet": Anonymize<Id7mf37dkpgfjs>;
     "ReportTransactStatus": Anonymize<I6vsmh07hrp1rc>;
     "ClearTransactStatus": undefined;
-    "UniversalOrigin": Anonymize<Indkvtfs34lhc>;
+    "UniversalOrigin": XcmV5Junction;
     "ExportMessage": Anonymize<I46338r4f4c3gj>;
     "LockAsset": Anonymize<Idsbn0vvkhdj4i>;
     "UnlockAsset": Anonymize<I70l2gii2hrbik>;
@@ -15605,6 +15606,7 @@ export type Ibs795i39p1rsf = AnonymousEnum<{
     "ExecuteWithOrigin": Anonymize<Icvu0u7vrbur4e>;
     "SetHints": Anonymize<I3po4d1m5647ct>;
 }>;
+export declare const XcmV5Instruction: GetEnum<XcmV5Instruction>;
 export type I4npjalvhmfuj = Array<Anonymize<Iffh1nc5e1mod6>>;
 export type Iffh1nc5e1mod6 = {
     "id": Anonymize<If9iqq7i64mur8>;
@@ -15612,11 +15614,11 @@ export type Iffh1nc5e1mod6 = {
 };
 export type If9iqq7i64mur8 = {
     "parents": number;
-    "interior": Anonymize<I6d7om5l62r3h6>;
+    "interior": XcmV5Junctions;
 };
-export type I6d7om5l62r3h6 = AnonymousEnum<{
+export type XcmV5Junctions = Enum<{
     "Here": undefined;
-    "X1": Anonymize<Indkvtfs34lhc>;
+    "X1": XcmV5Junction;
     "X2": Anonymize<I279b0st0go8pj>;
     "X3": Anonymize<I8t3509dftknlg>;
     "X4": Anonymize<Iegifjnm8bgl6n>;
@@ -15625,7 +15627,8 @@ export type I6d7om5l62r3h6 = AnonymousEnum<{
     "X7": Anonymize<I1pmgeuqv3eom3>;
     "X8": Anonymize<I32k80jnq35fij>;
 }>;
-export type Indkvtfs34lhc = AnonymousEnum<{
+export declare const XcmV5Junctions: GetEnum<XcmV5Junctions>;
+export type XcmV5Junction = Enum<{
     "Parachain": number;
     "AccountId32": Anonymize<I303u17k2gp1si>;
     "AccountIndex64": Anonymize<Iejvsa7fje7ib3>;
@@ -15635,14 +15638,15 @@ export type Indkvtfs34lhc = AnonymousEnum<{
     "GeneralKey": Anonymize<I15lht6t53odo4>;
     "OnlyChild": undefined;
     "Plurality": Anonymize<I518fbtnclg1oc>;
-    "GlobalConsensus": Anonymize<I73beoct6oecc>;
+    "GlobalConsensus": XcmV5NetworkId;
 }>;
+export declare const XcmV5Junction: GetEnum<XcmV5Junction>;
 export type I303u17k2gp1si = {
     "network"?: Anonymize<I97pd2rst02a7r>;
     "id": FixedSizeBinary<32>;
 };
-export type I97pd2rst02a7r = (Anonymize<I73beoct6oecc>) | undefined;
-export type I73beoct6oecc = AnonymousEnum<{
+export type I97pd2rst02a7r = (XcmV5NetworkId) | undefined;
+export type XcmV5NetworkId = Enum<{
     "ByGenesis": FixedSizeBinary<32>;
     "ByFork": Anonymize<I15vf5oinmcgps>;
     "Polkadot": undefined;
@@ -15652,6 +15656,7 @@ export type I73beoct6oecc = AnonymousEnum<{
     "BitcoinCash": undefined;
     "PolkadotBulletin": undefined;
 }>;
+export declare const XcmV5NetworkId: GetEnum<XcmV5NetworkId>;
 export type Iejvsa7fje7ib3 = {
     "network"?: Anonymize<I97pd2rst02a7r>;
     "index": bigint;
@@ -15660,13 +15665,13 @@ export type Icmn90ot6tcot8 = {
     "network"?: Anonymize<I97pd2rst02a7r>;
     "key": FixedSizeBinary<20>;
 };
-export type I279b0st0go8pj = FixedSizeArray<2, Anonymize<Indkvtfs34lhc>>;
-export type I8t3509dftknlg = FixedSizeArray<3, Anonymize<Indkvtfs34lhc>>;
-export type Iegifjnm8bgl6n = FixedSizeArray<4, Anonymize<Indkvtfs34lhc>>;
-export type Ic40rerdemoe3f = FixedSizeArray<5, Anonymize<Indkvtfs34lhc>>;
-export type Ieehae2qh5qhrv = FixedSizeArray<6, Anonymize<Indkvtfs34lhc>>;
-export type I1pmgeuqv3eom3 = FixedSizeArray<7, Anonymize<Indkvtfs34lhc>>;
-export type I32k80jnq35fij = FixedSizeArray<8, Anonymize<Indkvtfs34lhc>>;
+export type I279b0st0go8pj = FixedSizeArray<2, XcmV5Junction>;
+export type I8t3509dftknlg = FixedSizeArray<3, XcmV5Junction>;
+export type Iegifjnm8bgl6n = FixedSizeArray<4, XcmV5Junction>;
+export type Ic40rerdemoe3f = FixedSizeArray<5, XcmV5Junction>;
+export type Ieehae2qh5qhrv = FixedSizeArray<6, XcmV5Junction>;
+export type I1pmgeuqv3eom3 = FixedSizeArray<7, XcmV5Junction>;
+export type I32k80jnq35fij = FixedSizeArray<8, XcmV5Junction>;
 export type I7lviboj0crq1q = {
     "query_id": bigint;
     "response": Anonymize<I7vucpgm2c6959>;
@@ -15747,19 +15752,21 @@ export type I6vsmh07hrp1rc = {
     "max_weight": Anonymize<I4q39t5hn830vp>;
 };
 export type I81oo73d6i5279 = {
-    "assets": Anonymize<Iau5bveb13r5dm>;
+    "assets": XcmV5AssetFilter;
     "beneficiary": Anonymize<If9iqq7i64mur8>;
 };
-export type Iau5bveb13r5dm = AnonymousEnum<{
+export type XcmV5AssetFilter = Enum<{
     "Definite": Anonymize<I4npjalvhmfuj>;
-    "Wild": Anonymize<Ieu5nmcltehl17>;
+    "Wild": XcmV5WildAsset;
 }>;
-export type Ieu5nmcltehl17 = AnonymousEnum<{
+export declare const XcmV5AssetFilter: GetEnum<XcmV5AssetFilter>;
+export type XcmV5WildAsset = Enum<{
     "All": undefined;
     "AllOf": Anonymize<I3ufm9dj6id8cd>;
     "AllCounted": number;
     "AllOfCounted": Anonymize<Ibobri3ld2tm8f>;
 }>;
+export declare const XcmV5WildAsset: GetEnum<XcmV5WildAsset>;
 export type I3ufm9dj6id8cd = {
     "id": Anonymize<If9iqq7i64mur8>;
     "fun": XcmV2MultiassetWildFungibility;
@@ -15770,23 +15777,23 @@ export type Ibobri3ld2tm8f = {
     "count": number;
 };
 export type I5patag90o6n2g = {
-    "assets": Anonymize<Iau5bveb13r5dm>;
+    "assets": XcmV5AssetFilter;
     "dest": Anonymize<If9iqq7i64mur8>;
     "xcm": Anonymize<Ict03eedr8de9s>;
 };
 export type I2ga96bjhsjqmo = {
-    "give": Anonymize<Iau5bveb13r5dm>;
+    "give": XcmV5AssetFilter;
     "want": Anonymize<I4npjalvhmfuj>;
     "maximal": boolean;
 };
 export type I73lqp53eureh4 = {
-    "assets": Anonymize<Iau5bveb13r5dm>;
+    "assets": XcmV5AssetFilter;
     "reserve": Anonymize<If9iqq7i64mur8>;
     "xcm": Anonymize<Ict03eedr8de9s>;
 };
 export type Ifti8mofggqket = {
     "response_info": Anonymize<I6vsmh07hrp1rc>;
-    "assets": Anonymize<Iau5bveb13r5dm>;
+    "assets": XcmV5AssetFilter;
 };
 export type I491l3ihqncggf = {
     "fees": Anonymize<Iffh1nc5e1mod6>;
@@ -15801,8 +15808,8 @@ export type Ie5blkq940nvkd = {
     "response_info": Anonymize<I6vsmh07hrp1rc>;
 };
 export type I46338r4f4c3gj = {
-    "network": Anonymize<I73beoct6oecc>;
-    "destination": Anonymize<I6d7om5l62r3h6>;
+    "network": XcmV5NetworkId;
+    "destination": XcmV5Junctions;
     "xcm": Anonymize<Ict03eedr8de9s>;
 };
 export type Idsbn0vvkhdj4i = {
@@ -15837,16 +15844,16 @@ export type I2e7qiqdb7vvnq = {
 };
 export type Ibu57i57ap4ll = (Anonymize<Ifhmc9e7vpeeig>) | undefined;
 export type Ifhmc9e7vpeeig = AnonymousEnum<{
-    "Teleport": Anonymize<Iau5bveb13r5dm>;
-    "ReserveDeposit": Anonymize<Iau5bveb13r5dm>;
-    "ReserveWithdraw": Anonymize<Iau5bveb13r5dm>;
+    "Teleport": XcmV5AssetFilter;
+    "ReserveDeposit": XcmV5AssetFilter;
+    "ReserveWithdraw": XcmV5AssetFilter;
 }>;
 export type If6bfvop70u5hr = Array<Anonymize<Ifhmc9e7vpeeig>>;
 export type Icvu0u7vrbur4e = {
     "descendant_origin"?: Anonymize<I8tsbjvlpig5v>;
     "xcm": Anonymize<Ict03eedr8de9s>;
 };
-export type I8tsbjvlpig5v = (Anonymize<I6d7om5l62r3h6>) | undefined;
+export type I8tsbjvlpig5v = (XcmV5Junctions) | undefined;
 export type I3po4d1m5647ct = {
     "hints": Anonymize<I76e3pq7smrso1>;
 };
@@ -16306,23 +16313,26 @@ export type Iflve6qd33ah68 = AnonymousEnum<{
     "InvalidConfiguration": undefined;
 }>;
 export type Iftvbctbo05fu4 = ResultPayload<Anonymize<I4lvocd376nkvl>, Anonymize<Iavct6f844hfju>>;
-export type I4lvocd376nkvl = Array<Anonymize<I47gh5t4ppbcdj>>;
-export type I47gh5t4ppbcdj = AnonymousEnum<{
+export type I4lvocd376nkvl = Array<XcmVersionedAssetId>;
+export type XcmVersionedAssetId = Enum<{
     "V3": XcmV3MultiassetAssetId;
     "V4": Anonymize<I4c0s5cioidn76>;
     "V5": Anonymize<If9iqq7i64mur8>;
 }>;
-export type Ichgaqm88qcdbe = AnonymousEnum<{
+export declare const XcmVersionedAssetId: GetEnum<XcmVersionedAssetId>;
+export type XcmVersionedLocation = Enum<{
     "V3": Anonymize<I4c0s5cioidn76>;
     "V4": Anonymize<I4c0s5cioidn76>;
     "V5": Anonymize<If9iqq7i64mur8>;
 }>;
-export type Iek7ha36da9mf5 = ResultPayload<Anonymize<Ifedog0bf6e64f>, Anonymize<Iavct6f844hfju>>;
-export type Ifedog0bf6e64f = AnonymousEnum<{
+export declare const XcmVersionedLocation: GetEnum<XcmVersionedLocation>;
+export type Iek7ha36da9mf5 = ResultPayload<XcmVersionedAssets, Anonymize<Iavct6f844hfju>>;
+export type XcmVersionedAssets = Enum<{
     "V3": Anonymize<Iai6dhqiq3bach>;
     "V4": Anonymize<I50mli3hb64f9b>;
     "V5": Anonymize<I4npjalvhmfuj>;
 }>;
+export declare const XcmVersionedAssets: GetEnum<XcmVersionedAssets>;
 export type Icgo40grj87fvv = AnonymousEnum<{
     "system": DispatchRawOrigin;
     "Origins": WestendRuntimeGovernanceOriginsPalletCustomOriginsOrigin;
@@ -17707,7 +17717,7 @@ export type I6jnp85onk3m8j = AnonymousEnum<{
 export type I3pnhorh539dti = {
     "asset_kind": Anonymize<I2q3ri6itcjj5u>;
     "amount": bigint;
-    "beneficiary": Anonymize<Ichgaqm88qcdbe>;
+    "beneficiary": XcmVersionedLocation;
     "valid_from"?: Anonymize<I4arjljr6dpflb>;
 };
 export type I2q3ri6itcjj5u = AnonymousEnum<{
@@ -17995,7 +18005,7 @@ export type I8f92tvrsnq2cu = AnonymousEnum<{
 }>;
 export type I49ncdugfqno1o = {
     "id": number;
-    "xcm": Anonymize<I3psnvvr3d6p0t>;
+    "xcm": XcmVersionedXcm;
 };
 export type Idlqs78vqqscm0 = AnonymousEnum<{
     /**
@@ -18355,13 +18365,13 @@ export type I4up31a3q8cjhp = AnonymousEnum<{
     "transfer_assets_using_type_and_then": Anonymize<I9bnv6lu0crf1q>;
 }>;
 export type Ia5cotcvi888ln = {
-    "dest": Anonymize<Ichgaqm88qcdbe>;
-    "message": Anonymize<I3psnvvr3d6p0t>;
+    "dest": XcmVersionedLocation;
+    "message": XcmVersionedXcm;
 };
 export type I21jsa919m88fd = {
-    "dest": Anonymize<Ichgaqm88qcdbe>;
-    "beneficiary": Anonymize<Ichgaqm88qcdbe>;
-    "assets": Anonymize<Ifedog0bf6e64f>;
+    "dest": XcmVersionedLocation;
+    "beneficiary": XcmVersionedLocation;
+    "assets": XcmVersionedAssets;
     "fee_asset_item": number;
 };
 export type I9kt8c221c83ln = {
@@ -18369,33 +18379,33 @@ export type I9kt8c221c83ln = {
     "version": number;
 };
 export type Icscpmubum33bq = {
-    "location": Anonymize<Ichgaqm88qcdbe>;
+    "location": XcmVersionedLocation;
 };
 export type I21d2olof7eb60 = {
-    "dest": Anonymize<Ichgaqm88qcdbe>;
-    "beneficiary": Anonymize<Ichgaqm88qcdbe>;
-    "assets": Anonymize<Ifedog0bf6e64f>;
+    "dest": XcmVersionedLocation;
+    "beneficiary": XcmVersionedLocation;
+    "assets": XcmVersionedAssets;
     "fee_asset_item": number;
     "weight_limit": XcmV3WeightLimit;
 };
 export type Ie68np0vpihith = {
-    "assets": Anonymize<Ifedog0bf6e64f>;
-    "beneficiary": Anonymize<Ichgaqm88qcdbe>;
+    "assets": XcmVersionedAssets;
+    "beneficiary": XcmVersionedLocation;
 };
 export type I9bnv6lu0crf1q = {
-    "dest": Anonymize<Ichgaqm88qcdbe>;
-    "assets": Anonymize<Ifedog0bf6e64f>;
+    "dest": XcmVersionedLocation;
+    "assets": XcmVersionedAssets;
     "assets_transfer_type": Anonymize<I4gnu4rrr0ftsf>;
-    "remote_fees_id": Anonymize<I47gh5t4ppbcdj>;
+    "remote_fees_id": XcmVersionedAssetId;
     "fees_transfer_type": Anonymize<I4gnu4rrr0ftsf>;
-    "custom_xcm_on_dest": Anonymize<I3psnvvr3d6p0t>;
+    "custom_xcm_on_dest": XcmVersionedXcm;
     "weight_limit": XcmV3WeightLimit;
 };
 export type I4gnu4rrr0ftsf = AnonymousEnum<{
     "Teleport": undefined;
     "LocalReserve": undefined;
     "DestinationReserve": undefined;
-    "RemoteReserve": Anonymize<Ichgaqm88qcdbe>;
+    "RemoteReserve": XcmVersionedLocation;
 }>;
 export type If582h5gr5gh6f = AnonymousEnum<{
     /**
@@ -19348,7 +19358,7 @@ export type I2cftk5tgrglaa = {
     "index": number;
     "asset_kind": Anonymize<I2q3ri6itcjj5u>;
     "amount": bigint;
-    "beneficiary": Anonymize<Ichgaqm88qcdbe>;
+    "beneficiary": XcmVersionedLocation;
     "valid_from": number;
     "expire_at": number;
 };
@@ -19699,7 +19709,7 @@ export type I7r6b7145022pp = {
 export type Icmrn7bogp28cs = {
     "hash": FixedSizeBinary<32>;
     "origin": Anonymize<If9iqq7i64mur8>;
-    "assets": Anonymize<Ifedog0bf6e64f>;
+    "assets": XcmVersionedAssets;
 };
 export type I7m9b5plj4h5ot = {
     "destination": Anonymize<If9iqq7i64mur8>;
@@ -19713,7 +19723,7 @@ export type I9onhk772nfs4f = {
     "error": Anonymize<Id56rgs0bdb7gl>;
 };
 export type I3l6bnksrmt56r = {
-    "location": Anonymize<Ichgaqm88qcdbe>;
+    "location": XcmVersionedLocation;
     "query_id": bigint;
 };
 export type Idh09k0l2pmdcg = {
@@ -19765,10 +19775,10 @@ export type I4i3u9uui7ktsd = {
     "identity": bigint;
     "subs": bigint;
 };
-export type Ieqgqma27vbupd = (Anonymize<I3psnvvr3d6p0t>) | undefined;
+export type Ieqgqma27vbupd = (XcmVersionedXcm) | undefined;
 export type Ialhmrpub9sefe = Array<Anonymize<I56d9gmmhnf5oa>>;
-export type I56d9gmmhnf5oa = [Anonymize<Ichgaqm88qcdbe>, Anonymize<Ie1m9ii7jv2l7v>];
-export type Ie1m9ii7jv2l7v = Array<Anonymize<I3psnvvr3d6p0t>>;
+export type I56d9gmmhnf5oa = [XcmVersionedLocation, Anonymize<Ie1m9ii7jv2l7v>];
+export type Ie1m9ii7jv2l7v = Array<XcmVersionedXcm>;
 export type I199qcq7uh9tib = ResultPayload<Anonymize<Ica6bna176gi1s>, Anonymize<I55ku9c5gk50hb>>;
 export type Ica6bna176gi1s = {
     "execution_result": Anonymize<I6uq5gb4s805s7>;
@@ -19799,7 +19809,7 @@ export type I4dd4ctqfnk5kr = AnonymousEnum<{
      */
     "TooManyFreezes": undefined;
 }>;
-export type Ifa8vgdbjdkof7 = AnonymousEnum<{
+export type I1togkjovtjn9r = AnonymousEnum<{
     /**
      *Invalid schedule supplied, e.g. with zero weight of a basic operation.
      */
@@ -19975,6 +19985,10 @@ export type Ifa8vgdbjdkof7 = AnonymousEnum<{
      */
     "BalanceConversionFailed": undefined;
     /**
+     *Failed to convert an EVM balance to a native balance.
+     */
+    "DecimalPrecisionLoss": undefined;
+    /**
      *Immutable data can only be set during deploys and only be read during calls.
      *Additionally, it is only valid to set the data once and it must not be empty.
      */
@@ -19989,6 +20003,56 @@ export type Ifa8vgdbjdkof7 = AnonymousEnum<{
      *Tried to map an account that is already mapped.
      */
     "AccountAlreadyMapped": undefined;
+    /**
+     *The transaction used to dry-run a contract is invalid.
+     */
+    "InvalidGenericTransaction": undefined;
+    /**
+     *The refcount of a code either over or underflowed.
+     */
+    "RefcountOverOrUnderflow": undefined;
+}>;
+export type I1vqs5qaqr6h6 = AnonymousEnum<{
+    /**
+     *The staker does not have enough tokens to perform the operation.
+     */
+    "NotEnoughTokens": undefined;
+    /**
+     *An operation was attempted on a non-existent pool.
+     */
+    "NonExistentPool": undefined;
+    /**
+     *An operation was attempted for a non-existent staker.
+     */
+    "NonExistentStaker": undefined;
+    /**
+     *An operation was attempted with a non-existent asset.
+     */
+    "NonExistentAsset": undefined;
+    /**
+     *There was an error converting a block number.
+     */
+    "BlockNumberConversionError": undefined;
+    /**
+     *The expiry block must be in the future.
+     */
+    "ExpiryBlockMustBeInTheFuture": undefined;
+    /**
+     *Insufficient funds to create the freeze.
+     */
+    "InsufficientFunds": undefined;
+    /**
+     *The expiry block can be only extended.
+     */
+    "ExpiryCut": undefined;
+    /**
+     *The reward rate per block can be only increased.
+     */
+    "RewardRateCut": undefined;
+    /**
+     *The pool still has staked tokens or rewards.
+     */
+    "NonEmptyPool": undefined;
 }>;
 export type I1t0slqjho4lh4 = AnonymousEnum<{
     /**
@@ -20008,17 +20072,17 @@ export type I1t0slqjho4lh4 = AnonymousEnum<{
      */
     "PartialTransfer": undefined;
 }>;
-export type I59s4q2sbs1vv1 = AnonymousEnum<{
+export type I42ficri7uep20 = AnonymousEnum<{
     "system": DispatchRawOrigin;
     "PolkadotXcm": Anonymize<Icvilmd7qu30i4>;
     "CumulusXcm": Anonymize<I3in0d0lb61qi8>;
-    "Void": undefined;
 }>;
-export type Ibuk047roov5v0 = AnonymousEnum<{
+export type If33vqn8ucfk4q = AnonymousEnum<{
     "System": Anonymize<Iekve0i6djpd9f>;
     "ParachainSystem": Anonymize<I5kev21p7u6ajb>;
     "Timestamp": Anonymize<I7d75gqfg6jh9c>;
     "ParachainInfo": undefined;
+    "MultiBlockMigrations": Anonymize<I4oqb168b2d4er>;
     "Balances": Anonymize<I9svldsp29mh87>;
     "CollatorSelection": Anonymize<I9dpq5287dur8b>;
     "Session": Anonymize<I77dda7hps0u37>;
@@ -20027,9 +20091,9 @@ export type Ibuk047roov5v0 = AnonymousEnum<{
     "CumulusXcm": undefined;
     "ToRococoXcmRouter": Anonymize<I6epb28bkd5aqn>;
     "MessageQueue": Anonymize<Ic2uoe7jdksosp>;
-    "Utility": Anonymize<I93bltjklmbr8o>;
-    "Multisig": Anonymize<I41mq975hkenj1>;
-    "Proxy": Anonymize<I5isbqtfvle0h8>;
+    "Utility": Anonymize<Ia75h4vs8idvmt>;
+    "Multisig": Anonymize<Ifn2s8b3oob4np>;
+    "Proxy": Anonymize<I15in8r1qc9ppk>;
     "Assets": Anonymize<I84851acvod2ic>;
     "Uniques": Anonymize<Icu49uv7rfej74>;
     "Nfts": Anonymize<I1k4il7i5elhc7>;
@@ -20037,7 +20101,8 @@ export type Ibuk047roov5v0 = AnonymousEnum<{
     "NftFractionalization": Anonymize<Ifrervtb291iin>;
     "PoolAssets": Anonymize<I84851acvod2ic>;
     "AssetConversion": Anonymize<Ia06pia7pbkurh>;
-    "Revive": Anonymize<Ieq7t6l404uu7r>;
+    "Revive": Anonymize<I6fi4f21lfm4ir>;
+    "AssetRewards": Anonymize<I6i7hgo4s9982m>;
     "StateTrieMigration": Anonymize<I39l72gdmkk30t>;
     "AssetConversionMigration": Anonymize<Ib85ihi0vt50bd>;
 }>;
@@ -20056,7 +20121,7 @@ export type I5kev21p7u6ajb = AnonymousEnum<{
     "set_validation_data": Anonymize<I60v7bikk54tpu>;
     "sudo_send_upward_message": Anonymize<Ifpj261e8s63m3>;
 }>;
-export type I93bltjklmbr8o = AnonymousEnum<{
+export type Ia75h4vs8idvmt = AnonymousEnum<{
     /**
      *Send a batch of dispatch calls.
      *
@@ -20077,7 +20142,7 @@ export type I93bltjklmbr8o = AnonymousEnum<{
      *and the error of the failed call. If all were successful, then the `BatchCompleted`
      *event is deposited.
      */
-    "batch": Anonymize<I8vg61vaj37mop>;
+    "batch": Anonymize<Ic7ck1v09l9ujq>;
     /**
      *Send a call through an indexed pseudonym of the sender.
      *
@@ -20093,7 +20158,7 @@ export type I93bltjklmbr8o = AnonymousEnum<{
      *
      *The dispatch origin for this call must be _Signed_.
      */
-    "as_derivative": Anonymize<Ic31ntf15g0218>;
+    "as_derivative": Anonymize<I17derqjq4a37r>;
     /**
      *Send a batch of dispatch calls and atomically execute them.
      *The whole transaction will rollback and fail if any of the calls failed.
@@ -20109,7 +20174,7 @@ export type I93bltjklmbr8o = AnonymousEnum<{
      *## Complexity
      *- O(C) where C is the number of calls to be batched.
      */
-    "batch_all": Anonymize<I8vg61vaj37mop>;
+    "batch_all": Anonymize<Ic7ck1v09l9ujq>;
     /**
      *Dispatches a function call with a provided origin.
      *
@@ -20118,7 +20183,7 @@ export type I93bltjklmbr8o = AnonymousEnum<{
      *## Complexity
      *- O(1).
      */
-    "dispatch_as": Anonymize<Icbq5gpeeasnfe>;
+    "dispatch_as": Anonymize<Ialmd7v4av50f4>;
     /**
      *Send a batch of dispatch calls.
      *Unlike `batch`, it allows errors and won't interrupt.
@@ -20134,7 +20199,7 @@ export type I93bltjklmbr8o = AnonymousEnum<{
      *## Complexity
      *- O(C) where C is the number of calls to be batched.
      */
-    "force_batch": Anonymize<I8vg61vaj37mop>;
+    "force_batch": Anonymize<Ic7ck1v09l9ujq>;
     /**
      *Dispatch a function call with a specified weight.
      *
@@ -20143,25 +20208,25 @@ export type I93bltjklmbr8o = AnonymousEnum<{
      *
      *The dispatch origin for this call must be _Root_.
      */
-    "with_weight": Anonymize<I6flv89proctg3>;
+    "with_weight": Anonymize<I9o70c0qbdau1p>;
 }>;
-export type I8vg61vaj37mop = {
-    "calls": Anonymize<I73v746oirac8l>;
+export type Ic7ck1v09l9ujq = {
+    "calls": Anonymize<I21bp90u65i41q>;
 };
-export type I73v746oirac8l = Array<TxCallData>;
-export type Ic31ntf15g0218 = {
+export type I21bp90u65i41q = Array<TxCallData>;
+export type I17derqjq4a37r = {
     "index": number;
     "call": TxCallData;
 };
-export type Icbq5gpeeasnfe = {
-    "as_origin": Anonymize<I59s4q2sbs1vv1>;
+export type Ialmd7v4av50f4 = {
+    "as_origin": Anonymize<I42ficri7uep20>;
     "call": TxCallData;
 };
-export type I6flv89proctg3 = {
+export type I9o70c0qbdau1p = {
     "call": TxCallData;
     "weight": Anonymize<I4q39t5hn830vp>;
 };
-export type I41mq975hkenj1 = AnonymousEnum<{
+export type Ifn2s8b3oob4np = AnonymousEnum<{
     /**
      *Immediately dispatch a multi-signature call using a single approval from the caller.
      *
@@ -20176,7 +20241,7 @@ export type I41mq975hkenj1 = AnonymousEnum<{
      *## Complexity
      *O(Z + C) where Z is the length of the call and C its execution weight.
      */
-    "as_multi_threshold_1": Anonymize<Icqm8p0gslnga8>;
+    "as_multi_threshold_1": Anonymize<If7sk2ugakk2b6>;
     /**
      *Register approval for a dispatch to be made from a deterministic composite account if
      *approved by a total of `threshold - 1` of `other_signatories`.
@@ -20218,7 +20283,7 @@ export type I41mq975hkenj1 = AnonymousEnum<{
      *- Storage: inserts one item, value size bounded by `MaxSignatories`, with a deposit
      *  taken for its lifetime of `DepositBase + threshold * DepositFactor`.
      */
-    "as_multi": Anonymize<I7pf86elmjo4j>;
+    "as_multi": Anonymize<Ibimg9sma81ang>;
     /**
      *Register approval for a dispatch to be made from a deterministic composite account if
      *approved by a total of `threshold - 1` of `other_signatories`.
@@ -20277,18 +20342,18 @@ export type I41mq975hkenj1 = AnonymousEnum<{
      */
     "cancel_as_multi": Anonymize<I3d9o9d7epp66v>;
 }>;
-export type Icqm8p0gslnga8 = {
+export type If7sk2ugakk2b6 = {
     "other_signatories": Anonymize<Ia2lhg7l2hilo3>;
     "call": TxCallData;
 };
-export type I7pf86elmjo4j = {
+export type Ibimg9sma81ang = {
     "threshold": number;
     "other_signatories": Anonymize<Ia2lhg7l2hilo3>;
     "maybe_timepoint"?: Anonymize<I95jfd8j5cr5eh>;
     "call": TxCallData;
     "max_weight": Anonymize<I4q39t5hn830vp>;
 };
-export type I5isbqtfvle0h8 = AnonymousEnum<{
+export type I15in8r1qc9ppk = AnonymousEnum<{
     /**
      *Dispatch the given `call` from an account that the sender is authorised for through
      *`add_proxy`.
@@ -20300,7 +20365,7 @@ export type I5isbqtfvle0h8 = AnonymousEnum<{
      *- `force_proxy_type`: Specify the exact proxy type to be used and checked for this call.
      *- `call`: The call to be made by the `real` account.
      */
-    "proxy": Anonymize<Ibqasa57ila31c>;
+    "proxy": Anonymize<I1sltd6cqv1s5q>;
     /**
      *Register a proxy account for the sender that is able to make calls on its behalf.
      *
@@ -20429,14 +20494,14 @@ export type I5isbqtfvle0h8 = AnonymousEnum<{
      *- `force_proxy_type`: Specify the exact proxy type to be used and checked for this call.
      *- `call`: The call to be made by the `real` account.
      */
-    "proxy_announced": Anonymize<Idve7bmiip023g>;
+    "proxy_announced": Anonymize<I1luig08vsaqns>;
 }>;
-export type Ibqasa57ila31c = {
+export type I1sltd6cqv1s5q = {
     "real": MultiAddress;
     "force_proxy_type"?: Anonymize<I7rk1n3vg3et43>;
     "call": TxCallData;
 };
-export type Idve7bmiip023g = {
+export type I1luig08vsaqns = {
     "delegate": MultiAddress;
     "real": MultiAddress;
     "force_proxy_type"?: Anonymize<I7rk1n3vg3et43>;
@@ -21788,13 +21853,13 @@ export type Ialnqi1f4kpb = {
     "send_to": SS58String;
     "keep_alive": boolean;
 };
-export type Ieq7t6l404uu7r = AnonymousEnum<{
+export type I6fi4f21lfm4ir = AnonymousEnum<{
     /**
      *A raw EVM transaction, typically dispatched by an Ethereum JSON-RPC server.
      *
      *# Parameters
      *
-     ** `payload`: The RLP-encoded [`crate::evm::TransactionLegacySigned`].
+     ** `payload`: The encoded [`crate::evm::TransactionSigned`].
      ** `gas_limit`: The gas limit enforced during contract execution.
      ** `storage_deposit_limit`: The maximum balance that can be charged to the caller for
      *  storage usage.
@@ -21806,7 +21871,7 @@ export type Ieq7t6l404uu7r = AnonymousEnum<{
      *runtime converts it into a [`sp_runtime::generic::CheckedExtrinsic`] by recovering the
      *signer and validating the transaction.
      */
-    "eth_transact": Anonymize<I1r5bjl4so2h37>;
+    "eth_transact": Anonymize<Ida37oe44osb06>;
     /**
      *Makes a call to an account, optionally transferring some balance.
      *
@@ -21920,12 +21985,10 @@ export type Ieq7t6l404uu7r = AnonymousEnum<{
      *is the `AccountId20` with the last 12 bytes set to `0xEE`. This is essentially a
      *recovery function in case an `AccountId20` was used without creating a mapping first.
      */
-    "dispatch_as_fallback_account": Anonymize<I324ofushjgoos>;
+    "dispatch_as_fallback_account": Anonymize<I2hssm8tv1s603>;
 }>;
-export type I1r5bjl4so2h37 = {
+export type Ida37oe44osb06 = {
     "payload": Binary;
-    "gas_limit": Anonymize<I4q39t5hn830vp>;
-    "storage_deposit_limit": bigint;
 };
 export type Idsg8aod8e8fqn = {
     "dest": FixedSizeBinary<20>;
@@ -21958,8 +22021,119 @@ export type I1uihehkdsggvp = {
     "dest": FixedSizeBinary<20>;
     "code_hash": FixedSizeBinary<32>;
 };
-export type I324ofushjgoos = {
+export type I2hssm8tv1s603 = {
     "call": TxCallData;
+};
+export type I6i7hgo4s9982m = AnonymousEnum<{
+    /**
+     *Create a new reward pool.
+     *
+     *Parameters:
+     *- `origin`: must be `Config::CreatePoolOrigin`;
+     *- `staked_asset_id`: the asset to be staked in the pool;
+     *- `reward_asset_id`: the asset to be distributed as rewards;
+     *- `reward_rate_per_block`: the amount of reward tokens distributed per block;
+     *- `expiry`: the block number at which the pool will cease to accumulate rewards. The
+     *  [`DispatchTime::After`] variant evaluated at the execution time.
+     *- `admin`: the account allowed to extend the pool expiration, increase the rewards rate
+     *  and receive the unutilized reward tokens back after the pool completion. If `None`,
+     *  the caller is set as an admin.
+     */
+    "create_pool": Anonymize<I74kb3a509j58b>;
+    /**
+     *Stake additional tokens in a pool.
+     *
+     *A freeze is placed on the staked tokens.
+     */
+    "stake": Anonymize<Ieg1oc56mamrl5>;
+    /**
+     *Unstake tokens from a pool.
+     *
+     *Removes the freeze on the staked tokens.
+     *
+     *Parameters:
+     *- origin: must be the `staker` if the pool is still active. Otherwise, any account.
+     *- pool_id: the pool to unstake from.
+     *- amount: the amount of tokens to unstake.
+     *- staker: the account to unstake from. If `None`, the caller is used.
+     */
+    "unstake": Anonymize<If4c254req52io>;
+    /**
+     *Harvest unclaimed pool rewards.
+     *
+     *Parameters:
+     *- origin: must be the `staker` if the pool is still active. Otherwise, any account.
+     *- pool_id: the pool to harvest from.
+     *- staker: the account for which to harvest rewards. If `None`, the caller is used.
+     */
+    "harvest_rewards": Anonymize<Ifvms3ocl3df16>;
+    /**
+     *Modify a pool reward rate.
+     *
+     *Currently the reward rate can only be increased.
+     *
+     *Only the pool admin may perform this operation.
+     */
+    "set_pool_reward_rate_per_block": Anonymize<I3fl7kvh9tccu2>;
+    /**
+     *Modify a pool admin.
+     *
+     *Only the pool admin may perform this operation.
+     */
+    "set_pool_admin": Anonymize<I51711mrb372ih>;
+    /**
+     *Set when the pool should expire.
+     *
+     *Currently the expiry block can only be extended.
+     *
+     *Only the pool admin may perform this operation.
+     */
+    "set_pool_expiry_block": Anonymize<Iautv23q3c0gko>;
+    /**
+     *Convenience method to deposit reward tokens into a pool.
+     *
+     *This method is not strictly necessary (tokens could be transferred directly to the
+     *pool pot address), but is provided for convenience so manual derivation of the
+     *account id is not required.
+     */
+    "deposit_reward_tokens": Anonymize<Ieg1oc56mamrl5>;
+    /**
+     *Cleanup a pool.
+     *
+     *Origin must be the pool admin.
+     *
+     *Cleanup storage, release any associated storage cost and return the remaining reward
+     *tokens to the admin.
+     */
+    "cleanup_pool": Anonymize<I931cottvong90>;
+}>;
+export type I74kb3a509j58b = {
+    "staked_asset_id": Anonymize<If9iqq7i64mur8>;
+    "reward_asset_id": Anonymize<If9iqq7i64mur8>;
+    "reward_rate_per_block": bigint;
+    "expiry": TraitsScheduleDispatchTime;
+    "admin"?: Anonymize<Ihfphjolmsqq1>;
+};
+export type If4c254req52io = {
+    "pool_id": number;
+    "amount": bigint;
+    "staker"?: Anonymize<Ihfphjolmsqq1>;
+};
+export type Ifvms3ocl3df16 = {
+    "pool_id": number;
+    "staker"?: Anonymize<Ihfphjolmsqq1>;
+};
+export type I3fl7kvh9tccu2 = {
+    "pool_id": number;
+    "new_reward_rate_per_block": bigint;
+};
+export type I51711mrb372ih = {
+    "pool_id": number;
+    "new_admin": SS58String;
+};
+export type Iautv23q3c0gko = {
+    "pool_id": number;
+    "new_expiry": TraitsScheduleDispatchTime;
 };
 export type Ib85ihi0vt50bd = AnonymousEnum<{
     /**
@@ -21970,23 +22144,23 @@ export type Ib85ihi0vt50bd = AnonymousEnum<{
      */
     "migrate_to_new_account": Anonymize<I3ip09dj7i1e8n>;
 }>;
-export type Ifbek2b2asmr7p = ResultPayload<Anonymize<I6mob4heombqdm>, Anonymize<I55ku9c5gk50hb>>;
-export type I6mob4heombqdm = {
-    "execution_result": Anonymize<If6knqgim48nho>;
-    "emitted_events": Anonymize<I1k888ms0ojt0f>;
+export type I5jrs8oanipuna = ResultPayload<Anonymize<I6vqn3036r89hc>, Anonymize<I55ku9c5gk50hb>>;
+export type I6vqn3036r89hc = {
+    "execution_result": Anonymize<I3rr6mv0je0spj>;
+    "emitted_events": Anonymize<I20kepjrj8nrn7>;
     "local_xcm"?: Anonymize<Ieqgqma27vbupd>;
     "forwarded_xcms": Anonymize<Ialhmrpub9sefe>;
 };
-export type If6knqgim48nho = ResultPayload<Anonymize<Ia1u1r3n74r13c>, Anonymize<I52h33t3v6o66v>>;
-export type I52h33t3v6o66v = {
+export type I3rr6mv0je0spj = ResultPayload<Anonymize<Ia1u1r3n74r13c>, Anonymize<I20kreg1vi976l>>;
+export type I20kreg1vi976l = {
     "post_info": Anonymize<Ia1u1r3n74r13c>;
-    "error": Anonymize<I8rqrr883ft7n1>;
+    "error": Anonymize<I68buua26jg6g2>;
 };
-export type I8rqrr883ft7n1 = AnonymousEnum<{
+export type I68buua26jg6g2 = AnonymousEnum<{
     "Other": undefined;
     "CannotLookup": undefined;
     "BadOrigin": undefined;
-    "Module": Anonymize<Iitvithctg4mh>;
+    "Module": Anonymize<Icj2bm5ftj14gc>;
     "ConsumerRemaining": undefined;
     "NoProviders": undefined;
     "TooManyConsumers": undefined;
@@ -21999,9 +22173,10 @@ export type I8rqrr883ft7n1 = AnonymousEnum<{
     "RootNotAllowed": undefined;
     "Trie": Anonymize<Idh4cj79bvroj8>;
 }>;
-export type Iitvithctg4mh = AnonymousEnum<{
+export type Icj2bm5ftj14gc = AnonymousEnum<{
     "System": Anonymize<I5o0s7c8q1cc9b>;
     "ParachainSystem": Anonymize<I9p95gln24a0rn>;
+    "MultiBlockMigrations": Anonymize<Iaaqq5jevtahm8>;
     "Balances": Anonymize<Idj13i7adlomht>;
     "CollatorSelection": Anonymize<I36bcffk2387dv>;
     "Session": Anonymize<I1e07dgbaqd1sq>;
@@ -22021,14 +22196,16 @@ export type Iitvithctg4mh = AnonymousEnum<{
     "AssetsFreezer": Anonymize<I4dd4ctqfnk5kr>;
     "ForeignAssetsFreezer": Anonymize<I4dd4ctqfnk5kr>;
     "PoolAssetsFreezer": Anonymize<I4dd4ctqfnk5kr>;
-    "Revive": Anonymize<Ifa8vgdbjdkof7>;
+    "Revive": Anonymize<I1togkjovtjn9r>;
+    "AssetRewards": Anonymize<I1vqs5qaqr6h6>;
     "StateTrieMigration": Anonymize<I96objte63brjr>;
     "AssetConversionMigration": Anonymize<I1t0slqjho4lh4>;
 }>;
-export type I1k888ms0ojt0f = Array<Anonymize<Ifjpv6kn2008sr>>;
-export type Ifjpv6kn2008sr = AnonymousEnum<{
-    "System": Anonymize<Ibls5ab7j0ucn>;
+export type I20kepjrj8nrn7 = Array<Anonymize<Ie9dn3q5livhg1>>;
+export type Ie9dn3q5livhg1 = AnonymousEnum<{
+    "System": Anonymize<Iat4mbs71p5jf1>;
     "ParachainSystem": Anonymize<Icbsekf57miplo>;
+    "MultiBlockMigrations": Anonymize<I94co7vj7h6bo>;
     "Balances": Anonymize<Iao8h4hv7atnq3>;
     "TransactionPayment": TransactionPaymentEvent;
     "AssetTxPayment": Anonymize<I78bosroad52fa>;
@@ -22039,9 +22216,9 @@ export type Ifjpv6kn2008sr = AnonymousEnum<{
     "CumulusXcm": Anonymize<Ihpdgvt7vs2cb>;
     "ToRococoXcmRouter": Anonymize<Ift4p4jnj5bri1>;
     "MessageQueue": Anonymize<I2kosejppk3jon>;
-    "Utility": Anonymize<Ifst1l4lti2orm>;
-    "Multisig": Anonymize<I2de75b5jotl2o>;
-    "Proxy": Anonymize<I2t6lljhsb0c1k>;
+    "Utility": Anonymize<If5d4aaueu5lo3>;
+    "Multisig": Anonymize<I34618ivm079q4>;
+    "Proxy": Anonymize<I4b7kpj9feb51f>;
     "Assets": Anonymize<I6avancvg8fd05>;
     "Uniques": Anonymize<Ia0j71vjrjqu9p>;
     "Nfts": Anonymize<I6qicn8jn4fftj>;
@@ -22052,11 +22229,12 @@ export type Ifjpv6kn2008sr = AnonymousEnum<{
     "AssetsFreezer": Anonymize<I7omheqbc53plq>;
     "ForeignAssetsFreezer": Anonymize<I7bdov8cfj9qk8>;
     "PoolAssetsFreezer": Anonymize<I7omheqbc53plq>;
-    "Revive": Anonymize<I1jo9ctv03grf7>;
+    "Revive": Anonymize<I3vl9org1c535t>;
+    "AssetRewards": Anonymize<I23dbg5epnfjeo>;
     "StateTrieMigration": Anonymize<I61dksvl51aujo>;
     "AssetConversionMigration": Anonymize<Ifiu844mj7r2h6>;
 }>;
-export type Ibls5ab7j0ucn = AnonymousEnum<{
+export type Iat4mbs71p5jf1 = AnonymousEnum<{
     /**
      *An extrinsic completed successfully.
      */
@@ -22064,7 +22242,7 @@ export type Ibls5ab7j0ucn = AnonymousEnum<{
     /**
      *An extrinsic failed.
      */
-    "ExtrinsicFailed": Anonymize<I8hcgm77n8l3if>;
+    "ExtrinsicFailed": Anonymize<Ibi2io1qe5r5q7>;
     /**
      *`:code` was updated.
      */
@@ -22086,8 +22264,8 @@ export type Ibls5ab7j0ucn = AnonymousEnum<{
      */
     "UpgradeAuthorized": Anonymize<Ibgl04rn6nbfm6>;
 }>;
-export type I8hcgm77n8l3if = {
-    "dispatch_error": Anonymize<I8rqrr883ft7n1>;
+export type Ibi2io1qe5r5q7 = {
+    "dispatch_error": Anonymize<I68buua26jg6g2>;
     "dispatch_info": Anonymize<Ic9s8f85vjtncc>;
 };
 export type I78bosroad52fa = AnonymousEnum<{
@@ -22141,12 +22319,12 @@ export type Ie8hpsm3jhsvo3 = {
      */
     "new_value": bigint;
 };
-export type Ifst1l4lti2orm = AnonymousEnum<{
+export type If5d4aaueu5lo3 = AnonymousEnum<{
     /**
      *Batch of dispatches did not complete fully. Index of first failing dispatch given, as
      *well as the error.
      */
-    "BatchInterrupted": Anonymize<Ifsso6guu85jml>;
+    "BatchInterrupted": Anonymize<Icpr9igt0n7oft>;
     /**
      *Batch of dispatches completed fully with no error.
      */
@@ -22162,24 +22340,24 @@ export type Ifst1l4lti2orm = AnonymousEnum<{
     /**
      *A single item within a Batch of dispatches has completed with error.
      */
-    "ItemFailed": Anonymize<Ifgsc35nvgu4a5>;
+    "ItemFailed": Anonymize<Ifj8e4i21gofgn>;
     /**
      *A call was dispatched.
      */
-    "DispatchedAs": Anonymize<I6ok0hlef15lur>;
+    "DispatchedAs": Anonymize<I9hqkgm9q4b4r8>;
 }>;
-export type Ifsso6guu85jml = {
+export type Icpr9igt0n7oft = {
     "index": number;
-    "error": Anonymize<I8rqrr883ft7n1>;
+    "error": Anonymize<I68buua26jg6g2>;
 };
-export type Ifgsc35nvgu4a5 = {
-    "error": Anonymize<I8rqrr883ft7n1>;
+export type Ifj8e4i21gofgn = {
+    "error": Anonymize<I68buua26jg6g2>;
 };
-export type I6ok0hlef15lur = {
-    "result": Anonymize<Iatr0brl7r12q6>;
+export type I9hqkgm9q4b4r8 = {
+    "result": Anonymize<I6m5os44j3j122>;
 };
-export type Iatr0brl7r12q6 = ResultPayload<undefined, Anonymize<I8rqrr883ft7n1>>;
-export type I2de75b5jotl2o = AnonymousEnum<{
+export type I6m5os44j3j122 = ResultPayload<undefined, Anonymize<I68buua26jg6g2>>;
+export type I34618ivm079q4 = AnonymousEnum<{
     /**
      *A new multisig operation has begun.
      */
@@ -22191,24 +22369,24 @@ export type I2de75b5jotl2o = AnonymousEnum<{
     /**
      *A multisig operation has been executed.
      */
-    "MultisigExecuted": Anonymize<Iafkk35kq3ikt1>;
+    "MultisigExecuted": Anonymize<Ie1qabuja6kc0o>;
     /**
      *A multisig operation has been cancelled.
      */
     "MultisigCancelled": Anonymize<I5qolde99acmd1>;
 }>;
-export type Iafkk35kq3ikt1 = {
+export type Ie1qabuja6kc0o = {
     "approving": SS58String;
     "timepoint": Anonymize<Itvprrpb0nm3o>;
     "multisig": SS58String;
     "call_hash": FixedSizeBinary<32>;
-    "result": Anonymize<Iatr0brl7r12q6>;
+    "result": Anonymize<I6m5os44j3j122>;
 };
-export type I2t6lljhsb0c1k = AnonymousEnum<{
+export type I4b7kpj9feb51f = AnonymousEnum<{
     /**
      *A proxy was executed correctly, with the given.
      */
-    "ProxyExecuted": Anonymize<I6ok0hlef15lur>;
+    "ProxyExecuted": Anonymize<I9hqkgm9q4b4r8>;
     /**
      *A pure account has been created by new proxy with given
      *disambiguation index and proxy type.
@@ -22614,84 +22792,12 @@ export type I7bdov8cfj9qk8 = AnonymousEnum<{
     "Frozen": Anonymize<I1rnkmiu7usb82>;
     "Thawed": Anonymize<I1rnkmiu7usb82>;
 }>;
-export type I1jo9ctv03grf7 = AnonymousEnum<{
-    /**
-     *Contract deployed by address at the specified address.
-     */
-    "Instantiated": Anonymize<I8jhsbaiultviu>;
-    /**
-     *Contract has been removed.
-     *
-     *# Note
-     *
-     *The only way for a contract to be removed and emitting this event is by calling
-     *`seal_terminate`.
-     */
-    "Terminated": Anonymize<I2kh24hh747r7a>;
-    /**
-     *Code with the specified hash has been stored.
-     */
-    "CodeStored": Anonymize<Iadkk9fja0v9gb>;
+export type I3vl9org1c535t = AnonymousEnum<{
     /**
      *A custom event emitted by the contract.
      */
     "ContractEmitted": Anonymize<I7svbvm6hg57aj>;
-    /**
-     *A code with the specified hash was removed.
-     */
-    "CodeRemoved": Anonymize<I36kcene7j10ck>;
-    /**
-     *A contract's code was updated.
-     */
-    "ContractCodeUpdated": Anonymize<Idj4m9dgi2uob4>;
-    /**
-     *A contract was called either by a plain account or another contract.
-     *
-     *# Note
-     *
-     *Please keep in mind that like all events this is only emitted for successful
-     *calls. This is because on failure all storage changes including events are
-     *rolled back.
-     */
-    "Called": Anonymize<I5mt66p7ke9kv1>;
-    /**
-     *A contract delegate called a code hash.
-     *
-     *# Note
-     *
-     *Please keep in mind that like all events this is only emitted for successful
-     *calls. This is because on failure all storage changes including events are
-     *rolled back.
-     */
-    "DelegateCalled": Anonymize<I6jtuvng77672>;
-    /**
-     *Some funds have been transferred and held as storage deposit.
-     */
-    "StorageDepositTransferredAndHeld": Anonymize<Ielefh9fukpeue>;
-    /**
-     *Some storage deposit funds have been transferred and released.
-     */
-    "StorageDepositTransferredAndReleased": Anonymize<Ielefh9fukpeue>;
 }>;
-export type I8jhsbaiultviu = {
-    "deployer": FixedSizeBinary<20>;
-    "contract": FixedSizeBinary<20>;
-};
-export type I2kh24hh747r7a = {
-    /**
-     *The contract that was terminated.
-     */
-    "contract": FixedSizeBinary<20>;
-    /**
-     *The account that received the contracts remaining balance
-     */
-    "beneficiary": FixedSizeBinary<20>;
-};
-export type Iadkk9fja0v9gb = {
-    "code_hash": FixedSizeBinary<32>;
-    "deposit_held": bigint;
-    "uploader": FixedSizeBinary<20>;
-};
 export type I7svbvm6hg57aj = {
     /**
      *The contract that emitted the event.
@@ -22708,54 +22814,111 @@ export type I7svbvm6hg57aj = {
      */
     "topics": Anonymize<Ic5m5lp1oioo8r>;
 };
-export type I36kcene7j10ck = {
-    "code_hash": FixedSizeBinary<32>;
-    "deposit_released": bigint;
-    "remover": FixedSizeBinary<20>;
-};
-export type Idj4m9dgi2uob4 = {
+export type I23dbg5epnfjeo = AnonymousEnum<{
     /**
-     *The contract that has been updated.
+     *An account staked some tokens in a pool.
      */
-    "contract": FixedSizeBinary<20>;
+    "Staked": Anonymize<I2k42nnm9nluhp>;
     /**
-     *New code hash that was set for the contract.
+     *An account unstaked some tokens from a pool.
      */
-    "new_code_hash": FixedSizeBinary<32>;
+    "Unstaked": Anonymize<Ic37bju0plgup1>;
     /**
-     *Previous code hash of the contract.
+     *An account harvested some rewards.
      */
-    "old_code_hash": FixedSizeBinary<32>;
-};
-export type I5mt66p7ke9kv1 = {
+    "RewardsHarvested": Anonymize<Ic37bju0plgup1>;
     /**
-     *The caller of the `contract`.
+     *A new reward pool was created.
      */
-    "caller": Anonymize<I7d474666mmg78>;
+    "PoolCreated": Anonymize<I7sm6ctq17lb21>;
     /**
-     *The contract that was called.
+     *A pool reward rate was modified by the admin.
      */
-    "contract": FixedSizeBinary<20>;
-};
-export type I7d474666mmg78 = AnonymousEnum<{
-    "Root": undefined;
-    "Signed": SS58String;
+    "PoolRewardRateModified": Anonymize<I3fl7kvh9tccu2>;
+    /**
+     *A pool admin was modified.
+     */
+    "PoolAdminModified": Anonymize<I51711mrb372ih>;
+    /**
+     *A pool expiry block was modified by the admin.
+     */
+    "PoolExpiryBlockModified": Anonymize<I5j2utcjc4hktd>;
+    /**
+     *A pool information was cleared after it's completion.
+     */
+    "PoolCleanedUp": Anonymize<I931cottvong90>;
 }>;
-export type I6jtuvng77672 = {
+export type I2k42nnm9nluhp = {
     /**
-     *The contract that performed the delegate call and hence in whose context
-     *the `code_hash` is executed.
+     *The account that staked assets.
      */
-    "contract": FixedSizeBinary<20>;
+    "staker": SS58String;
     /**
-     *The code hash that was delegate called.
+     *The pool.
      */
-    "code_hash": FixedSizeBinary<32>;
-};
-export type Ielefh9fukpeue = {
-    "from": FixedSizeBinary<20>;
-    "to": FixedSizeBinary<20>;
+    "pool_id": number;
+    /**
+     *The staked asset amount.
+     */
     "amount": bigint;
+};
+export type Ic37bju0plgup1 = {
+    /**
+     *The account that signed transaction.
+     */
+    "caller": SS58String;
+    /**
+     *The account that unstaked assets.
+     */
+    "staker": SS58String;
+    /**
+     *The pool.
+     */
+    "pool_id": number;
+    /**
+     *The unstaked asset amount.
+     */
+    "amount": bigint;
+};
+export type I7sm6ctq17lb21 = {
+    /**
+     *The account that created the pool.
+     */
+    "creator": SS58String;
+    /**
+     *The unique ID for the new pool.
+     */
+    "pool_id": number;
+    /**
+     *The staking asset.
+     */
+    "staked_asset_id": Anonymize<If9iqq7i64mur8>;
+    /**
+     *The reward asset.
+     */
+    "reward_asset_id": Anonymize<If9iqq7i64mur8>;
+    /**
+     *The initial reward rate per block.
+     */
+    "reward_rate_per_block": bigint;
+    /**
+     *The block the pool will cease to accumulate rewards.
+     */
+    "expiry_block": number;
+    /**
+     *The account allowed to modify the pool.
+     */
+    "admin": SS58String;
+};
+export type I5j2utcjc4hktd = {
+    /**
+     *The modified pool.
+     */
+    "pool_id": number;
+    /**
+     *The new expiry block.
+     */
+    "new_expiry_block": number;
 };
 export type Ifiu844mj7r2h6 = AnonymousEnum<{
     /**
@@ -22777,10 +22940,10 @@ export type I9al0v2qskkktj = {
      */
     "new_account": SS58String;
 };
-export type I6ftil0rrdh606 = ResultPayload<Anonymize<I6bsaephk1ipgt>, Anonymize<I55ku9c5gk50hb>>;
-export type I6bsaephk1ipgt = {
+export type I2234crv11opbp = ResultPayload<Anonymize<If8p8hspt2td9t>, Anonymize<I55ku9c5gk50hb>>;
+export type If8p8hspt2td9t = {
     "execution_result": Anonymize<I6uq5gb4s805s7>;
-    "emitted_events": Anonymize<I1k888ms0ojt0f>;
+    "emitted_events": Anonymize<I20kepjrj8nrn7>;
     "forwarded_xcms": Anonymize<Ialhmrpub9sefe>;
 };
 export {};

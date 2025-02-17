@@ -11,7 +11,7 @@ import {
 } from "./utils/location"
 
 const xcmFeeStep = async (
-  message: XcmVersionedXcm,
+  message: XcmVersionedXcm & { type: "V4" },
   steps: Array<[string, Location, Promise<XcmApi>]>,
   token: Location,
   sender: SS58String,
@@ -125,7 +125,7 @@ export const calculateXcmFees = async (
   messageFn: (
     remoteFeeHint?: bigint[],
     deliveryFees?: bigint[],
-  ) => XcmVersionedXcm,
+  ) => XcmVersionedXcm & { type: "V4" },
   _steps: Array<[string, Location]>,
   token: Location,
   getApi: (id: string) => Promise<XcmApi>,

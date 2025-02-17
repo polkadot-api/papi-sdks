@@ -1,5 +1,5 @@
 import { PlainDescriptor, TxDescriptor, RuntimeDescriptor, Enum, QueryFromPalletsDef, TxFromPalletsDef, EventsFromPalletsDef, ErrorsFromPalletsDef, ConstFromPalletsDef, Binary, FixedSizeBinary, FixedSizeArray } from "polkadot-api";
-import { If2ssl12kcglhg, BagsListListListError, Ie2db4l6126rkt, I1p1369d52j8jd, XcmVersionedXcm, Ic0c3req3mlc1l, I4q39t5hn830vp, XcmVersionedAssetId, I7ocn4njqde3v5, XcmVersionedLocation, I5rlt6h8ph553n, PolkadotRuntimeOriginCaller, Ibqu3kf8ifskue, I9pcdrvd771oks, I5ei7uhrra2vqp } from "./common-types";
+import { If2ssl12kcglhg, BagsListListListError, Ie2db4l6126rkt, I1p1369d52j8jd, PasXcmVersionedXcm, Ic0c3req3mlc1l, I4q39t5hn830vp, PasXcmVersionedAssetId, I7ocn4njqde3v5, PasXcmVersionedLocation, I5rlt6h8ph553n, PolkadotRuntimeOriginCaller, Ibqu3kf8ifskue, I9pcdrvd771oks, I5ei7uhrra2vqp } from "./common-types";
 type AnonymousEnum<T extends {}> = T & {
     __anonymous: true;
 };
@@ -1883,7 +1883,7 @@ type IRuntimeCalls = {
          *
          * * `message`: `VersionedXcm`.
          */
-        query_xcm_weight: RuntimeDescriptor<[message: XcmVersionedXcm], Anonymize<Ic0c3req3mlc1l>>;
+        query_xcm_weight: RuntimeDescriptor<[message: PasXcmVersionedXcm], Anonymize<Ic0c3req3mlc1l>>;
         /**
          * Converts a weight into a fee for the specified `AssetId`.
          *
@@ -1892,7 +1892,7 @@ type IRuntimeCalls = {
          * * `weight`: convertible `Weight`.
          * * `asset`: `VersionedAssetId`.
          */
-        query_weight_to_asset_fee: RuntimeDescriptor<[weight: Anonymize<I4q39t5hn830vp>, asset: XcmVersionedAssetId], Anonymize<I7ocn4njqde3v5>>;
+        query_weight_to_asset_fee: RuntimeDescriptor<[weight: Anonymize<I4q39t5hn830vp>, asset: PasXcmVersionedAssetId], Anonymize<I7ocn4njqde3v5>>;
         /**
          * Get delivery fees for sending a specific `message` to a `destination`.
          * These always come in a specific asset, defined by the chain.
@@ -1903,7 +1903,7 @@ type IRuntimeCalls = {
          * * `destination`: The destination to send the message to. Different destinations may use
          *   different senders that charge different fees.
          */
-        query_delivery_fees: RuntimeDescriptor<[destination: XcmVersionedLocation, message: XcmVersionedXcm], Anonymize<I5rlt6h8ph553n>>;
+        query_delivery_fees: RuntimeDescriptor<[destination: PasXcmVersionedLocation, message: PasXcmVersionedXcm], Anonymize<I5rlt6h8ph553n>>;
     };
     /**
      * API for dry-running extrinsics and XCM programs to get the programs that need to be passed to the fees API.
@@ -1924,7 +1924,7 @@ type IRuntimeCalls = {
         /**
          * Dry run XCM program
          */
-        dry_run_xcm: RuntimeDescriptor<[origin_location: XcmVersionedLocation, xcm: XcmVersionedXcm], Anonymize<I5ei7uhrra2vqp>>;
+        dry_run_xcm: RuntimeDescriptor<[origin_location: PasXcmVersionedLocation, xcm: PasXcmVersionedXcm], Anonymize<I5ei7uhrra2vqp>>;
     };
 };
 type IAsset = PlainDescriptor<void>;
@@ -1943,6 +1943,8 @@ type IDescriptors = {
     } & Promise<any>;
     metadataTypes: Promise<Uint8Array>;
     asset: IAsset;
+    getMetadata: () => Promise<Uint8Array>;
+    genesis: string | undefined;
 };
 declare const _allDescriptors: IDescriptors;
 export default _allDescriptors;

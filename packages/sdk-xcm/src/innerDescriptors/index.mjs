@@ -19,7 +19,9 @@ var metadataTypes = import("./metadataTypes.mjs").then(
   (module) => toBinary("default" in module ? module.default : module)
 );
 var asset = {};
-var _allDescriptors = { descriptors: descriptorValues, metadataTypes, asset };
+var getMetadata = () => Promise.resolve(new Uint8Array());
+var genesis = "0x77afd6190f1554ad45fd0d31aee62aacc33c6db0ea801129acb813f913e0764f";
+var _allDescriptors = { descriptors: descriptorValues, metadataTypes, asset, getMetadata, genesis };
 var pas_default = _allDescriptors;
 
 // .papi/descriptors/src/pah.ts
@@ -43,7 +45,9 @@ var metadataTypes2 = import("./metadataTypes.mjs").then(
   (module) => toBinary2("default" in module ? module.default : module)
 );
 var asset2 = {};
-var _allDescriptors2 = { descriptors: descriptorValues2, metadataTypes: metadataTypes2, asset: asset2 };
+var getMetadata2 = () => Promise.resolve(new Uint8Array());
+var genesis2 = "0xd6eec26135305a8ad257a20d003357284c8aa03d0bdb2b357ab0a22371e11ef2";
+var _allDescriptors2 = { descriptors: descriptorValues2, metadataTypes: metadataTypes2, asset: asset2, getMetadata: getMetadata2, genesis: genesis2 };
 var pah_default = _allDescriptors2;
 
 // .papi/descriptors/src/wnd.ts
@@ -67,7 +71,9 @@ var metadataTypes3 = import("./metadataTypes.mjs").then(
   (module) => toBinary3("default" in module ? module.default : module)
 );
 var asset3 = {};
-var _allDescriptors3 = { descriptors: descriptorValues3, metadataTypes: metadataTypes3, asset: asset3 };
+var getMetadata3 = () => Promise.resolve(new Uint8Array());
+var genesis3 = "0xe143f23803ac50e8f6f8e62695d1ce9e4e1d68aa36c1cd2cfd15340213f3423e";
+var _allDescriptors3 = { descriptors: descriptorValues3, metadataTypes: metadataTypes3, asset: asset3, getMetadata: getMetadata3, genesis: genesis3 };
 var wnd_default = _allDescriptors3;
 
 // .papi/descriptors/src/wah.ts
@@ -91,12 +97,14 @@ var metadataTypes4 = import("./metadataTypes.mjs").then(
   (module) => toBinary4("default" in module ? module.default : module)
 );
 var asset4 = {};
-var _allDescriptors4 = { descriptors: descriptorValues4, metadataTypes: metadataTypes4, asset: asset4 };
+var getMetadata4 = () => Promise.resolve(new Uint8Array());
+var genesis4 = "0x67f9723393ef76214df0118c34bbbd3dbebc8ed46a10973a8c969d48fe7598c9";
+var _allDescriptors4 = { descriptors: descriptorValues4, metadataTypes: metadataTypes4, asset: asset4, getMetadata: getMetadata4, genesis: genesis4 };
 var wah_default = _allDescriptors4;
 
 // .papi/descriptors/src/common-types.ts
 import { _Enum } from "polkadot-api";
-var XcmVersionedXcm = _Enum;
+var PasXcmVersionedXcm = _Enum;
 var XcmV2Instruction = _Enum;
 var XcmV2MultiassetAssetId = _Enum;
 var XcmV2MultilocationJunctions = _Enum;
@@ -132,9 +140,9 @@ var XcmV4Response = _Enum;
 var XcmV4AssetAssetFilter = _Enum;
 var XcmV4AssetWildAsset = _Enum;
 var BagsListListListError = _Enum;
-var XcmVersionedAssetId = _Enum;
-var XcmVersionedLocation = _Enum;
-var XcmVersionedAssets = _Enum;
+var PasXcmVersionedAssetId = _Enum;
+var PasXcmVersionedLocation = _Enum;
+var PasXcmVersionedAssets = _Enum;
 var PolkadotRuntimeOriginCaller = _Enum;
 var DispatchRawOrigin = _Enum;
 var GovernanceOrigin = _Enum;
@@ -208,6 +216,16 @@ var CommonAuctionsEvent = _Enum;
 var PolkadotRuntimeParachainsCoretimeEvent = _Enum;
 var XcmV4TraitsOutcome = _Enum;
 var AssetRateEvent = _Enum;
+var XcmVersionedXcm = _Enum;
+var XcmV5Instruction = _Enum;
+var XcmV5Junctions = _Enum;
+var XcmV5Junction = _Enum;
+var XcmV5NetworkId = _Enum;
+var XcmV5AssetFilter = _Enum;
+var XcmV5WildAsset = _Enum;
+var XcmVersionedAssetId = _Enum;
+var XcmVersionedLocation = _Enum;
+var XcmVersionedAssets = _Enum;
 var WestendRuntimeGovernanceOriginsPalletCustomOriginsOrigin = _Enum;
 var IdentityData = _Enum;
 var IdentityJudgement = _Enum;
@@ -268,6 +286,10 @@ export {
   ParachainsInclusionUmpQueueId,
   ParachainsOrigin,
   ParachainsParasEvent,
+  PasXcmVersionedAssetId,
+  PasXcmVersionedAssets,
+  PasXcmVersionedLocation,
+  PasXcmVersionedXcm,
   PolkadotPrimitivesV6DisputeStatement,
   PolkadotPrimitivesV6ExecutorParamsExecutorParam,
   PolkadotPrimitivesV6PvfPrepKind,
@@ -335,6 +357,12 @@ export {
   XcmV4Instruction,
   XcmV4Response,
   XcmV4TraitsOutcome,
+  XcmV5AssetFilter,
+  XcmV5Instruction,
+  XcmV5Junction,
+  XcmV5Junctions,
+  XcmV5NetworkId,
+  XcmV5WildAsset,
   XcmVersionedAssetId,
   XcmVersionedAssets,
   XcmVersionedLocation,

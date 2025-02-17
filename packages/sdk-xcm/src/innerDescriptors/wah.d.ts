@@ -1,5 +1,5 @@
 import { PlainDescriptor, TxDescriptor, RuntimeDescriptor, Enum, QueryFromPalletsDef, TxFromPalletsDef, EventsFromPalletsDef, ErrorsFromPalletsDef, ConstFromPalletsDef, Binary, FixedSizeBinary, FixedSizeArray } from "polkadot-api";
-import { Iegif7m3upfe1k, Iftvbctbo05fu4, I3psnvvr3d6p0t, Ic0c3req3mlc1l, I4q39t5hn830vp, I47gh5t4ppbcdj, I7ocn4njqde3v5, Ichgaqm88qcdbe, Iek7ha36da9mf5, I59s4q2sbs1vv1, Ibuk047roov5v0, Ifbek2b2asmr7p, I6ftil0rrdh606, If9iqq7i64mur8 } from "./common-types";
+import { Iegif7m3upfe1k, Iftvbctbo05fu4, XcmVersionedXcm, Ic0c3req3mlc1l, I4q39t5hn830vp, XcmVersionedAssetId, I7ocn4njqde3v5, XcmVersionedLocation, Iek7ha36da9mf5, I42ficri7uep20, If33vqn8ucfk4q, I5jrs8oanipuna, I2234crv11opbp, If9iqq7i64mur8 } from "./common-types";
 type AnonymousEnum<T extends {}> = T & {
     __anonymous: true;
 };
@@ -104,6 +104,12 @@ type IError = {
          *The given code upgrade has not been authorized.
          */
         Unauthorized: PlainDescriptor<undefined>;
+    };
+    MultiBlockMigrations: {
+        /**
+         *The operation cannot complete since some MBMs are ongoing.
+         */
+        Ongoing: PlainDescriptor<undefined>;
     };
     Balances: {
         /**
@@ -1344,6 +1350,10 @@ type IError = {
          */
         BalanceConversionFailed: PlainDescriptor<undefined>;
         /**
+         *Failed to convert an EVM balance to a native balance.
+         */
+        DecimalPrecisionLoss: PlainDescriptor<undefined>;
+        /**
          *Immutable data can only be set during deploys and only be read during calls.
          *Additionally, it is only valid to set the data once and it must not be empty.
          */
@@ -1358,6 +1368,56 @@ type IError = {
          *Tried to map an account that is already mapped.
          */
         AccountAlreadyMapped: PlainDescriptor<undefined>;
+        /**
+         *The transaction used to dry-run a contract is invalid.
+         */
+        InvalidGenericTransaction: PlainDescriptor<undefined>;
+        /**
+         *The refcount of a code either over or underflowed.
+         */
+        RefcountOverOrUnderflow: PlainDescriptor<undefined>;
+    };
+    AssetRewards: {
+        /**
+         *The staker does not have enough tokens to perform the operation.
+         */
+        NotEnoughTokens: PlainDescriptor<undefined>;
+        /**
+         *An operation was attempted on a non-existent pool.
+         */
+        NonExistentPool: PlainDescriptor<undefined>;
+        /**
+         *An operation was attempted for a non-existent staker.
+         */
+        NonExistentStaker: PlainDescriptor<undefined>;
+        /**
+         *An operation was attempted with a non-existent asset.
+         */
+        NonExistentAsset: PlainDescriptor<undefined>;
+        /**
+         *There was an error converting a block number.
+         */
+        BlockNumberConversionError: PlainDescriptor<undefined>;
+        /**
+         *The expiry block must be in the future.
+         */
+        ExpiryBlockMustBeInTheFuture: PlainDescriptor<undefined>;
+        /**
+         *Insufficient funds to create the freeze.
+         */
+        InsufficientFunds: PlainDescriptor<undefined>;
+        /**
+         *The expiry block can be only extended.
+         */
+        ExpiryCut: PlainDescriptor<undefined>;
+        /**
+         *The reward rate per block can be only increased.
+         */
+        RewardRateCut: PlainDescriptor<undefined>;
+        /**
+         *The pool still has staked tokens or rewards.
+         */
+        NonEmptyPool: PlainDescriptor<undefined>;
     };
     StateTrieMigration: {
         /**
@@ -1441,7 +1501,7 @@ type IRuntimeCalls = {
          *
          * * `message`: `VersionedXcm`.
          */
-        query_xcm_weight: RuntimeDescriptor<[message: Anonymize<I3psnvvr3d6p0t>], Anonymize<Ic0c3req3mlc1l>>;
+        query_xcm_weight: RuntimeDescriptor<[message: XcmVersionedXcm], Anonymize<Ic0c3req3mlc1l>>;
         /**
          * Converts a weight into a fee for the specified `AssetId`.
          *
@@ -1450,7 +1510,7 @@ type IRuntimeCalls = {
          * * `weight`: convertible `Weight`.
          * * `asset`: `VersionedAssetId`.
          */
-        query_weight_to_asset_fee: RuntimeDescriptor<[weight: Anonymize<I4q39t5hn830vp>, asset: Anonymize<I47gh5t4ppbcdj>], Anonymize<I7ocn4njqde3v5>>;
+        query_weight_to_asset_fee: RuntimeDescriptor<[weight: Anonymize<I4q39t5hn830vp>, asset: XcmVersionedAssetId], Anonymize<I7ocn4njqde3v5>>;
         /**
          * Get delivery fees for sending a specific `message` to a `destination`.
          * These always come in a specific asset, defined by the chain.
@@ -1461,7 +1521,7 @@ type IRuntimeCalls = {
          * * `destination`: The destination to send the message to. Different destinations may use
          *   different senders that charge different fees.
          */
-        query_delivery_fees: RuntimeDescriptor<[destination: Anonymize<Ichgaqm88qcdbe>, message: Anonymize<I3psnvvr3d6p0t>], Anonymize<Iek7ha36da9mf5>>;
+        query_delivery_fees: RuntimeDescriptor<[destination: XcmVersionedLocation, message: XcmVersionedXcm], Anonymize<Iek7ha36da9mf5>>;
     };
     /**
      * API for dry-running extrinsics and XCM programs to get the programs that need to be passed to the fees API.
@@ -1478,11 +1538,11 @@ type IRuntimeCalls = {
         /**
          * Dry run call.
          */
-        dry_run_call: RuntimeDescriptor<[origin: Anonymize<I59s4q2sbs1vv1>, call: Anonymize<Ibuk047roov5v0>], Anonymize<Ifbek2b2asmr7p>>;
+        dry_run_call: RuntimeDescriptor<[origin: Anonymize<I42ficri7uep20>, call: Anonymize<If33vqn8ucfk4q>], Anonymize<I5jrs8oanipuna>>;
         /**
          * Dry run XCM program
          */
-        dry_run_xcm: RuntimeDescriptor<[origin_location: Anonymize<Ichgaqm88qcdbe>, xcm: Anonymize<I3psnvvr3d6p0t>], Anonymize<I6ftil0rrdh606>>;
+        dry_run_xcm: RuntimeDescriptor<[origin_location: XcmVersionedLocation, xcm: XcmVersionedXcm], Anonymize<I2234crv11opbp>>;
     };
 };
 type IAsset = PlainDescriptor<Anonymize<If9iqq7i64mur8>>;
@@ -1501,6 +1561,8 @@ type IDescriptors = {
     } & Promise<any>;
     metadataTypes: Promise<Uint8Array>;
     asset: IAsset;
+    getMetadata: () => Promise<Uint8Array>;
+    genesis: string | undefined;
 };
 declare const _allDescriptors: IDescriptors;
 export default _allDescriptors;
@@ -1509,7 +1571,7 @@ export type WahCalls = TxFromPalletsDef<PalletsTypedef>;
 export type WahEvents = EventsFromPalletsDef<PalletsTypedef>;
 export type WahErrors = ErrorsFromPalletsDef<PalletsTypedef>;
 export type WahConstants = ConstFromPalletsDef<PalletsTypedef>;
-export type WahCallData = Anonymize<Ibuk047roov5v0> & {
+export type WahCallData = Anonymize<If33vqn8ucfk4q> & {
     value: {
         type: string;
     };
