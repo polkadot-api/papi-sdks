@@ -52,10 +52,13 @@ export const createXcmSdk = <
     const client = getClient(id)
     const promise = new Promise<XcmApi>(async (res, rej) => {
       const { relay, nextRelay, ah, nextAh } = await import("./descriptors")
+      const unsafe = client.getUnsafeApi()
       const relayApi = client.getTypedApi(relay)
       const relayCompat =
         await relayApi.tx.XcmPallet.execute.getCompatibilityLevel()
       if (relayCompat > CompatibilityLevel.Incompatible) {
+        res({ api: unsafe, pallet: "XcmPallet" } as any)
+        return
         if (relayCompat === CompatibilityLevel.Partial) {
           const nextApi = client.getTypedApi(nextRelay)
           const nextCompat =
@@ -77,6 +80,8 @@ export const createXcmSdk = <
         rej("NO SUITABLE API FOUND")
         return
       }
+      res({ api: unsafe, pallet: "PolkadotXcm" } as any)
+      return
       if (paraCompat === CompatibilityLevel.Partial) {
         const nextApi = client.getTypedApi(nextAh)
         const nextCompat =

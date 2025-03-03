@@ -6,6 +6,7 @@ export const unwrap: {
 } = (res) => {
   if ("then" in res) return res.then(unwrap)
   if (res.success) return res.value
+  log(res.value)
   throw new Error("Success `false` found")
 }
 

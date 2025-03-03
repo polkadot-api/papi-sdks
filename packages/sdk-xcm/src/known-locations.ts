@@ -8,9 +8,14 @@ const POLKADOT_AH: XcmV3Junction[] = [
   ...POLKADOT,
   XcmV3Junction.Parachain(1000),
 ]
+export const POLKADOT_BH: XcmV3Junction[] = [
+  ...POLKADOT,
+  XcmV3Junction.Parachain(1002),
+]
 const HYDRATION: XcmV3Junction[] = [...POLKADOT, XcmV3Junction.Parachain(2034)]
 const KUSAMA: XcmV3Junction[] = [XcmV3Junction.GlobalConsensus(Enum("Kusama"))]
 const KUSAMA_AH: XcmV3Junction[] = [...KUSAMA, XcmV3Junction.Parachain(1000)]
+const KUSAMA_BH: XcmV3Junction[] = [...KUSAMA, XcmV3Junction.Parachain(1002)]
 const WESTEND: XcmV3Junction[] = [
   XcmV3Junction.GlobalConsensus(
     Enum(
@@ -39,10 +44,12 @@ const PASEO_BIFROST: XcmV3Junction[] = [...PASEO, XcmV3Junction.Parachain(2051)]
 export const CHAINS = {
   polkadot: POLKADOT,
   polkadotAh: POLKADOT_AH,
+  polkadotBh: POLKADOT_BH,
   hydration: HYDRATION,
 
   kusama: KUSAMA,
   kusamaAh: KUSAMA_AH,
+  kusamaBh: KUSAMA_BH,
 
   westend: WESTEND,
   westendAh: WESTEND_AH,
@@ -76,6 +83,7 @@ export const TOKENS_IN_CHAINS: Partial<
     polkadot: true,
     polkadotAh: true,
     hydration: "polkadotAh",
+    kusamaAh: "polkadotAh",
   },
   KSM: {
     kusama: true,
