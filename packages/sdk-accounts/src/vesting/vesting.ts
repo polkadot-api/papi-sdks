@@ -1,6 +1,6 @@
 import { SS58String } from "polkadot-api"
 import { VestingSdkTypedApi } from "./descriptors"
-import { Observable, of } from "rxjs"
+import { Observable } from "rxjs"
 
 /**
  * In order to discover what is the pallet doing behind the scenes you'll need
@@ -11,18 +11,29 @@ import { Observable, of } from "rxjs"
  * Build the library with `pnpm build`
  */
 
-export function createVestingSdk(_typedApi: VestingSdkTypedApi) {
+export function createVestingSdk(typedApi: VestingSdkTypedApi) {
   return {
     /**
      * Given an address, we want to know when will the whole amount become
      * vested; i.e. available to claim.
      */
-    getFullVestingDate(_address: SS58String): Date {
-      // TODO implement!
-      // tip 1: does info come in time (i.e. seconds, minutes...) or blocks?
-      //        you might need the block time, inspect the typedApi...
-      // tip 2: `Date.now() + millisecondsLeft` 😉
-      return new Date()
+    async getFullVestingDate(address: SS58String): Promise<Date> {
+      const vestingInfo = await typedApi.query.Vesting.Vesting.getValue(address)
+      if (!vestingInfo) return new Date()
+      const blockTime = typedApi.constants.Babe.ExpectedBlockTime()
+      const currentBlock = await typedApi.query.System.Number.getValue()
+      const endBlock = vestingInfo.reduce(
+        (acc, { locked, per_block, starting_block }) =>
+          Math.max(
+            Number(locked / per_block + (locked % per_block ? 1n : 0n)) +
+              starting_block,
+            acc,
+          ),
+        currentBlock,
+      )
+      const msRemaining =
+        Math.max(endBlock - currentBlock, 0) * Number(await blockTime)
+      return new Date(Date.now() + msRemaining)
     },
     /**
      * Given an address, we want to create an observable that emits the amount
