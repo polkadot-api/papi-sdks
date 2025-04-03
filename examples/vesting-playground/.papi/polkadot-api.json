@@ -1,0 +1,12 @@
+{
+  "version": 0,
+  "descriptorPath": ".papi/descriptors",
+  "entries": {
+    "pas": {
+      "chain": "paseo",
+      "metadata": ".papi/metadata/pas.scale",
+      "genesis": "0x77afd6190f1554ad45fd0d31aee62aacc33c6db0ea801129acb813f913e0764f",
+      "codeHash": "0x96f6cb4f577e7ecb8c9e648f77724c0c850fe366854f99a29c79275895b4c636"
+    }
+  }
+}

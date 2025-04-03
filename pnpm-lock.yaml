@@ -111,6 +111,25 @@ importers:
         specifier: ^7.1.4
         version: 7.1.4(@types/node@24.3.1)
 
+  examples/vesting-playground:
+    dependencies:
+      '@polkadot-api/descriptors':
+        specifier: file:.papi/descriptors
+        version: file:examples/vesting-playground/.papi/descriptors(polkadot-api@1.17.1(postcss@8.5.6)(rxjs@7.8.2))
+      '@polkadot-api/sdk-accounts':
+        specifier: workspace:*
+        version: link:../../packages/sdk-accounts
+      polkadot-api:
+        specifier: ^1.17.1
+        version: 1.17.1(postcss@8.5.6)(rxjs@7.8.2)
+      typescript:
+        specifier: ^5
+        version: 5.9.2
+    devDependencies:
+      '@types/bun':
+        specifier: ^1.2.21
+        version: 1.2.21(@types/react@19.1.12)
+
   packages/common-utils:
     devDependencies:
       polkadot-api:
@@ -436,6 +455,11 @@ packages:
 
   '@polkadot-api/descriptors@file:examples/remote-proxy/.papi/descriptors':
     resolution: {directory: examples/remote-proxy/.papi/descriptors, type: directory}
+    peerDependencies:
+      polkadot-api: '>=1.11.2'
+
+  '@polkadot-api/descriptors@file:examples/vesting-playground/.papi/descriptors':
+    resolution: {directory: examples/vesting-playground/.papi/descriptors, type: directory}
     peerDependencies:
       polkadot-api: '>=1.11.2'
 
@@ -1792,6 +1816,10 @@ snapshots:
       polkadot-api: 1.17.1(postcss@8.5.6)(rxjs@7.8.2)
 
   '@polkadot-api/descriptors@file:examples/remote-proxy/.papi/descriptors(polkadot-api@1.17.1(postcss@8.5.6)(rxjs@7.8.2))':
+    dependencies:
+      polkadot-api: 1.17.1(postcss@8.5.6)(rxjs@7.8.2)
+
+  '@polkadot-api/descriptors@file:examples/vesting-playground/.papi/descriptors(polkadot-api@1.17.1(postcss@8.5.6)(rxjs@7.8.2))':
     dependencies:
       polkadot-api: 1.17.1(postcss@8.5.6)(rxjs@7.8.2)
 

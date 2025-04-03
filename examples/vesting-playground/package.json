@@ -1,0 +1,17 @@
+{
+  "name": "vesting-playground",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "devDependencies": {
+    "@types/bun": "^1.2.21"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "@polkadot-api/descriptors": "file:.papi/descriptors",
+    "@polkadot-api/sdk-accounts": "workspace:*",
+    "polkadot-api": "^1.17.1"
+  }
+}

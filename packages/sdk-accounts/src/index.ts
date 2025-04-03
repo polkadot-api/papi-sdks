@@ -10,3 +10,5 @@ export type {
   IdentitySdkTypedApi,
 } from "./identity/descriptors"
 export type * from "./identity/sdk-types"
+
+export * from "./vesting/vesting"
