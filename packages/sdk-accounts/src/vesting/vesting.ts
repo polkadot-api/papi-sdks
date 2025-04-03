@@ -1,6 +1,6 @@
 import { SS58String } from "polkadot-api"
 import { VestingSdkTypedApi } from "./descriptors"
-import { map, Observable, withLatestFrom } from "rxjs"
+import { firstValueFrom, map, Observable, withLatestFrom } from "rxjs"
 
 /**
  * In order to discover what is the pallet doing behind the scenes you'll need
@@ -77,9 +77,8 @@ export function createVestingSdk(typedApi: VestingSdkTypedApi) {
      * Given an address, we want to return the amount that was already vested,
      * but not yet claimed. Use the latest finalized block.
      */
-    getVested(_address: SS58String): Promise<bigint> {
-      // TODO: recommendation, start by the previous one! 😉
-      return Promise.resolve(0n)
+    getVested(address: SS58String): Promise<bigint> {
+      return firstValueFrom(this.watchVested(address))
     },
   }
 }
