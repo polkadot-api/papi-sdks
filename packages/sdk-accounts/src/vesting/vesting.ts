@@ -1,6 +1,6 @@
 import { SS58String } from "polkadot-api"
 import { VestingSdkTypedApi } from "./descriptors"
-import { Observable } from "rxjs"
+import { map, Observable, withLatestFrom } from "rxjs"
 
 /**
  * In order to discover what is the pallet doing behind the scenes you'll need
@@ -40,11 +40,38 @@ export function createVestingSdk(typedApi: VestingSdkTypedApi) {
      * that was already vested, but not yet claimed. Emit for every new
      * finalized block.
      */
-    watchVested(_address: SS58String): Observable<bigint> {
-      // TODO: implement!
-      // tip: keep in mind that there might be multiple vested transfers...
-      //      start with one, and then continue!
-      return of(0n)
+    watchVested(address: SS58String): Observable<bigint> {
+      return typedApi.query.System.Number.watchValue().pipe(
+        withLatestFrom(
+          typedApi.query.Vesting.Vesting.watchValue(address),
+          typedApi.query.Balances.Locks.watchValue(address),
+        ),
+        map(([currentBlock, vesting, locks]) => {
+          if (!vesting) return 0n
+          const lock = locks.find(
+            ({ id }) => id.asText() === "vesting ",
+          )?.amount
+          if (!lock) throw new Error("THIS SHOULD NEVER HAPPEN")
+          const totalLocked = vesting.reduce(
+            (acc, { locked }) => acc + locked,
+            0n,
+          )
+          const totalVested = vesting.reduce(
+            (acc, { locked, per_block, starting_block }) => {
+              const totalVestingBlocks =
+                Number(locked / per_block) + (locked % per_block ? 1 : 0)
+              const blockDiff = Math.max(currentBlock - starting_block, 0)
+              return (
+                acc +
+                per_block * BigInt(Math.min(blockDiff, totalVestingBlocks))
+              )
+            },
+            0n,
+          )
+          if (lock > totalLocked) throw new Error("THIS SHOULD NEVER HAPPEN")
+          return totalVested - (totalLocked - lock)
+        }),
+      )
     },
     /**
      * Given an address, we want to return the amount that was already vested,
