@@ -11,13 +11,13 @@ import { Observable, of } from "rxjs"
  * Build the library with `pnpm build`
  */
 
-export function createVestingSdk(typedApi: VestingSdkTypedApi) {
+export function createVestingSdk(_typedApi: VestingSdkTypedApi) {
   return {
     /**
      * Given an address, we want to know when will the whole amount become
      * vested; i.e. available to claim.
      */
-    getFullVestingDate(address: SS58String): Date {
+    getFullVestingDate(_address: SS58String): Date {
       // TODO implement!
       // tip 1: does info come in time (i.e. seconds, minutes...) or blocks?
       //        you might need the block time, inspect the typedApi...
@@ -29,7 +29,7 @@ export function createVestingSdk(typedApi: VestingSdkTypedApi) {
      * that was already vested, but not yet claimed. Emit for every new
      * finalized block.
      */
-    watchVested(address: SS58String): Observable<bigint> {
+    watchVested(_address: SS58String): Observable<bigint> {
       // TODO: implement!
       // tip: keep in mind that there might be multiple vested transfers...
       //      start with one, and then continue!
@@ -39,7 +39,7 @@ export function createVestingSdk(typedApi: VestingSdkTypedApi) {
      * Given an address, we want to return the amount that was already vested,
      * but not yet claimed. Use the latest finalized block.
      */
-    getVested(address: SS58String): Promise<bigint> {
+    getVested(_address: SS58String): Promise<bigint> {
       // TODO: recommendation, start by the previous one! 😉
       return Promise.resolve(0n)
     },
