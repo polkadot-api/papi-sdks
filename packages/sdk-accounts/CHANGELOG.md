@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Added
+
+- Identity SDK
+
 ## 0.0.1-1 2025-02-17
 
 - Update deps
