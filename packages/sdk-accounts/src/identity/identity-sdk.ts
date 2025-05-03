@@ -23,15 +23,12 @@ export function createIdentitySdk(typedApi: IdentitySdkTypedApi): IdentitySdk {
           : { registrar, judgement: judgement.type },
     )
 
-    const displayName: Identity["displayName"] = info.display
-      ? {
-          value: info.display,
-          verified: judgements.some((v) => v.judgement === "Reasonable"),
-        }
-      : null
+    const verified = judgements.some((v) =>
+      ["Reasonable", "KnownGood"].includes(v.judgement),
+    )
 
     return {
-      displayName,
+      verified,
       info,
       judgements,
     }
