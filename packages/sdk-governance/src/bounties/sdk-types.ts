@@ -32,7 +32,7 @@ export interface ProposedBounty<
   // TODO incoming approveWithCurator()
 }
 export interface ApprovedBounty extends GenericBounty {
-  type: "Approved"
+  type: "Approved" | "ApprovedWithCurator"
 }
 export interface FundedBounty<
   TEnums extends {

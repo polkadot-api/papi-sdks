@@ -52,7 +52,7 @@ export function createBountiesSdk<TOrigin extends PolkadotRuntimeOriginCaller>(
         }
       case "Approved":
       case "ApprovedWithCurator":
-        return { ...generic, type: "Approved" }
+        return { ...generic, type: generic.status.type }
       case "Funded":
         return {
           ...generic,
