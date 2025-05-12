@@ -20,7 +20,7 @@ export function enhanceTrack(track: ReferendaTrackDescriptor): ReferendaTrack {
   }
 }
 
-export function trackFetcher(typedApi: ReferendaSdkTypedApi) {
+export function trackFetcher<T>(typedApi: ReferendaSdkTypedApi<T>) {
   const referendaTracksPromise = typedApi.constants.Referenda.Tracks().then(
     (tracks) => {
       const byId = Object.fromEntries(tracks)

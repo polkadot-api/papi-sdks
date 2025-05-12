@@ -21,8 +21,8 @@ export interface ProposedBounty extends GenericBounty, ClosableBounty {
   type: "Proposed"
   approve(): Transaction<any, string, string, unknown>
   filterApprovingReferenda(
-    referenda: OngoingReferendum[],
-  ): Promise<OngoingReferendum[]>
+    referenda: OngoingReferendum<{ origin: unknown }>[],
+  ): Promise<OngoingReferendum<{ origin: unknown }>[]>
   getScheduledApprovals(): Promise<number[]>
   // TODO incoming approveWithCurator()
 }
@@ -35,9 +35,9 @@ export interface FundedBounty extends GenericBounty, ClosableBounty {
     curator: SS58String,
     fee: bigint,
   ): Transaction<any, string, string, unknown>
-  filterProposingReferenda(referenda: OngoingReferendum[]): Promise<
+  filterProposingReferenda(referenda: OngoingReferendum<{ origin: unknown }>[]): Promise<
     Array<{
-      referendum: OngoingReferendum
+      referendum: OngoingReferendum<{ origin: unknown }>
       proposeCuratorCalls: {
         curator: MultiAddress
         fee: bigint
