@@ -19,15 +19,17 @@ import {
 import { BIG_BILLION, trackFetcher } from "./track"
 
 const MAX_INLINE_SIZE = 128
-type RawOngoingReferendum = (ReferendumInfo & { type: "Ongoing" })["value"]
+type RawOngoingReferendum<T> = (ReferendumInfo<T> & {
+  type: "Ongoing"
+})["value"]
 
 const defaultConfig: ReferendaSdkConfig = {
   spenderOrigin: polkadotSpenderOrigin,
 }
-export function createReferendaSdk(
-  typedApi: ReferendaSdkTypedApi,
+export function createReferendaSdk<TOrigin extends PolkadotRuntimeOriginCaller>(
+  typedApi: ReferendaSdkTypedApi<TOrigin>,
   config?: Partial<ReferendaSdkConfig>,
-): ReferendaSdk {
+): ReferendaSdk<{ origin: TOrigin }> {
   const { spenderOrigin } = { ...defaultConfig, ...config }
   const resolvePreimage = getPreimageResolver(
     typedApi.query.Preimage.PreimageFor.getValues,
@@ -36,8 +38,8 @@ export function createReferendaSdk(
 
   function enhanceOngoingReferendum(
     id: number,
-    referendum: RawOngoingReferendum,
-  ): OngoingReferendum {
+    referendum: RawOngoingReferendum<TOrigin>,
+  ): OngoingReferendum<{ origin: TOrigin }> {
     const resolveProposal = () => resolvePreimage(referendum.proposal)
 
     async function getConfirmationStart() {
@@ -137,7 +139,10 @@ export function createReferendaSdk(
       },
     }
   }
-  function enhanceReferendumInfo(id: number, info: ReferendumInfo): Referendum {
+  function enhanceReferendumInfo(
+    id: number,
+    info: ReferendumInfo<TOrigin>,
+  ): Referendum<{ origin: TOrigin }> {
     if (info.type === "Ongoing") return enhanceOngoingReferendum(id, info.value)
     if (info.type === "Killed")
       return {
@@ -194,9 +199,11 @@ export function createReferendaSdk(
     map((set) => [...set]),
   )
 
-  const getSpenderTrack: ReferendaSdk["getSpenderTrack"] = (value) => {
+  const getSpenderTrack: ReferendaSdk<{
+    origin: TOrigin
+  }>["getSpenderTrack"] = (value) => {
     const spenderOriginType = spenderOrigin(value)
-    const origin: PolkadotRuntimeOriginCaller = spenderOriginType
+    const origin = spenderOriginType
       ? {
           type: "Origins",
           value: {
@@ -210,7 +217,7 @@ export function createReferendaSdk(
         }
 
     return {
-      origin,
+      origin: origin as TOrigin,
       track: getTrack(
         spenderOriginType ? originToTrack[spenderOriginType] : "root",
       ).then((r) => {
@@ -222,11 +229,9 @@ export function createReferendaSdk(
     }
   }
 
-  const createReferenda: ReferendaSdk["createReferenda"] = (
-    origin,
-    proposal,
-    options,
-  ) => {
+  const createReferenda: ReferendaSdk<{
+    origin: TOrigin
+  }>["createReferenda"] = (origin, proposal, options) => {
     // The pallet already calculates uses the earliest_allowed in case it's too small
     const enactment_moment = options?.enactment ?? {
       type: "After",
@@ -268,10 +273,9 @@ export function createReferendaSdk(
     })
   }
 
-  const createSpenderReferenda: ReferendaSdk["createSpenderReferenda"] = (
-    callData,
-    value,
-  ) => {
+  const createSpenderReferenda: ReferendaSdk<{
+    origin: TOrigin
+  }>["createSpenderReferenda"] = (callData, value) => {
     const spenderTrack = getSpenderTrack(value)
 
     return createReferenda(spenderTrack.origin, callData)

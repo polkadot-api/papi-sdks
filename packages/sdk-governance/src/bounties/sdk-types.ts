@@ -17,27 +17,37 @@ export interface GenericBounty extends BountyWithoutDescription {
 interface ClosableBounty {
   close(): Transaction<any, string, string, unknown>
 }
-export interface ProposedBounty extends GenericBounty, ClosableBounty {
+export interface ProposedBounty<
+  TEnums extends {
+    origin: unknown
+  } = { origin: unknown },
+> extends GenericBounty,
+    ClosableBounty {
   type: "Proposed"
   approve(): Transaction<any, string, string, unknown>
   filterApprovingReferenda(
-    referenda: OngoingReferendum[],
-  ): Promise<OngoingReferendum[]>
+    referenda: OngoingReferendum<TEnums>[],
+  ): Promise<OngoingReferendum<TEnums>[]>
   getScheduledApprovals(): Promise<number[]>
   // TODO incoming approveWithCurator()
 }
 export interface ApprovedBounty extends GenericBounty {
-  type: "Approved"
+  type: "Approved" | "ApprovedWithCurator"
 }
-export interface FundedBounty extends GenericBounty, ClosableBounty {
+export interface FundedBounty<
+  TEnums extends {
+    origin: unknown
+  } = { origin: unknown },
+> extends GenericBounty,
+    ClosableBounty {
   type: "Funded"
   proposeCurator(
     curator: SS58String,
     fee: bigint,
   ): Transaction<any, string, string, unknown>
-  filterProposingReferenda(referenda: OngoingReferendum[]): Promise<
+  filterProposingReferenda(referenda: OngoingReferendum<TEnums>[]): Promise<
     Array<{
-      referendum: OngoingReferendum
+      referendum: OngoingReferendum<TEnums>
       proposeCuratorCalls: {
         curator: MultiAddress
         fee: bigint
@@ -86,21 +96,29 @@ export interface PendingPayoutBounty
   claim(): Transaction<any, string, string, unknown>
 }
 
-export type Bounty =
-  | ProposedBounty
+export type Bounty<
+  TEnums extends {
+    origin: unknown
+  } = { origin: unknown },
+> =
+  | ProposedBounty<TEnums>
   | ApprovedBounty
-  | FundedBounty
+  | FundedBounty<TEnums>
   | CuratorProposedBounty
   | ActiveBounty
   | PendingPayoutBounty
 
-export interface BountiesSdk {
+export interface BountiesSdk<
+  TEnums extends {
+    origin: unknown
+  } = { origin: unknown },
+> {
   watch: {
-    bounties$: Observable<Map<number, Bounty>>
+    bounties$: Observable<Map<number, Bounty<TEnums>>>
     bountyIds$: Observable<number[]>
-    getBountyById$: (key: number) => Observable<Bounty>
+    getBountyById$: (key: number) => Observable<Bounty<TEnums>>
   }
-  getBounty(id: number): Promise<Bounty | null>
-  getBounties(): Promise<Bounty[]>
-  getProposedBounty(txEvent: TxEvent): Promise<ProposedBounty | null>
+  getBounty(id: number): Promise<Bounty<TEnums> | null>
+  getBounties(): Promise<Bounty<TEnums>[]>
+  getProposedBounty(txEvent: TxEvent): Promise<ProposedBounty<TEnums> | null>
 }

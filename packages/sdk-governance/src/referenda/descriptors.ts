@@ -23,35 +23,25 @@ type BasicReferendumInfo = [
   WhoAmount | undefined,
 ]
 
-export type PolkadotRuntimeOriginCaller = Enum<{
-  system: Enum<{
+type ExtendableEnum<T extends {}> = Enum<T> | { type: string; value: unknown }
+
+type PolkadotRuntimeOriginCallerVariants = {
+  system: ExtendableEnum<{
     Root: undefined
-    Signed: SS58String
-    None: undefined
   }>
-  Origins: Enum<{
-    StakingAdmin: undefined
+  Origins: ExtendableEnum<{
     Treasurer: undefined
-    FellowshipAdmin: undefined
-    GeneralAdmin: undefined
-    AuctionAdmin: undefined
-    LeaseAdmin: undefined
-    ReferendumCanceller: undefined
-    ReferendumKiller: undefined
     SmallTipper: undefined
     BigTipper: undefined
     SmallSpender: undefined
     MediumSpender: undefined
     BigSpender: undefined
-    WhitelistedCaller: undefined
-    WishForChange: undefined
   }>
-  ParachainsOrigin: Enum<{
-    Parachain: number
-  }>
-  XcmPallet: any
-  Void: undefined
-}>
+}
+export type PolkadotRuntimeOriginCallerOriginal =
+  Enum<PolkadotRuntimeOriginCallerVariants>
+export type PolkadotRuntimeOriginCaller =
+  ExtendableEnum<PolkadotRuntimeOriginCallerVariants>
 
 export type PreimagesBounded = Enum<{
   Legacy: {
@@ -68,10 +58,10 @@ export type TraitsScheduleDispatchTime = Enum<{
   After: number
 }>
 
-export type ReferendumInfo = Enum<{
+export type ReferendumInfo<TOrigin = unknown> = Enum<{
   Ongoing: {
     track: number
-    origin: PolkadotRuntimeOriginCaller
+    origin: TOrigin
     proposal: PreimagesBounded
     enactment: Enum<{
       At: number
@@ -132,7 +122,7 @@ export type ReferendaTrackData = {
   min_support: ReferendaTypesCurve
 }
 
-type ReferendaSdkPallets = PalletsTypedef<
+type ReferendaSdkPallets<TOrigin> = PalletsTypedef<
   {
     Preimage: {
       PreimageFor: StorageDescriptor<
@@ -148,7 +138,7 @@ type ReferendaSdkPallets = PalletsTypedef<
        */
       ReferendumInfoFor: StorageDescriptor<
         [Key: number],
-        ReferendumInfo,
+        ReferendumInfo<TOrigin>,
         true,
         never
       >
@@ -161,7 +151,7 @@ type ReferendaSdkPallets = PalletsTypedef<
   {
     Referenda: {
       submit: TxDescriptor<{
-        proposal_origin: PolkadotRuntimeOriginCaller
+        proposal_origin: TOrigin
         proposal: PreimagesBounded
         enactment_moment: TraitsScheduleDispatchTime
       }>
@@ -193,8 +183,10 @@ type ReferendaSdkPallets = PalletsTypedef<
     }
   }
 >
-type ReferendaSdkDefinition = SdkDefinition<
-  ReferendaSdkPallets,
+type ReferendaSdkDefinition<TOrigin> = SdkDefinition<
+  ReferendaSdkPallets<TOrigin>,
   ApisTypedef<{}>
 >
-export type ReferendaSdkTypedApi = TypedApi<ReferendaSdkDefinition>
+export type ReferendaSdkTypedApi<TOrigin = unknown> = TypedApi<
+  ReferendaSdkDefinition<TOrigin>
+>

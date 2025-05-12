@@ -49,8 +49,8 @@ export const flattenResult = <T>(v: T): FlattenResult<T> =>
   isResult(v)
     ? v.success
       ? (flattenResult as any)(v.value)
-      : { success: false, value: v.value }
-    : { success: true, value: v }
+      : ({ success: false, value: v.value } as FlattenResult<T>)
+    : ({ success: true, value: v } as FlattenResult<T>)
 export type FlattenResult<T> = T extends Result
   ? Result<FlattenValues<T>, FlattenErrors<T>>
   : never
@@ -69,10 +69,10 @@ export function mapResult<SI, EI, SO = SI, EO = EI>(
   return result.success
     ? {
         success: true,
-        value: mapFns.value?.(result.value) ?? result.value,
+        value: mapFns.value?.(result.value) ?? (result.value as unknown as SO),
       }
-    : ({
+    : {
         success: false,
-        value: mapFns.error?.(result.value) ?? result.value,
-      } as any)
+        value: mapFns.error?.(result.value) ?? (result.value as unknown as EO),
+      }
 }

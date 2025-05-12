@@ -12,10 +12,7 @@ import {
   TxDescriptor,
   TypedApi,
 } from "polkadot-api"
-import {
-  PolkadotRuntimeOriginCaller,
-  PreimagesBounded,
-} from "../referenda/descriptors"
+import { PreimagesBounded } from "../referenda/descriptors"
 
 export type BountiesBountyStatus = Enum<{
   Proposed: undefined
@@ -33,6 +30,9 @@ export type BountiesBountyStatus = Enum<{
     beneficiary: SS58String
     unlock_at: number
   }
+  ApprovedWithCurator: {
+    curator: SS58String
+  }
 }>
 export interface BountyWithoutDescription {
   proposer: SS58String
@@ -43,7 +43,7 @@ export interface BountyWithoutDescription {
   status: BountiesBountyStatus
 }
 
-type BountiesSdkPallets = PalletsTypedef<
+type BountiesSdkPallets<TOrigin> = PalletsTypedef<
   {
     Preimage: {
       PreimageFor: StorageDescriptor<
@@ -84,7 +84,7 @@ type BountiesSdkPallets = PalletsTypedef<
               priority: number
               call: PreimagesBounded
               maybe_periodic?: FixedSizeArray<2, number> | undefined
-              origin: PolkadotRuntimeOriginCaller
+              origin: TOrigin
             }
           | undefined
         >,
@@ -138,8 +138,13 @@ type BountiesSdkPallets = PalletsTypedef<
   {},
   {}
 >
-type BountiesSdkDefinition = SdkDefinition<BountiesSdkPallets, ApisTypedef<{}>>
-export type BountiesSdkTypedApi = TypedApi<BountiesSdkDefinition>
+type BountiesSdkDefinition<TOrigin> = SdkDefinition<
+  BountiesSdkPallets<TOrigin>,
+  ApisTypedef<{}>
+>
+export type BountiesSdkTypedApi<TOrigin = unknown> = TypedApi<
+  BountiesSdkDefinition<TOrigin>
+>
 
 export type MultiAddress = Enum<{
   Id: SS58String

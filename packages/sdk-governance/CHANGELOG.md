@@ -2,6 +2,16 @@
 
 ## Unreleased
 
+### Added
+
+- **Bounties**
+  - Support ApprovedWithCurator state
+
+### Fixed
+
+- **Referenda**
+  - Support multiple origin types
+
 ## 0.0.1-2 2025-02-17
 
 ### Added

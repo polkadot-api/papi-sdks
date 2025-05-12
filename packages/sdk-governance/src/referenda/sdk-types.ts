@@ -1,7 +1,6 @@
 import { Binary, Transaction, TxEvent } from "polkadot-api"
 import { Origin } from "./chainConfig"
 import {
-  PolkadotRuntimeOriginCaller,
   PreimagesBounded,
   ReferendaTrackData,
   ReferendaTypesCurve,
@@ -12,13 +11,19 @@ import {
 import { Observable } from "rxjs"
 import { PollOutcome } from "@/voting/sdk-types"
 
-type RawOngoingReferendum = (ReferendumInfo & { type: "Ongoing" })["value"]
+type RawOngoingReferendum<T> = (ReferendumInfo<T> & {
+  type: "Ongoing"
+})["value"]
 
 export interface ReferendumDetails {
   title?: string
 }
 
-export type OngoingReferendum = Omit<RawOngoingReferendum, "proposal"> & {
+export type OngoingReferendum<
+  T extends {
+    origin: unknown
+  } = { origin: unknown },
+> = Omit<RawOngoingReferendum<T["origin"]>, "proposal"> & {
   type: "Ongoing"
   id: number
   proposal: {
@@ -50,7 +55,11 @@ export interface ClosedReferendum {
   decision_deposit: WhoAmount | undefined
 }
 
-export type Referendum = OngoingReferendum | ClosedReferendum
+export type Referendum<
+  TEnums extends {
+    origin: unknown
+  } = { origin: unknown },
+> = OngoingReferendum<TEnums> | ClosedReferendum
 
 export interface ReferendaSdkConfig {
   spenderOrigin: (value: bigint) => Origin | null
@@ -77,23 +86,27 @@ export type ReferendaTrack = Omit<
   minSupport: TrackFunctionDetails
 }
 
-export interface ReferendaSdk {
-  getReferenda(): Promise<Referendum[]>
-  getReferendum(id: number): Promise<Referendum | null>
+export interface ReferendaSdk<
+  TEnums extends {
+    origin: unknown
+  } = { origin: unknown },
+> {
+  getReferenda(): Promise<Referendum<TEnums>[]>
+  getReferendum(id: number): Promise<Referendum<TEnums> | null>
   watch: {
-    referenda$: Observable<Map<number, Referendum>>
+    referenda$: Observable<Map<number, Referendum<TEnums>>>
     referendaIds$: Observable<number[]>
-    getReferendumById$: (key: number) => Observable<Referendum>
+    getReferendumById$: (key: number) => Observable<Referendum<TEnums>>
   }
   getSpenderTrack(value: bigint): {
-    origin: PolkadotRuntimeOriginCaller
+    origin: TEnums["origin"]
     track: Promise<ReferendaTrack>
   }
 
   getTrack(id: number | string): Promise<ReferendaTrack | null>
 
   createReferenda(
-    origin: PolkadotRuntimeOriginCaller,
+    origin: TEnums["origin"],
     proposal: Binary,
     options?: Partial<{
       enactment: TraitsScheduleDispatchTime
