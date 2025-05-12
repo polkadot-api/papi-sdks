@@ -3,7 +3,9 @@ import { memo } from "@/util/memo"
 import { BountiesSdkTypedApi, MultiAddress } from "./descriptors"
 import { findCalls } from "./find-referenda"
 
-export const scheduledFinder = <TOrigin>(typedApi: BountiesSdkTypedApi<TOrigin>) => {
+export const scheduledFinder = <TOrigin>(
+  typedApi: BountiesSdkTypedApi<TOrigin>,
+) => {
   const resolvePreimage = getPreimageResolver(
     typedApi.query.Preimage.PreimageFor.getValues,
   )

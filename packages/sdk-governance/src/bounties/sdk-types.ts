@@ -17,9 +17,12 @@ export interface GenericBounty extends BountyWithoutDescription {
 interface ClosableBounty {
   close(): Transaction<any, string, string, unknown>
 }
-export interface ProposedBounty<TEnums extends {
-  origin: unknown
-}> extends GenericBounty, ClosableBounty {
+export interface ProposedBounty<
+  TEnums extends {
+    origin: unknown
+  } = { origin: unknown },
+> extends GenericBounty,
+    ClosableBounty {
   type: "Proposed"
   approve(): Transaction<any, string, string, unknown>
   filterApprovingReferenda(
@@ -31,9 +34,12 @@ export interface ProposedBounty<TEnums extends {
 export interface ApprovedBounty extends GenericBounty {
   type: "Approved"
 }
-export interface FundedBounty<TEnums extends {
-  origin: unknown
-}> extends GenericBounty, ClosableBounty {
+export interface FundedBounty<
+  TEnums extends {
+    origin: unknown
+  } = { origin: unknown },
+> extends GenericBounty,
+    ClosableBounty {
   type: "Funded"
   proposeCurator(
     curator: SS58String,
@@ -90,9 +96,11 @@ export interface PendingPayoutBounty
   claim(): Transaction<any, string, string, unknown>
 }
 
-export type Bounty<TEnums extends {
-  origin: unknown
-}> =
+export type Bounty<
+  TEnums extends {
+    origin: unknown
+  } = { origin: unknown },
+> =
   | ProposedBounty<TEnums>
   | ApprovedBounty
   | FundedBounty<TEnums>
@@ -100,9 +108,11 @@ export type Bounty<TEnums extends {
   | ActiveBounty
   | PendingPayoutBounty
 
-export interface BountiesSdk<TEnums extends {
-  origin: unknown
-}> {
+export interface BountiesSdk<
+  TEnums extends {
+    origin: unknown
+  } = { origin: unknown },
+> {
   watch: {
     bounties$: Observable<Map<number, Bounty<TEnums>>>
     bountyIds$: Observable<number[]>

@@ -8,7 +8,7 @@ import { originToTrack, polkadotSpenderOrigin } from "./chainConfig"
 import {
   PolkadotRuntimeOriginCaller,
   ReferendaSdkTypedApi,
-  ReferendumInfo
+  ReferendumInfo,
 } from "./descriptors"
 import {
   OngoingReferendum,
@@ -19,7 +19,9 @@ import {
 import { BIG_BILLION, trackFetcher } from "./track"
 
 const MAX_INLINE_SIZE = 128
-type RawOngoingReferendum<T> = (ReferendumInfo<T> & { type: "Ongoing" })["value"]
+type RawOngoingReferendum<T> = (ReferendumInfo<T> & {
+  type: "Ongoing"
+})["value"]
 
 const defaultConfig: ReferendaSdkConfig = {
   spenderOrigin: polkadotSpenderOrigin,
@@ -137,7 +139,10 @@ export function createReferendaSdk<TOrigin extends PolkadotRuntimeOriginCaller>(
       },
     }
   }
-  function enhanceReferendumInfo(id: number, info: ReferendumInfo<TOrigin>): Referendum<{ origin: TOrigin }> {
+  function enhanceReferendumInfo(
+    id: number,
+    info: ReferendumInfo<TOrigin>,
+  ): Referendum<{ origin: TOrigin }> {
     if (info.type === "Ongoing") return enhanceOngoingReferendum(id, info.value)
     if (info.type === "Killed")
       return {
@@ -194,7 +199,9 @@ export function createReferendaSdk<TOrigin extends PolkadotRuntimeOriginCaller>(
     map((set) => [...set]),
   )
 
-  const getSpenderTrack: ReferendaSdk<{ origin: TOrigin }>["getSpenderTrack"] = (value) => {
+  const getSpenderTrack: ReferendaSdk<{
+    origin: TOrigin
+  }>["getSpenderTrack"] = (value) => {
     const spenderOriginType = spenderOrigin(value)
     const origin = spenderOriginType
       ? {
@@ -222,11 +229,9 @@ export function createReferendaSdk<TOrigin extends PolkadotRuntimeOriginCaller>(
     }
   }
 
-  const createReferenda: ReferendaSdk<{ origin: TOrigin }>["createReferenda"] = (
-    origin,
-    proposal,
-    options,
-  ) => {
+  const createReferenda: ReferendaSdk<{
+    origin: TOrigin
+  }>["createReferenda"] = (origin, proposal, options) => {
     // The pallet already calculates uses the earliest_allowed in case it's too small
     const enactment_moment = options?.enactment ?? {
       type: "After",
@@ -268,10 +273,9 @@ export function createReferendaSdk<TOrigin extends PolkadotRuntimeOriginCaller>(
     })
   }
 
-  const createSpenderReferenda: ReferendaSdk<{ origin: TOrigin }>["createSpenderReferenda"] = (
-    callData,
-    value,
-  ) => {
+  const createSpenderReferenda: ReferendaSdk<{
+    origin: TOrigin
+  }>["createSpenderReferenda"] = (callData, value) => {
     const spenderTrack = getSpenderTrack(value)
 
     return createReferenda(spenderTrack.origin, callData)

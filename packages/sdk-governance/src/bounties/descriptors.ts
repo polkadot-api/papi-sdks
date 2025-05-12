@@ -12,9 +12,7 @@ import {
   TxDescriptor,
   TypedApi,
 } from "polkadot-api"
-import {
-  PreimagesBounded,
-} from "../referenda/descriptors"
+import { PreimagesBounded } from "../referenda/descriptors"
 
 export type BountiesBountyStatus = Enum<{
   Proposed: undefined
@@ -33,7 +31,7 @@ export type BountiesBountyStatus = Enum<{
     unlock_at: number
   }
   ApprovedWithCurator: {
-    curator: SS58String;
+    curator: SS58String
   }
 }>
 export interface BountyWithoutDescription {
@@ -140,8 +138,13 @@ type BountiesSdkPallets<TOrigin> = PalletsTypedef<
   {},
   {}
 >
-type BountiesSdkDefinition<TOrigin> = SdkDefinition<BountiesSdkPallets<TOrigin>, ApisTypedef<{}>>
-export type BountiesSdkTypedApi<TOrigin> = TypedApi<BountiesSdkDefinition<TOrigin>>
+type BountiesSdkDefinition<TOrigin> = SdkDefinition<
+  BountiesSdkPallets<TOrigin>,
+  ApisTypedef<{}>
+>
+export type BountiesSdkTypedApi<TOrigin = unknown> = TypedApi<
+  BountiesSdkDefinition<TOrigin>
+>
 
 export type MultiAddress = Enum<{
   Id: SS58String

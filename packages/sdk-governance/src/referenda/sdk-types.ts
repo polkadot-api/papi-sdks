@@ -11,15 +11,19 @@ import {
 import { Observable } from "rxjs"
 import { PollOutcome } from "@/voting/sdk-types"
 
-type RawOngoingReferendum<T> = (ReferendumInfo<T> & { type: "Ongoing" })["value"]
+type RawOngoingReferendum<T> = (ReferendumInfo<T> & {
+  type: "Ongoing"
+})["value"]
 
 export interface ReferendumDetails {
   title?: string
 }
 
-export type OngoingReferendum<T extends {
-  origin: unknown
-} = { origin: unknown }> = Omit<RawOngoingReferendum<T['origin']>, "proposal"> & {
+export type OngoingReferendum<
+  T extends {
+    origin: unknown
+  } = { origin: unknown },
+> = Omit<RawOngoingReferendum<T["origin"]>, "proposal"> & {
   type: "Ongoing"
   id: number
   proposal: {
@@ -51,9 +55,11 @@ export interface ClosedReferendum {
   decision_deposit: WhoAmount | undefined
 }
 
-export type Referendum<TEnums extends {
-  origin: unknown
-}> = OngoingReferendum<TEnums> | ClosedReferendum
+export type Referendum<
+  TEnums extends {
+    origin: unknown
+  } = { origin: unknown },
+> = OngoingReferendum<TEnums> | ClosedReferendum
 
 export interface ReferendaSdkConfig {
   spenderOrigin: (value: bigint) => Origin | null
@@ -80,9 +86,11 @@ export type ReferendaTrack = Omit<
   minSupport: TrackFunctionDetails
 }
 
-export interface ReferendaSdk<TEnums extends {
-  origin: unknown
-}> {
+export interface ReferendaSdk<
+  TEnums extends {
+    origin: unknown
+  } = { origin: unknown },
+> {
   getReferenda(): Promise<Referendum<TEnums>[]>
   getReferendum(id: number): Promise<Referendum<TEnums> | null>
   watch: {
@@ -91,14 +99,14 @@ export interface ReferendaSdk<TEnums extends {
     getReferendumById$: (key: number) => Observable<Referendum<TEnums>>
   }
   getSpenderTrack(value: bigint): {
-    origin: TEnums['origin']
+    origin: TEnums["origin"]
     track: Promise<ReferendaTrack>
   }
 
   getTrack(id: number | string): Promise<ReferendaTrack | null>
 
   createReferenda(
-    origin: TEnums['origin'],
+    origin: TEnums["origin"],
     proposal: Binary,
     options?: Partial<{
       enactment: TraitsScheduleDispatchTime

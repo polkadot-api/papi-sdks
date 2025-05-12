@@ -23,9 +23,9 @@ type BasicReferendumInfo = [
   WhoAmount | undefined,
 ]
 
-type ExtendableEnum<T extends {}> = Enum<T> | { type: Exclude<string, keyof T>, value: unknown};
+type ExtendableEnum<T extends {}> = Enum<T> | { type: string; value: unknown }
 
-export type PolkadotRuntimeOriginCaller = Enum<{
+type PolkadotRuntimeOriginCallerVariants = {
   system: ExtendableEnum<{
     Root: undefined
   }>
@@ -37,7 +37,11 @@ export type PolkadotRuntimeOriginCaller = Enum<{
     MediumSpender: undefined
     BigSpender: undefined
   }>
-}>
+}
+export type PolkadotRuntimeOriginCallerOriginal =
+  Enum<PolkadotRuntimeOriginCallerVariants>
+export type PolkadotRuntimeOriginCaller =
+  ExtendableEnum<PolkadotRuntimeOriginCallerVariants>
 
 export type PreimagesBounded = Enum<{
   Legacy: {
@@ -54,7 +58,7 @@ export type TraitsScheduleDispatchTime = Enum<{
   After: number
 }>
 
-export type ReferendumInfo<TOrigin> = Enum<{
+export type ReferendumInfo<TOrigin = unknown> = Enum<{
   Ongoing: {
     track: number
     origin: TOrigin
@@ -183,4 +187,6 @@ type ReferendaSdkDefinition<TOrigin> = SdkDefinition<
   ReferendaSdkPallets<TOrigin>,
   ApisTypedef<{}>
 >
-export type ReferendaSdkTypedApi<TOrigin> = TypedApi<ReferendaSdkDefinition<TOrigin>>
+export type ReferendaSdkTypedApi<TOrigin = unknown> = TypedApi<
+  ReferendaSdkDefinition<TOrigin>
+>
