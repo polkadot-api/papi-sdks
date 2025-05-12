@@ -23,9 +23,9 @@ type BasicReferendumInfo = [
   WhoAmount | undefined,
 ]
 
-type ExtendableEnum<T extends {}> = Enum<T> | { type: string, value: unknown};
+type ExtendableEnum<T extends {}> = Enum<T> | { type: Exclude<string, keyof T>, value: unknown};
 
-export type PolkadotRuntimeOriginCaller = ExtendableEnum<{
+export type PolkadotRuntimeOriginCaller = Enum<{
   system: ExtendableEnum<{
     Root: undefined
   }>

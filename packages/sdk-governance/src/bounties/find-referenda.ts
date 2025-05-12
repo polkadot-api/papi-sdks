@@ -1,6 +1,7 @@
 import { OngoingReferendum } from "@/referenda/sdk-types"
 import { keyedMemo } from "@/util/memo"
 import { MultiAddress } from "./descriptors"
+import { PolkadotRuntimeOriginCaller } from "@/referenda/descriptors"
 
 const spenderOrigins = [
   "Treasurer",
@@ -11,8 +12,7 @@ const spenderOrigins = [
   "BigTipper",
 ]
 
-const getDecodedSpenderReferenda = keyedMemo(
-  async (ongoingReferenda: OngoingReferendum[]) => {
+const uncachedGetDecodedSpenderReferenda = async <TOrigin extends PolkadotRuntimeOriginCaller>(ongoingReferenda: OngoingReferendum<{ origin: TOrigin }>[]) => {
     const spenderReferenda = ongoingReferenda.filter(
       (ref) =>
         (ref.origin.type === "Origins" &&
@@ -34,12 +34,14 @@ const getDecodedSpenderReferenda = keyedMemo(
       ),
     )
     return response.filter((v) => !!v)
-  },
+  }
+const getDecodedSpenderReferenda: typeof uncachedGetDecodedSpenderReferenda = keyedMemo(
+  uncachedGetDecodedSpenderReferenda,
   new WeakMap(),
 )
 
-export async function findApprovingReferenda(
-  ongoingReferenda: OngoingReferendum[],
+export async function findApprovingReferenda<TOrigin extends PolkadotRuntimeOriginCaller>(
+  ongoingReferenda: OngoingReferendum<{ origin: TOrigin }>[],
   bountyId: number,
 ) {
   const spenderReferenda = await getDecodedSpenderReferenda(ongoingReferenda)
@@ -57,8 +59,8 @@ export async function findApprovingReferenda(
     .map(({ referendum }) => referendum)
 }
 
-export async function findProposingCuratorReferenda(
-  ongoingReferenda: OngoingReferendum[],
+export async function findProposingCuratorReferenda<TOrigin extends PolkadotRuntimeOriginCaller>(
+  ongoingReferenda: OngoingReferendum<{ origin: TOrigin }>[],
   bountyId: number,
 ) {
   const spenderReferenda = await getDecodedSpenderReferenda(ongoingReferenda)

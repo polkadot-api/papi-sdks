@@ -19,7 +19,7 @@ export interface ReferendumDetails {
 
 export type OngoingReferendum<T extends {
   origin: unknown
-}> = Omit<RawOngoingReferendum<T['origin']>, "proposal"> & {
+} = { origin: unknown }> = Omit<RawOngoingReferendum<T['origin']>, "proposal"> & {
   type: "Ongoing"
   id: number
   proposal: {

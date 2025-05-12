@@ -11,8 +11,9 @@ import {
 } from "./find-referenda"
 import { scheduledFinder } from "./find-scheduled"
 import { BountiesSdk, Bounty, GenericBounty, ProposedBounty } from "./sdk-types"
+import { PolkadotRuntimeOriginCaller } from "@/referenda/descriptors"
 
-export function createBountiesSdk(typedApi: BountiesSdkTypedApi): BountiesSdk {
+export function createBountiesSdk<TOrigin extends PolkadotRuntimeOriginCaller>(typedApi: BountiesSdkTypedApi<TOrigin>): BountiesSdk<{origin: TOrigin}> {
   const { findScheduledApproved, findScheduledCuratorProposed } =
     scheduledFinder(typedApi)
 
@@ -20,7 +21,7 @@ export function createBountiesSdk(typedApi: BountiesSdkTypedApi): BountiesSdk {
     bounty: BountyWithoutDescription,
     description: string | null,
     id: number,
-  ): Bounty => {
+  ): Bounty<{origin: TOrigin}> => {
     const generic: GenericBounty = {
       ...bounty,
       type: bounty.status.type,
@@ -48,6 +49,7 @@ export function createBountiesSdk(typedApi: BountiesSdkTypedApi): BountiesSdk {
           },
         }
       case "Approved":
+      case 'ApprovedWithCurator':
         return { ...generic, type: "Approved" }
       case "Funded":
         return {
@@ -180,7 +182,7 @@ export function createBountiesSdk(typedApi: BountiesSdkTypedApi): BountiesSdk {
 
   async function getProposedBounty(
     txEvent: TxEvent,
-  ): Promise<ProposedBounty | null> {
+  ): Promise<ProposedBounty<{origin: TOrigin}> | null> {
     if (!("events" in txEvent)) {
       return null
     }
