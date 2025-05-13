@@ -1,6 +1,6 @@
 {
   "name": "@polkadot-api/sdk-governance",
-  "version": "0.0.1-2",
+  "version": "0.1.0",
   "sideEffects": false,
   "author": "Victor Oliva (https://github.com/voliva)",
   "repository": {
