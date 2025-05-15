@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## 0.2.0 2025-05-15
+
+### Changed
+
+- `novasamaProvider` is now a function that takes an optional chain (kusama or polkadot) and returns a `MultisigProvider`
+
 ## 0.1.0 2025-05-06
 
 ### Added
