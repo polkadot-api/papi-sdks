@@ -11,6 +11,7 @@ import {
 import {
   Binary,
   FixedSizeBinary,
+  Transaction,
   type ResultPayload,
   type SS58String,
   type TypedApi,
@@ -100,6 +101,7 @@ export interface Contract<
         response: FlattenValues<D["__types"]["messages"][L]["response"]>
         events: D["__types"]["event"][]
         gasRequired: Gas
+        send: () => Transaction<any, any, any, any>
       },
       GetErr<T> | FlattenErrors<D["__types"]["messages"][L]["response"]>
     >

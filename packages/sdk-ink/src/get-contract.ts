@@ -37,13 +37,15 @@ export function getContract<
     async query(message, args) {
       const msg = inkClient.message(message)
 
+      const data = msg.encode(args.data ?? {})
+      const value = args.value ?? 0n
       const response = await typedApi.apis.ContractsApi.call(
         args.origin,
         address,
-        args.value ?? 0n,
+        value,
         args.options?.gasLimit,
         args.options?.storageDepositLimit,
-        msg.encode(args.data ?? {}),
+        data,
       )
       if (response.result.success) {
         const decoded = msg.decode(response.result.value)
@@ -52,6 +54,14 @@ export function getContract<
             response: value,
             events: inkClient.event.filter(address, response.events),
             gasRequired: response.gas_required,
+            send: () =>
+              typedApi.tx.Contracts.call({
+                dest: Enum("Id", address),
+                value,
+                gas_limit: response.gas_required,
+                storage_deposit_limit: args.options?.storageDepositLimit,
+                data,
+              }),
           }),
         })
       }
