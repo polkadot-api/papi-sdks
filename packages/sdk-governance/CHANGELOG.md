@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+## 0.2.0 2025-05-21
+
+### Changed
+
+- **Bounties**
+  - `filterApprovingReferenda` returns an object with the proposed curators if it's an ApproveWithCurator.
+
 ## 0.1.0 2025-05-13
 
 ### Added

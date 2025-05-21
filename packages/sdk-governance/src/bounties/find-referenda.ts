@@ -1,10 +1,10 @@
-import { OngoingReferendum } from "@/referenda/sdk-types"
-import { keyedMemo } from "@/util/memo"
-import { MultiAddress } from "./descriptors"
 import {
   PolkadotRuntimeOriginCaller,
   PolkadotRuntimeOriginCallerOriginal,
 } from "@/referenda/descriptors"
+import { OngoingReferendum } from "@/referenda/sdk-types"
+import { keyedMemo } from "@/util/memo"
+import { MultiAddress } from "./descriptors"
 
 const spenderOrigins = [
   "Treasurer",
@@ -47,6 +47,19 @@ const uncachedGetDecodedSpenderReferenda = async <
 const getDecodedSpenderReferenda: typeof uncachedGetDecodedSpenderReferenda =
   keyedMemo(uncachedGetDecodedSpenderReferenda, new WeakMap())
 
+const filterApproveCuratorCalls = (calls: any[], bountyId: number) =>
+  calls
+    .filter(
+      (v) =>
+        v?.bounty_id === bountyId &&
+        typeof v.curator === "object" &&
+        typeof v.fee === "bigint",
+    )
+    .map((v) => ({
+      curator: v.curator as MultiAddress,
+      fee: v.fee as bigint,
+    }))
+
 export async function findApprovingReferenda<
   TOrigin extends PolkadotRuntimeOriginCaller,
 >(
@@ -56,16 +69,49 @@ export async function findApprovingReferenda<
   const spenderReferenda = await getDecodedSpenderReferenda(ongoingReferenda)
 
   return spenderReferenda
-    .filter(({ call }) =>
-      findCalls(
+    .map(({ call, referendum }) => {
+      const approveWithCuratorCalls = filterApproveCuratorCalls(
+        findCalls(
+          {
+            pallet: "Bounties",
+            name: "approve_bounty_with_curator",
+          },
+          call,
+        ),
+        bountyId,
+      )
+
+      const approveCalls = findCalls(
         {
           pallet: "Bounties",
           name: "approve_bounty",
         },
         call,
-      ).some((v) => v?.bounty_id === bountyId),
-    )
-    .map(({ referendum }) => referendum)
+      ).filter((v) => v?.bounty_id === bountyId)
+
+      const approveThenProposeCalls = approveCalls.length
+        ? filterApproveCuratorCalls(
+            findCalls(
+              {
+                pallet: "Bounties",
+                name: "propose_curator",
+              },
+              call,
+            ),
+            bountyId,
+          )
+        : []
+
+      if (!(approveCalls.length + approveWithCuratorCalls.length)) return null
+      return {
+        referendum,
+        proposeCuratorCalls: [
+          ...approveWithCuratorCalls,
+          ...approveThenProposeCalls,
+        ],
+      }
+    })
+    .filter((v) => v !== null)
 }
 
 export async function findProposingCuratorReferenda<
@@ -78,23 +124,16 @@ export async function findProposingCuratorReferenda<
 
   return spenderReferenda
     .map(({ call, referendum }) => {
-      const proposeCuratorCalls = findCalls(
-        {
-          pallet: "Bounties",
-          name: "propose_curator",
-        },
-        call,
+      const proposeCuratorCalls = filterApproveCuratorCalls(
+        findCalls(
+          {
+            pallet: "Bounties",
+            name: "propose_curator",
+          },
+          call,
+        ),
+        bountyId,
       )
-        .filter(
-          (v) =>
-            v?.bounty_id === bountyId &&
-            typeof v.curator === "object" &&
-            typeof v.fee === "bigint",
-        )
-        .map((v) => ({
-          curator: v.curator as MultiAddress,
-          fee: v.fee as bigint,
-        }))
       if (!proposeCuratorCalls.length) return null
       return { referendum, proposeCuratorCalls }
     })

@@ -25,9 +25,15 @@ export interface ProposedBounty<
     ClosableBounty {
   type: "Proposed"
   approve(): Transaction<any, string, string, unknown>
-  filterApprovingReferenda(
-    referenda: OngoingReferendum<TEnums>[],
-  ): Promise<OngoingReferendum<TEnums>[]>
+  filterApprovingReferenda(referenda: OngoingReferendum<TEnums>[]): Promise<
+    Array<{
+      referendum: OngoingReferendum<TEnums>
+      proposeCuratorCalls: {
+        curator: MultiAddress
+        fee: bigint
+      }[]
+    }>
+  >
   getScheduledApprovals(): Promise<number[]>
   // TODO incoming approveWithCurator()
 }
