@@ -119,12 +119,7 @@ console.log("is compatible", await psp22Contract.isCompatible())
     result.value.events
     console.log("dry run success", result)
     console.log("sending transaction")
-    const txResult = await psp22Contract
-      .send("PSP22::increase_allowance", {
-        gasLimit: result.value.gasRequired,
-        data,
-      })
-      .signAndSubmit(signer)
+    const txResult = await result.value.send().signAndSubmit(signer)
 
     if (!txResult.ok) {
       console.log("error", txResult.dispatchError)

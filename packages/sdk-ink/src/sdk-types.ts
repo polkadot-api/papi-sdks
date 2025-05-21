@@ -22,11 +22,12 @@ import type {
   InkSdkApis,
   InkSdkPallets,
   InkSdkTypedApi,
+  ReviveSdkTypedApi,
 } from "./descriptor-types"
 import type { SdkStorage } from "./get-storage"
 
 export interface InkSdk<
-  T extends InkSdkTypedApi,
+  T extends InkSdkTypedApi | ReviveSdkTypedApi,
   D extends GenericInkDescriptors,
 > {
   getContract(adddress: SS58String): Contract<T, D>
@@ -45,7 +46,8 @@ export interface InkSdk<
 }
 
 type DryRunDeployFn<
-  T extends InkSdkTypedApi,
+  T extends InkSdkTypedApi | ReviveSdkTypedApi,
+  Addr,
   D extends GenericInkDescriptors,
 > = <L extends string & keyof D["__types"]["constructors"]>(
   constructor: L,
@@ -53,10 +55,11 @@ type DryRunDeployFn<
 ) => Promise<
   ResultPayload<
     {
-      address: SS58String
+      address: Addr
       response: FlattenValues<D["__types"]["messages"][L]["response"]>
       events: D["__types"]["event"][]
       gasRequired: Gas
+      deploy: () => Transaction<any, any, any, any>
     },
     GetErr<T> | FlattenErrors<D["__types"]["messages"][L]["response"]>
   >
@@ -70,10 +73,11 @@ type DeployFn<D extends GenericInkDescriptors> = <
 ) => AsyncTransaction<any, any, any, any>
 
 export interface Deployer<
-  T extends InkSdkTypedApi,
+  T extends InkSdkTypedApi | ReviveSdkTypedApi,
   D extends GenericInkDescriptors,
 > {
-  dryRun: DryRunDeployFn<T, D>
+  // TODO
+  dryRun: DryRunDeployFn<T, any, D>
   deploy: DeployFn<D>
 }
 
@@ -87,11 +91,12 @@ export type StorageRootType<T extends InkStorageDescriptor> = "" extends keyof T
   : never
 
 export interface Contract<
-  T extends InkSdkTypedApi,
+  T extends InkSdkTypedApi | ReviveSdkTypedApi,
   D extends GenericInkDescriptors,
 > {
   isCompatible(): Promise<boolean>
-  getStorage(): SdkStorage<D["__types"]["storage"]>
+  // TODO
+  getStorage(): SdkStorage<D["__types"]["storage"], any>
   query: <L extends string & keyof D["__types"]["messages"]>(
     message: L,
     args: QueryArgs<D["__types"]["messages"][L]["message"]>,
@@ -110,7 +115,8 @@ export interface Contract<
     message: L,
     args: SendArgs<D["__types"]["messages"][L]["message"]>,
   ) => AsyncTransaction<any, any, any, any>
-  dryRunRedeploy: DryRunDeployFn<T, D>
+  // TODO
+  dryRunRedeploy: DryRunDeployFn<T, any, D>
   redeploy: DeployFn<D>
   filterEvents: (
     events?: Array<
@@ -149,10 +155,10 @@ type GasInput =
     }
   | {
       gasLimit: Gas
+      storageDepositLimit: bigint
     }
 
 type SendArgs<D> = Data<D> & {
-  options?: Omit<QueryOptions, "gasLimit">
   value?: bigint
 } & GasInput
 
@@ -167,6 +173,6 @@ type DryRunRedeployArgs<D> = Data<D> & {
   origin: SS58String
 }
 type RedeployArgs<D> = Data<D> & {
-  options?: Omit<DeployOptions, "gasLimit">
+  options?: Omit<DeployOptions, "gasLimit" | "storageDepositLimit">
   value?: bigint
 } & GasInput

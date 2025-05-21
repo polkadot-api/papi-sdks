@@ -4,32 +4,28 @@ import type {
   InkStorageDescriptor,
 } from "@polkadot-api/ink-contracts"
 import type { ResultPayload } from "polkadot-api"
-import type {
-  GenericInkDescriptors,
-  InkSdkTypedApi,
-  StorageError,
-} from "./descriptor-types"
+import type { GenericInkDescriptors, StorageError } from "./descriptor-types"
+import { ContractsProvider } from "./provider"
 
-export type SdkStorage<S extends InkStorageDescriptor> = NestedStorage<S> &
-  RootStorage<S>
+export type SdkStorage<
+  S extends InkStorageDescriptor,
+  StorageErr,
+> = NestedStorage<S, StorageErr> & RootStorage<S, StorageErr>
 
-export function getStorage<
-  T extends InkSdkTypedApi,
-  D extends GenericInkDescriptors,
->(
-  typedApi: T,
+export function getStorage<Addr, StorageErr, D extends GenericInkDescriptors>(
+  provider: ContractsProvider<Addr, StorageErr>,
   inkClient: InkClient<D>,
   lookup: InkMetadataLookup,
-  address: string,
-): SdkStorage<D["__types"]["storage"]> {
+  address: Addr,
+): SdkStorage<D["__types"]["storage"], StorageErr> {
   type S = D["__types"]["storage"]
 
   const getStorage = async (
     label: string,
     key: unknown,
-  ): Promise<ResultPayload<unknown, StorageError>> => {
+  ): Promise<ResultPayload<unknown, StorageErr>> => {
     const storage = inkClient.storage(label)
-    const result = await typedApi.apis.ContractsApi.get_storage(
+    const result = await provider.getStorage(
       address,
       storage.encode(key as any),
     )
@@ -50,15 +46,15 @@ export function getStorage<
     async getNested<L extends string & Exclude<keyof S, "">>(
       label: L,
       ...args: S[L]["key"] extends undefined ? [] : [key: S[L]["key"]]
-    ): Promise<ResultPayload<S[L]["value"], StorageError>> {
+    ): Promise<ResultPayload<S[L]["value"], StorageErr>> {
       return getStorage(label, args[0])
     },
     async getRoot(): Promise<
-      ResultPayload<S[""]["value"] & UnNest<Omit<S, "">>, StorageError>
+      ResultPayload<S[""]["value"] & UnNest<Omit<S, "">>, StorageErr>
     > {
       const root = (await getStorage("", undefined)) as ResultPayload<
         S[""]["value"],
-        StorageError
+        StorageErr
       >
       if (!root.success) {
         return root
@@ -98,20 +94,23 @@ const assignFnAtPath = (
   }
 }
 
-type NestedStorage<S extends InkStorageDescriptor> =
+type NestedStorage<S extends InkStorageDescriptor, StorageErr> =
   Exclude<keyof S, ""> extends never
     ? {}
     : {
         getNested<L extends string & Exclude<keyof S, "">>(
           label: L,
           ...args: S[L]["key"] extends undefined ? [] : [key: S[L]["key"]]
-        ): Promise<ResultPayload<S[L]["value"], StorageError>>
+        ): Promise<ResultPayload<S[L]["value"], StorageErr>>
       }
 
-type RootStorage<S extends InkStorageDescriptor> = "" extends keyof S
+type RootStorage<
+  S extends InkStorageDescriptor,
+  StorageErr,
+> = "" extends keyof S
   ? {
       getRoot(): Promise<
-        ResultPayload<S[""]["value"] & UnNest<Omit<S, "">>, StorageError>
+        ResultPayload<S[""]["value"] & UnNest<Omit<S, "">>, StorageErr>
       >
     }
   : {}

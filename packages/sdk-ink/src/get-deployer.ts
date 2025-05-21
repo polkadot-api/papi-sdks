@@ -5,35 +5,61 @@ import {
 } from "@polkadot-api/common-sdk-utils"
 import { type InkClient } from "@polkadot-api/ink-contracts"
 import { Binary, Enum } from "polkadot-api"
-import type { GenericInkDescriptors, InkSdkTypedApi } from "./descriptor-types"
+import type {
+  GenericInkDescriptors,
+  InkSdkTypedApi,
+  ReviveSdkTypedApi,
+} from "./descriptor-types"
+import { ContractsProvider } from "./provider"
 import type { Deployer } from "./sdk-types"
+import { getStorageLimit } from "./util"
 
+export const defaultSalt = Binary.fromText("")
 export function getDeployer<
-  T extends InkSdkTypedApi,
+  T extends InkSdkTypedApi | ReviveSdkTypedApi,
+  Addr,
+  StorageErr,
   D extends GenericInkDescriptors,
->(typedApi: T, inkClient: InkClient<D>, code: Binary): Deployer<T, D> {
+>(
+  provider: ContractsProvider<Addr, StorageErr>,
+  inkClient: InkClient<D>,
+  code: Binary,
+): Deployer<T, D> {
   return {
     async dryRun(constructorLabel, args) {
       const ctor = inkClient.constructor(constructorLabel)
-      const response = await typedApi.apis.ContractsApi.instantiate(
+      const response = await provider.dryRunInstantiate(
         args.origin,
         args.value ?? 0n,
         args.options?.gasLimit,
         args.options?.storageDepositLimit,
         Enum("Upload", code),
         ctor.encode(args.data ?? {}),
-        args.options?.salt ?? Binary.fromText(""),
+        args.options?.salt ?? defaultSalt,
       )
       if (response.result.success) {
         const decoded = ctor.decode(response.result.value.result)
-        const address = response.result.value.account_id
+        const address = response.result.value.addr
 
         return mapResult(flattenResult(decoded), {
           value: (value) => ({
             address,
             response: value,
-            events: inkClient.event.filter(address, response.events),
+            // TODO
+            events: inkClient.event.filter(address as any, response.events),
             gasRequired: response.gas_required,
+            deploy() {
+              return provider.txInstantiateWithCode({
+                value: args.value ?? 0n,
+                gas_limit: response.gas_required,
+                storage_deposit_limit: getStorageLimit(
+                  response.storage_deposit,
+                ),
+                code,
+                data: ctor.encode(args.data ?? {}),
+                salt: args.options?.salt ?? defaultSalt,
+              })
+            },
           }),
         })
       }
@@ -46,29 +72,36 @@ export function getDeployer<
       wrapAsyncTx(async () => {
         const ctor = inkClient.constructor(constructorLabel)
 
-        const gasLimit = await (async () => {
-          if ("gasLimit" in args) return args.gasLimit
+        const limits = await (async () => {
+          if ("gasLimit" in args)
+            return {
+              gas: args.gasLimit,
+              storage: args.storageDepositLimit,
+            }
 
-          const response = await typedApi.apis.ContractsApi.instantiate(
+          const response = await provider.dryRunInstantiate(
             args.origin,
             args.value ?? 0n,
             undefined,
-            args.options?.storageDepositLimit,
+            undefined,
             Enum("Upload", code),
             ctor.encode(args.data ?? {}),
-            args.options?.salt ?? Binary.fromText(""),
+            args.options?.salt ?? defaultSalt,
           )
 
-          return response.gas_required
+          return {
+            gas: response.gas_required,
+            storage: getStorageLimit(response.storage_deposit),
+          }
         })()
 
-        return typedApi.tx.Contracts.instantiate_with_code({
+        return provider.txInstantiateWithCode({
           value: args.value ?? 0n,
-          gas_limit: gasLimit,
-          storage_deposit_limit: args.options?.storageDepositLimit,
+          gas_limit: limits.gas,
+          storage_deposit_limit: limits.storage,
           code,
           data: ctor.encode(args.data ?? {}),
-          salt: args.options?.salt ?? Binary.fromText(""),
+          salt: args.options?.salt ?? defaultSalt,
         })
       }),
   }
