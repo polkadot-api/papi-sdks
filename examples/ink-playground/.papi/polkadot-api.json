@@ -5,6 +5,11 @@
     "testAzero": {
       "wsUrl": "wss://aleph-zero-testnet-rpc.dwellir.com",
       "metadata": ".papi/metadata/testAzero.scale"
+    },
+    "pop": {
+      "wsUrl": "wss://rpc1.paseo.popnetwork.xyz",
+      "metadata": ".papi/metadata/pop.scale",
+      "genesis": "0xe8b2d197b82a0da1fffca832c050894ebe343b289c61ef439aa694bdcef78aa1"
     }
   },
   "ink": {
