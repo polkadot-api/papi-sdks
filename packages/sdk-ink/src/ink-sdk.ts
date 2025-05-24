@@ -4,6 +4,7 @@ import { getContract } from "./get-contract"
 import { getDeployer } from "./get-deployer"
 import type { InkSdk } from "./sdk-types"
 import { contractsProvider } from "./provider"
+import { SS58String } from "polkadot-api"
 
 export const createInkSdk = <
   T extends InkSdkTypedApi,
@@ -11,14 +12,15 @@ export const createInkSdk = <
 >(
   typedApi: T,
   contractDescriptors: D,
-): InkSdk<T, D> => {
+): InkSdk<T, D, SS58String> => {
   const provider = contractsProvider(typedApi)
   const inkClient = getInkClient(contractDescriptors)
   const lookup = getInkLookup(contractDescriptors.metadata)
 
   return {
-    getContract: (address) => getContract(provider, inkClient, lookup, address),
-    getDeployer: (code) => getDeployer(provider, inkClient, code),
+    getContract: (address) =>
+      getContract(provider, inkClient, lookup, address, (v) => v),
+    getDeployer: (code) => getDeployer(provider, inkClient, code, (v) => v),
     readDeploymentEvents() {
       return null
     },

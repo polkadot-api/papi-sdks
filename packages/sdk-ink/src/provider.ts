@@ -125,7 +125,7 @@ export const reviveProvider = (
         (r) => r?.code_hash,
       ),
     txCall: (payload) => {
-      if (!payload.storage_deposit_limit) {
+      if (payload.storage_deposit_limit == null) {
         throw new Error("Pallet revive requires storage deposit limit")
       }
       return typedApi.tx.Revive.call({
@@ -134,20 +134,22 @@ export const reviveProvider = (
       })
     },
     txInstantiate: (payload) => {
-      if (!payload.storage_deposit_limit) {
+      if (payload.storage_deposit_limit == null) {
         throw new Error("Pallet revive requires storage deposit limit")
       }
       return typedApi.tx.Revive.instantiate({
         storage_deposit_limit: payload.storage_deposit_limit,
+        salt: payload.salt,
         ...payload,
       })
     },
     txInstantiateWithCode: (payload) => {
-      if (!payload.storage_deposit_limit) {
+      if (payload.storage_deposit_limit == null) {
         throw new Error("Pallet revive requires storage deposit limit")
       }
       return typedApi.tx.Revive.instantiate_with_code({
         storage_deposit_limit: payload.storage_deposit_limit,
+        salt: payload.salt,
         ...payload,
       })
     },
