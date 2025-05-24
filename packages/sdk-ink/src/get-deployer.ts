@@ -14,17 +14,20 @@ import { ContractsProvider } from "./provider"
 import type { Deployer } from "./sdk-types"
 import { getSignedStorage, getStorageLimit } from "./util"
 
-export const defaultSalt = Binary.fromText("")
+// TODO: salt in revive pallet must be fixed-size 32-byte
+export const defaultSalt = Binary.fromBytes(new Uint8Array(32).fill(0))
 export function getDeployer<
   T extends InkSdkTypedApi | ReviveSdkTypedApi,
   Addr,
   StorageErr,
   D extends GenericInkDescriptors,
+  PublicAddr,
 >(
   provider: ContractsProvider<Addr, StorageErr>,
   inkClient: InkClient<D>,
   code: Binary,
-): Deployer<T, D> {
+  mapAddr: (v: Addr) => PublicAddr,
+): Deployer<T, D, PublicAddr> {
   return {
     async dryRun(constructorLabel, args) {
       const ctor = inkClient.constructor(constructorLabel)
@@ -43,7 +46,7 @@ export function getDeployer<
 
         return mapResult(flattenResult(decoded), {
           value: (value) => ({
-            address,
+            address: mapAddr(address),
             response: value,
             // TODO
             events: inkClient.event.filter(address as any, response.events),

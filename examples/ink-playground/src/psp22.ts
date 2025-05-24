@@ -3,9 +3,9 @@ import { createInkSdk } from "@polkadot-api/sdk-ink"
 import { Binary, createClient } from "polkadot-api"
 import { withPolkadotSdkCompat } from "polkadot-api/polkadot-sdk-compat"
 import { getWsProvider } from "polkadot-api/ws-provider/web"
-import { ADDRESS } from "./address"
-import { aliceSigner } from "./signer"
-import { trackTx } from "./trackTx"
+import { ADDRESS } from "./util/address"
+import { aliceSigner } from "./util/signer"
+import { trackTx } from "./util/trackTx"
 
 const client = createClient(
   withPolkadotSdkCompat(getWsProvider("wss://rpc1.paseo.popnetwork.xyz")),

@@ -21,12 +21,14 @@ export function getContract<
   Addr,
   StorageErr,
   D extends GenericInkDescriptors,
+  PublicAddr,
 >(
   provider: ContractsProvider<Addr, StorageErr>,
   inkClient: InkClient<D>,
   lookup: InkMetadataLookup,
   address: Addr,
-): Contract<T, D> {
+  _mapAddr: (v: Addr) => PublicAddr,
+): Contract<T, D, PublicAddr> {
   const codeHash = provider.getCodeHash(address)
 
   return {
@@ -139,6 +141,7 @@ export function getContract<
         const decoded = ctor.decode(response.result.value.result)
         return mapResult(flattenResult(decoded), {
           value: (value) => ({
+            // TODO mapAddr?
             address: response.result.value.account_id,
             response: value,
             // TODO

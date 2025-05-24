@@ -29,9 +29,10 @@ import type { SdkStorage } from "./get-storage"
 export interface InkSdk<
   T extends InkSdkTypedApi | ReviveSdkTypedApi,
   D extends GenericInkDescriptors,
+  Addr,
 > {
-  getContract(adddress: SS58String): Contract<T, D>
-  getDeployer(code: Binary): Deployer<T, D>
+  getContract(adddress: Addr): Contract<T, D, Addr>
+  getDeployer(code: Binary): Deployer<T, D, Addr>
   readDeploymentEvents: (
     origin: SS58String,
     events?: Array<
@@ -40,7 +41,7 @@ export interface InkSdk<
       }
     >,
   ) => {
-    address: string
+    address: Addr
     contractEvents: Array<D["__types"]["event"]>
   } | null
 }
@@ -76,9 +77,9 @@ type DeployFn<D extends GenericInkDescriptors> = <
 export interface Deployer<
   T extends InkSdkTypedApi | ReviveSdkTypedApi,
   D extends GenericInkDescriptors,
+  Addr,
 > {
-  // TODO
-  dryRun: DryRunDeployFn<T, any, D>
+  dryRun: DryRunDeployFn<T, Addr, D>
   deploy: DeployFn<D>
 }
 
@@ -94,6 +95,7 @@ export type StorageRootType<T extends InkStorageDescriptor> = "" extends keyof T
 export interface Contract<
   T extends InkSdkTypedApi | ReviveSdkTypedApi,
   D extends GenericInkDescriptors,
+  Addr,
 > {
   isCompatible(): Promise<boolean>
   // TODO
@@ -117,8 +119,7 @@ export interface Contract<
     message: L,
     args: SendArgs<D["__types"]["messages"][L]["message"]>,
   ) => AsyncTransaction<any, any, any, any>
-  // TODO
-  dryRunRedeploy: DryRunDeployFn<T, any, D>
+  dryRunRedeploy: DryRunDeployFn<T, Addr, D>
   redeploy: DeployFn<D>
   filterEvents: (
     events?: Array<

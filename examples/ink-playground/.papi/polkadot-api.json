@@ -9,6 +9,7 @@
     }
   },
   "ink": {
-    "psp22": ".papi/contracts/psp22.json"
+    "psp22": ".papi/contracts/psp22.json",
+    "my_contract": ".papi/contracts/my_contract.json"
   }
 }

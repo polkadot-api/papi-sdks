@@ -53,7 +53,6 @@ export type DryRunCallResult<Ev = any, Err = any> = {
     Refund: bigint
     Charge: bigint
   }>
-  debug_message: Binary
   result: ResultPayload<
     {
       flags: number
@@ -73,7 +72,7 @@ export type DryRunInstantiateParams = [
     Existing: FixedSizeBinary<32>
   }>,
   data: Binary,
-  salt: Binary,
+  salt: Binary | undefined,
 ]
 export type DryRunInstantiateResult<AddrRes, Ev = any, Err = any> = {
   gas_consumed: Gas
@@ -82,7 +81,6 @@ export type DryRunInstantiateResult<AddrRes, Ev = any, Err = any> = {
     Refund: bigint
     Charge: bigint
   }>
-  debug_message: Binary
   result: ResultPayload<
     {
       result: {
@@ -216,7 +214,7 @@ export type ReviveSdkPallets = PalletsTypedef<
         storage_deposit_limit: bigint
         code_hash: FixedSizeBinary<32>
         data: Binary
-        salt?: FixedSizeBinary<32>
+        salt: FixedSizeBinary<32> | undefined
       }>
       instantiate_with_code: TxDescriptor<{
         value: bigint
@@ -224,7 +222,7 @@ export type ReviveSdkPallets = PalletsTypedef<
         storage_deposit_limit: bigint
         code: Binary
         data: Binary
-        salt?: Binary
+        salt: FixedSizeBinary<32> | undefined
       }>
     }
   },
