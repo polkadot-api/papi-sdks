@@ -13,7 +13,7 @@ import type {
 import { getStorage } from "./get-storage"
 import { ContractsProvider } from "./provider"
 import type { Contract } from "./sdk-types"
-import { getStorageLimit } from "./util"
+import { getSignedStorage, getStorageLimit } from "./util"
 import { defaultSalt } from "./get-deployer"
 
 export function getContract<
@@ -58,17 +58,20 @@ export function getContract<
       if (response.result.success) {
         const decoded = msg.decode(response.result.value)
         return mapResult(flattenResult(decoded), {
-          value: (value) => ({
-            response: value,
+          value: (innerResponse) => ({
+            response: innerResponse,
             // TODO
             events: inkClient.event.filter(address as any, response.events),
             gasRequired: response.gas_required,
+            storageDeposit: getSignedStorage(response.storage_deposit),
             send: () =>
               provider.txCall({
                 dest: address,
                 value,
                 gas_limit: response.gas_required,
-                storage_deposit_limit: args.options?.storageDepositLimit,
+                storage_deposit_limit: getStorageLimit(
+                  response.storage_deposit,
+                ),
                 data,
               }),
           }),
@@ -141,6 +144,7 @@ export function getContract<
             // TODO
             events: inkClient.event.filter(address as any, response.events),
             gasRequired: response.gas_required,
+            storageDeposit: getSignedStorage(response.storage_deposit),
             deploy() {
               return provider.txInstantiate({
                 value: args.value ?? 0n,
