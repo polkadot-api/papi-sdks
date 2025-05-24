@@ -12,7 +12,7 @@ import type {
 } from "./descriptor-types"
 import { ContractsProvider } from "./provider"
 import type { Deployer } from "./sdk-types"
-import { getStorageLimit } from "./util"
+import { getSignedStorage, getStorageLimit } from "./util"
 
 export const defaultSalt = Binary.fromText("")
 export function getDeployer<
@@ -48,6 +48,7 @@ export function getDeployer<
             // TODO
             events: inkClient.event.filter(address as any, response.events),
             gasRequired: response.gas_required,
+            storageDeposit: getSignedStorage(response.storage_deposit),
             deploy() {
               return provider.txInstantiateWithCode({
                 value: args.value ?? 0n,

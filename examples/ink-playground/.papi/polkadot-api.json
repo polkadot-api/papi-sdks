@@ -2,10 +2,6 @@
   "version": 0,
   "descriptorPath": ".papi/descriptors",
   "entries": {
-    "testAzero": {
-      "wsUrl": "wss://aleph-zero-testnet-rpc.dwellir.com",
-      "metadata": ".papi/metadata/testAzero.scale"
-    },
     "pop": {
       "wsUrl": "wss://rpc1.paseo.popnetwork.xyz",
       "metadata": ".papi/metadata/pop.scale",
@@ -13,7 +9,6 @@
     }
   },
   "ink": {
-    "escrow": ".papi/contracts/escrow.json",
     "psp22": ".papi/contracts/psp22.json"
   }
 }

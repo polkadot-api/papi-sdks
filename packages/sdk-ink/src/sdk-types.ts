@@ -59,6 +59,7 @@ type DryRunDeployFn<
       response: FlattenValues<D["__types"]["messages"][L]["response"]>
       events: D["__types"]["event"][]
       gasRequired: Gas
+      storageDeposit: bigint
       deploy: () => Transaction<any, any, any, any>
     },
     GetErr<T> | FlattenErrors<D["__types"]["messages"][L]["response"]>
@@ -106,6 +107,7 @@ export interface Contract<
         response: FlattenValues<D["__types"]["messages"][L]["response"]>
         events: D["__types"]["event"][]
         gasRequired: Gas
+        storageDeposit: bigint
         send: () => Transaction<any, any, any, any>
       },
       GetErr<T> | FlattenErrors<D["__types"]["messages"][L]["response"]>
