@@ -1,16 +1,16 @@
 {
   "source": {
-    "hash": "0x3fe9b33bd7ab79df984047477c521d034ab8b428bf2d0a5de3b076c4d9300784",
+    "hash": "0x976ad4f92cbf443c1254b8e8e424b068a398b35f2eb8330925fc7ec840d8a382",
     "language": "ink! 6.0.0-alpha",
     "compiler": "rustc 1.85.1",
     "build_info": {
-      "build_mode": "Debug",
+      "build_mode": "Release",
       "cargo_contract_version": "6.0.0-alpha",
       "rust_toolchain": "stable-aarch64-apple-darwin"
     }
   },
   "contract": {
-    "name": "my_contract",
+    "name": "flipper",
     "version": "0.1.0",
     "authors": [
       "[your_name] <[your_email]>"
@@ -22,7 +22,7 @@
       {
         "args": [
           {
-            "label": "init_value",
+            "label": "initial_value",
             "type": {
               "displayName": [
                 "bool"
@@ -72,31 +72,31 @@
         "displayName": [
           "AccountId"
         ],
-        "type": 6
+        "type": 9
       },
       "balance": {
         "displayName": [
           "Balance"
         ],
-        "type": 9
+        "type": 11
       },
       "blockNumber": {
         "displayName": [
           "BlockNumber"
         ],
-        "type": 12
+        "type": 14
       },
       "chainExtension": {
         "displayName": [
           "ChainExtension"
         ],
-        "type": 13
+        "type": 15
       },
       "hash": {
         "displayName": [
           "Hash"
         ],
-        "type": 10
+        "type": 12
       },
       "maxEventTopics": 4,
       "staticBufferSize": 16384,
@@ -104,10 +104,60 @@
         "displayName": [
           "Timestamp"
         ],
-        "type": 11
+        "type": 13
       }
     },
-    "events": [],
+    "events": [
+      {
+        "args": [
+          {
+            "docs": [],
+            "indexed": false,
+            "label": "flipped_by",
+            "type": {
+              "displayName": [
+                "H160"
+              ],
+              "type": 6
+            }
+          },
+          {
+            "docs": [],
+            "indexed": false,
+            "label": "new_value",
+            "type": {
+              "displayName": [
+                "bool"
+              ],
+              "type": 0
+            }
+          }
+        ],
+        "docs": [],
+        "label": "Flipped",
+        "module_path": "flipper::flipper",
+        "signature_topic": "0x192845965e0abe93f5e49b3b56b2eab9663f5df5a7672e5c5afe25259bf61adf"
+      },
+      {
+        "args": [
+          {
+            "docs": [],
+            "indexed": false,
+            "label": "initial_value",
+            "type": {
+              "displayName": [
+                "bool"
+              ],
+              "type": 0
+            }
+          }
+        ],
+        "docs": [],
+        "label": "Initialized",
+        "module_path": "flipper::flipper",
+        "signature_topic": "0x8dc24bc5b3b57d2db52747588bd34af8f032e16ae663550627e61a81149843ff"
+      }
+    ],
     "lang_error": {
       "displayName": [
         "ink",
@@ -171,7 +221,7 @@
               "name": "value"
             }
           ],
-          "name": "MyContract"
+          "name": "Flipper"
         }
       },
       "root_key": "0x00000000",
@@ -196,15 +246,15 @@
               {
                 "name": "value",
                 "type": 0,
-                "typeName": "<bool as::ink::storage::traits::AutoStorableHint<::ink::storage\n::traits::ManualKey<453427380u32, ()>,>>::Type"
+                "typeName": "<bool as::ink::storage::traits::AutoStorableHint<::ink::storage\n::traits::ManualKey<2054318728u32, ()>,>>::Type"
               }
             ]
           }
         },
         "path": [
-          "my_contract",
-          "my_contract",
-          "MyContract"
+          "flipper",
+          "flipper",
+          "Flipper"
         ]
       }
     },
@@ -327,15 +377,14 @@
             "fields": [
               {
                 "type": 7,
-                "typeName": "[u8; 32]"
+                "typeName": "[u8; 20]"
               }
             ]
           }
         },
         "path": [
-          "ink_primitives",
-          "types",
-          "AccountId"
+          "primitive_types",
+          "H160"
         ]
       }
     },
@@ -344,7 +393,7 @@
       "type": {
         "def": {
           "array": {
-            "len": 32,
+            "len": 20,
             "type": 8
           }
         }
@@ -362,18 +411,49 @@
       "id": 9,
       "type": {
         "def": {
-          "primitive": "u128"
-        }
+          "composite": {
+            "fields": [
+              {
+                "type": 10,
+                "typeName": "[u8; 32]"
+              }
+            ]
+          }
+        },
+        "path": [
+          "ink_primitives",
+          "types",
+          "AccountId"
+        ]
       }
     },
     {
       "id": 10,
       "type": {
         "def": {
+          "array": {
+            "len": 32,
+            "type": 8
+          }
+        }
+      }
+    },
+    {
+      "id": 11,
+      "type": {
+        "def": {
+          "primitive": "u128"
+        }
+      }
+    },
+    {
+      "id": 12,
+      "type": {
+        "def": {
           "composite": {
             "fields": [
               {
-                "type": 7,
+                "type": 10,
                 "typeName": "[u8; 32]"
               }
             ]
@@ -387,7 +467,7 @@
       }
     },
     {
-      "id": 11,
+      "id": 13,
       "type": {
         "def": {
           "primitive": "u64"
@@ -395,7 +475,7 @@
       }
     },
     {
-      "id": 12,
+      "id": 14,
       "type": {
         "def": {
           "primitive": "u32"
@@ -403,7 +483,7 @@
       }
     },
     {
-      "id": 13,
+      "id": 15,
       "type": {
         "def": {
           "variant": {}

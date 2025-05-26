@@ -41,8 +41,11 @@ if (!dryRunResult.success) {
 
   if (process.argv.includes("deploy")) {
     console.log("Deploying...")
-    await trackTx(dryRunResult.value.deploy().signSubmitAndWatch(aliceSigner))
+    const fin = await trackTx(
+      dryRunResult.value.deploy().signSubmitAndWatch(aliceSigner),
+    )
     console.log(`Deployed to address ${dryRunResult.value.address}`)
+    console.log(psp22Sdk.readDeploymentEvents(fin.events))
   }
 }
 

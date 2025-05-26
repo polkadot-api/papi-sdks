@@ -21,7 +21,7 @@ export function getDeployer<
   Addr,
   StorageErr,
   D extends GenericInkDescriptors,
-  PublicAddr,
+  PublicAddr extends string,
 >(
   provider: ContractsProvider<Addr, StorageErr>,
   inkClient: InkClient<D>,
@@ -48,8 +48,7 @@ export function getDeployer<
           value: (value) => ({
             address: mapAddr(address),
             response: value,
-            // TODO
-            events: inkClient.event.filter(address as any, response.events),
+            events: inkClient.event.filter(mapAddr(address), response.events),
             gasRequired: response.gas_required,
             storageDeposit: getSignedStorage(response.storage_deposit),
             deploy() {

@@ -12,9 +12,9 @@ const client = createClient(
 )
 
 const typedApi = client.getTypedApi(pop)
-const flipperSdk = createReviveSdk(typedApi, contracts.my_contract)
+const flipperSdk = createReviveSdk(typedApi, contracts.flipper)
 
-const pvmFile = Bun.file("./contracts/flipper_inkv6/my_contract.polkavm")
+const pvmFile = Bun.file("./contracts/flipper_inkv6/flipper.polkavm")
 console.log("Loading pvm file")
 const pvmBytes = Binary.fromBytes(await pvmFile.bytes())
 
@@ -23,7 +23,7 @@ const deployer = flipperSdk.getDeployer(pvmBytes)
 console.log("Dry-running deploy")
 const dryRunResult = await deployer.dryRun("new", {
   data: {
-    init_value: false,
+    initial_value: false,
   },
   origin: ADDRESS.alice,
 })
@@ -40,8 +40,20 @@ if (!dryRunResult.success) {
 
   if (process.argv.includes("deploy")) {
     console.log("Deploying...")
-    await trackTx(dryRunResult.value.deploy().signSubmitAndWatch(aliceSigner))
+    const fin = await trackTx(
+      dryRunResult.value.deploy().signSubmitAndWatch(aliceSigner),
+    )
     console.log(`Deployed to address ${dryRunResult.value.address}`)
+    console.log(flipperSdk.readDeploymentEvents(fin.events))
+    // console.log(
+    //   JSON.stringify(fin.events, (_, v) =>
+    //     typeof v === "bigint"
+    //       ? String(v)
+    //       : v instanceof Binary
+    //         ? `bin${v.asHex()}`
+    //         : v,
+    //   ),
+    // )
   }
 }
 
@@ -71,8 +83,16 @@ console.log(`flip dry-run success`, {
 
 if (process.argv.includes("flip")) {
   console.log("flipping...")
-  await trackTx(flipResult.value.send().signSubmitAndWatch(aliceSigner))
+  const fin = await trackTx(
+    flipResult.value.send().signSubmitAndWatch(aliceSigner),
+  )
   console.log(`Flipped!`)
+  const events = contract.filterEvents(fin.events)
+  const evt = events[0]
+  console.log(
+    "Event new flipped value",
+    evt.type === "Flipped" && evt.value.new_value,
+  )
 }
 
 // Storage not supported yet until get_storage_var_key is deployed

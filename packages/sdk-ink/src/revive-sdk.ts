@@ -27,8 +27,28 @@ export const createReviveSdk = <
       ),
     getDeployer: (code) =>
       getDeployer(provider, inkClient, code, (v) => v.asHex()),
-    readDeploymentEvents() {
-      return null
+    readDeploymentEvents(events) {
+      // Contract.Instantiated event not available yet in pallet-revive
+      // but we can find events if the contract emits something on deploy
+
+      const contractEmittedEvents =
+        events?.filter(
+          (evt) =>
+            evt.type === "Revive" &&
+            (evt.value as any).type === "ContractEmitted",
+        ) ?? []
+      const contractAddresses = Array.from(
+        new Set<string>(
+          contractEmittedEvents
+            .map((evt) => (evt as any).value.value?.contract?.asHex?.())
+            .filter((v) => !!v),
+        ),
+      )
+
+      return contractAddresses.map((address) => ({
+        address,
+        contractEvents: inkClient.event.filter(address, contractEmittedEvents),
+      }))
     },
   }
 }

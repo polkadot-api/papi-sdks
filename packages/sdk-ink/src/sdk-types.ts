@@ -34,16 +34,15 @@ export interface InkSdk<
   getContract(adddress: Addr): Contract<T, D, Addr>
   getDeployer(code: Binary): Deployer<T, D, Addr>
   readDeploymentEvents: (
-    origin: SS58String,
     events?: Array<
       GenericEvent & {
         topics: FixedSizeBinary<number>[]
       }
     >,
-  ) => {
+  ) => Array<{
     address: Addr
     contractEvents: Array<D["__types"]["event"]>
-  } | null
+  }>
 }
 
 type DryRunDeployFn<

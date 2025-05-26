@@ -21,13 +21,13 @@ export function getContract<
   Addr,
   StorageErr,
   D extends GenericInkDescriptors,
-  PublicAddr,
+  PublicAddr extends string,
 >(
   provider: ContractsProvider<Addr, StorageErr>,
   inkClient: InkClient<D>,
   lookup: InkMetadataLookup,
   address: Addr,
-  _mapAddr: (v: Addr) => PublicAddr,
+  mapAddr: (v: Addr) => PublicAddr,
 ): Contract<T, D, PublicAddr> {
   const codeHash = provider.getCodeHash(address)
 
@@ -62,8 +62,7 @@ export function getContract<
         return mapResult(flattenResult(decoded), {
           value: (innerResponse) => ({
             response: innerResponse,
-            // TODO
-            events: inkClient.event.filter(address as any, response.events),
+            events: inkClient.event.filter(mapAddr(address), response.events),
             gasRequired: response.gas_required,
             storageDeposit: getSignedStorage(response.storage_deposit),
             send: () =>
@@ -134,18 +133,17 @@ export function getContract<
         args.options?.storageDepositLimit,
         Enum("Existing", code_hash),
         ctor.encode(args.data ?? {}),
-        // TODO
-        args.options?.salt ?? Binary.fromText(""),
+        args.options?.salt ?? defaultSalt,
       )
       if (response.result.success) {
         const decoded = ctor.decode(response.result.value.result)
+        const address = response.result.value.addr
+
         return mapResult(flattenResult(decoded), {
           value: (value) => ({
-            // TODO mapAddr?
-            address: response.result.value.account_id,
+            address: mapAddr(address),
             response: value,
-            // TODO
-            events: inkClient.event.filter(address as any, response.events),
+            events: inkClient.event.filter(mapAddr(address), response.events),
             gasRequired: response.gas_required,
             storageDeposit: getSignedStorage(response.storage_deposit),
             deploy() {
@@ -207,8 +205,7 @@ export function getContract<
         })
       }),
     filterEvents(events) {
-      // TODO
-      return inkClient.event.filter(address as any, events)
+      return inkClient.event.filter(mapAddr(address), events)
     },
   }
 }
