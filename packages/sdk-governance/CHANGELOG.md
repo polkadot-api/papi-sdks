@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Added
+
+- Support ChildBountiesV1
+
 ### Fixed
 
 - Fix descriptor types after update to polkadot-api@1.11.0

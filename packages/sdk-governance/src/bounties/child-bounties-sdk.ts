@@ -1,11 +1,14 @@
 import { keyedMemo } from "@/util/memo"
 import { partitionEntries } from "@/util/watchEntries"
 import { combineKeys, toKeySet } from "@react-rxjs/utils"
+import { Binary, CompatibilityLevel } from "polkadot-api"
 import { combineLatest, distinctUntilChanged, map } from "rxjs"
 import { getChildBountyAccount } from "./bounty-account"
 import { getBountyDescriptions$ } from "./bounty-descriptions"
 import {
   ChildBountiesSdkTypedApi,
+  ChildBountiesV0Storage,
+  ChildBountiesV1Storage,
   ChildBountyWithoutDescription,
 } from "./child-descriptors"
 import {
@@ -111,9 +114,49 @@ export function createChildBountiesSdk(
     const [getBountyById$, bountyKeyChanges$] = partitionEntries(
       typedApi.query.ChildBounties.ChildBounties.watchEntries(parentId),
     )
+
+    const v0Api = typedApi as ChildBountiesSdkTypedApi<ChildBountiesV0Storage>
+    const v1Api = typedApi as ChildBountiesSdkTypedApi<ChildBountiesV1Storage>
+    const getEntries = async (): Promise<
+      {
+        keyArgs: [Key: number]
+        value: Binary
+      }[]
+    > => {
+      if (
+        await v0Api.query.ChildBounties.ChildBountyDescriptions.isCompatible(
+          CompatibilityLevel.Partial,
+        )
+      ) {
+        return v0Api.query.ChildBounties.ChildBountyDescriptions.getEntries()
+      }
+
+      const result =
+        await v1Api.query.ChildBounties.ChildBountyDescriptionsV1.getEntries()
+      return result.map((r) => ({
+        keyArgs: [r.keyArgs[1]],
+        value: r.value,
+      }))
+    }
+    const getValues = async (
+      keys: [number][],
+    ): Promise<(Binary | undefined)[]> => {
+      if (
+        await v0Api.query.ChildBounties.ChildBountyDescriptions.isCompatible(
+          CompatibilityLevel.Partial,
+        )
+      ) {
+        return v0Api.query.ChildBounties.ChildBountyDescriptions.getValues(keys)
+      }
+
+      return v1Api.query.ChildBounties.ChildBountyDescriptionsV1.getValues(
+        keys.map(([key]) => [parentId, key]),
+      )
+    }
+
     const descriptions$ = getBountyDescriptions$(
-      typedApi.query.ChildBounties.ChildBountyDescriptions.getEntries,
-      typedApi.query.ChildBounties.ChildBountyDescriptions.getValues,
+      getEntries,
+      getValues,
       bountyKeyChanges$,
     )
 
@@ -141,11 +184,23 @@ export function createChildBountiesSdk(
   }
 
   function getChildBounty(parentId: number, id: number) {
+    const v0Api = typedApi as ChildBountiesSdkTypedApi<ChildBountiesV0Storage>
+    const v1Api = typedApi as ChildBountiesSdkTypedApi<ChildBountiesV1Storage>
+
     return Promise.all([
       typedApi.query.ChildBounties.ChildBounties.getValue(parentId, id),
-      typedApi.query.ChildBounties.ChildBountyDescriptions.getValue(id).then(
-        (r) => (r ? r.asText() : null),
-      ),
+      v1Api.query.ChildBounties.ChildBountyDescriptionsV1.isCompatible(
+        CompatibilityLevel.Partial,
+      )
+        .then((isCompat) =>
+          isCompat
+            ? v1Api.query.ChildBounties.ChildBountyDescriptionsV1.getValue(
+                parentId,
+                id,
+              )
+            : v0Api.query.ChildBounties.ChildBountyDescriptions.getValue(id),
+        )
+        .then((r) => (r ? r.asText() : null)),
     ]).then(([bounty, description]) =>
       bounty ? enhanceBounty(bounty, description, id) : null,
     )
