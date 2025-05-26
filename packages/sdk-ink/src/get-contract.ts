@@ -28,7 +28,7 @@ export function getContract<
   lookup: InkMetadataLookup,
   address: Addr,
   mapAddr: (v: Addr) => PublicAddr,
-): Contract<T, D, PublicAddr> {
+): Contract<T, D, PublicAddr, StorageErr> {
   const codeHash = provider.getCodeHash(address)
 
   return {

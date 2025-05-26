@@ -3,6 +3,7 @@ import { Binary, HexString } from "polkadot-api"
 import type {
   GenericInkDescriptors,
   ReviveSdkTypedApi,
+  ReviveStorageError,
 } from "./descriptor-types"
 import { getContract } from "./get-contract"
 import { getDeployer } from "./get-deployer"
@@ -15,7 +16,7 @@ export const createReviveSdk = <
 >(
   typedApi: T,
   contractDescriptors: D,
-): InkSdk<T, D, HexString> => {
+): InkSdk<T, D, HexString, ReviveStorageError> => {
   const provider = reviveProvider(typedApi)
   const inkClient = getInkClient(contractDescriptors)
   const lookup = getInkLookup(contractDescriptors.metadata)

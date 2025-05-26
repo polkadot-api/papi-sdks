@@ -14,7 +14,6 @@ import { ContractsProvider } from "./provider"
 import type { Deployer } from "./sdk-types"
 import { getSignedStorage, getStorageLimit } from "./util"
 
-// TODO: salt in revive pallet must be fixed-size 32-byte
 export const defaultSalt = Binary.fromBytes(new Uint8Array(32).fill(0))
 export function getDeployer<
   T extends InkSdkTypedApi | ReviveSdkTypedApi,

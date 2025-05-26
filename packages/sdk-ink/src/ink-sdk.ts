@@ -1,6 +1,10 @@
 import { getInkClient, getInkLookup } from "@polkadot-api/ink-contracts"
 import { SS58String } from "polkadot-api"
-import type { GenericInkDescriptors, InkSdkTypedApi } from "./descriptor-types"
+import type {
+  GenericInkDescriptors,
+  InkSdkTypedApi,
+  StorageError,
+} from "./descriptor-types"
 import { getContract } from "./get-contract"
 import { getDeployer } from "./get-deployer"
 import { contractsProvider } from "./provider"
@@ -12,7 +16,7 @@ export const createInkSdk = <
 >(
   typedApi: T,
   contractDescriptors: D,
-): InkSdk<T, D, SS58String> => {
+): InkSdk<T, D, SS58String, StorageError> => {
   const provider = contractsProvider(typedApi)
   const inkClient = getInkClient(contractDescriptors)
   const lookup = getInkLookup(contractDescriptors.metadata)

@@ -30,8 +30,9 @@ export interface InkSdk<
   T extends InkSdkTypedApi | ReviveSdkTypedApi,
   D extends GenericInkDescriptors,
   Addr,
+  StorageErr,
 > {
-  getContract(adddress: Addr): Contract<T, D, Addr>
+  getContract(adddress: Addr): Contract<T, D, Addr, StorageErr>
   getDeployer(code: Binary): Deployer<T, D, Addr>
   readDeploymentEvents: (
     events?: Array<
@@ -95,10 +96,10 @@ export interface Contract<
   T extends InkSdkTypedApi | ReviveSdkTypedApi,
   D extends GenericInkDescriptors,
   Addr,
+  StorageErr,
 > {
   isCompatible(): Promise<boolean>
-  // TODO
-  getStorage(): SdkStorage<D["__types"]["storage"], any>
+  getStorage(): SdkStorage<D["__types"]["storage"], StorageErr>
   query: <L extends string & keyof D["__types"]["messages"]>(
     message: L,
     args: QueryArgs<D["__types"]["messages"][L]["message"]>,
@@ -167,7 +168,7 @@ type SendArgs<D> = Data<D> & {
 type DeployOptions = Partial<{
   gasLimit: Gas
   storageDepositLimit: bigint
-  salt: Binary
+  salt: FixedSizeBinary<32>
 }>
 type DryRunRedeployArgs<D> = Data<D> & {
   options?: DeployOptions
