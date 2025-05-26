@@ -11,7 +11,6 @@ import {
 import {
   Binary,
   FixedSizeBinary,
-  Transaction,
   type ResultPayload,
   type SS58String,
   type TypedApi,
@@ -61,7 +60,7 @@ type DryRunDeployFn<
       events: D["__types"]["event"][]
       gasRequired: Gas
       storageDeposit: bigint
-      deploy: () => Transaction<any, any, any, any>
+      deploy: () => AsyncTransaction<any, any, any, any>
     },
     GetErr<T> | FlattenErrors<D["__types"]["messages"][L]["response"]>
   >
@@ -110,7 +109,7 @@ export interface Contract<
         events: D["__types"]["event"][]
         gasRequired: Gas
         storageDeposit: bigint
-        send: () => Transaction<any, any, any, any>
+        send: () => AsyncTransaction<any, any, any, any>
       },
       GetErr<T> | FlattenErrors<D["__types"]["messages"][L]["response"]>
     >

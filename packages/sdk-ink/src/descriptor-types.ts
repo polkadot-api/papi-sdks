@@ -228,6 +228,7 @@ export type ReviveSdkPallets = PalletsTypedef<
   },
   {},
   {},
+  {},
   {}
 >
 

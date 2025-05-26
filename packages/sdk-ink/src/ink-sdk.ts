@@ -1,5 +1,5 @@
 import { getInkClient, getInkLookup } from "@polkadot-api/ink-contracts"
-import { SS58String } from "polkadot-api"
+import { Enum, SS58String } from "polkadot-api"
 import type {
   GenericInkDescriptors,
   InkSdkTypedApi,
@@ -24,7 +24,8 @@ export const createInkSdk = <
   return {
     getContract: (address) =>
       getContract(provider, inkClient, lookup, address, (v) => v),
-    getDeployer: (code) => getDeployer(provider, inkClient, code, (v) => v),
+    getDeployer: (code) =>
+      getDeployer(provider, inkClient, Enum("Upload", code), (v) => v),
     readDeploymentEvents(events) {
       const instantiatedEvents =
         events

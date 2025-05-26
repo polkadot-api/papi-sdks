@@ -4,7 +4,7 @@ import {
   wrapAsyncTx,
 } from "@polkadot-api/common-sdk-utils"
 import { type InkClient } from "@polkadot-api/ink-contracts"
-import { Binary, Enum } from "polkadot-api"
+import { Binary, Enum, FixedSizeBinary } from "polkadot-api"
 import type {
   GenericInkDescriptors,
   InkSdkTypedApi,
@@ -24,20 +24,27 @@ export function getDeployer<
 >(
   provider: ContractsProvider<Addr, StorageErr>,
   inkClient: InkClient<D>,
-  code: Binary,
+  code: Enum<{
+    Upload: Binary
+    Existing: Promise<FixedSizeBinary<32>>
+  }>,
   mapAddr: (v: Addr) => PublicAddr,
 ): Deployer<T, D, PublicAddr> {
-  return {
+  const deployer: Deployer<T, D, PublicAddr> = {
     async dryRun(constructorLabel, args) {
       const ctor = inkClient.constructor(constructorLabel)
+      const value = args.value ?? 0n
+      const data = ctor.encode(args.data ?? {})
+      const salt = args.options?.salt ?? defaultSalt
+
       const response = await provider.dryRunInstantiate(
         args.origin,
-        args.value ?? 0n,
+        value,
         args.options?.gasLimit,
         args.options?.storageDepositLimit,
-        Enum("Upload", code),
-        ctor.encode(args.data ?? {}),
-        args.options?.salt ?? defaultSalt,
+        code.type === "Existing" ? Enum("Existing", await code.value) : code,
+        data,
+        salt,
       )
       if (response.result.success) {
         const decoded = ctor.decode(response.result.value.result)
@@ -51,15 +58,13 @@ export function getDeployer<
             gasRequired: response.gas_required,
             storageDeposit: getSignedStorage(response.storage_deposit),
             deploy() {
-              return provider.txInstantiateWithCode({
-                value: args.value ?? 0n,
-                gas_limit: response.gas_required,
-                storage_deposit_limit: getStorageLimit(
-                  response.storage_deposit,
-                ),
-                code,
-                data: ctor.encode(args.data ?? {}),
-                salt: args.options?.salt ?? defaultSalt,
+              const limitParams = {
+                gasLimit: response.gas_required,
+                storageDepositLimit: getStorageLimit(response.storage_deposit),
+              }
+              return deployer.deploy(constructorLabel, {
+                ...args,
+                ...limitParams,
               })
             },
           }),
@@ -86,7 +91,9 @@ export function getDeployer<
             args.value ?? 0n,
             undefined,
             undefined,
-            Enum("Upload", code),
+            code.type === "Existing"
+              ? Enum("Existing", await code.value)
+              : code,
             ctor.encode(args.data ?? {}),
             args.options?.salt ?? defaultSalt,
           )
@@ -97,14 +104,25 @@ export function getDeployer<
           }
         })()
 
-        return provider.txInstantiateWithCode({
+        const params = {
           value: args.value ?? 0n,
           gas_limit: limits.gas,
           storage_deposit_limit: limits.storage,
-          code,
           data: ctor.encode(args.data ?? {}),
           salt: args.options?.salt ?? defaultSalt,
-        })
+        }
+
+        return code.type === "Upload"
+          ? provider.txInstantiateWithCode({
+              ...params,
+              code: code.value,
+            })
+          : provider.txInstantiate({
+              ...params,
+              code_hash: await code.value,
+            })
       }),
   }
+
+  return deployer
 }

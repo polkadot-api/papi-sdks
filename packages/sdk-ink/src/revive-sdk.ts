@@ -1,5 +1,5 @@
 import { getInkClient, getInkLookup } from "@polkadot-api/ink-contracts"
-import { Binary, HexString } from "polkadot-api"
+import { Binary, Enum, HexString } from "polkadot-api"
 import type {
   GenericInkDescriptors,
   ReviveSdkTypedApi,
@@ -27,7 +27,7 @@ export const createReviveSdk = <
         v.asHex(),
       ),
     getDeployer: (code) =>
-      getDeployer(provider, inkClient, code, (v) => v.asHex()),
+      getDeployer(provider, inkClient, Enum("Upload", code), (v) => v.asHex()),
     readDeploymentEvents(events) {
       // Contract.Instantiated event not available yet in pallet-revive
       // but we can find events if the contract emits something on deploy
