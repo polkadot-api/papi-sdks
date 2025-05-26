@@ -148,6 +148,7 @@ export type InkSdkPallets = PalletsTypedef<
   },
   {},
   {},
+  {},
   {}
 >
 

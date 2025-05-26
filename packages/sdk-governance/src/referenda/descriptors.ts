@@ -181,7 +181,8 @@ type ReferendaSdkPallets<TOrigin> = PalletsTypedef<
     Referenda: {
       Tracks: PlainDescriptor<Array<[number, ReferendaTrackData]>>
     }
-  }
+  },
+  {}
 >
 type ReferendaSdkDefinition<TOrigin> = SdkDefinition<
   ReferendaSdkPallets<TOrigin>,

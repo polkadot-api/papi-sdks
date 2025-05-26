@@ -101,6 +101,7 @@ type IdentitySdkPallets = PalletsTypedef<
   {},
   {},
   {},
+  {},
   {}
 >
 type IdentitySdkDefinition = SdkDefinition<IdentitySdkPallets, ApisTypedef<{}>>

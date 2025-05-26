@@ -124,6 +124,7 @@ type ChildBountiesSdkPallets = PalletsTypedef<
     // }
   },
   {},
+  {},
   {}
 >
 type ChildBountiesSdkDefinition = SdkDefinition<
