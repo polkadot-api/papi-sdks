@@ -14,7 +14,6 @@ import { ContractsProvider } from "./provider"
 import type { Deployer } from "./sdk-types"
 import { getSignedStorage, getStorageLimit } from "./util"
 
-export const defaultSalt = Binary.fromBytes(new Uint8Array(32).fill(0))
 export function getDeployer<
   T extends InkSdkTypedApi | ReviveSdkTypedApi,
   Addr,
@@ -35,7 +34,6 @@ export function getDeployer<
       const ctor = inkClient.constructor(constructorLabel)
       const value = args.value ?? 0n
       const data = ctor.encode(args.data ?? {})
-      const salt = args.options?.salt ?? defaultSalt
 
       const response = await provider.dryRunInstantiate(
         args.origin,
@@ -44,7 +42,7 @@ export function getDeployer<
         args.options?.storageDepositLimit,
         code.type === "Existing" ? Enum("Existing", await code.value) : code,
         data,
-        salt,
+        args.options?.salt,
       )
       if (response.result.success) {
         const decoded = ctor.decode(response.result.value.result)
@@ -95,7 +93,7 @@ export function getDeployer<
               ? Enum("Existing", await code.value)
               : code,
             ctor.encode(args.data ?? {}),
-            args.options?.salt ?? defaultSalt,
+            args.options?.salt,
           )
 
           return {
@@ -109,7 +107,7 @@ export function getDeployer<
           gas_limit: limits.gas,
           storage_deposit_limit: limits.storage,
           data: ctor.encode(args.data ?? {}),
-          salt: args.options?.salt ?? defaultSalt,
+          salt: args.options?.salt,
         }
 
         return code.type === "Upload"
