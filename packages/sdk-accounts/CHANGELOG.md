@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Fixed
+
+- Fix descriptor types after update to polkadot-api@1.11.0
+
 ## 0.2.0 2025-05-15
 
 ### Changed

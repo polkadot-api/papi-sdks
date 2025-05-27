@@ -43,6 +43,7 @@ type LinkedAccountsSdkPallets = PalletsTypedef<
   {},
   {},
   {},
+  {},
   {}
 >
 type LinkedAccountsSdkDefinition = SdkDefinition<

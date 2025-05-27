@@ -100,7 +100,8 @@ type VotingSdkPallets = PalletsTypedef<
     ConvictionVoting: {
       VoteLockingPeriod: PlainDescriptor<number>
     }
-  }
+  },
+  {}
 >
 type VotingSdkDefinition = SdkDefinition<VotingSdkPallets, ApisTypedef<{}>>
 export type VotingSdkTypedApi = TypedApi<VotingSdkDefinition>

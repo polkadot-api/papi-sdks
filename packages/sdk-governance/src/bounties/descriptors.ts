@@ -136,6 +136,7 @@ type BountiesSdkPallets<TOrigin> = PalletsTypedef<
     }
   },
   {},
+  {},
   {}
 >
 type BountiesSdkDefinition<TOrigin> = SdkDefinition<
