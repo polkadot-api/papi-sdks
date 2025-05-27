@@ -54,13 +54,30 @@ export interface ContractsProvider<Addr, StorageErr> {
   }): Transaction<any, any, any, any>
 }
 
+const defaultSalt = Binary.fromText("")
 export const contractsProvider = (
   typedApi: InkSdkTypedApi,
 ): ContractsProvider<SS58String, StorageError> => {
   return {
     dryRunCall: (...args) => typedApi.apis.ContractsApi.call(...args),
-    dryRunInstantiate: async (...args) => {
-      const response = await typedApi.apis.ContractsApi.instantiate(...args)
+    dryRunInstantiate: async (
+      origin,
+      value,
+      gas_limit,
+      storage_deposit_limit,
+      code,
+      data,
+      salt,
+    ) => {
+      const response = await typedApi.apis.ContractsApi.instantiate(
+        origin,
+        value,
+        gas_limit,
+        storage_deposit_limit,
+        code,
+        data,
+        salt ?? defaultSalt,
+      )
       const result: Result<
         {
           result: {
@@ -99,13 +116,13 @@ export const contractsProvider = (
       }),
     txInstantiate: (payload) =>
       typedApi.tx.Contracts.instantiate({
-        salt: Binary.fromText(""),
+        salt: defaultSalt,
         storage_deposit_limit: undefined,
         ...payload,
       }),
     txInstantiateWithCode: (payload) =>
       typedApi.tx.Contracts.instantiate_with_code({
-        salt: Binary.fromText(""),
+        salt: defaultSalt,
         storage_deposit_limit: undefined,
         ...payload,
       }),
