@@ -206,8 +206,48 @@ export function createChildBountiesSdk(
     )
   }
 
+  function getChildBounties(parentId: number) {
+    const v0Api = typedApi as ChildBountiesSdkTypedApi<ChildBountiesV0Storage>
+    const v1Api = typedApi as ChildBountiesSdkTypedApi<ChildBountiesV1Storage>
+
+    return Promise.all([
+      typedApi.query.ChildBounties.ChildBounties.getEntries(parentId),
+      v1Api.query.ChildBounties.ChildBountyDescriptionsV1.isCompatible(
+        CompatibilityLevel.Partial,
+      ).then((isCompat) =>
+        isCompat
+          ? v1Api.query.ChildBounties.ChildBountyDescriptionsV1.getEntries(
+              parentId,
+            ).then((r) =>
+              r.map(({ keyArgs, value }) => ({
+                keyArgs: [keyArgs[1]],
+                value,
+              })),
+            )
+          : v0Api.query.ChildBounties.ChildBountyDescriptions.getEntries(),
+      ),
+    ]).then(([entries, descriptions]) => {
+      const descriptionMap = Object.fromEntries(
+        descriptions.map(({ keyArgs, value }) => [keyArgs[0], value.asText()]),
+      )
+
+      return entries
+        .map(({ keyArgs: [, id], value }) => ({ bounty: value, id }))
+        .sort((a, b) => a.id - b.id)
+        .map(({ bounty, id }) =>
+          enhanceBounty(bounty, descriptionMap[id] ?? null, id),
+        )
+    })
+  }
+
+  const watch: typeof watchChildBounties = keyedMemo(
+    watchChildBounties,
+    new Map(),
+  )
+
   return {
-    watch: keyedMemo(watchChildBounties, new Map()),
+    watch,
     getChildBounty,
+    getChildBounties,
   }
 }

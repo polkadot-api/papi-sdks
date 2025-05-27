@@ -1,0 +1,17 @@
+{
+  "name": "governance-example",
+  "module": "index.ts",
+  "type": "module",
+  "devDependencies": {
+    "@types/bun": "^1.2.14"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "@polkadot-api/descriptors": "file:.papi/descriptors",
+    "@polkadot-api/sdk-governance": "workspace:*",
+    "polkadot-api": "^1.12.1",
+    "rxjs": "7.8.2"
+  }
+}

@@ -4,7 +4,9 @@
 
 ### Added
 
-- Support ChildBountiesV1
+- **ChildBounties**
+  - Support ChildBountiesV1
+  - Add `getChildBounties()` for a promise-based API
 
 ### Fixed
 
