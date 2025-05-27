@@ -45,12 +45,12 @@
   },
   "peerDependencies": {
     "@polkadot-api/ink-contracts": ">=0.2.4",
-    "polkadot-api": ">=1.12.0",
+    "polkadot-api": ">=1.12.1",
     "rxjs": ">=7.8.0"
   },
   "devDependencies": {
     "@polkadot-api/ink-contracts": "^0.3.0",
-    "polkadot-api": "^1.12.0",
+    "polkadot-api": "^1.12.1",
     "rxjs": "^7.8.2"
   }
 }

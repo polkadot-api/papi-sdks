@@ -4,54 +4,89 @@ import {
   wrapAsyncTx,
 } from "@polkadot-api/common-sdk-utils"
 import type { InkClient, InkMetadataLookup } from "@polkadot-api/ink-contracts"
-import { Binary, Enum } from "polkadot-api"
-import type { GenericInkDescriptors, InkSdkTypedApi } from "./descriptor-types"
+import { Enum } from "polkadot-api"
+import type {
+  GenericInkDescriptors,
+  InkSdkTypedApi,
+  ReviveSdkTypedApi,
+} from "./descriptor-types"
+import { getDeployer } from "./get-deployer"
 import { getStorage } from "./get-storage"
+import { ContractsProvider } from "./provider"
 import type { Contract } from "./sdk-types"
+import { getSignedStorage, getStorageLimit } from "./util"
 
 export function getContract<
-  T extends InkSdkTypedApi,
+  T extends InkSdkTypedApi | ReviveSdkTypedApi,
+  Addr,
+  StorageErr,
   D extends GenericInkDescriptors,
+  PublicAddr extends string,
 >(
-  typedApi: T,
+  provider: ContractsProvider<Addr, StorageErr>,
   inkClient: InkClient<D>,
   lookup: InkMetadataLookup,
-  address: string,
-): Contract<T, D> {
-  const contractDetails =
-    typedApi.query.Contracts.ContractInfoOf.getValue(address)
+  address: Addr,
+  mapAddr: (v: Addr) => PublicAddr,
+): Contract<T, D, PublicAddr, StorageErr> {
+  const codeHash = provider.getCodeHash(address).then((r) => {
+    if (!r) {
+      throw new Error(`Contract ${mapAddr(address)} not found`)
+    }
+    return r
+  })
 
-  return {
+  const deployer = getDeployer(
+    provider,
+    inkClient,
+    Enum("Existing", codeHash),
+    mapAddr,
+  )
+
+  const contractApi: Contract<T, D, PublicAddr, StorageErr> = {
     async isCompatible() {
       try {
-        const details = await contractDetails
-        return details
-          ? details.code_hash.asHex() === lookup.metadata.source.hash
+        const code_hash = await codeHash
+        return code_hash
+          ? code_hash.asHex() === lookup.metadata.source.hash
           : false
       } catch (ex) {
         console.error(ex)
         return false
       }
     },
-    getStorage: () => getStorage(typedApi, inkClient, lookup, address),
+    getStorage: () => getStorage(provider, inkClient, lookup, address),
     async query(message, args) {
       const msg = inkClient.message(message)
 
-      const response = await typedApi.apis.ContractsApi.call(
+      const data = msg.encode(args.data ?? {})
+      const value = args.value ?? 0n
+      const response = await provider.dryRunCall(
         args.origin,
         address,
-        args.value ?? 0n,
+        value,
         args.options?.gasLimit,
         args.options?.storageDepositLimit,
-        msg.encode(args.data ?? {}),
+        data,
       )
       if (response.result.success) {
         const decoded = msg.decode(response.result.value)
         return mapResult(flattenResult(decoded), {
-          value: (value) => ({
-            response: value,
-            events: inkClient.event.filter(address, response.events),
+          value: (innerResponse) => ({
+            response: innerResponse,
+            events: inkClient.event.filter(mapAddr(address), response.events),
             gasRequired: response.gas_required,
+            storageDeposit: getSignedStorage(response.storage_deposit),
+            send: () => {
+              const limitParams = {
+                gasLimit: response.gas_required,
+                storageDepositLimit: getStorageLimit(response.storage_deposit),
+              }
+              return contractApi.send(message, {
+                ...args,
+                ...limitParams,
+              })
+            },
           }),
         })
       }
@@ -64,106 +99,42 @@ export function getContract<
       wrapAsyncTx(async () => {
         const data = inkClient.message(message).encode(args.data ?? {})
 
-        const gasLimit = await (async () => {
-          if ("gasLimit" in args) return args.gasLimit
+        const limits = await (async () => {
+          if ("gasLimit" in args)
+            return {
+              gas: args.gasLimit,
+              storage: args.storageDepositLimit,
+            }
 
-          const response = await typedApi.apis.ContractsApi.call(
+          const response = await provider.dryRunCall(
             args.origin,
             address,
             args.value ?? 0n,
             undefined,
-            args.options?.storageDepositLimit,
+            undefined,
             data,
           )
 
-          return response.gas_required
+          return {
+            gas: response.gas_required,
+            storage: getStorageLimit(response.storage_deposit),
+          }
         })()
 
-        return typedApi.tx.Contracts.call({
-          dest: Enum("Id", address),
+        return provider.txCall({
+          dest: address,
           value: args.value ?? 0n,
-          gas_limit: gasLimit,
-          storage_deposit_limit: args.options?.storageDepositLimit,
+          gas_limit: limits.gas,
+          storage_deposit_limit: limits.storage,
           data,
         })
       }),
-    async dryRunRedeploy(constructorLabel, args) {
-      const details = await contractDetails
-      if (!details) {
-        return {
-          success: false,
-          value: NotFoundError,
-        }
-      }
-      const ctor = inkClient.constructor(constructorLabel)
-      const response = await typedApi.apis.ContractsApi.instantiate(
-        args.origin,
-        args.value ?? 0n,
-        args.options?.gasLimit,
-        args.options?.storageDepositLimit,
-        Enum("Existing", details.code_hash),
-        ctor.encode(args.data ?? {}),
-        args.options?.salt ?? Binary.fromText(""),
-      )
-      if (response.result.success) {
-        const decoded = ctor.decode(response.result.value.result)
-        return mapResult(flattenResult(decoded), {
-          value: (value) => ({
-            address: response.result.value.account_id,
-            response: value,
-            events: inkClient.event.filter(address, response.events),
-            gasRequired: response.gas_required,
-          }),
-        })
-      }
-      return {
-        success: false,
-        value: response.result.value,
-      }
-    },
-    redeploy: (constructorLabel, args) =>
-      wrapAsyncTx(async () => {
-        const details = await contractDetails
-        const hash = details?.code_hash ?? Binary.fromBytes(new Uint8Array(32))
-        const ctor = inkClient.constructor(constructorLabel)
-
-        const gasLimit = await (async () => {
-          if ("gasLimit" in args) return args.gasLimit
-
-          const response = await typedApi.apis.ContractsApi.instantiate(
-            args.origin,
-            args.value ?? 0n,
-            undefined,
-            args.options?.storageDepositLimit,
-            Enum("Existing", hash),
-            ctor.encode(args.data ?? {}),
-            args.options?.salt ?? Binary.fromText(""),
-          )
-
-          return response.gas_required
-        })()
-
-        return typedApi.tx.Contracts.instantiate({
-          value: args.value ?? 0n,
-          gas_limit: gasLimit,
-          storage_deposit_limit: args.options?.storageDepositLimit,
-          code_hash: hash,
-          data: ctor.encode(args.data ?? {}),
-          salt: args.options?.salt ?? Binary.fromText(""),
-        })
-      }),
+    dryRunRedeploy: deployer.dryRun,
+    redeploy: deployer.deploy,
     filterEvents(events) {
-      return inkClient.event.filter(address, events)
+      return inkClient.event.filter(mapAddr(address), events)
     },
   }
-}
 
-const NotFoundError = {
-  type: "Module" as const,
-  value: {
-    type: "Contracts" as const,
-    value: {
-      type: "ContractNotFound" as const,
-    },
-  },
+  return contractApi
 }
