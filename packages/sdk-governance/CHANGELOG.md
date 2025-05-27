@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+### Added
+
+- **ChildBounties**
+  - Support ChildBountiesV1
+  - Add `getChildBounties()` for a promise-based API
+
 ### Fixed
 
 - Fix descriptor types after update to polkadot-api@1.11.0

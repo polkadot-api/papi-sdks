@@ -2,6 +2,7 @@ import { SdkDefinition } from "@polkadot-api/common-sdk-utils"
 import {
   ApisTypedef,
   Binary,
+  DescriptorEntry,
   Enum,
   FixedSizeArray,
   PalletsTypedef,
@@ -34,39 +35,56 @@ export interface ChildBountyWithoutDescription {
   status: BountiesChildBountyStatus
 }
 
-type ChildBountiesSdkPallets = PalletsTypedef<
-  {
-    ChildBounties: {
-      /**
-       * Number of child bounties per parent bounty.
-       * Map of parent bounty index to number of child bounties.
-       */
-      ParentChildBounties: StorageDescriptor<
-        [Key: number],
-        number,
-        false,
-        never
-      >
-      /**
-       * Child bounties that have been added.
-       */
-      ChildBounties: StorageDescriptor<
-        FixedSizeArray<2, number>,
-        ChildBountyWithoutDescription,
-        true,
-        never
-      >
-      /**
-       * The description of each child-bounty.
-       */
-      ChildBountyDescriptions: StorageDescriptor<
-        [Key: number],
-        Binary,
-        true,
-        never
-      >
-    }
-  },
+export type ChildBountiesV0Storage = {
+  ChildBounties: {
+    /**
+     * Child bounties that have been added.
+     */
+    ChildBounties: StorageDescriptor<
+      FixedSizeArray<2, number>,
+      ChildBountyWithoutDescription,
+      true,
+      never
+    >
+    /**
+     * The description of each child-bounty.
+     */
+    ChildBountyDescriptions: StorageDescriptor<
+      [Key: number],
+      Binary,
+      true,
+      never
+    >
+  }
+}
+
+export type ChildBountiesV1Storage = {
+  ChildBounties: {
+    /**
+     * Child bounties that have been added.
+     */
+    ChildBounties: StorageDescriptor<
+      FixedSizeArray<2, number>,
+      ChildBountyWithoutDescription,
+      true,
+      never
+    >
+    /**
+     * The description of each child-bounty.
+     */
+    ChildBountyDescriptionsV1: StorageDescriptor<
+      FixedSizeArray<2, number>,
+      Binary,
+      true,
+      never
+    >
+  }
+}
+
+type ChildBountiesSdkPallets<
+  St extends DescriptorEntry<StorageDescriptor<any, any, any, any>>,
+> = PalletsTypedef<
+  St,
   {
     ChildBounties: {
       add_child_bounty: TxDescriptor<{
@@ -103,32 +121,16 @@ type ChildBountiesSdkPallets = PalletsTypedef<
       }>
     }
   },
-  {
-    // ChildBounties: {
-    //   /**
-    //    *A child-bounty is added.
-    //    */
-    //   Added: PlainDescriptor<Anonymize<I60p8l86a8cm59>>
-    //   /**
-    //    *A child-bounty is awarded to a beneficiary.
-    //    */
-    //   Awarded: PlainDescriptor<Anonymize<I3m3sk2lgcabvp>>
-    //   /**
-    //    *A child-bounty is claimed by beneficiary.
-    //    */
-    //   Claimed: PlainDescriptor<Anonymize<I5pf572duh4oeg>>
-    //   /**
-    //    *A child-bounty is cancelled.
-    //    */
-    //   Canceled: PlainDescriptor<Anonymize<I60p8l86a8cm59>>
-    // }
-  },
+  {},
   {},
   {},
   {}
 >
-type ChildBountiesSdkDefinition = SdkDefinition<
-  ChildBountiesSdkPallets,
-  ApisTypedef<{}>
->
-export type ChildBountiesSdkTypedApi = TypedApi<ChildBountiesSdkDefinition>
+type ChildBountiesSdkDefinition<
+  St extends DescriptorEntry<StorageDescriptor<any, any, any, any>>,
+> = SdkDefinition<ChildBountiesSdkPallets<St>, ApisTypedef<{}>>
+export type ChildBountiesSdkTypedApi<
+  St extends DescriptorEntry<StorageDescriptor<any, any, any, any>> =
+    | ChildBountiesV0Storage
+    | ChildBountiesV1Storage,
+> = TypedApi<ChildBountiesSdkDefinition<St>>

@@ -65,4 +65,5 @@ export interface ChildBountiesSdk {
     getBountyById$: (key: number) => Observable<ChildBounty>
   }
   getChildBounty(parentId: number, id: number): Promise<ChildBounty | null>
+  getChildBounties(parentId: number): Promise<ChildBounty[]>
 }
