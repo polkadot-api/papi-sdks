@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## 0.3.1 2025-05-28
+
+### Fixed
+
+- `childBountiesSdk.getChildBounties` mixing descriptions from different bounties.
+
 ## 0.3.0 2025-05-27
 
 ### Added

@@ -132,7 +132,9 @@ export function createChildBountiesSdk(
       }
 
       const result =
-        await v1Api.query.ChildBounties.ChildBountyDescriptionsV1.getEntries()
+        await v1Api.query.ChildBounties.ChildBountyDescriptionsV1.getEntries(
+          parentId,
+        )
       return result.map((r) => ({
         keyArgs: [r.keyArgs[1]],
         value: r.value,
