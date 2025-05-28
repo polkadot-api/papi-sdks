@@ -2,6 +2,21 @@
 
 ## Unreleased
 
+## 0.1.0 2025-05-28
+
+### Added
+
+- `createReviveSdk` for ink!v6 (shared interface with `createInkSdk`).
+- `deploy()` to dry-run deploy result to directly get the deployment transaction.
+- `send()` to dry-run call result to directly get the call transaction.
+- `.storageDeposit` to dry-run results.
+
+### Changed
+
+- `storageDepositLimit` is now required when sending or deploying if `origin` is not specified.
+- `readDeploymentEvents` now returns an array of deployed contracts and their respective events.
+- `salt` parameter is `FixedSizeBinary<32>`.
+
 ### Fixed
 
 - Fix descriptor types after update to polkadot-api@1.11.0
