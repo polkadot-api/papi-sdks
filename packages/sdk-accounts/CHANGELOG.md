@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 0.2.1 2025-05-29
+
 ### Fixed
 
 - Support new types of identity pallet.
