@@ -74,7 +74,7 @@ export type IdentityInfo = {
   discord: IdentityData
 }
 
-type IdentityValue = [
+export type OldIdentityValue = [
   {
     judgements: Array<[number, IdentityJudgement]>
     deposit: bigint
@@ -82,6 +82,12 @@ type IdentityValue = [
   },
   Binary | undefined,
 ]
+export type IdentityValue = {
+  judgements: Array<[number, IdentityJudgement]>
+  deposit: bigint
+  info: IdentityInfo
+}
+
 type IdentitySdkPallets = PalletsTypedef<
   {
     Identity: {
@@ -92,7 +98,7 @@ type IdentitySdkPallets = PalletsTypedef<
        * TWOX-NOTE: OK ― `AccountId` is a secure hash.
        */ IdentityOf: StorageDescriptor<
         [Key: SS58String],
-        IdentityValue,
+        OldIdentityValue | IdentityValue,
         true,
         never
       >
