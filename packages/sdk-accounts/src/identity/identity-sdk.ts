@@ -1,11 +1,21 @@
 import { Binary, SS58String } from "polkadot-api"
-import { IdentityData, IdentitySdkTypedApi } from "./descriptors"
+import {
+  IdentityData,
+  IdentitySdkTypedApi,
+  IdentityValue,
+  OldIdentityValue,
+} from "./descriptors"
 import { Identity, IdentitySdk } from "./sdk-types"
+
+const normalizeIdentityValue = (
+  value: IdentityValue | OldIdentityValue,
+): IdentityValue => (Array.isArray(value) ? value[0] : value)
 
 export function createIdentitySdk(typedApi: IdentitySdkTypedApi): IdentitySdk {
   const getIdentity = async (address: SS58String): Promise<Identity | null> => {
-    const [res] =
-      (await typedApi.query.Identity.IdentityOf.getValue(address)) ?? []
+    const res = await typedApi.query.Identity.IdentityOf.getValue(address).then(
+      (v) => (v ? normalizeIdentityValue(v) : v),
+    )
     if (!res) return null
 
     const info: Identity["info"] = Object.fromEntries(
