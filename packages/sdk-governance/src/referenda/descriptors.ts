@@ -2,6 +2,7 @@ import { SdkDefinition } from "@polkadot-api/common-sdk-utils"
 import {
   ApisTypedef,
   Binary,
+  ChainDefinition,
   Enum,
   FixedSizeArray,
   PalletsTypedef,
@@ -191,3 +192,8 @@ type ReferendaSdkDefinition<TOrigin> = SdkDefinition<
 export type ReferendaSdkTypedApi<TOrigin = unknown> = TypedApi<
   ReferendaSdkDefinition<TOrigin>
 >
+
+export type RuntimeOriginCaller<T extends TypedApi<ChainDefinition>> =
+  T extends TypedApi<infer D>
+    ? D["descriptors"]["pallets"]["__tx"]["Referenda"]["submit"]["___"]["proposal_origin"]
+    : Enum<Record<string, unknown>>
