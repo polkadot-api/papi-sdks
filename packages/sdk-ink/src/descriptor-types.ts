@@ -9,6 +9,7 @@ import {
   ApisTypedef,
   Binary,
   Enum,
+  FixedSizeArray,
   FixedSizeBinary,
   PalletsTypedef,
   ResultPayload,
@@ -170,6 +171,36 @@ export type ReviveStorageError = Enum<{
   DoesntExist: undefined
   KeyDecodingFailed: undefined
 }>
+
+export type U256 = FixedSizeArray<4, bigint>
+export type GenericTransaction = {
+  blob_versioned_hashes: Array<FixedSizeBinary<32>>
+  blobs: Array<Binary>
+  from?: FixedSizeBinary<20> | undefined
+  input: {
+    input?: Binary | undefined
+    data?: Binary | undefined
+  }
+  to?: FixedSizeBinary<20> | undefined
+  value?: U256 | undefined
+}
+
+export type TraceCallResult = {
+  from: FixedSizeBinary<20>
+  to: FixedSizeBinary<20>
+  output: Binary
+  error?: string
+  revert_reason?: string
+  calls: Array<TraceCallResult>
+  logs: Array<{
+    address: FixedSizeBinary<20>
+    topics: Array<FixedSizeBinary<32>>
+    data: Binary
+    position: number
+  }>
+  value?: U256 | undefined
+}
+
 export type ReviveSdkApis<Ev = any, Err = any> = ApisTypedef<{
   ReviveApi: {
     call: RuntimeDescriptor<
@@ -183,6 +214,31 @@ export type ReviveSdkApis<Ev = any, Err = any> = ApisTypedef<{
     get_storage: RuntimeDescriptor<
       [address: ReviveAddress, key: FixedSizeBinary<32>],
       ResultPayload<Binary | undefined, ReviveStorageError>
+    >
+    trace_call: RuntimeDescriptor<
+      [
+        tx: GenericTransaction,
+        config: Enum<{
+          CallTracer?:
+            | {
+                with_logs: boolean
+                only_top_call?: boolean
+              }
+            | undefined
+        }>,
+      ],
+      ResultPayload<
+        // wnd
+        | Enum<{
+            Call: TraceCallResult
+          }>
+        // pop
+        | TraceCallResult,
+        Enum<{
+          Data: Binary
+          Message: string
+        }>
+      >
     >
   }
 }>
