@@ -36,7 +36,11 @@ if (!dryRunResult.success) {
     process.exit(0)
   }
 } else {
-  console.log("Dry-run success", dryRunResult.value.address)
+  console.log("Dry-run success", {
+    address: dryRunResult.value.address,
+    events: dryRunResult.value.events,
+    storageDeposit: dryRunResult.value.storageDeposit,
+  })
 
   if (process.argv.includes("deploy")) {
     console.log("Deploying...")
@@ -79,6 +83,7 @@ if (!flipResult.success) {
 console.log(`flip dry-run success`, {
   gas: flipResult.value.gasRequired,
   storageDeposit: flipResult.value.storageDeposit,
+  events: flipResult.value.events,
 })
 
 if (process.argv.includes("flip")) {
