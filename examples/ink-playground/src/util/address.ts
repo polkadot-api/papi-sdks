@@ -2,5 +2,5 @@ export const ADDRESS = {
   alice: "5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY",
   bob: "5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty",
   psp22: "13RUUKAVEUdafihJZdd6dppNHXpCeLGDFGB3goyzRugUBkrx",
-  flipper: "0xcf53e04ed25424c383601292c3df6c07ea6e1e6b",
+  flipper: "0x6f38a07b338aed6b7146df28ea2a4f8d2c420afc",
 }
