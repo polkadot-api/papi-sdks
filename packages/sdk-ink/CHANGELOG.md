@@ -5,6 +5,7 @@
 ### Fixed
 
 - decode events when dry-running in pallet revive.
+- use variable-sized storage key for pallet revive.
 
 ## 0.1.0 2025-05-28
 

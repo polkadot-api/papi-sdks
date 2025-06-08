@@ -215,6 +215,10 @@ export type ReviveSdkApis<Ev = any, Err = any> = ApisTypedef<{
       [address: ReviveAddress, key: FixedSizeBinary<32>],
       ResultPayload<Binary | undefined, ReviveStorageError>
     >
+    get_storage_var_key?: RuntimeDescriptor<
+      [address: ReviveAddress, key: Binary],
+      ResultPayload<Binary | undefined, ReviveStorageError>
+    >
     trace_call: RuntimeDescriptor<
       [
         tx: GenericTransaction,

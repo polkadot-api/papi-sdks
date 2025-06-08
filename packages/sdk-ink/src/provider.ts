@@ -2,6 +2,7 @@ import { mapResult, Result } from "@polkadot-api/common-sdk-utils"
 import { GenericEvent } from "@polkadot-api/ink-contracts"
 import {
   Binary,
+  CompatibilityLevel,
   Enum,
   FixedSizeBinary,
   ResultPayload,
@@ -280,7 +281,15 @@ export const reviveProvider = (
           events,
         }
       }),
-    getStorage: (...args) => typedApi.apis.ReviveApi.get_storage(...args),
+    getStorage: async (...args) => {
+      // the optional part makes it awkward to work with…
+      const var_key_call: any = typedApi.apis.ReviveApi.get_storage_var_key
+      const call = var_key_call.isCompatible(CompatibilityLevel.Partial)
+        ? (var_key_call as typeof typedApi.apis.ReviveApi.get_storage)
+        : typedApi.apis.ReviveApi.get_storage
+
+      return call(...args)
+    },
     getCodeHash: (addr) =>
       typedApi.query.Revive.ContractInfoOf.getValue(addr).then(
         (r) => r?.code_hash,
