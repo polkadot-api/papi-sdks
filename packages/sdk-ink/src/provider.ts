@@ -1,23 +1,29 @@
 import { mapResult, Result } from "@polkadot-api/common-sdk-utils"
+import { GenericEvent } from "@polkadot-api/ink-contracts"
 import {
   Binary,
+  Enum,
   FixedSizeBinary,
   ResultPayload,
   SS58String,
   Transaction,
 } from "polkadot-api"
+import { mergeUint8 } from "polkadot-api/utils"
 import {
   DryRunCallParams,
   DryRunCallResult,
   DryRunInstantiateParams,
   DryRunInstantiateResult,
   Gas,
+  GenericTransaction,
   InkSdkTypedApi,
   ReviveAddress,
   ReviveSdkTypedApi,
   ReviveStorageError,
   StorageError,
+  TraceCallResult,
 } from "./descriptor-types"
+import { ss58ToEthereum, valueToU256 } from "./util"
 
 export interface ContractsProvider<Addr, StorageErr> {
   dryRunCall(...args: DryRunCallParams<Addr>): Promise<DryRunCallResult>
@@ -129,13 +135,151 @@ export const contractsProvider = (
   }
 }
 
+const logToEvent = ({
+  address,
+  topics,
+  data,
+}: {
+  address: FixedSizeBinary<20>
+  topics: Array<FixedSizeBinary<32>>
+  data: Binary
+}): {
+  event: GenericEvent
+  topics: Binary[]
+} => ({
+  topics,
+  event: {
+    type: "Revive",
+    value: {
+      type: "ContractEmitted",
+      value: {
+        contract: address,
+        data,
+      },
+    },
+  },
+})
+const getEventsFromTrace = (
+  trace: TraceCallResult,
+): Array<{
+  event: GenericEvent
+  topics: Binary[]
+}> => [
+  ...trace.logs.map(logToEvent),
+  ...trace.calls.flatMap(getEventsFromTrace),
+]
+
 export const reviveProvider = (
   typedApi: ReviveSdkTypedApi,
 ): ContractsProvider<ReviveAddress, ReviveStorageError> => {
+  const traceCall = ({
+    from,
+    to,
+    input,
+    value,
+  }: Pick<GenericTransaction, "from" | "to" | "input" | "value">) =>
+    typedApi.apis.ReviveApi.trace_call(
+      {
+        blob_versioned_hashes: [],
+        blobs: [],
+        from,
+        input,
+        to,
+        value,
+      },
+      Enum("CallTracer", {
+        only_top_call: false,
+        with_logs: true,
+      }),
+    ).catch((ex) => {
+      console.error(ex)
+      return {
+        success: false as const,
+      }
+    })
+
   return {
-    dryRunCall: (...args) => typedApi.apis.ReviveApi.call(...args),
-    dryRunInstantiate: (...args) =>
-      typedApi.apis.ReviveApi.instantiate(...args),
+    dryRunCall: (
+      origin: SS58String,
+      dest: ReviveAddress,
+      value: bigint,
+      gas_limit: Gas | undefined,
+      storage_deposit_limit: bigint | undefined,
+      input: Binary,
+    ) =>
+      Promise.all([
+        typedApi.apis.ReviveApi.call(
+          origin,
+          dest,
+          value,
+          gas_limit,
+          storage_deposit_limit,
+          input,
+        ),
+        traceCall({
+          from: ss58ToEthereum(origin),
+          input: {
+            input,
+          },
+          to: dest,
+        }),
+      ]).then(([call, trace]) => {
+        const events =
+          call.events ??
+          (trace.success
+            ? getEventsFromTrace(
+                "type" in trace.value ? trace.value.value : trace.value,
+              )
+            : undefined)
+        return {
+          ...call,
+          events,
+        }
+      }),
+    dryRunInstantiate: (
+      origin: SS58String,
+      value: bigint,
+      gas_limit: Gas | undefined,
+      storage_deposit_limit: bigint | undefined,
+      code: Enum<{
+        Upload: Binary
+        Existing: FixedSizeBinary<32>
+      }>,
+      data: Binary,
+      salt: Binary | undefined,
+    ) =>
+      Promise.all([
+        typedApi.apis.ReviveApi.instantiate(
+          origin,
+          value,
+          gas_limit,
+          storage_deposit_limit,
+          code,
+          data,
+          salt,
+        ),
+        traceCall({
+          from: ss58ToEthereum(origin),
+          input: {
+            input: Binary.fromBytes(
+              mergeUint8(code.value.asBytes(), data.asBytes()),
+            ),
+          },
+          value: valueToU256(value),
+        }),
+      ]).then(([call, trace]) => {
+        const events =
+          call.events ??
+          (trace.success
+            ? getEventsFromTrace(
+                "type" in trace.value ? trace.value.value : trace.value,
+              )
+            : undefined)
+        return {
+          ...call,
+          events,
+        }
+      }),
     getStorage: (...args) => typedApi.apis.ReviveApi.get_storage(...args),
     getCodeHash: (addr) =>
       typedApi.query.Revive.ContractInfoOf.getValue(addr).then(
