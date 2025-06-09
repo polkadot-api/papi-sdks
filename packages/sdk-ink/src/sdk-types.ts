@@ -45,6 +45,15 @@ export interface InkSdk<
   }>
 }
 
+export interface ReviveSdk<
+  T extends ReviveSdkTypedApi,
+  D extends GenericInkDescriptors,
+  Addr,
+  StorageErr,
+> extends InkSdk<T, D, Addr, StorageErr> {
+  addressIsMapped: (address: SS58String) => Promise<boolean>
+}
+
 type DryRunDeployFn<
   T extends InkSdkTypedApi | ReviveSdkTypedApi,
   Addr,

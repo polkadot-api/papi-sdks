@@ -10,6 +10,7 @@
   - `accountId` with the accountId (SS58) of the contract
 - Utilities
   - `getDeploymentAddressWithNonce` to estimate a revive deployment address with an account nonce (equivalent to `create1` in polkadot-sdk)
+  - `reviveSdk.addressIsMapped(addr): Promise<bool>` to check whether an address is ready to operate with pallet revive.
 
 ### Fixed
 

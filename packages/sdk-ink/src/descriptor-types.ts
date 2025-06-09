@@ -273,6 +273,12 @@ export type ReviveSdkPallets = PalletsTypedef<
         true,
         never
       >
+      OriginalAccount: StorageDescriptor<
+        [Key: FixedSizeBinary<20>],
+        SS58String,
+        true,
+        never
+      >
     }
   },
   {
