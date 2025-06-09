@@ -135,6 +135,9 @@ importers:
 
   packages/sdk-ink:
     dependencies:
+      '@ethereumjs/rlp':
+        specifier: ^10.0.0
+        version: 10.0.0
       '@noble/hashes':
         specifier: ^1.8.0
         version: 1.8.0
@@ -316,6 +319,11 @@ packages:
     engines: {node: '>=18'}
     cpu: [x64]
     os: [win32]
+
+  '@ethereumjs/rlp@10.0.0':
+    resolution: {integrity: sha512-h2SK6RxFBfN5ZGykbw8LTNNLckSXZeuUZ6xqnmtF22CzZbHflFMcIOyfVGdvyCVQqIoSbGMHtvyxMCWnOyB9RA==}
+    engines: {node: '>=18'}
+    hasBin: true
 
   '@isaacs/cliui@8.0.2':
     resolution: {integrity: sha512-O8jcjabXaleOG9DQ0+ARXWZBTfnP4WNAqzuiJK7ll44AmxGKv/J2M4TPjxjY3znBCfvBXFzucm1twdyFybFqEA==}
@@ -1536,6 +1544,8 @@ snapshots:
 
   '@esbuild/win32-x64@0.25.5':
     optional: true
+
+  '@ethereumjs/rlp@10.0.0': {}
 
   '@isaacs/cliui@8.0.2':
     dependencies:

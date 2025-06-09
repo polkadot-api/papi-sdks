@@ -4,10 +4,10 @@
 
 ### Added
 
+- Deployer
+  - `estimateAddress()`: Returns the estimated address for a deployment
 - Utilities
   - `getDeploymentAddressWithNonce` to estimate a revive deployment address with an account nonce (equivalent to `create1` in polkadot-sdk)
-  - `getDeploymentAddressWithSalt` to estimate a revive deployment address with salt (equivalent to `create2` in polkadot-sdk)
-  - `getDeploymentHash` to calculate the deployment hash for a particular code + constructor call (needed for `getDeploymentAddressWithSalt`)
 
 ### Fixed
 
