@@ -3,7 +3,7 @@
   "module": "index.ts",
   "type": "module",
   "devDependencies": {
-    "@types/bun": "^1.2.13"
+    "@types/bun": "^1.2.15"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"
@@ -11,9 +11,9 @@
   "dependencies": {
     "@polkadot-api/descriptors": "file:.papi/descriptors",
     "@polkadot-api/sdk-ink": "workspace:*",
-    "@polkadot-labs/hdkd": "^0.0.15",
-    "@polkadot-labs/hdkd-helpers": "^0.0.15",
-    "polkadot-api": "^1.10.2",
+    "@polkadot-labs/hdkd": "^0.0.16",
+    "@polkadot-labs/hdkd-helpers": "^0.0.16",
+    "polkadot-api": "^1.13.1",
     "rxjs": "7.8.2"
   }
 }

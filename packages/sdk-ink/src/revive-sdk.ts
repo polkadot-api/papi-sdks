@@ -66,10 +66,10 @@ export const createReviveSdk = <
 }
 
 const getAccountId = (address: HexString) => {
-  const publicKey = mergeUint8(
+  const publicKey = mergeUint8([
     Binary.fromHex(address).asBytes(),
     new Uint8Array(new Array(32 - 20).fill(0xee)),
-  )
+  ])
 
   return AccountId().dec(publicKey)
 }

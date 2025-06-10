@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 0.2.0 2025-06-10
+
 ### Added
 
 - Deployer

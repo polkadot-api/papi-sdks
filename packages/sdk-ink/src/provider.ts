@@ -297,7 +297,7 @@ export const reviveProvider = (
           from: ss58ToEthereum(origin),
           input: {
             input: Binary.fromBytes(
-              mergeUint8(code.value.asBytes(), data.asBytes()),
+              mergeUint8([code.value.asBytes(), data.asBytes()]),
             ),
           },
           value: valueToU256(value),

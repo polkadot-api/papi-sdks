@@ -66,12 +66,12 @@ export const getDeploymentAddressWithSalt = (
   const addr = parseReviveAddress(deployer)
   const saltBin = typeof salt === "string" ? Binary.fromHex(salt) : salt
   const bytes = keccak_256(
-    mergeUint8(
+    mergeUint8([
       new Uint8Array([0xff]),
       addr.asBytes(),
       saltBin.asBytes(),
       Binary.fromHex(deploymentHash).asBytes(),
-    ),
+    ]),
   ).slice(12)
 
   return Binary.fromBytes(bytes)
