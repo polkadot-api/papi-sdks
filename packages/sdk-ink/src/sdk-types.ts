@@ -51,7 +51,7 @@ type DryRunDeployFn<
   D extends GenericInkDescriptors,
 > = <L extends string & keyof D["__types"]["constructors"]>(
   constructor: L,
-  args: DryRunRedeployArgs<D["__types"]["constructors"][L]["message"]>,
+  args: DryRunDeployArgs<D["__types"]["constructors"][L]["message"]>,
 ) => Promise<
   ResultPayload<
     {
@@ -70,8 +70,20 @@ type DeployFn<D extends GenericInkDescriptors> = <
   L extends string & keyof D["__types"]["constructors"],
 >(
   constructor: L,
-  args: RedeployArgs<D["__types"]["constructors"][L]["message"]>,
+  args: DeployArgs<D["__types"]["constructors"][L]["message"]>,
 ) => AsyncTransaction<any, any, any, any>
+
+type EstimateAddrFn<D extends GenericInkDescriptors, Addr> = <
+  L extends string & keyof D["__types"]["constructors"],
+>(
+  constructor: L,
+  args: Data<D["__types"]["constructors"][L]["message"]> & {
+    origin: SS58String
+    value?: bigint
+    nonce?: number
+    salt?: FixedSizeBinary<32>
+  },
+) => Promise<Addr | null>
 
 export interface Deployer<
   T extends InkSdkTypedApi | ReviveSdkTypedApi,
@@ -80,6 +92,7 @@ export interface Deployer<
 > {
   dryRun: DryRunDeployFn<T, Addr, D>
   deploy: DeployFn<D>
+  estimateAddress: EstimateAddrFn<D, Addr>
 }
 
 type GetErr<T> =
@@ -169,12 +182,12 @@ type DeployOptions = Partial<{
   storageDepositLimit: bigint
   salt: FixedSizeBinary<32>
 }>
-type DryRunRedeployArgs<D> = Data<D> & {
+type DryRunDeployArgs<D> = Data<D> & {
   options?: DeployOptions
   value?: bigint
   origin: SS58String
 }
-type RedeployArgs<D> = Data<D> & {
+type DeployArgs<D> = Data<D> & {
   options?: Omit<DeployOptions, "gasLimit" | "storageDepositLimit">
   value?: bigint
 } & GasInput

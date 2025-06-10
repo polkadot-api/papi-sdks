@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+### Added
+
+- Deployer
+  - `estimateAddress()`: Returns the estimated address for a deployment
+- Utilities
+  - `getDeploymentAddressWithNonce` to estimate a revive deployment address with an account nonce (equivalent to `create1` in polkadot-sdk)
+
 ### Fixed
 
 - decode events when dry-running in pallet revive.

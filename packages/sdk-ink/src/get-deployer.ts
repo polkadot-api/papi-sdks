@@ -29,6 +29,19 @@ export function getDeployer<
   }>,
   mapAddr: (v: Addr) => PublicAddr,
 ): Deployer<T, D, PublicAddr> {
+  const loadedCode = async (): Promise<
+    Enum<{
+      Upload: Binary
+      Existing: FixedSizeBinary<32>
+    }>
+  > =>
+    code.type === "Upload"
+      ? code
+      : {
+          type: "Existing",
+          value: await code.value,
+        }
+
   const deployer: Deployer<T, D, PublicAddr> = {
     async dryRun(constructorLabel, args) {
       const ctor = inkClient.constructor(constructorLabel)
@@ -120,6 +133,20 @@ export function getDeployer<
               code_hash: await code.value,
             })
       }),
+    estimateAddress: async (constructorLabel, args) => {
+      const ctor = inkClient.constructor(constructorLabel)
+      const data = ctor.encode(args.data ?? {})
+
+      const addr = await provider.getEstimatedAddress(
+        args.origin,
+        args.value ?? 0n,
+        await loadedCode(),
+        data,
+        args.salt,
+        args.nonce,
+      )
+      return addr ? mapAddr(addr) : null
+    },
   }
 
   return deployer

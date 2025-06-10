@@ -248,7 +248,23 @@ export type ReviveSdkApis<Ev = any, Err = any> = ApisTypedef<{
 }>
 export type ReviveSdkPallets = PalletsTypedef<
   {
+    System: {
+      Account: StorageDescriptor<
+        [Key: SS58String],
+        {
+          nonce: number
+        },
+        false,
+        never
+      >
+    }
     Revive: {
+      PristineCode: StorageDescriptor<
+        [Key: FixedSizeBinary<32>],
+        Binary,
+        true,
+        never
+      >
       ContractInfoOf: StorageDescriptor<
         [Key: ReviveAddress],
         {

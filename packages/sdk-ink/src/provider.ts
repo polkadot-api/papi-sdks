@@ -24,13 +24,30 @@ import {
   StorageError,
   TraceCallResult,
 } from "./descriptor-types"
-import { ss58ToEthereum, valueToU256 } from "./util"
+import {
+  getDeploymentAddressWithNonce,
+  getDeploymentAddressWithSalt,
+  getDeploymentHash,
+  ss58ToEthereum,
+  valueToU256,
+} from "./util"
 
 export interface ContractsProvider<Addr, StorageErr> {
   dryRunCall(...args: DryRunCallParams<Addr>): Promise<DryRunCallResult>
   dryRunInstantiate(
     ...args: DryRunInstantiateParams
   ): Promise<DryRunInstantiateResult<{ addr: Addr }>>
+  getEstimatedAddress(
+    origin: SS58String,
+    value: bigint,
+    code: Enum<{
+      Upload: Binary
+      Existing: FixedSizeBinary<32>
+    }>,
+    data: Binary,
+    salt?: Binary,
+    nonce?: number,
+  ): Promise<Addr | null>
   getStorage(
     addr: Addr,
     key: Binary,
@@ -65,45 +82,62 @@ const defaultSalt = Binary.fromText("")
 export const contractsProvider = (
   typedApi: InkSdkTypedApi,
 ): ContractsProvider<SS58String, StorageError> => {
-  return {
-    dryRunCall: (...args) => typedApi.apis.ContractsApi.call(...args),
-    dryRunInstantiate: async (
+  const dryRunInstantiate = async (
+    origin: SS58String,
+    value: bigint,
+    gas_limit: Gas | undefined,
+    storage_deposit_limit: bigint | undefined,
+    code: Enum<{
+      Upload: Binary
+      Existing: FixedSizeBinary<32>
+    }>,
+    data: Binary,
+    salt: Binary | undefined,
+  ) => {
+    const response = await typedApi.apis.ContractsApi.instantiate(
       origin,
       value,
       gas_limit,
       storage_deposit_limit,
       code,
       data,
-      salt,
-    ) => {
-      const response = await typedApi.apis.ContractsApi.instantiate(
+      salt ?? defaultSalt,
+    )
+    const result: Result<
+      {
+        result: {
+          flags: number
+          data: Binary
+        }
+      } & {
+        account_id: SS58String
+      }
+    > = response.result
+    return {
+      ...response,
+      result: mapResult(result, {
+        value: ({ account_id, result }) => ({
+          result,
+          addr: account_id,
+        }),
+      }),
+    }
+  }
+
+  return {
+    dryRunCall: (...args) => typedApi.apis.ContractsApi.call(...args),
+    dryRunInstantiate,
+    getEstimatedAddress: async (origin, value, code, data, salt) => {
+      const result = await dryRunInstantiate(
         origin,
         value,
-        gas_limit,
-        storage_deposit_limit,
+        undefined,
+        undefined,
         code,
         data,
-        salt ?? defaultSalt,
+        salt,
       )
-      const result: Result<
-        {
-          result: {
-            flags: number
-            data: Binary
-          }
-        } & {
-          account_id: SS58String
-        }
-      > = response.result
-      return {
-        ...response,
-        result: mapResult(result, {
-          value: ({ account_id, result }) => ({
-            result,
-            addr: account_id,
-          }),
-        }),
-      }
+      return result.result.success ? result.result.value.addr : null
     },
     getStorage: (...args) => typedApi.apis.ContractsApi.get_storage(...args),
     getCodeHash: (addr) =>
@@ -281,6 +315,33 @@ export const reviveProvider = (
           events,
         }
       }),
+    getEstimatedAddress: async (
+      origin,
+      _value,
+      code_arg,
+      data,
+      salt,
+      nonce_arg,
+    ) => {
+      if (salt) {
+        const code =
+          code_arg.type === "Upload"
+            ? code_arg.value
+            : await typedApi.query.Revive.PristineCode.getValue(code_arg.value)
+        if (!code) return null
+        return getDeploymentAddressWithSalt(
+          origin,
+          getDeploymentHash(code, data),
+          salt,
+        )
+      }
+
+      const nonce =
+        nonce_arg != null
+          ? nonce_arg
+          : (await typedApi.query.System.Account.getValue(origin)).nonce
+      return getDeploymentAddressWithNonce(origin, nonce)
+    },
     getStorage: async (...args) => {
       // the optional part makes it awkward to work with…
       const var_key_call: any = typedApi.apis.ReviveApi.get_storage_var_key

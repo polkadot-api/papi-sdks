@@ -8,7 +8,12 @@ import { aliceSigner } from "./util/signer"
 import { trackTx } from "./util/trackTx"
 
 const client = createClient(
-  withPolkadotSdkCompat(getWsProvider("wss://rpc1.paseo.popnetwork.xyz")),
+  withPolkadotSdkCompat(
+    getWsProvider([
+      "wss://rpc2.paseo.popnetwork.xyz",
+      "wss://rpc1.paseo.popnetwork.xyz",
+    ]),
+  ),
 )
 
 const typedApi = client.getTypedApi(pop)
@@ -38,6 +43,14 @@ if (!dryRunResult.success) {
 } else {
   console.log("Dry-run success", {
     address: dryRunResult.value.address,
+    // Expected to be different, because the address returned by the dry-run is bugged https://github.com/paritytech/contract-issues/issues/37
+    // so this estimatedAddress is better.
+    estimatedAddress: await deployer.estimateAddress("new", {
+      data: {
+        initial_value: false,
+      },
+      origin: ADDRESS.alice,
+    }),
     events: dryRunResult.value.events,
     storageDeposit: dryRunResult.value.storageDeposit,
   })
