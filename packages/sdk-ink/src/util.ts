@@ -28,7 +28,7 @@ export const getStorageLimit = (
   }>,
 ) => (depositResponse.type === "Charge" ? depositResponse.value : 0n)
 
-export const ss58ToEthereum = (address: SS58String) =>
+export const ss58ToEthereum = (address: SS58String): Binary =>
   Binary.fromBytes(keccak_256(AccountId().enc(address)).slice(12))
 
 const u64Range = 2n ** 64n

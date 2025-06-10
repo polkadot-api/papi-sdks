@@ -19,6 +19,8 @@ const client = createClient(
 const typedApi = client.getTypedApi(pop)
 const flipperSdk = createReviveSdk(typedApi, contracts.flipper)
 
+console.log("Alice is mapped?", await flipperSdk.addressIsMapped(ADDRESS.alice))
+
 const pvmFile = Bun.file("./contracts/flipper_inkv6/flipper.polkavm")
 console.log("Loading pvm file")
 const pvmBytes = Binary.fromBytes(await pvmFile.bytes())

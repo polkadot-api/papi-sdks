@@ -9,7 +9,8 @@ import type {
 import { getContract } from "./get-contract"
 import { getDeployer } from "./get-deployer"
 import { reviveProvider } from "./provider"
-import type { InkSdk } from "./sdk-types"
+import type { ReviveSdk } from "./sdk-types"
+import { ss58ToEthereum } from "./util"
 
 export const createReviveSdk = <
   T extends ReviveSdkTypedApi,
@@ -17,7 +18,7 @@ export const createReviveSdk = <
 >(
   typedApi: T,
   contractDescriptors: D,
-): InkSdk<T, D, HexString, ReviveStorageError> => {
+): ReviveSdk<T, D, HexString, ReviveStorageError> => {
   const provider = reviveProvider(typedApi)
   const inkClient = getInkClient(contractDescriptors)
   const lookup = getInkLookup(contractDescriptors.metadata)
@@ -57,6 +58,10 @@ export const createReviveSdk = <
         contractEvents: inkClient.event.filter(address, contractEmittedEvents),
       }))
     },
+    addressIsMapped: (address) =>
+      typedApi.query.Revive.OriginalAccount.getValue(
+        ss58ToEthereum(address),
+      ).then((r) => r != null),
   }
 }
 
