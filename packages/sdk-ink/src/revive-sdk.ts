@@ -1,5 +1,6 @@
 import { getInkClient, getInkLookup } from "@polkadot-api/ink-contracts"
-import { Binary, Enum, HexString } from "polkadot-api"
+import { AccountId, Binary, Enum, HexString } from "polkadot-api"
+import { mergeUint8 } from "polkadot-api/utils"
 import type {
   GenericInkDescriptors,
   ReviveSdkTypedApi,
@@ -23,8 +24,13 @@ export const createReviveSdk = <
 
   return {
     getContract: (address) =>
-      getContract(provider, inkClient, lookup, Binary.fromHex(address), (v) =>
-        v.asHex(),
+      getContract(
+        provider,
+        inkClient,
+        lookup,
+        Binary.fromHex(address),
+        (v) => v.asHex(),
+        getAccountId(address),
       ),
     getDeployer: (code) =>
       getDeployer(provider, inkClient, Enum("Upload", code), (v) => v.asHex()),
@@ -52,4 +58,13 @@ export const createReviveSdk = <
       }))
     },
   }
+}
+
+const getAccountId = (address: HexString) => {
+  const publicKey = mergeUint8(
+    Binary.fromHex(address).asBytes(),
+    new Uint8Array(new Array(32 - 20).fill(0xee)),
+  )
+
+  return AccountId().dec(publicKey)
 }

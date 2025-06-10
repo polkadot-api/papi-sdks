@@ -4,7 +4,7 @@ import {
   wrapAsyncTx,
 } from "@polkadot-api/common-sdk-utils"
 import type { InkClient, InkMetadataLookup } from "@polkadot-api/ink-contracts"
-import { Enum } from "polkadot-api"
+import { Enum, SS58String } from "polkadot-api"
 import type {
   GenericInkDescriptors,
   InkSdkTypedApi,
@@ -28,6 +28,7 @@ export function getContract<
   lookup: InkMetadataLookup,
   address: Addr,
   mapAddr: (v: Addr) => PublicAddr,
+  accountId: SS58String,
 ): Contract<T, D, PublicAddr, StorageErr> {
   const codeHash = provider.getCodeHash(address).then((r) => {
     if (!r) {
@@ -44,6 +45,7 @@ export function getContract<
   )
 
   const contractApi: Contract<T, D, PublicAddr, StorageErr> = {
+    accountId,
     async isCompatible() {
       try {
         const code_hash = await codeHash

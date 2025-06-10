@@ -110,6 +110,7 @@ export interface Contract<
   Addr,
   StorageErr,
 > {
+  accountId: SS58String
   isCompatible(): Promise<boolean>
   getStorage(): SdkStorage<D["__types"]["storage"], StorageErr>
   query: <L extends string & keyof D["__types"]["messages"]>(

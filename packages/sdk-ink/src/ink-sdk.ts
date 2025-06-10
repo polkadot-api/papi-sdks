@@ -23,7 +23,7 @@ export const createInkSdk = <
 
   return {
     getContract: (address) =>
-      getContract(provider, inkClient, lookup, address, (v) => v),
+      getContract(provider, inkClient, lookup, address, (v) => v, address),
     getDeployer: (code) =>
       getDeployer(provider, inkClient, Enum("Upload", code), (v) => v),
     readDeploymentEvents(events) {

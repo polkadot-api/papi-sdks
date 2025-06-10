@@ -77,6 +77,13 @@ if (!dryRunResult.success) {
 const contract = flipperSdk.getContract(ADDRESS.flipper)
 console.log(`Deployed contract is compatible: ${await contract.isCompatible()}`)
 
+const contractAccount = await typedApi.query.System.Account.getValue(
+  contract.accountId,
+)
+console.log(
+  `Contract funds: ${contract.accountId} ${contractAccount.data.free}`,
+)
+
 const initialValueResult = await contract.query("get", {
   origin: ADDRESS.alice,
 })

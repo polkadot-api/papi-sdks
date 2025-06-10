@@ -6,6 +6,8 @@
 
 - Deployer
   - `estimateAddress()`: Returns the estimated address for a deployment
+- Contract
+  - `accountId` with the accountId (SS58) of the contract
 - Utilities
   - `getDeploymentAddressWithNonce` to estimate a revive deployment address with an account nonce (equivalent to `create1` in polkadot-sdk)
 
