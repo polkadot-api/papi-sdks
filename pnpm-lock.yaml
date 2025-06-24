@@ -83,11 +83,11 @@ importers:
         specifier: ^1.2.15
         version: 1.2.15
 
-  examples/vite:
+  examples/remote-proxy:
     dependencies:
       '@polkadot-api/descriptors':
         specifier: file:.papi/descriptors
-        version: file:examples/vite/.papi/descriptors(polkadot-api@1.14.1(postcss@8.5.4)(rxjs@7.8.2))
+        version: file:examples/remote-proxy/.papi/descriptors(polkadot-api@1.14.1(postcss@8.5.4)(rxjs@7.8.2))
       '@polkadot-api/sdk-remote-proxy':
         specifier: workspace:*
         version: link:../../packages/sdk-remote-proxy
@@ -185,9 +185,6 @@ importers:
 
   packages/sdk-remote-proxy:
     dependencies:
-      '@polkadot-api/descriptors':
-        specifier: file:.papi/descriptors
-        version: file:packages/sdk-remote-proxy/.papi/descriptors(polkadot-api@1.14.1(postcss@8.5.4)(rxjs@7.8.2))
       '@polkadot-api/substrate-bindings':
         specifier: ^0.14.0
         version: 0.14.0
@@ -435,13 +432,8 @@ packages:
     peerDependencies:
       polkadot-api: '>=1.11.2'
 
-  '@polkadot-api/descriptors@file:examples/vite/.papi/descriptors':
-    resolution: {directory: examples/vite/.papi/descriptors, type: directory}
-    peerDependencies:
-      polkadot-api: '>=1.11.2'
-
-  '@polkadot-api/descriptors@file:packages/sdk-remote-proxy/.papi/descriptors':
-    resolution: {directory: packages/sdk-remote-proxy/.papi/descriptors, type: directory}
+  '@polkadot-api/descriptors@file:examples/remote-proxy/.papi/descriptors':
+    resolution: {directory: examples/remote-proxy/.papi/descriptors, type: directory}
     peerDependencies:
       polkadot-api: '>=1.11.2'
 
@@ -1787,11 +1779,7 @@ snapshots:
     dependencies:
       polkadot-api: 1.14.1(postcss@8.5.4)(rxjs@7.8.2)
 
-  '@polkadot-api/descriptors@file:examples/vite/.papi/descriptors(polkadot-api@1.14.1(postcss@8.5.4)(rxjs@7.8.2))':
-    dependencies:
-      polkadot-api: 1.14.1(postcss@8.5.4)(rxjs@7.8.2)
-
-  '@polkadot-api/descriptors@file:packages/sdk-remote-proxy/.papi/descriptors(polkadot-api@1.14.1(postcss@8.5.4)(rxjs@7.8.2))':
+  '@polkadot-api/descriptors@file:examples/remote-proxy/.papi/descriptors(polkadot-api@1.14.1(postcss@8.5.4)(rxjs@7.8.2))':
     dependencies:
       polkadot-api: 1.14.1(postcss@8.5.4)(rxjs@7.8.2)
 

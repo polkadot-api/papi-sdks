@@ -8,7 +8,7 @@ import {
   Transaction,
 } from "polkadot-api"
 import { createGetProof } from "./get-proof-data"
-import { ksmAh } from "@polkadot-api/descriptors"
+import { ksmAh } from "./descriptors"
 import { fromHex } from "polkadot-api/utils"
 import { mortal } from "./mortal"
 

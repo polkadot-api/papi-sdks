@@ -12,7 +12,7 @@
       "node": {
         "production": {
           "import": "./dist/esm/index.mjs",
-          "require": "./dist/min/index.js",
+          "require": "./dist/index.js",
           "default": "./dist/index.js"
         },
         "import": "./dist/esm/index.mjs",
@@ -34,14 +34,14 @@
     "dist"
   ],
   "scripts": {
-    "build": "pnpm papi && tsc --noEmit && rollup -c ../../rollup.config.js",
+    "postinstall": "rm -rf src/descriptors && papi generate --whitelist .papi/whitelist.ts && cp -r .papi/descriptors/dist src/descriptors && rm src/descriptors/index.js && mv src/descriptors/index.mjs src/descriptors/index.js",
+    "build": "rollup -c ../../rollup.config.js",
     "lint": "prettier --check README.md \"src/**/*.{js,jsx,ts,tsx,json,md}\"",
     "format": "prettier --write README.md \"src/**/*.{js,jsx,ts,tsx,json,md}\"",
     "prepack": "pnpm run build"
   },
   "license": "MIT",
   "dependencies": {
-    "@polkadot-api/descriptors": "file:.papi/descriptors",
     "@polkadot-api/substrate-bindings": "^0.14.0"
   },
   "peerDependencies": {

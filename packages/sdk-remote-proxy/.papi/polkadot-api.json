@@ -1,6 +1,7 @@
 {
   "version": 0,
   "descriptorPath": ".papi/descriptors",
+  "options": { "noDescriptorsPackage": true },
   "entries": {
     "ksm": {
       "chain": "ksmcc3",

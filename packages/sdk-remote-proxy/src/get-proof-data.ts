@@ -13,7 +13,7 @@ import {
   withLatestFrom,
 } from "rxjs"
 import { Binary, BlockInfo, PolkadotClient, SS58String } from "polkadot-api"
-import { ksm, ksmAh } from "@polkadot-api/descriptors"
+import { ksm, ksmAh } from "./descriptors"
 
 const nFinalizedBlocks = 10
 export const createGetProof = (
