@@ -31,6 +31,7 @@ export default [
         file: `dist/index.js`,
         format: "cjs",
         sourcemap: true,
+        inlineDynamicImports: true,
       },
       {
         dir: `dist/esm`,

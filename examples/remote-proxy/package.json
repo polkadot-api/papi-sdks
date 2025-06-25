@@ -1,0 +1,24 @@
+{
+  "name": "vite",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "start": "papi && vite",
+    "build-external": "papi && tsc && vite build",
+    "build": "pnpm build-external",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.30",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3",
+    "vite": "^6.3.5"
+  },
+  "dependencies": {
+    "@polkadot-api/descriptors": "file:.papi/descriptors",
+    "@polkadot-api/sdk-remote-proxy": "workspace:*",
+    "polkadot-api": "1.14.1",
+    "rxjs": "^7.8.2"
+  }
+}
