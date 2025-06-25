@@ -81,7 +81,9 @@ export interface ContractsProvider<Addr, StorageErr> {
 const defaultSalt = Binary.fromText("")
 export const contractsProvider = (
   typedApi: InkSdkTypedApi,
+  atBest?: boolean,
 ): ContractsProvider<SS58String, StorageError> => {
+  const callOptions = atBest ? { at: "best" } : undefined
   const dryRunInstantiate = async (
     origin: SS58String,
     value: bigint,
@@ -102,6 +104,7 @@ export const contractsProvider = (
       code,
       data,
       salt ?? defaultSalt,
+      callOptions,
     )
     const result: Result<
       {
@@ -125,7 +128,8 @@ export const contractsProvider = (
   }
 
   return {
-    dryRunCall: (...args) => typedApi.apis.ContractsApi.call(...args),
+    dryRunCall: (...args) =>
+      typedApi.apis.ContractsApi.call(...args, callOptions),
     dryRunInstantiate,
     getEstimatedAddress: async (origin, value, code, data, salt) => {
       const result = await dryRunInstantiate(
@@ -139,9 +143,10 @@ export const contractsProvider = (
       )
       return result.result.success ? result.result.value.addr : null
     },
-    getStorage: (...args) => typedApi.apis.ContractsApi.get_storage(...args),
+    getStorage: (...args) =>
+      typedApi.apis.ContractsApi.get_storage(...args, callOptions),
     getCodeHash: (addr) =>
-      typedApi.query.Contracts.ContractInfoOf.getValue(addr).then(
+      typedApi.query.Contracts.ContractInfoOf.getValue(addr, callOptions).then(
         (r) => r?.code_hash,
       ),
     txCall: ({ data, dest, gas_limit, value, storage_deposit_limit }) =>
@@ -206,7 +211,9 @@ const getEventsFromTrace = (
 
 export const reviveProvider = (
   typedApi: ReviveSdkTypedApi,
+  atBest: boolean,
 ): ContractsProvider<ReviveAddress, ReviveStorageError> => {
+  const callOptions = atBest ? { at: "best" } : undefined
   const traceCall = ({
     from,
     to,
@@ -226,6 +233,7 @@ export const reviveProvider = (
         only_top_call: false,
         with_logs: true,
       }),
+      callOptions,
     ).catch((ex) => {
       console.error(ex)
       return {
@@ -250,6 +258,7 @@ export const reviveProvider = (
           gas_limit,
           storage_deposit_limit,
           input,
+          callOptions,
         ),
         traceCall({
           from: ss58ToEthereum(origin),
@@ -292,6 +301,7 @@ export const reviveProvider = (
           code,
           data,
           salt,
+          callOptions,
         ),
         traceCall({
           from: ss58ToEthereum(origin),
@@ -327,7 +337,10 @@ export const reviveProvider = (
         const code =
           code_arg.type === "Upload"
             ? code_arg.value
-            : await typedApi.query.Revive.PristineCode.getValue(code_arg.value)
+            : await typedApi.query.Revive.PristineCode.getValue(
+                code_arg.value,
+                callOptions,
+              )
         if (!code) return null
         return getDeploymentAddressWithSalt(
           origin,
@@ -339,7 +352,8 @@ export const reviveProvider = (
       const nonce =
         nonce_arg != null
           ? nonce_arg
-          : (await typedApi.query.System.Account.getValue(origin)).nonce
+          : (await typedApi.query.System.Account.getValue(origin, callOptions))
+              .nonce
       return getDeploymentAddressWithNonce(origin, nonce)
     },
     getStorage: async (...args) => {
@@ -349,10 +363,10 @@ export const reviveProvider = (
         ? (var_key_call as typeof typedApi.apis.ReviveApi.get_storage)
         : typedApi.apis.ReviveApi.get_storage
 
-      return call(...args)
+      return call(...args, callOptions)
     },
     getCodeHash: (addr) =>
-      typedApi.query.Revive.ContractInfoOf.getValue(addr).then(
+      typedApi.query.Revive.ContractInfoOf.getValue(addr, callOptions).then(
         (r) => r?.code_hash,
       ),
     txCall: (payload) => {

@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Added
+
+- `InkSdkOptions` parameter to `createInkSdk` and `createReviveSdk`, with `atBest` option to target the best block instead of the finalized.
+
 ## 0.2.0 2025-06-10
 
 ### Added
