@@ -20,7 +20,7 @@ const tx = ahApi.tx.Balances.transfer_all({
 // convenient sdk for dealing with remote proxies:
 const sdk = getRemoteProxySdk(relayClient, ahClient)
 const proxiedTx = await sdk.getProxiedTx(PROXIED_ACCOUNT, tx)
-const callData = await tx.getEncodedData()
+const callData = await proxiedTx.getEncodedData()
 
 console.log(`Send via PAPI console:
 https://dev.papi.how/extrinsics#networkId=kusama_asset_hub&endpoint=wss%3A%2F%2Fsys.ibp.network%2Fstatemine&data=${callData.asHex()}

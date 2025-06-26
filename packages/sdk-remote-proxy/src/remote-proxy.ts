@@ -11,15 +11,18 @@ import { createGetProof } from "./get-proof-data"
 import { ksmAh } from "./descriptors"
 import { fromHex } from "polkadot-api/utils"
 import { mortal } from "./mortal"
+import { createMultisigProxiedSigner } from "./multisig-proxied-signer"
+
+export { type MultisigConfig } from "./multisig-proxied-signer"
 
 export const getRemoteProxySdk = (
   relayChainClient: PolkadotClient,
   parachainClient: PolkadotClient,
 ) => {
   const getProof = createGetProof(relayChainClient, parachainClient)
-  const { remote_proxy } =
-    parachainClient.getTypedApi(ksmAh).tx.RemoteProxyRelayChain
-  const { txFromCallData } = parachainClient.getTypedApi(ksmAh)
+  const paraApi = parachainClient.getTypedApi(ksmAh)
+  const { remote_proxy } = paraApi.tx.RemoteProxyRelayChain
+  const { txFromCallData } = paraApi
 
   const proxyTx = (
     tx: Transaction<any, any, any, any>,
@@ -109,5 +112,12 @@ export const getRemoteProxySdk = (
     tx: Transaction<any, any, any, any>,
   ) => proxyTx(tx, await getProof(proxiedAccount))
 
-  return { getProxiedTx, getProxiedSigner }
+  return {
+    getProxiedTx,
+    getProxiedSigner,
+    getMultisigProxiedSigner: createMultisigProxiedSigner(
+      parachainClient,
+      getProof,
+    ),
+  }
 }

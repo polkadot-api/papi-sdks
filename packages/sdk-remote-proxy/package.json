@@ -1,6 +1,6 @@
 {
   "name": "@polkadot-api/sdk-remote-proxy",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "sideEffects": false,
   "author": "Josep M Sobrepere (https://github.com/josepot)",
   "repository": {
@@ -42,6 +42,7 @@
   },
   "license": "MIT",
   "dependencies": {
+    "@polkadot-api/meta-signers": "^0.1.8",
     "@polkadot-api/substrate-bindings": "^0.14.0"
   },
   "peerDependencies": {
