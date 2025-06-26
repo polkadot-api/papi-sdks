@@ -185,6 +185,9 @@ importers:
 
   packages/sdk-remote-proxy:
     dependencies:
+      '@polkadot-api/meta-signers':
+        specifier: ^0.1.8
+        version: 0.1.8
       '@polkadot-api/substrate-bindings':
         specifier: ^0.14.0
         version: 0.14.0
@@ -457,6 +460,9 @@ packages:
 
   '@polkadot-api/merkleize-metadata@1.1.18':
     resolution: {integrity: sha512-WKP4urGv6YDO9rGeCLX+I/I0uJCXunytNzyPfBMOK9dwJD48UpX+oHf2aNnWvP4j9zQImY/oaBQQ9Sp89ABZOw==}
+
+  '@polkadot-api/meta-signers@0.1.8':
+    resolution: {integrity: sha512-uEThxSS7gDTm06rw/dQDqVbXabKE8NXSPYQbWFr8WIpgV50AtLi3aGd/MIOo+loM7yoi7f0MS5H/Lm4UO/c/2w==}
 
   '@polkadot-api/metadata-builders@0.12.2':
     resolution: {integrity: sha512-Mmivj1YZve1fCkM90eIIo73B0jkiqMA3zwhFcqYaBfuAu4x5t0rt+Ucfx76t4qxJOhG8wXp/tmdbzWIrWG909A==}
@@ -1808,6 +1814,14 @@ snapshots:
   '@polkadot-api/merkleize-metadata@1.1.18':
     dependencies:
       '@polkadot-api/metadata-builders': 0.12.2
+      '@polkadot-api/substrate-bindings': 0.14.0
+      '@polkadot-api/utils': 0.2.0
+
+  '@polkadot-api/meta-signers@0.1.8':
+    dependencies:
+      '@polkadot-api/metadata-builders': 0.12.2
+      '@polkadot-api/polkadot-signer': 0.1.6
+      '@polkadot-api/signer': 0.2.2
       '@polkadot-api/substrate-bindings': 0.14.0
       '@polkadot-api/utils': 0.2.0
 

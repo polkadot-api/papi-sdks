@@ -7,7 +7,9 @@ const ksmWhitelist: KsmWhitelistEntry[] = ["query.Proxy.Proxies"]
 
 const ahKsmWhitelist: KsmAhWhitelistEntry[] = [
   "query.RemoteProxyRelayChain.BlockToRoot",
-  "tx.RemoteProxyRelayChain.remote_proxy",
+  "query.Multisig.Multisigs",
+  "api.TransactionPaymentApi.query_info",
+  "tx.RemoteProxyRelayChain.*",
 ]
 
 export const whitelist = [...ksmWhitelist, ...ahKsmWhitelist]
