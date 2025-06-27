@@ -1,6 +1,6 @@
 {
   "name": "@polkadot-api/sdk-remote-proxy",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "sideEffects": false,
   "author": "Josep M Sobrepere (https://github.com/josepot)",
   "repository": {
@@ -34,8 +34,7 @@
     "dist"
   ],
   "scripts": {
-    "postinstall": "rm -rf src/descriptors && papi generate --whitelist .papi/whitelist.ts && cp -r .papi/descriptors/dist src/descriptors && rm src/descriptors/index.js && mv src/descriptors/index.mjs src/descriptors/index.js",
-    "build": "rollup -c ../../rollup.config.js",
+    "build": "rm -rf src/descriptors && papi generate --whitelist .papi/whitelist.ts && cp -r .papi/descriptors/dist src/descriptors && rm src/descriptors/index.js && mv src/descriptors/index.mjs src/descriptors/index.js && rollup -c ../../rollup.config.js",
     "lint": "prettier --check README.md \"src/**/*.{js,jsx,ts,tsx,json,md}\"",
     "format": "prettier --write README.md \"src/**/*.{js,jsx,ts,tsx,json,md}\"",
     "prepack": "pnpm run build"
