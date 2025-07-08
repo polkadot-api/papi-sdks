@@ -1,6 +1,6 @@
 {
   "name": "@polkadot-api/sdk-accounts",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "sideEffects": false,
   "author": "Victor Oliva (https://github.com/voliva)",
   "repository": {
@@ -42,6 +42,7 @@
   "license": "MIT",
   "dependencies": {
     "@polkadot-api/common-sdk-utils": "workspace:*",
+    "@polkadot-api/substrate-bindings": "^0.14.0",
     "@react-rxjs/utils": "^0.9.7"
   },
   "peerDependencies": {

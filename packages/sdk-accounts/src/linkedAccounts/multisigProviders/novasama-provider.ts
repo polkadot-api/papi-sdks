@@ -1,5 +1,5 @@
 import { AccountId, Binary, getSs58AddressInfo } from "polkadot-api"
-import { MultisigProvider } from "./sdk-types"
+import { MultisigProvider } from "../sdk-types"
 
 export type NovasamaChain = "polkadot" | "kusama"
 export const novasamaProvider =
