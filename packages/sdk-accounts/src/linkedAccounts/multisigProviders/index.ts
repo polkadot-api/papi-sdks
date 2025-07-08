@@ -1,4 +1,5 @@
 export * from "./fallback-providers"
 export * from "./throttle-provider"
 export * from "./novasama-provider"
+export * from "./static-provider"
 export * from "./subscan-provider"

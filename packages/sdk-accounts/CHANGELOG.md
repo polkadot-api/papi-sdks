@@ -10,6 +10,7 @@
   - `subscanProvider(chain, apiKey)` for subscan.
   - `fallbackProviders(...providers)` to search for an account on multiple providers.
   - `throttleProvider(provider, maxConcurrent)` to limit the amount of requests for a provider.
+  - `staticProvider(multisigs)` to find multisigs within an array of pre-defined ones.
 
 ### Fixed
 
