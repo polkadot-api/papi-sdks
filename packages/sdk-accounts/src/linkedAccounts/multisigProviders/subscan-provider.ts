@@ -29,7 +29,7 @@ export function subscanProvider(
       ).then((r) => r.json())
 
       const multisig = result.data?.account?.multisig
-      if (!multisig) return null
+      if (!multisig?.multi_account_member?.length) return null
 
       return {
         addresses: multisig.multi_account_member.map(
