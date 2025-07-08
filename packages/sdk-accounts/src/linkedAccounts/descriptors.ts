@@ -1,22 +1,11 @@
 import { SdkDefinition } from "@polkadot-api/common-sdk-utils"
 import {
   ApisTypedef,
-  Enum,
   PalletsTypedef,
   SS58String,
   StorageDescriptor,
   TypedApi,
 } from "polkadot-api"
-
-type ProxyType = Enum<{
-  Any: undefined
-  NonTransfer: undefined
-  Governance: undefined
-  Staking: undefined
-  CancelProxy: undefined
-  Auction: undefined
-  NominationPools: undefined
-}>
 
 type LinkedAccountsSdkPallets = PalletsTypedef<
   {
@@ -30,7 +19,7 @@ type LinkedAccountsSdkPallets = PalletsTypedef<
         [
           Array<{
             delegate: SS58String
-            proxy_type: ProxyType
+            proxy_type: { type: string; value: unknown }
             delay: number
           }>,
           unknown,
