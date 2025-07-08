@@ -2,6 +2,19 @@
 
 ## Unreleased
 
+## 0.3.0 2025-07-08
+
+### Added
+
+- Multisig providers
+  - `subscanProvider(chain, apiKey)` for subscan.
+  - `fallbackProviders(...providers)` to search for an account on multiple providers.
+  - `throttleProvider(provider, maxConcurrent)` to limit the amount of requests for a provider.
+
+### Fixed
+
+- Support chains regardless of proxy enum type.
+
 ## 0.2.1 2025-05-29
 
 ### Fixed
