@@ -8,47 +8,65 @@ const assertEra = (activeEra: number, depth: number, era: number) => {
   }
 }
 
+const PERBILL = 1000000000n
+
 export function createStakingSdk(
   api: StakingSdkTypedApi,
   _settings: { maxActiveNominators: number },
 ): StakingSdk {
   // Values from ErasStakersPaged can't change after it has become the active era.
   // Papi caches per-block, but as we know this can't change and it's an expensive request, we set up the cache in here.
-  let activeEraPromise = api.query.Staking.ActiveEra.getValue().then(
-    (val) => val!.index,
-  )
+  const getActiveEra = () =>
+    api.query.Staking.ActiveEra.getValue().then((val) => val!.index)
   const erasStakersCache: Record<
     number,
     Promise<
-      Array<{
-        keyArgs: [number, SS58String, number]
-        value: {
-          page_total: bigint
-          others: Array<{
-            who: SS58String
-            value: bigint
-          }>
+      Record<
+        SS58String,
+        {
+          total: bigint
+          others: Record<SS58String, bigint>
         }
-      }>
+      >
     >
   > = {}
   const getEraStakers = (era: number) => {
     if (era in erasStakersCache) return erasStakersCache[era]
 
-    const result = api.query.Staking.ErasStakersPaged.getEntries(era)
+    const result = api.query.Staking.ErasStakersPaged.getEntries(era).then(
+      (entries) => {
+        const result: Record<
+          SS58String,
+          {
+            total: bigint
+            others: Record<SS58String, bigint>
+          }
+        > = {}
+
+        entries.forEach(({ keyArgs: [_, addr], value }) => {
+          result[addr] ??= {
+            total: 0n,
+            others: {},
+          }
+          result[addr].total += value.page_total
+          result[addr].others = {
+            ...result[addr].others,
+            ...Object.fromEntries(
+              value.others.map(({ who, value }) => [who, value]),
+            ),
+          }
+        })
+
+        return result
+      },
+    )
 
     // It's safe for others to use this cache temporarily
     erasStakersCache[era] = result
 
     // Remove from cache if it's actually above the active era
-    activeEraPromise.then(async (activeEra) => {
-      if (activeEra >= era) return
-
-      // refresh just-in-case it has changed in a recent block
-      activeEraPromise = api.query.Staking.ActiveEra.getValue().then(
-        (val) => val!.index,
-      )
-      if ((await activeEraPromise) < era) {
+    getActiveEra().then((activeEra) => {
+      if (activeEra < era) {
         delete erasStakersCache[era]
       }
     })
@@ -56,27 +74,31 @@ export function createStakingSdk(
     return result
   }
 
-  const getNominatorStatus: StakingSdk["getNominatorStatus"] = async (
-    addr,
-    era,
-  ) => {
-    const selectedEra = era ? Promise.resolve(era) : activeEraPromise
-    const eraEntries = selectedEra.then(getEraStakers)
+  const eraOrActive = async (era?: number) => {
+    const selectedEra = era ? Promise.resolve(era) : getActiveEra()
 
     const [activeEra, depth] = await Promise.all([
-      activeEraPromise,
+      getActiveEra(),
       api.constants.Staking.HistoryDepth(),
     ])
     era = await selectedEra
     assertEra(activeEra, depth, era)
 
-    const active = (await eraEntries).flatMap(
-      ({ keyArgs: [, validator], value: { others } }) =>
-        others
-          .filter(({ who }) => who === addr)
-          .map(({ value }) => ({ validator, activeBond: value })),
-    )
-    return { era, active }
+    return era
+  }
+
+  const getNominatorStatus: StakingSdk["getNominatorStatus"] = async (
+    addr,
+    era,
+  ) => {
+    era = await eraOrActive(era)
+
+    return Object.entries(await getEraStakers(era))
+      .filter(([, { others }]) => addr in others)
+      .map(([validator, { others }]) => ({
+        validator,
+        activeBond: others[addr],
+      }))
   }
 
   // TODO: include VoterList check
@@ -96,8 +118,80 @@ export function createStakingSdk(
     return { canNominate, maxBond, currentBond: ledger?.total ?? 0n }
   }
 
+  const getNominatorRewards: StakingSdk["getNominatorRewards"] = async (
+    addr,
+    era,
+  ) => {
+    era = await eraOrActive(era)
+
+    const eraStakersPromise = getEraStakers(era)
+    const erasValidatorPrefsPromise =
+      api.query.Staking.ErasValidatorPrefs.getEntries(era)
+    const [tokenReward, rewardPoints] = await Promise.all([
+      api.query.Staking.ErasValidatorReward.getValue(era).then((r) => r ?? 0n),
+      api.query.Staking.ErasRewardPoints.getValue(era),
+    ])
+    const [eraStakers, erasValidatorPrefs] = await Promise.all([
+      eraStakersPromise,
+      erasValidatorPrefsPromise,
+    ])
+
+    const entries = Object.entries(eraStakers)
+      .filter(([, stakers]) => stakers.others[addr])
+      .map(([validator, stakers]) => {
+        const bond = stakers.others[addr]
+
+        const validatorPoints = rewardPoints.individual.find(
+          ([addr]) => validator === addr,
+        )
+        const validatorPrefs = erasValidatorPrefs.find(
+          ({ keyArgs: [, addr] }) => validator === addr,
+        )
+        if (!validatorPoints || !validatorPrefs) {
+          console.error("Validator doesn't have points or prefs", {
+            rewardPoints,
+            validatorPrefs,
+            validator,
+          })
+          return [validator, { bond, reward: 0n }] as const
+        }
+
+        const validatorShare =
+          (tokenReward * BigInt(validatorPoints[1])) /
+          BigInt(rewardPoints.total)
+        const nominatorsShare =
+          (validatorShare *
+            (PERBILL - BigInt(validatorPrefs.value.commission))) /
+          PERBILL
+
+        const reward = (nominatorsShare * bond) / stakers.total
+
+        return [
+          validator,
+          {
+            bond,
+            reward,
+          },
+        ] as const
+      })
+
+    const total = entries
+      .map(([, { reward }]) => reward)
+      .reduce((a, b) => a + b, 0n)
+    const activeBond = entries
+      .map(([, { bond }]) => bond)
+      .reduce((a, b) => a + b, 0n)
+
+    return {
+      total,
+      activeBond,
+      byValidator: Object.fromEntries(entries),
+    }
+  }
+
   return {
     getNominatorStatus,
     canNominate,
+    getNominatorRewards,
   }
 }

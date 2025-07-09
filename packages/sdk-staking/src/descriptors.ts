@@ -100,6 +100,22 @@ type StakingSdkPallets = PalletsTypedef<
         never
       >
       /**
+       * Similar to `ErasStakers`, this holds the preferences of validators.
+       *
+       * This is keyed first by the era index to allow bulk deletion and then the stash account.
+       *
+       * Is it removed after [`Config::HistoryDepth`] eras.
+       */
+      ErasValidatorPrefs: StorageDescriptor<
+        [number, SS58String],
+        {
+          commission: number
+          blocked: boolean
+        },
+        false,
+        never
+      >
+      /**
        * The total validator era payout for the last [`Config::HistoryDepth`] eras.
        *
        * Eras that haven't finished yet or has been removed doesn't have reward.
