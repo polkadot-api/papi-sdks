@@ -8,7 +8,7 @@ import type {
 import { getContract } from "./get-contract"
 import { getDeployer } from "./get-deployer"
 import { contractsProvider } from "./provider"
-import type { InkSdk } from "./sdk-types"
+import { defaultOptions, type InkSdk, type InkSdkOptions } from "./sdk-types"
 
 export const createInkSdk = <
   T extends InkSdkTypedApi,
@@ -16,8 +16,11 @@ export const createInkSdk = <
 >(
   typedApi: T,
   contractDescriptors: D,
+  options?: Partial<InkSdkOptions>,
 ): InkSdk<T, D, SS58String, StorageError> => {
-  const provider = contractsProvider(typedApi)
+  const { atBest } = { ...defaultOptions, ...options }
+
+  const provider = contractsProvider(typedApi, atBest)
   const inkClient = getInkClient(contractDescriptors)
   const lookup = getInkLookup(contractDescriptors.metadata)
 
