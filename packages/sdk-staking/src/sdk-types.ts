@@ -9,9 +9,21 @@ export interface StakingSdk {
   getNominatorStatus: (
     address: SS58String,
     era?: number,
+  ) => Promise<Array<{ validator: SS58String; activeBond: bigint }>>
+
+  getNominatorRewards: (
+    address: SS58String,
+    era?: number,
   ) => Promise<{
-    era: number
-    active: Array<{ validator: SS58String; activeBond: bigint }>
+    total: bigint
+    activeBond: bigint
+    byValidator: Record<
+      SS58String,
+      {
+        reward: bigint
+        bond: bigint
+      }
+    >
   }>
 
   canNominate: (address: SS58String) => Promise<
