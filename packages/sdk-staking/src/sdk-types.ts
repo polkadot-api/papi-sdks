@@ -26,6 +26,22 @@ export interface StakingSdk {
     >
   }>
 
+  getValidatorRewards: (
+    address: SS58String,
+    era?: number,
+  ) => Promise<{
+    reward: bigint
+    activeBond: bigint
+    nominatorsShare: bigint
+    byNominator: Record<
+      SS58String,
+      {
+        reward: bigint
+        bond: bigint
+      }
+    >
+  } | null>
+
   canNominate: (address: SS58String) => Promise<
     | { canNominate: false }
     | {

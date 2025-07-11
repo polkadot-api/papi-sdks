@@ -10,69 +10,126 @@ const assertEra = (activeEra: number, depth: number, era: number) => {
 
 const PERBILL = 1000000000n
 
-export function createStakingSdk(
-  api: StakingSdkTypedApi,
-  _settings: { maxActiveNominators: number },
-): StakingSdk {
-  // Values from ErasStakersPaged can't change after it has become the active era.
-  // Papi caches per-block, but as we know this can't change and it's an expensive request, we set up the cache in here.
-  const getActiveEra = () =>
-    api.query.Staking.ActiveEra.getValue().then((val) => val!.index)
-  const erasStakersCache: Record<
-    number,
-    Promise<
-      Record<
-        SS58String,
-        {
-          total: bigint
-          others: Record<SS58String, bigint>
-        }
-      >
-    >
-  > = {}
-  const getEraStakers = (era: number) => {
-    if (era in erasStakersCache) return erasStakersCache[era]
+const createEraCache = <T>(
+  getFn: (era: number) => Promise<T>,
+  getActiveEra: () => Promise<number>,
+) => {
+  const cache: Record<number, Promise<T>> = {}
 
-    const result = api.query.Staking.ErasStakersPaged.getEntries(era).then(
-      (entries) => {
-        const result: Record<
-          SS58String,
-          {
-            total: bigint
-            others: Record<SS58String, bigint>
-          }
-        > = {}
+  const getEraValue = (era: number) => {
+    if (era in cache) return cache[era]
 
-        entries.forEach(({ keyArgs: [_, addr], value }) => {
-          result[addr] ??= {
-            total: 0n,
-            others: {},
-          }
-          result[addr].total += value.page_total
-          result[addr].others = {
-            ...result[addr].others,
-            ...Object.fromEntries(
-              value.others.map(({ who, value }) => [who, value]),
-            ),
-          }
-        })
-
-        return result
-      },
-    )
+    const result = getFn(era)
 
     // It's safe for others to use this cache temporarily
-    erasStakersCache[era] = result
+    cache[era] = result
 
     // Remove from cache if it's actually above the active era
     getActiveEra().then((activeEra) => {
-      if (activeEra < era) {
-        delete erasStakersCache[era]
+      if (activeEra <= era) {
+        delete cache[era]
       }
     })
 
     return result
   }
+
+  return [getEraValue, cache] as const
+}
+
+export function createStakingSdk(
+  api: StakingSdkTypedApi,
+  _settings: { maxActiveNominators: number },
+): StakingSdk {
+  const getActiveEra = () =>
+    api.query.Staking.ActiveEra.getValue().then((val) => val!.index)
+
+  // Values from ErasStakersPaged can't change after it has become the active era.
+  // Papi caches per-block, but as we know this can't change and it's an expensive request, we set up the cache in here.
+  const [getEraStakers, erasStakersCache] = createEraCache(async (era) => {
+    const entries = await api.query.Staking.ErasStakersPaged.getEntries(era)
+
+    const result: Record<
+      SS58String,
+      {
+        total: bigint
+        others: Record<SS58String, bigint>
+      }
+    > = {}
+
+    entries.forEach(({ keyArgs: [_, addr], value }) => {
+      result[addr] ??= {
+        total: 0n,
+        others: {},
+      }
+      result[addr].total += value.page_total
+      result[addr].others = {
+        ...result[addr].others,
+        ...Object.fromEntries(
+          value.others.map(({ who, value }) => [who, value]),
+        ),
+      }
+    })
+
+    return result
+  }, getActiveEra)
+
+  const getEraStaker = async (era: number, staker: SS58String) => {
+    if (era in erasStakersCache) {
+      const eraStakers = await erasStakersCache[era]
+      return eraStakers[staker] ?? null
+    }
+
+    const result = await api.query.Staking.ErasStakersPaged.getEntries(
+      era,
+      staker,
+    )
+
+    return result
+      ? {
+          total: result
+            .map(({ value }) => value.page_total)
+            .reduce((a, b) => a + b, 0n),
+          others: Object.fromEntries(
+            result.flatMap(({ value }) =>
+              value.others.map((v) => [v.who, v.value]),
+            ),
+          ),
+        }
+      : null
+  }
+
+  const [getEraValidatorPrefs, eraValidatorPrefsCache] = createEraCache(
+    async (era) => {
+      const result = await api.query.Staking.ErasValidatorPrefs.getEntries(era)
+
+      return Object.fromEntries(
+        result.map(({ keyArgs: [, validator], value }) => [validator, value]),
+      )
+    },
+    getActiveEra,
+  )
+  const getEraValidatorPref = async (era: number, validator: SS58String) => {
+    if (era in eraValidatorPrefsCache) {
+      return (
+        (await eraValidatorPrefsCache[era])[validator] ?? {
+          commission: 0,
+          blocked: false,
+        }
+      )
+    }
+
+    return api.query.Staking.ErasValidatorPrefs.getValue(era, validator)
+  }
+
+  const [getEraRewardPoints] = createEraCache(async (era: number) => {
+    const result = await api.query.Staking.ErasRewardPoints.getValue(era)
+
+    return {
+      total: result.total,
+      individual: Object.fromEntries(result.individual),
+    }
+  }, getActiveEra)
 
   const eraOrActive = async (era?: number) => {
     const selectedEra = era ? Promise.resolve(era) : getActiveEra()
@@ -124,30 +181,24 @@ export function createStakingSdk(
   ) => {
     era = await eraOrActive(era)
 
-    const eraStakersPromise = getEraStakers(era)
-    const erasValidatorPrefsPromise =
-      api.query.Staking.ErasValidatorPrefs.getEntries(era)
-    const [tokenReward, rewardPoints] = await Promise.all([
-      api.query.Staking.ErasValidatorReward.getValue(era).then((r) => r ?? 0n),
-      api.query.Staking.ErasRewardPoints.getValue(era),
-    ])
-    const [eraStakers, erasValidatorPrefs] = await Promise.all([
-      eraStakersPromise,
-      erasValidatorPrefsPromise,
-    ])
+    const [tokenReward, rewardPoints, eraStakers, erasValidatorPrefs] =
+      await Promise.all([
+        api.query.Staking.ErasValidatorReward.getValue(era).then(
+          (r) => r ?? 0n,
+        ),
+        getEraRewardPoints(era),
+        getEraStakers(era),
+        getEraValidatorPrefs(era),
+      ])
 
     const entries = Object.entries(eraStakers)
       .filter(([, stakers]) => stakers.others[addr])
       .map(([validator, stakers]) => {
         const bond = stakers.others[addr]
 
-        const validatorPoints = rewardPoints.individual.find(
-          ([addr]) => validator === addr,
-        )
-        const validatorPrefs = erasValidatorPrefs.find(
-          ({ keyArgs: [, addr] }) => validator === addr,
-        )
-        if (!validatorPoints || !validatorPrefs) {
+        const validatorPoints = rewardPoints.individual[validator] ?? null
+        const validatorPrefs = erasValidatorPrefs[validator] ?? null
+        if (validatorPoints == null || !validatorPrefs) {
           console.error("Validator doesn't have points or prefs", {
             rewardPoints,
             validatorPrefs,
@@ -157,11 +208,9 @@ export function createStakingSdk(
         }
 
         const validatorShare =
-          (tokenReward * BigInt(validatorPoints[1])) /
-          BigInt(rewardPoints.total)
+          (tokenReward * BigInt(validatorPoints)) / BigInt(rewardPoints.total)
         const nominatorsShare =
-          (validatorShare *
-            (PERBILL - BigInt(validatorPrefs.value.commission))) /
+          (validatorShare * (PERBILL - BigInt(validatorPrefs.commission))) /
           PERBILL
 
         const reward = (nominatorsShare * bond) / stakers.total
@@ -189,9 +238,52 @@ export function createStakingSdk(
     }
   }
 
+  const getValidatorRewards: StakingSdk["getValidatorRewards"] = async (
+    validator,
+    era,
+  ) => {
+    era = await eraOrActive(era)
+
+    const [tokenReward, rewardPoints, eraStaker, validatorPrefs] =
+      await Promise.all([
+        api.query.Staking.ErasValidatorReward.getValue(era).then(
+          (r) => r ?? 0n,
+        ),
+        getEraRewardPoints(era),
+        getEraStaker(era, validator),
+        getEraValidatorPref(era, validator),
+      ])
+
+    const validatorPoints = rewardPoints.individual[validator] ?? null
+    if (validatorPoints == null || !validatorPrefs || !eraStaker) {
+      return null
+    }
+
+    const activeBond = eraStaker.total
+    const reward =
+      (tokenReward * BigInt(validatorPoints)) / BigInt(rewardPoints.total)
+    const nominatorsShare =
+      (reward * (PERBILL - BigInt(validatorPrefs.commission))) / PERBILL
+
+    const byNominatorEntries = Object.entries(eraStaker.others).map(
+      ([addr, bond]) => [
+        addr,
+        { bond, reward: (nominatorsShare * bond) / activeBond },
+      ],
+    )
+
+    return {
+      activeBond,
+      byNominator: Object.fromEntries(byNominatorEntries),
+      nominatorsShare,
+      reward,
+    }
+  }
+
   return {
     getNominatorStatus,
     canNominate,
     getNominatorRewards,
+    getValidatorRewards,
   }
 }
