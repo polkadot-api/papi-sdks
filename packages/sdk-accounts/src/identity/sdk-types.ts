@@ -18,6 +18,7 @@ export interface Identity {
     fee?: bigint
   }>
   verified: boolean
+  subIdentity?: string
 }
 
 export interface IdentitySdk {

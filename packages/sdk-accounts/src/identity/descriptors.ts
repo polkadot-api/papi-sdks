@@ -102,6 +102,16 @@ type IdentitySdkPallets = PalletsTypedef<
         true,
         never
       >
+      /**
+       * The super-identity of an alternative "sub" identity together with its name, within that
+       * context. If the account is not some other account's sub-identity, then just `None`.
+       */
+      SuperOf: StorageDescriptor<
+        [Key: SS58String],
+        [SS58String, IdentityData],
+        true,
+        never
+      >
     }
   },
   {},
