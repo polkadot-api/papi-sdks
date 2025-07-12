@@ -23,7 +23,19 @@ export function enhanceTrack(track: ReferendaTrackDescriptor): ReferendaTrack {
 export function trackFetcher<T>(typedApi: ReferendaSdkTypedApi<T>) {
   const referendaTracksPromise = typedApi.constants.Referenda.Tracks().then(
     (tracks) => {
-      const byId = Object.fromEntries(tracks)
+      const withNormalizedName = tracks.map(
+        ([id, track]) =>
+          [
+            id,
+            {
+              ...track,
+              // An update pads every referenda track name with extra 0's
+              name: track.name.replace(/\0+$/, ""),
+            },
+          ] as const,
+      )
+
+      const byId = Object.fromEntries(withNormalizedName)
       const byName = keyBy(Object.values(byId), (v) => v.name)
       return { byId, byName }
     },
