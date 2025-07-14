@@ -13,20 +13,34 @@ const normalizeIdentityValue = (
 
 export function createIdentitySdk(typedApi: IdentitySdkTypedApi): IdentitySdk {
   const getIdentity = async (address: SS58String): Promise<Identity | null> => {
-    const res = await typedApi.query.Identity.IdentityOf.getValue(address).then(
-      (v) => (v ? normalizeIdentityValue(v) : v),
-    )
-    if (!res) return null
+    let [identity, superOf] = await Promise.all([
+      typedApi.query.Identity.IdentityOf.getValue(address).then((v) =>
+        v ? normalizeIdentityValue(v) : v,
+      ),
+      typedApi.query.Identity.SuperOf.getValue(address),
+    ])
+
+    if (!identity && superOf) {
+      identity = await typedApi.query.Identity.IdentityOf.getValue(
+        superOf[0],
+      ).then((v) => (v ? normalizeIdentityValue(v) : v))
+    }
+
+    if (!identity) return null
+
+    const subIdentity = superOf
+      ? readIdentityData(superOf[1])?.asText()
+      : undefined
 
     const info: Identity["info"] = Object.fromEntries(
-      Object.entries(res.info).map(([key, value]) => [
+      Object.entries(identity.info).map(([key, value]) => [
         key,
         value instanceof Binary
           ? value
           : (readIdentityData(value)?.asText() ?? null),
       ]),
     )
-    const judgements: Identity["judgements"] = res.judgements.map(
+    const judgements: Identity["judgements"] = identity.judgements.map(
       ([registrar, judgement]) =>
         judgement.type === "FeePaid"
           ? { registrar, judgement: judgement.type, fee: judgement.value }
@@ -41,6 +55,7 @@ export function createIdentitySdk(typedApi: IdentitySdkTypedApi): IdentitySdk {
       verified,
       info,
       judgements,
+      subIdentity,
     }
   }
 
@@ -57,6 +72,6 @@ const readIdentityData = (identityData?: IdentityData): Binary | null => {
   )
     return null
   if (identityData.type === "Raw1")
-    return Binary.fromBytes(new Uint8Array(identityData.value))
+    return Binary.fromBytes(new Uint8Array([identityData.value]))
   return identityData.value
 }
