@@ -63,7 +63,7 @@ export const createReviveSdk = <
     addressIsMapped: (address) =>
       typedApi.query.Revive.OriginalAccount.getValue(
         ss58ToEthereum(address),
-        atBest ? { at: "best" } : undefined,
+        atBest ? { at: "best" } : {},
       ).then((r) => r != null),
   }
 }

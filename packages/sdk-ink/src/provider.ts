@@ -83,7 +83,7 @@ export const contractsProvider = (
   typedApi: InkSdkTypedApi,
   atBest?: boolean,
 ): ContractsProvider<SS58String, StorageError> => {
-  const callOptions = atBest ? { at: "best" } : undefined
+  const callOptions = atBest ? { at: "best" } : {}
   const dryRunInstantiate = async (
     origin: SS58String,
     value: bigint,
@@ -213,7 +213,7 @@ export const reviveProvider = (
   typedApi: ReviveSdkTypedApi,
   atBest: boolean,
 ): ContractsProvider<ReviveAddress, ReviveStorageError> => {
-  const callOptions = atBest ? { at: "best" } : undefined
+  const callOptions = atBest ? { at: "best" } : {}
   const traceCall = ({
     from,
     to,
