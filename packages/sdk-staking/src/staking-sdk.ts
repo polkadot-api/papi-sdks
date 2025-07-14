@@ -204,21 +204,23 @@ export function createStakingSdk(
             validatorPrefs,
             validator,
           })
-          return [validator, { bond, reward: 0n }] as const
+          return [validator, { bond, commission: 0n, reward: 0n }] as const
         }
 
         const validatorShare =
           (tokenReward * BigInt(validatorPoints)) / BigInt(rewardPoints.total)
-        const nominatorsShare =
-          (validatorShare * (PERBILL - BigInt(validatorPrefs.commission))) /
-          PERBILL
+        const commissionShare =
+          (validatorShare * BigInt(validatorPrefs.commission)) / PERBILL
+        const nominatorsShare = validatorShare - commissionShare
 
         const reward = (nominatorsShare * bond) / stakers.total
+        const commission = (commissionShare * bond) / stakers.total
 
         return [
           validator,
           {
             bond,
+            commission,
             reward,
           },
         ] as const
@@ -227,12 +229,16 @@ export function createStakingSdk(
     const total = entries
       .map(([, { reward }]) => reward)
       .reduce((a, b) => a + b, 0n)
+    const totalCommission = entries
+      .map(([, { commission }]) => commission)
+      .reduce((a, b) => a + b, 0n)
     const activeBond = entries
       .map(([, { bond }]) => bond)
       .reduce((a, b) => a + b, 0n)
 
     return {
       total,
+      totalCommission,
       activeBond,
       byValidator: Object.fromEntries(entries),
     }
@@ -262,21 +268,28 @@ export function createStakingSdk(
     const activeBond = eraStaker.total
     const reward =
       (tokenReward * BigInt(validatorPoints)) / BigInt(rewardPoints.total)
-    const nominatorsShare =
-      (reward * (PERBILL - BigInt(validatorPrefs.commission))) / PERBILL
+    const commissionShare =
+      (reward * BigInt(validatorPrefs.commission)) / PERBILL
+    const nominatorsShare = reward - commissionShare
 
     const byNominatorEntries = Object.entries(eraStaker.others).map(
-      ([addr, bond]) => [
-        addr,
-        { bond, reward: (nominatorsShare * bond) / activeBond },
-      ],
+      ([addr, bond]) =>
+        [
+          addr,
+          {
+            bond,
+            reward: (nominatorsShare * bond) / activeBond,
+            commission: (commissionShare * bond) / activeBond,
+          },
+        ] as const,
     )
 
     return {
       activeBond,
       byNominator: Object.fromEntries(byNominatorEntries),
-      nominatorsShare,
       reward,
+      commissionShare,
+      nominatorsShare,
     }
   }
 

@@ -16,12 +16,15 @@ export interface StakingSdk {
     era?: number,
   ) => Promise<{
     total: bigint
+    totalCommission: bigint
     activeBond: bigint
     byValidator: Record<
       SS58String,
       {
         reward: bigint
         bond: bigint
+        // Amount the validator has taken as commission thanks to the nominator
+        commission: bigint
       }
     >
   }>
@@ -31,13 +34,15 @@ export interface StakingSdk {
     era?: number,
   ) => Promise<{
     reward: bigint
-    activeBond: bigint
+    commissionShare: bigint
     nominatorsShare: bigint
+    activeBond: bigint
     byNominator: Record<
       SS58String,
       {
         reward: bigint
         bond: bigint
+        commission: bigint
       }
     >
   } | null>
