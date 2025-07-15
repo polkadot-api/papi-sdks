@@ -1,5 +1,25 @@
 import { SS58String } from "polkadot-api"
 
+export interface ValidatorRewards {
+  address: SS58String
+  // In [0-1]
+  commission: number
+  blocked: boolean
+  points: number
+  reward: bigint
+  commissionShare: bigint
+  nominatorsShare: bigint
+  activeBond: bigint
+  byNominator: Record<
+    SS58String,
+    {
+      reward: bigint
+      bond: bigint
+      commission: bigint
+    }
+  >
+}
+
 export interface StakingSdk {
   /**
    * Get nominator status for specific era.
@@ -32,20 +52,14 @@ export interface StakingSdk {
   getValidatorRewards: (
     address: SS58String,
     era?: number,
-  ) => Promise<{
-    reward: bigint
-    commissionShare: bigint
-    nominatorsShare: bigint
-    activeBond: bigint
-    byNominator: Record<
-      SS58String,
-      {
-        reward: bigint
-        bond: bigint
-        commission: bigint
-      }
-    >
-  } | null>
+  ) => Promise<ValidatorRewards | null>
+
+  getEraValidators: (era?: number) => Promise<{
+    totalRewards: bigint
+    totalPoints: number
+    totalBond: bigint
+    validators: ValidatorRewards[]
+  }>
 
   canNominate: (address: SS58String) => Promise<
     | { canNominate: false }
