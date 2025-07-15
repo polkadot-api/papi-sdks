@@ -289,7 +289,7 @@ export function createStakingSdk(
     return {
       address,
       blocked: validatorPrefs.blocked,
-      commission: validatorPrefs.commission,
+      commission: validatorPrefs.commission / Number(PERBILL),
       points: validatorPoints,
       activeBond,
       byNominator: Object.fromEntries(byNominatorEntries),
