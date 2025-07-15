@@ -244,24 +244,26 @@ export function createStakingSdk(
     }
   }
 
-  const getValidatorRewards: StakingSdk["getValidatorRewards"] = async (
-    validator,
-    era,
+  const createValidatorRewards = (
+    address: SS58String,
+    tokenReward: bigint,
+    rewardPoints: {
+      total: number
+      individual: {
+        [k: string]: number
+      }
+    },
+    eraStaker: {
+      total: bigint
+      others: Record<SS58String, bigint>
+    },
+    validatorPrefs: {
+      commission: number
+      blocked: boolean
+    },
   ) => {
-    era = await eraOrActive(era)
-
-    const [tokenReward, rewardPoints, eraStaker, validatorPrefs] =
-      await Promise.all([
-        api.query.Staking.ErasValidatorReward.getValue(era).then(
-          (r) => r ?? 0n,
-        ),
-        getEraRewardPoints(era),
-        getEraStaker(era, validator),
-        getEraValidatorPref(era, validator),
-      ])
-
-    const validatorPoints = rewardPoints.individual[validator] ?? null
-    if (validatorPoints == null || !validatorPrefs || !eraStaker) {
+    const validatorPoints = rewardPoints.individual[address] ?? null
+    if (validatorPoints == null) {
       return null
     }
 
@@ -285,6 +287,10 @@ export function createStakingSdk(
     )
 
     return {
+      address,
+      blocked: validatorPrefs.blocked,
+      commission: validatorPrefs.commission,
+      points: validatorPoints,
       activeBond,
       byNominator: Object.fromEntries(byNominatorEntries),
       reward,
@@ -293,10 +299,86 @@ export function createStakingSdk(
     }
   }
 
+  const getValidatorRewards: StakingSdk["getValidatorRewards"] = async (
+    validator,
+    era,
+  ) => {
+    era = await eraOrActive(era)
+
+    const [tokenReward, rewardPoints, eraStaker, validatorPrefs] =
+      await Promise.all([
+        api.query.Staking.ErasValidatorReward.getValue(era).then(
+          (r) => r ?? 0n,
+        ),
+        getEraRewardPoints(era),
+        getEraStaker(era, validator),
+        getEraValidatorPref(era, validator),
+      ])
+
+    return (
+      eraStaker &&
+      createValidatorRewards(
+        validator,
+        tokenReward,
+        rewardPoints,
+        eraStaker,
+        validatorPrefs,
+      )
+    )
+  }
+
+  const getEraValidators: StakingSdk["getEraValidators"] = async (era) => {
+    era = await eraOrActive(era)
+
+    const [totalRewards, rewardPoints, eraStakers, validatorPrefs] =
+      await Promise.all([
+        api.query.Staking.ErasValidatorReward.getValue(era).then(
+          (r) => r ?? 0n,
+        ),
+        getEraRewardPoints(era),
+        getEraStakers(era),
+        getEraValidatorPrefs(era),
+      ])
+
+    let totalBond = 0n
+    const validators = Object.entries(eraStakers)
+      .map(([address, eraStaker]) => {
+        const prefs = validatorPrefs[address]
+        if (!prefs) {
+          console.error(
+            "No prefs for validator",
+            address,
+            validators,
+            validatorPrefs,
+          )
+          return null
+        }
+
+        const validator = createValidatorRewards(
+          address,
+          totalRewards,
+          rewardPoints,
+          eraStaker,
+          prefs,
+        )
+        totalBond += validator?.activeBond ?? 0n
+        return validator
+      })
+      .filter((v) => v != null)
+
+    return {
+      validators,
+      totalBond,
+      totalPoints: rewardPoints.total,
+      totalRewards,
+    }
+  }
+
   return {
     getNominatorStatus,
     canNominate,
     getNominatorRewards,
     getValidatorRewards,
+    getEraValidators,
   }
 }
