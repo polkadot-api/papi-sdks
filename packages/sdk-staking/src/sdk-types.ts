@@ -10,14 +10,8 @@ export interface ValidatorRewards {
   commissionShare: bigint
   nominatorsShare: bigint
   activeBond: bigint
-  byNominator: Record<
-    SS58String,
-    {
-      reward: bigint
-      bond: bigint
-      commission: bigint
-    }
-  >
+  selfStake: bigint
+  nominatorCount: number
 }
 
 export interface StakingSdk {
