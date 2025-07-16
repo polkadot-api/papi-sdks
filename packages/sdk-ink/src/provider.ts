@@ -268,13 +268,20 @@ export const reviveProvider = (
           to: dest,
         }),
       ]).then(([call, trace]) => {
-        const events =
-          call.events ??
-          (trace.success
-            ? getEventsFromTrace(
-                "type" in trace.value ? trace.value.value : trace.value,
-              )
-            : undefined)
+        const events = (() => {
+          if (call.events) return call.events
+          if (!trace.success) return undefined
+
+          if ("type" in trace.value) {
+            if (trace.value.type === "Prestate") {
+              console.error("Unexpected prestate response for events")
+              return undefined
+            }
+            return getEventsFromTrace(trace.value.value)
+          }
+          return getEventsFromTrace(trace.value)
+        })()
+
         return {
           ...call,
           events,
@@ -313,13 +320,20 @@ export const reviveProvider = (
           value: valueToU256(value),
         }),
       ]).then(([call, trace]) => {
-        const events =
-          call.events ??
-          (trace.success
-            ? getEventsFromTrace(
-                "type" in trace.value ? trace.value.value : trace.value,
-              )
-            : undefined)
+        const events = (() => {
+          if (call.events) return call.events
+          if (!trace.success) return undefined
+
+          if ("type" in trace.value) {
+            if (trace.value.type === "Prestate") {
+              console.error("Unexpected prestate response for events")
+              return undefined
+            }
+            return getEventsFromTrace(trace.value.value)
+          }
+          return getEventsFromTrace(trace.value)
+        })()
+
         return {
           ...call,
           events,
