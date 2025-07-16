@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## 0.3.2 2025-07-16
+
+### Fixed
+
+- Add support for PAssetHub descriptors
+
 ## 0.3.1 2025-07-14
 
 ### Fixed
