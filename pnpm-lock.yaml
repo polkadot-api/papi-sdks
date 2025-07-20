@@ -175,6 +175,9 @@ importers:
       '@polkadot-api/common-sdk-utils':
         specifier: workspace:*
         version: link:../common-utils
+      '@polkadot-api/substrate-bindings':
+        specifier: ^0.14.0
+        version: 0.14.0
     devDependencies:
       '@polkadot-api/ink-contracts':
         specifier: ^0.3.4
