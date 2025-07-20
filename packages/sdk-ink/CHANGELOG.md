@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+### Added
+
+- `reviveAddressIsMapped()` standalone utility to have it without the need of specifiying a contract.
+
+### Fixed
+
+- `contract.query()` will decode debug `panic!()` and `return_value(REVERT, &"message")` messages as `{ success: false, value: { type: 'FlagReverted', value: { message, .. }}}`.
+
 ## 0.3.2 2025-07-16
 
 ### Fixed
