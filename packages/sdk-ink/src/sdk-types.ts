@@ -21,6 +21,8 @@ import type {
   InkSdkApis,
   InkSdkPallets,
   InkSdkTypedApi,
+  ReviveSdkApis,
+  ReviveSdkPallets,
   ReviveSdkTypedApi,
 } from "./descriptor-types"
 import type { SdkStorage } from "./get-storage"
@@ -122,7 +124,11 @@ export interface Deployer<
 type GetErr<T> =
   T extends TypedApi<SdkDefinition<InkSdkPallets, InkSdkApis<any, infer R>>>
     ? R
-    : any
+    : T extends TypedApi<
+          SdkDefinition<ReviveSdkPallets, ReviveSdkApis<any, infer R>>
+        >
+      ? R
+      : any
 
 export type StorageRootType<T extends InkStorageDescriptor> = "" extends keyof T
   ? T[""]["value"]
@@ -149,7 +155,18 @@ export interface Contract<
         storageDeposit: bigint
         send: () => AsyncTransaction<any, any, any, any>
       },
-      GetErr<T> | FlattenErrors<D["__types"]["messages"][L]["response"]>
+      | GetErr<T>
+      | FlattenErrors<D["__types"]["messages"][L]["response"]>
+      | {
+          type: "FlagReverted"
+          value: {
+            message: string
+            raw: Binary
+            gasRequired: Gas
+            storageDeposit: bigint
+            send: () => AsyncTransaction<any, any, any, any>
+          }
+        }
     >
   >
   send: <L extends string & keyof D["__types"]["messages"]>(
