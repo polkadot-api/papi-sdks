@@ -2,6 +2,16 @@
 
 ## Unreleased
 
+### Added
+
+- Identity SDK
+  - `getIdentity` will check for sub-identities.
+
+### Fixed
+
+- Identity SDK
+  - Fix `Raw1` values not getting decoded properly.
+
 ## 0.3.0 2025-07-08
 
 ### Added
