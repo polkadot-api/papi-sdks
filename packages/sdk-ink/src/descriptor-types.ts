@@ -201,6 +201,18 @@ export type TraceCallResult = {
   value?: U256 | undefined
 }
 
+type ContractState = Array<
+  [
+    FixedSizeBinary<20>,
+    {
+      balance?: FixedSizeArray<4, bigint> | undefined
+      nonce?: number | undefined
+      code?: Binary | undefined
+      storage: Array<[Binary, Binary | undefined]>
+    },
+  ]
+>
+
 export type ReviveSdkApis<Ev = any, Err = any> = ApisTypedef<{
   ReviveApi: {
     call: RuntimeDescriptor<
@@ -229,12 +241,26 @@ export type ReviveSdkApis<Ev = any, Err = any> = ApisTypedef<{
                 only_top_call?: boolean
               }
             | undefined
+          PrestateTracer?:
+            | {
+                diff_mode: boolean
+                disable_storage: boolean
+                disable_code: boolean
+              }
+            | undefined
         }>,
       ],
       ResultPayload<
         // wnd
         | Enum<{
             Call: TraceCallResult
+            Prestate: Enum<{
+              Prestate: ContractState
+              DiffMode: {
+                pre: ContractState
+                post: ContractState
+              }
+            }>
           }>
         // pop
         | TraceCallResult,

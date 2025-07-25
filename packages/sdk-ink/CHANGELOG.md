@@ -2,6 +2,28 @@
 
 ## Unreleased
 
+## 0.4.0 2025-07-25
+
+### Added
+
+- `reviveAddressIsMapped()` standalone utility to have it without the need of specifiying a contract.
+
+### Fixed
+
+- `contract.query()` will decode debug `panic!()` and `return_value(REVERT, &"message")` messages as `{ success: false, value: { type: 'FlagReverted', value: { message, .. }}}`.
+
+## 0.3.2 2025-07-16
+
+### Fixed
+
+- Add support for PAssetHub descriptors
+
+## 0.3.1 2025-07-14
+
+### Fixed
+
+- queries will not load without `atBest` option.
+
 ## 0.3.0 2025-06-26
 
 ### Added

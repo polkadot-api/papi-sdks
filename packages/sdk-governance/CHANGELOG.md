@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## 0.3.3 2025-07-12
+
+### Fixed
+
+- Trim referenda track names from NULLs
+
 ## 0.3.2 2025-07-02
 
 ### Fixed

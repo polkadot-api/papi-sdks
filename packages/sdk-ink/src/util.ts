@@ -9,7 +9,7 @@ import {
   SS58String,
 } from "polkadot-api"
 import { mergeUint8 } from "polkadot-api/utils"
-import { ReviveAddress, U256 } from "./descriptor-types"
+import { ReviveAddress, ReviveSdkTypedApi, U256 } from "./descriptor-types"
 
 export const getSignedStorage = (
   depositResponse: Enum<{
@@ -30,6 +30,14 @@ export const getStorageLimit = (
 
 export const ss58ToEthereum = (address: SS58String): Binary =>
   Binary.fromBytes(keccak_256(AccountId().enc(address)).slice(12))
+
+export const reviveAddressIsMapped = (
+  typedApi: ReviveSdkTypedApi,
+  address: SS58String,
+) =>
+  typedApi.query.Revive.OriginalAccount.getValue(ss58ToEthereum(address)).then(
+    (r) => r != null,
+  )
 
 const u64Range = 2n ** 64n
 export const valueToU256 = (value: bigint): U256 => [

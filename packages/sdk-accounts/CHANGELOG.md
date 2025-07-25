@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 0.4.0 2025-07-25
+
 ### Added
 
 - Identity SDK
