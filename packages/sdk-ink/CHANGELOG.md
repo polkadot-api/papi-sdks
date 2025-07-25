@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 0.4.0 2025-07-25
+
 ### Added
 
 - `reviveAddressIsMapped()` standalone utility to have it without the need of specifiying a contract.
