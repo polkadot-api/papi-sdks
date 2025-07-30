@@ -12,6 +12,7 @@ export type AsyncTransaction<
 > & {
   decodedCall: Promise<Transaction<Arg, Pallet, Name, Asset>["decodedCall"]>
   getEncodedData: () => Promise<Binary>
+  waited: Promise<Transaction<Arg, Pallet, Name, Asset>>
 }
 
 export const wrapAsyncTx = <
@@ -23,6 +24,12 @@ export const wrapAsyncTx = <
   fn: () => Promise<Transaction<Arg, Pallet, Name, Asset>>,
 ): AsyncTransaction<Arg, Pallet, Name, Asset> => {
   const promise = fn()
+
+  // Prevent some runtimes from terminating for an uncaught exception
+  promise.catch((ex) => {
+    console.error(ex)
+  })
+
   return {
     sign: (...args) => promise.then((tx) => tx.sign(...args)),
     signSubmitAndWatch: (...args) =>
@@ -34,5 +41,6 @@ export const wrapAsyncTx = <
       promise.then((tx) => tx.getPaymentInfo(...args)),
     decodedCall: promise.then((tx) => tx.decodedCall),
     getEncodedData: () => promise.then((tx) => tx.getEncodedData()),
+    waited: promise,
   }
 }
