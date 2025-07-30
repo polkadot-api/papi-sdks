@@ -14,6 +14,7 @@
     "@polkadot-labs/hdkd": "^0.0.16",
     "@polkadot-labs/hdkd-helpers": "^0.0.16",
     "polkadot-api": "^1.13.1",
-    "rxjs": "7.8.2"
+    "rxjs": "7.8.2",
+    "viem": "^2.33.1"
   }
 }
