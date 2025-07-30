@@ -1,0 +1,56 @@
+{
+  "name": "@polkadot-api/sdk-multisig",
+  "version": "0.1.0",
+  "sideEffects": false,
+  "author": "Victor Oliva (https://github.com/voliva)",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/polkadot-api/papi-sdks.git"
+  },
+  "exports": {
+    ".": {
+      "node": {
+        "production": {
+          "import": "./dist/esm/index.mjs",
+          "require": "./dist/index.js",
+          "default": "./dist/index.js"
+        },
+        "import": "./dist/esm/index.mjs",
+        "require": "./dist/index.js",
+        "default": "./dist/index.js"
+      },
+      "module": "./dist/esm/index.mjs",
+      "import": "./dist/esm/index.mjs",
+      "require": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "main": "./dist/index.js",
+  "module": "./dist/esm/index.mjs",
+  "browser": "./dist/esm/index.mjs",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "rollup -c ../../rollup.config.js",
+    "lint": "prettier --check README.md \"src/**/*.{js,jsx,ts,tsx,json,md}\"",
+    "format": "prettier --write README.md \"src/**/*.{js,jsx,ts,tsx,json,md}\"",
+    "prepack": "pnpm run build"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@polkadot-api/common-sdk-utils": "workspace:*",
+    "@polkadot-api/meta-signers": "^0.1.8",
+    "@polkadot-api/substrate-bindings": "^0.14.0"
+  },
+  "peerDependencies": {
+    "polkadot-api": ">=1.14.1",
+    "rxjs": ">=7.8.0"
+  },
+  "devDependencies": {
+    "polkadot-api": "^1.14.1",
+    "rxjs": "^7.8.2"
+  }
+}

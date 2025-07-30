@@ -183,6 +183,25 @@ importers:
         specifier: ^7.8.2
         version: 7.8.2
 
+  packages/sdk-multisig:
+    dependencies:
+      '@polkadot-api/common-sdk-utils':
+        specifier: workspace:*
+        version: link:../common-utils
+      '@polkadot-api/meta-signers':
+        specifier: ^0.1.8
+        version: 0.1.8
+      '@polkadot-api/substrate-bindings':
+        specifier: ^0.14.0
+        version: 0.14.0
+    devDependencies:
+      polkadot-api:
+        specifier: ^1.14.1
+        version: 1.14.1(postcss@8.5.4)(rxjs@7.8.2)
+      rxjs:
+        specifier: ^7.8.2
+        version: 7.8.2
+
   packages/sdk-remote-proxy:
     dependencies:
       '@polkadot-api/meta-signers':
