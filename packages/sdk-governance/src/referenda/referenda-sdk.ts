@@ -1,5 +1,5 @@
 import { partitionEntries } from "@/util/watchEntries"
-import { blake2b } from "@noble/hashes/blake2b"
+import { Blake2256 } from "@polkadot-api/substrate-bindings"
 import { combineKeys, toKeySet } from "@react-rxjs/utils"
 import { Binary, TxEvent } from "polkadot-api"
 import { map } from "rxjs"
@@ -249,7 +249,7 @@ export function createReferendaSdk<TOrigin extends PolkadotRuntimeOriginCaller>(
       })
     }
 
-    const hash = blake2b(proposal.asBytes())
+    const hash = Blake2256(proposal.asBytes())
 
     return typedApi.tx.Utility.batch_all({
       calls: [
