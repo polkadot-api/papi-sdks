@@ -42,7 +42,7 @@
   "license": "MIT",
   "dependencies": {
     "@polkadot-api/common-sdk-utils": "workspace:*",
-    "@polkadot-api/substrate-bindings": "^0.14.0",
+    "@polkadot-api/substrate-bindings": "^0.16.0",
     "@react-rxjs/utils": "^0.9.7"
   },
   "peerDependencies": {
@@ -51,8 +51,8 @@
     "rxjs": ">=7.8.0"
   },
   "devDependencies": {
-    "@noble/hashes": "^1.8.0",
-    "polkadot-api": "^1.13.1",
+    "@noble/hashes": "^2.0.0",
+    "polkadot-api": "^1.16.2",
     "rxjs": "^7.8.2"
   }
 }
