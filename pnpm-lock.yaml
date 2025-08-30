@@ -196,14 +196,14 @@ importers:
         version: link:../common-utils
       '@polkadot-api/meta-signers':
         specifier: ^0.1.8
-        version: 0.1.8
+        version: 0.1.12
       '@polkadot-api/substrate-bindings':
         specifier: ^0.14.0
         version: 0.14.0
     devDependencies:
       polkadot-api:
         specifier: ^1.14.1
-        version: 1.14.1(postcss@8.5.4)(rxjs@7.8.2)
+        version: 1.16.2(postcss@8.5.6)(rxjs@7.8.2)
       rxjs:
         specifier: ^7.8.2
         version: 7.8.2
@@ -524,6 +524,9 @@ packages:
 
   '@polkadot-api/smoldot@0.3.10':
     resolution: {integrity: sha512-oL0Qsq2p3h2mU1/+gNq4h2rC/S99WoDiqkpmxg/phzknjXcbYXouYLSvhGbECygE1vWPVPl3IWAOjW/gcKdYKw==}
+
+  '@polkadot-api/substrate-bindings@0.14.0':
+    resolution: {integrity: sha512-ZmZnw4IbxCXIqI1thEtQ83WrXwsvkqnbo0S6GRzbmrfZFh2JyVxGckPrMMLPH3ScqGgNJJkEdGGU/jSFffqTCA==}
 
   '@polkadot-api/substrate-bindings@0.16.0':
     resolution: {integrity: sha512-kNIOvUuiGPGsQBEJfLTm8sU7JnAOFBc/VDCkEv4p2zOp+BiUW9BuchEQZumVua+zAok+EShX6zFrTptPjNjd5Q==}
@@ -1922,6 +1925,13 @@ snapshots:
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
+
+  '@polkadot-api/substrate-bindings@0.14.0':
+    dependencies:
+      '@noble/hashes': 1.8.0
+      '@polkadot-api/utils': 0.2.0
+      '@scure/base': 1.2.6
+      scale-ts: 1.6.1
 
   '@polkadot-api/substrate-bindings@0.16.0':
     dependencies:
