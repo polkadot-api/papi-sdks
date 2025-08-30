@@ -26,7 +26,7 @@ export const createMultisigSdk = <Addr extends SS58String | HexString>(
   const getMultisigTx: MultisigSdk<Addr>["getMultisigTx"] = (
     multisig,
     signatory,
-    tx,
+    txOrCallData,
     options,
   ) => {
     options = {
@@ -58,6 +58,11 @@ export const createMultisigSdk = <Addr extends SS58String | HexString>(
     }
 
     return wrapAsyncTx(async () => {
+      const [tx, callData] =
+        "getEncodedData" in txOrCallData
+          ? [txOrCallData, await txOrCallData.getEncodedData()]
+          : [await typedApi.txFromCallData(txOrCallData), txOrCallData]
+
       if (multisig.threshold === 1) {
         return typedApi.tx.Multisig.as_multi_threshold_1({
           other_signatories: otherSignatories.map(toAddress),
@@ -65,18 +70,13 @@ export const createMultisigSdk = <Addr extends SS58String | HexString>(
         })
       }
 
-      const callHashPromise = tx
-        .getEncodedData()
-        .then((callData) => Blake2256(callData.asBytes()))
-      const [multisigInfo, weightInfo, callHash] = await Promise.all([
-        callHashPromise.then((callHash) => {
-          return typedApi.query.Multisig.Multisigs.getValue(
-            toAddress(multisigId),
-            Binary.fromBytes(callHash),
-          )
-        }),
+      const callHash = Blake2256(callData.asBytes())
+      const [multisigInfo, weightInfo] = await Promise.all([
+        typedApi.query.Multisig.Multisigs.getValue(
+          toAddress(multisigId),
+          Binary.fromBytes(callHash),
+        ),
         tx.getPaymentInfo(signatoryId),
-        callHashPromise,
       ])
 
       if (
