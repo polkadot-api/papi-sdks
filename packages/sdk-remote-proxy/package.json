@@ -41,15 +41,15 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@polkadot-api/meta-signers": "^0.1.12",
-    "@polkadot-api/substrate-bindings": "^0.16.0"
+    "@polkadot-api/meta-signers": "^0.1.14",
+    "@polkadot-api/substrate-bindings": "^0.16.2"
   },
   "peerDependencies": {
     "polkadot-api": ">=1.14.1",
     "rxjs": ">=7.8.0"
   },
   "devDependencies": {
-    "polkadot-api": "^1.16.2",
+    "polkadot-api": "^1.17.1",
     "rxjs": "^7.8.2"
   }
 }
