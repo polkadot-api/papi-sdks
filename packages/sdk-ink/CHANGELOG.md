@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 0.4.1 2025-09-15
+
 ### Fixed
 
 - Fix compatibility error on revive ContractInfoOf
