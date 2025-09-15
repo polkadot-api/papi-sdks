@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+### Fixed
+
+- Fix compatibility error on revive ContractInfoOf
+- Fix compatibility error on revive trace_call
+
 ## 0.4.0 2025-07-25
 
 ### Added

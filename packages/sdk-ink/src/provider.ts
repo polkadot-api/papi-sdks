@@ -18,6 +18,8 @@ import {
   Gas,
   GenericTransaction,
   InkSdkTypedApi,
+  NewReviveSdkTypedApi,
+  OldReviveSdkTypedApi,
   ReviveAddress,
   ReviveSdkTypedApi,
   ReviveStorageError,
@@ -222,6 +224,7 @@ export const reviveProvider = (
   }: Pick<GenericTransaction, "from" | "to" | "input" | "value">) =>
     typedApi.apis.ReviveApi.trace_call(
       {
+        authorization_list: [],
         blob_versioned_hashes: [],
         blobs: [],
         from,
@@ -379,10 +382,30 @@ export const reviveProvider = (
 
       return call(...args, callOptions)
     },
-    getCodeHash: (addr) =>
-      typedApi.query.Revive.ContractInfoOf.getValue(addr, callOptions).then(
-        (r) => r?.code_hash,
-      ),
+    getCodeHash: async (addr) => {
+      const newApi = typedApi as NewReviveSdkTypedApi
+      if (
+        await newApi.query.Revive.AccountInfoOf.isCompatible(
+          CompatibilityLevel.Partial,
+        )
+      ) {
+        const result = await newApi.query.Revive.AccountInfoOf.getValue(
+          addr,
+          callOptions,
+        )
+        if (result?.account_type.type !== "Contract") {
+          return undefined
+        }
+        return result.account_type.value.code_hash
+      }
+
+      const oldApi = typedApi as OldReviveSdkTypedApi
+      const result = await oldApi.query.Revive.ContractInfoOf.getValue(
+        addr,
+        callOptions,
+      )
+      return result?.code_hash
+    },
     txCall: (payload) => {
       if (payload.storage_deposit_limit == null) {
         throw new Error("Pallet revive requires storage deposit limit")
