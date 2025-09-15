@@ -175,6 +175,8 @@ export type ReviveStorageError = Enum<{
 export type U256 = FixedSizeArray<4, bigint>
 export type GenericTransaction = {
   blob_versioned_hashes: Array<FixedSizeBinary<32>>
+  // Upcoming parameter, pop doesn't have it
+  authorization_list?: Array<unknown>
   blobs: Array<Binary>
   from?: FixedSizeBinary<20> | undefined
   input: {

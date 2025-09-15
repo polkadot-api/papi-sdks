@@ -224,6 +224,7 @@ export const reviveProvider = (
   }: Pick<GenericTransaction, "from" | "to" | "input" | "value">) =>
     typedApi.apis.ReviveApi.trace_call(
       {
+        authorization_list: [],
         blob_versioned_hashes: [],
         blobs: [],
         from,
