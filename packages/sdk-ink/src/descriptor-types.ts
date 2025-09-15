@@ -272,7 +272,7 @@ export type ReviveSdkApis<Ev = any, Err = any> = ApisTypedef<{
     >
   }
 }>
-export type ReviveSdkPallets = PalletsTypedef<
+export type ReviveSdkPallets<TStorage> = PalletsTypedef<
   {
     System: {
       Account: StorageDescriptor<
@@ -291,21 +291,13 @@ export type ReviveSdkPallets = PalletsTypedef<
         true,
         never
       >
-      ContractInfoOf: StorageDescriptor<
-        [Key: ReviveAddress],
-        {
-          code_hash: FixedSizeBinary<32>
-        },
-        true,
-        never
-      >
       OriginalAccount: StorageDescriptor<
         [Key: FixedSizeBinary<20>],
         SS58String,
         true,
         never
       >
-    }
+    } & TStorage
   },
   {
     Revive: {
@@ -340,5 +332,41 @@ export type ReviveSdkPallets = PalletsTypedef<
   {}
 >
 
-export type ReviveSdkDefinition = SdkDefinition<ReviveSdkPallets, ReviveSdkApis>
-export type ReviveSdkTypedApi = TypedApi<ReviveSdkDefinition>
+type OldStorage = {
+  // Old interface, only in pop now
+  ContractInfoOf: StorageDescriptor<
+    [Key: ReviveAddress],
+    {
+      code_hash: FixedSizeBinary<32>
+    },
+    true,
+    never
+  >
+}
+type NewStorage = {
+  // New interface
+  AccountInfoOf: StorageDescriptor<
+    [Key: FixedSizeBinary<20>],
+    {
+      account_type: Enum<{
+        Contract: {
+          code_hash: FixedSizeBinary<32>
+        }
+        EOA: undefined
+      }>
+    },
+    true,
+    never
+  >
+}
+
+type ReviveSdkDefinition<TStorage> = SdkDefinition<
+  ReviveSdkPallets<TStorage>,
+  ReviveSdkApis
+>
+export type ReviveSdkTypedApi = TypedApi<
+  ReviveSdkDefinition<OldStorage | NewStorage>
+>
+
+export type OldReviveSdkTypedApi = TypedApi<ReviveSdkDefinition<OldStorage>>
+export type NewReviveSdkTypedApi = TypedApi<ReviveSdkDefinition<NewStorage>>

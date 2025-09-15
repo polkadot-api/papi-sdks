@@ -125,7 +125,7 @@ type GetErr<T> =
   T extends TypedApi<SdkDefinition<InkSdkPallets, InkSdkApis<any, infer R>>>
     ? R
     : T extends TypedApi<
-          SdkDefinition<ReviveSdkPallets, ReviveSdkApis<any, infer R>>
+          SdkDefinition<ReviveSdkPallets<any>, ReviveSdkApis<any, infer R>>
         >
       ? R
       : any
