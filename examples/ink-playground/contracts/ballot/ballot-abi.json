@@ -1,6 +1,5 @@
 [
   {
-    "name": "constructor",
     "inputs": [
       {
         "internalType": "bytes32[]",
@@ -9,7 +8,7 @@
       }
     ],
     "stateMutability": "nonpayable",
-    "type": "function"
+    "type": "constructor"
   },
   {
     "inputs": [],

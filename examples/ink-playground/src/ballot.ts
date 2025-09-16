@@ -1,9 +1,9 @@
-import { encodeFunctionData, decodeFunctionResult } from "viem"
-import { contracts, pop } from "@polkadot-api/descriptors"
-import { createReviveSdk } from "@polkadot-api/sdk-ink"
+import { pop } from "@polkadot-api/descriptors"
 import { Binary, createClient } from "polkadot-api"
 import { withPolkadotSdkCompat } from "polkadot-api/polkadot-sdk-compat"
 import { getWsProvider } from "polkadot-api/ws-provider/web"
+import { decodeFunctionResult, encodeDeployData, encodeFunctionData } from "viem"
+import { ballotAbi } from "./generated"
 import { ADDRESS } from "./util/address"
 import { aliceSigner } from "./util/signer"
 import { trackTx } from "./util/trackTx"
@@ -34,19 +34,13 @@ const pvmFile = Bun.file("./contracts/ballot/ballot.polkavm")
 console.log("Loading pvm file")
 const pvmBytes = Binary.fromBytes(await pvmFile.bytes())
 
-const abiFile = Bun.file("./contracts/ballot/ballot-abi.json")
-console.log("Loading abi file")
-const abi = await abiFile.json()
-
-const data = encodeFunctionData({
-  abi,
-  args: [
-    ["proposal 1", "proposal 2"].map((v) =>
-      Binary.fromText(v.padStart(32, " ")).asHex(),
-    ),
-  ],
-  functionName: "constructor",
-}).slice(2 + 4 * 2)
+const data = encodeDeployData({
+  abi: ballotAbi,
+  args: [["proposal 1", "proposal 2"].map((v) =>
+    Binary.fromText(v.padStart(32, " ")).asHex() as `0x${string}`,
+  )],
+  bytecode: "0x"
+})
 
 console.log("wait connection")
 await typedApi.compatibilityToken
@@ -99,8 +93,8 @@ const proposalsResult = await typedApi.apis.ReviveApi.call(
   undefined,
   Binary.fromHex(
     encodeFunctionData({
-      abi,
-      args: [1],
+      abi: ballotAbi,
+      args: [1n],
       functionName: "proposals",
     }),
   ),
@@ -117,8 +111,8 @@ if (!proposalsResult.result.success) {
 }
 
 const decodedProposalsResult = decodeFunctionResult({
-  abi,
-  data: proposalsResult.result.value.data.asHex(),
+  abi: ballotAbi,
+  data: proposalsResult.result.value.data.asHex() as `0x${string}`,
   functionName: "proposals",
 })
 

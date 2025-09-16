@@ -192,7 +192,7 @@ type QueryOptions = Partial<{
   gasLimit: Gas
   storageDepositLimit: bigint
 }>
-type Data<D> = {} extends D
+export type Data<D> = {} extends D
   ? {
       data?: D
     }
@@ -200,7 +200,7 @@ type Data<D> = {} extends D
       data: D
     }
 
-type QueryArgs<D> = Data<D> & {
+export type QueryArgs<D> = Data<D> & {
   options?: QueryOptions
   value?: bigint
   origin: SS58String
@@ -215,7 +215,7 @@ type GasInput =
       storageDepositLimit: bigint
     }
 
-type SendArgs<D> = Data<D> & {
+export type SendArgs<D> = Data<D> & {
   value?: bigint
 } & GasInput
 
@@ -224,12 +224,12 @@ type DeployOptions = Partial<{
   storageDepositLimit: bigint
   salt: FixedSizeBinary<32>
 }>
-type DryRunDeployArgs<D> = Data<D> & {
+export type DryRunDeployArgs<D> = Data<D> & {
   options?: DeployOptions
   value?: bigint
   origin: SS58String
 }
-type DeployArgs<D> = Data<D> & {
+export type DeployArgs<D> = Data<D> & {
   options?: Omit<DeployOptions, "gasLimit" | "storageDepositLimit">
   value?: bigint
 } & GasInput
