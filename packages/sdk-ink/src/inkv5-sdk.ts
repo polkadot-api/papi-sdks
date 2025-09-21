@@ -1,16 +1,16 @@
-import { getInkClient, getInkLookup } from "@polkadot-api/ink-contracts"
 import { Enum, SS58String } from "polkadot-api"
 import type {
   GenericInkDescriptors,
   InkSdkTypedApi,
   StorageError,
 } from "./descriptor-types"
+import { inkEncoding } from "./encoding-provider"
 import { getContract } from "./get-contract"
 import { getDeployer } from "./get-deployer"
 import { contractsProvider } from "./provider"
 import { defaultOptions, type InkSdk, type InkSdkOptions } from "./sdk-types"
 
-export const createInkSdk = <
+export const createInkV5Sdk = <
   T extends InkSdkTypedApi,
   D extends GenericInkDescriptors,
 >(
@@ -21,14 +21,13 @@ export const createInkSdk = <
   const { atBest } = { ...defaultOptions, ...options }
 
   const provider = contractsProvider(typedApi, atBest)
-  const inkClient = getInkClient(contractDescriptors)
-  const lookup = getInkLookup(contractDescriptors.metadata)
+  const encodingProvider = inkEncoding(contractDescriptors)
 
   return {
     getContract: (address) =>
-      getContract(provider, inkClient, lookup, address, (v) => v, address),
+      getContract(provider, encodingProvider, address, (v) => v, address),
     getDeployer: (code) =>
-      getDeployer(provider, inkClient, Enum("Upload", code), (v) => v),
+      getDeployer(provider, encodingProvider, Enum("Upload", code), (v) => v),
     readDeploymentEvents(events) {
       const instantiatedEvents =
         events
@@ -47,7 +46,7 @@ export const createInkSdk = <
 
       return instantiatedEvents.map((evt) => ({
         address: evt.contract,
-        contractEvents: inkClient.event.filter(evt.contract, events),
+        contractEvents: encodingProvider.filterEvents(evt.contract, events),
       }))
     },
   }

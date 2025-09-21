@@ -3,4 +3,5 @@ export const ADDRESS = {
   bob: "5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty",
   psp22: "13RUUKAVEUdafihJZdd6dppNHXpCeLGDFGB3goyzRugUBkrx",
   flipper: "0x6f38a07b338aed6b7146df28ea2a4f8d2c420afc",
+  ballot: "0x0633cce5354049554ae4abe8c279ccf20d8eda04",
 }

@@ -3,7 +3,6 @@ import {
   mapResult,
   wrapAsyncTx,
 } from "@polkadot-api/common-sdk-utils"
-import type { InkClient, InkMetadataLookup } from "@polkadot-api/ink-contracts"
 import { Binary, compactNumber } from "@polkadot-api/substrate-bindings"
 import { Enum, SS58String } from "polkadot-api"
 import type {
@@ -11,6 +10,7 @@ import type {
   InkSdkTypedApi,
   ReviveSdkTypedApi,
 } from "./descriptor-types"
+import { EncodingProvider } from "./encoding-provider"
 import { getDeployer } from "./get-deployer"
 import { getStorage } from "./get-storage"
 import { ContractsProvider } from "./provider"
@@ -25,8 +25,7 @@ export function getContract<
   PublicAddr extends string,
 >(
   provider: ContractsProvider<Addr, StorageErr>,
-  inkClient: InkClient<D>,
-  lookup: InkMetadataLookup,
+  encodingProvider: EncodingProvider,
   address: Addr,
   mapAddr: (v: Addr) => PublicAddr,
   accountId: SS58String,
@@ -38,9 +37,9 @@ export function getContract<
     return r
   })
 
-  const deployer = getDeployer(
+  const deployer = getDeployer<T, Addr, StorageErr, D, PublicAddr>(
     provider,
-    inkClient,
+    encodingProvider,
     Enum("Existing", codeHash),
     mapAddr,
   )
@@ -50,17 +49,15 @@ export function getContract<
     async isCompatible() {
       try {
         const code_hash = await codeHash
-        return code_hash
-          ? code_hash.asHex() === lookup.metadata.source.hash
-          : false
+        return code_hash ? encodingProvider.isCompatible(code_hash) : false
       } catch (ex) {
         console.error(ex)
         return false
       }
     },
-    getStorage: () => getStorage(provider, inkClient, lookup, address),
+    getStorage: () => getStorage(provider, encodingProvider, address),
     async query(message, args) {
-      const msg = inkClient.message(message)
+      const msg = encodingProvider.message(message)
 
       const data = msg.encode(args.data ?? {})
       const value = args.value ?? 0n
@@ -74,7 +71,10 @@ export function getContract<
       )
       if (response.result.success) {
         const availableData = {
-          events: inkClient.event.filter(mapAddr(address), response.events),
+          events: encodingProvider.filterEvents(
+            mapAddr(address),
+            response.events,
+          ),
           gasRequired: response.gas_required,
           storageDeposit: getSignedStorage(response.storage_deposit),
           send: () => {
@@ -119,7 +119,9 @@ export function getContract<
           }
         }
 
-        const decoded = msg.decode(response.result.value)
+        const decoded = msg.decode(
+          response.result.value.data,
+        ) as D["__types"]["messages"][typeof message]["response"]
         return mapResult(flattenResult(decoded), {
           value: (innerResponse) => ({
             response: innerResponse,
@@ -134,7 +136,7 @@ export function getContract<
     },
     send: (message, args) =>
       wrapAsyncTx(async () => {
-        const data = inkClient.message(message).encode(args.data ?? {})
+        const data = encodingProvider.message(message).encode(args.data ?? {})
 
         const limits = await (async () => {
           if ("gasLimit" in args)
@@ -169,7 +171,7 @@ export function getContract<
     dryRunRedeploy: deployer.dryRun,
     redeploy: deployer.deploy,
     filterEvents(events) {
-      return inkClient.event.filter(mapAddr(address), events)
+      return encodingProvider.filterEvents(mapAddr(address), events)
     },
   }
 
