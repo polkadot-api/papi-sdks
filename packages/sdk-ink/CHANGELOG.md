@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## 0.4.3 2025-09-22
+
+### Fixed
+
+- Broken import to @noble/hashes
+
 ## 0.4.2 2025-09-16
 
 ### Fixed

@@ -1,5 +1,5 @@
 import { RLP } from "@ethereumjs/rlp"
-import { keccak_256 } from "@noble/hashes/sha3"
+import { Keccak256 } from "@polkadot-api/substrate-bindings"
 import {
   AccountId,
   Binary,
@@ -29,7 +29,7 @@ export const getStorageLimit = (
 ) => (depositResponse.type === "Charge" ? depositResponse.value : 0n)
 
 export const ss58ToEthereum = (address: SS58String): Binary =>
-  Binary.fromBytes(keccak_256(AccountId().enc(address)).slice(12))
+  Binary.fromBytes(Keccak256(AccountId().enc(address)).slice(12))
 
 export const reviveAddressIsMapped = (
   typedApi: ReviveSdkTypedApi,
