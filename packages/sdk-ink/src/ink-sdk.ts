@@ -87,14 +87,17 @@ export const createInkSdk = (
           .map(
             (v) =>
               (v.value as any).value as {
-                deployer: string
-                contract: string
+                deployer: Binary
+                contract: Binary
               },
           ) ?? []
 
       return instantiatedEvents.map((evt) => ({
-        address: evt.contract,
-        contractEvents: encodingProvider.filterEvents(evt.contract, events),
+        address: evt.contract.asHex(),
+        contractEvents: encodingProvider.filterEvents(
+          evt.contract.asHex(),
+          events,
+        ),
       }))
     },
   }
