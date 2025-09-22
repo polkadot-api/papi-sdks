@@ -132,9 +132,6 @@ importers:
         specifier: ^0.9.7
         version: 0.9.7(@react-rxjs/core@0.10.7(react@19.0.0)(rxjs@7.8.2))(react@19.0.0)(rxjs@7.8.2)
     devDependencies:
-      '@noble/hashes':
-        specifier: ^2.0.0
-        version: 2.0.0
       polkadot-api:
         specifier: ^1.18.0
         version: 1.18.0(postcss@8.5.6)(rxjs@7.8.2)
@@ -169,9 +166,6 @@ importers:
       '@ethereumjs/rlp':
         specifier: ^10.0.0
         version: 10.0.0
-      '@noble/hashes':
-        specifier: ^2.0.0
-        version: 2.0.0
       '@polkadot-api/common-sdk-utils':
         specifier: workspace:*
         version: link:../common-utils
