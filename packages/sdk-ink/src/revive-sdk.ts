@@ -12,6 +12,9 @@ import { reviveProvider } from "./provider"
 import { defaultOptions, type InkSdkOptions, type ReviveSdk } from "./sdk-types"
 import { ss58ToEthereum } from "./util"
 
+/**
+ * @deprecated use `createInkSdk(client)` instead
+ */
 export const createReviveSdk = <
   T extends ReviveSdkTypedApi,
   D extends GenericInkDescriptors,
@@ -73,7 +76,7 @@ export const createReviveSdk = <
   }
 }
 
-const getAccountId = (address: HexString) => {
+export const getAccountId = (address: HexString) => {
   const publicKey = mergeUint8([
     Binary.fromHex(address).asBytes(),
     new Uint8Array(new Array(32 - 20).fill(0xee)),

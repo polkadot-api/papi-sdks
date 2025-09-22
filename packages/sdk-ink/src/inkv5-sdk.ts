@@ -8,7 +8,7 @@ import { inkEncoding } from "./encoding-provider"
 import { getContract } from "./get-contract"
 import { getDeployer } from "./get-deployer"
 import { contractsProvider } from "./provider"
-import { defaultOptions, type InkSdk, type InkSdkOptions } from "./sdk-types"
+import { defaultOptions, type InkV5Sdk, type InkSdkOptions } from "./sdk-types"
 
 export const createInkV5Sdk = <
   T extends InkSdkTypedApi,
@@ -17,7 +17,7 @@ export const createInkV5Sdk = <
   typedApi: T,
   contractDescriptors: D,
   options?: Partial<InkSdkOptions>,
-): InkSdk<T, D, SS58String, StorageError> => {
+): InkV5Sdk<T, D, SS58String, StorageError> => {
   const { atBest } = { ...defaultOptions, ...options }
 
   const provider = contractsProvider(typedApi, atBest)

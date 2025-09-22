@@ -11,10 +11,12 @@ import {
 import {
   Binary,
   FixedSizeBinary,
+  HexString,
   type ResultPayload,
   type SS58String,
   type TypedApi,
 } from "polkadot-api"
+import type { Passet, WndAh } from "../.papi/descriptors"
 import type {
   Gas,
   GenericInkDescriptors,
@@ -24,10 +26,24 @@ import type {
   ReviveSdkApis,
   ReviveSdkPallets,
   ReviveSdkTypedApi,
+  ReviveStorageError,
 } from "./descriptor-types"
 import type { SdkStorage } from "./get-storage"
 
-export interface InkSdk<
+export type CommonTypedApi = TypedApi<Passet> | TypedApi<WndAh>
+
+export type ReadDeployerEvents<D extends GenericInkDescriptors, Addr> = (
+  events?: Array<
+    GenericEvent & {
+      topics: FixedSizeBinary<number>[]
+    }
+  >,
+) => Array<{
+  address: Addr
+  contractEvents: Array<D["__types"]["event"]>
+}>
+
+export interface InkV5Sdk<
   T extends InkSdkTypedApi | ReviveSdkTypedApi,
   D extends GenericInkDescriptors,
   Addr,
@@ -35,25 +51,51 @@ export interface InkSdk<
 > {
   getContract(adddress: Addr): Contract<T, D, Addr, StorageErr>
   getDeployer(code: Binary): Deployer<T, D, Addr>
-  readDeploymentEvents: (
+  readDeploymentEvents: ReadDeployerEvents<D, Addr>
+}
+
+/**
+ * @deprecated Old interface, will be removed in a future version
+ */
+export interface ReviveSdk<
+  T extends ReviveSdkTypedApi,
+  D extends GenericInkDescriptors,
+  Addr,
+  StorageErr,
+> extends InkV5Sdk<T, D, Addr, StorageErr> {
+  addressIsMapped: (address: SS58String) => Promise<boolean>
+}
+
+export interface InkSdk {
+  addressIsMapped: (address: SS58String) => Promise<boolean>
+  getContract: GetContract
+  getDeployer: <D extends GenericInkDescriptors>(
+    contractDescriptors: D,
+    code: Binary,
+  ) => Deployer<CommonTypedApi, D, HexString>
+  readDeploymentEvents: <D extends GenericInkDescriptors>(
+    contractDescriptors: D,
     events?: Array<
       GenericEvent & {
         topics: FixedSizeBinary<number>[]
       }
     >,
   ) => Array<{
-    address: Addr
+    address: HexString
     contractEvents: Array<D["__types"]["event"]>
   }>
 }
 
-export interface ReviveSdk<
-  T extends ReviveSdkTypedApi,
-  D extends GenericInkDescriptors,
-  Addr,
-  StorageErr,
-> extends InkSdk<T, D, Addr, StorageErr> {
-  addressIsMapped: (address: SS58String) => Promise<boolean>
+export interface GetContract {
+  <D extends GenericInkDescriptors>(
+    contractDescriptors: D,
+  ): (
+    address: HexString,
+  ) => Contract<CommonTypedApi, D, HexString, ReviveStorageError>
+  <D extends GenericInkDescriptors>(
+    contractDescriptors: D,
+    address: HexString,
+  ): Contract<CommonTypedApi, D, HexString, ReviveStorageError>
 }
 
 export interface InkSdkOptions {

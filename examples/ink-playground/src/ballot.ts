@@ -1,6 +1,6 @@
 import { contracts, passet } from "@polkadot-api/descriptors"
-import { createReviveSdk } from "@polkadot-api/sdk-ink"
-import { Binary, createClient } from "polkadot-api"
+import { createInkSdk } from "@polkadot-api/sdk-ink"
+import { Binary, createClient, type ResultPayload } from "polkadot-api"
 import { withPolkadotSdkCompat } from "polkadot-api/polkadot-sdk-compat"
 import { getWsProvider } from "polkadot-api/ws-provider"
 import { ADDRESS } from "./util/address"
@@ -18,16 +18,15 @@ const client = createClient(
   ),
 )
 
-const typedApi = client.getTypedApi(passet)
-const ballotSdk = createReviveSdk(typedApi, contracts.ballot)
+const inkSdk = createInkSdk(client)
 
-console.log("Alice is mapped?", await ballotSdk.addressIsMapped(ADDRESS.alice))
+console.log("Alice is mapped?", await inkSdk.addressIsMapped(ADDRESS.alice))
 
 const pvmFile = Bun.file("./contracts/ballot_sol/3_Ballot_sol_Ballot.polkavm")
 console.log("Loading pvm file")
 const pvmBytes = Binary.fromBytes(await pvmFile.bytes())
 
-const deployer = ballotSdk.getDeployer(pvmBytes)
+const deployer = inkSdk.getDeployer(contracts.ballot, pvmBytes)
 
 const titleToBinary = (title: string) =>
   Binary.fromText(title.slice(0, 32).padStart(32, " "))
@@ -71,7 +70,7 @@ if (process.argv.includes("deploy")) {
 
   // After a long battle, we managed to get the `ContractInstantiated` event back https://github.com/paritytech/polkadot-sdk/issues/8677
   // For chains with this deployed, we can get the address directly from the events
-  const events = ballotSdk.readDeploymentEvents(fin.events)
+  const events = inkSdk.readDeploymentEvents(contracts.ballot, fin.events)
   // It's an array because we can batch multiple deployments with one transaction.
   if (events.length) {
     console.log(`Deployed to address ${events[0].address}`)
@@ -83,7 +82,7 @@ if (process.argv.includes("deploy")) {
   }
 }
 
-const contract = ballotSdk.getContract(CONTRACT_ADDRESS)
+const contract = inkSdk.getContract(contracts.ballot, CONTRACT_ADDRESS)
 
 const initialValueResult = await contract.query("winningProposal", {
   origin: ADDRESS.alice,
