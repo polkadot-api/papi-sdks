@@ -183,6 +183,7 @@ export interface Contract<
   StorageErr,
 > {
   accountId: SS58String
+  getBalance(): Promise<bigint>
   isCompatible(): Promise<boolean>
   getStorage(): SdkStorage<D["__types"]["storage"], StorageErr>
   query: <L extends string & keyof D["__types"]["messages"]>(

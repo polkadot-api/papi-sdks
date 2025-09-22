@@ -1,6 +1,6 @@
-import { contracts, passet } from "@polkadot-api/descriptors"
+import { contracts } from "@polkadot-api/descriptors"
 import { createInkSdk } from "@polkadot-api/sdk-ink"
-import { Binary, createClient, type ResultPayload } from "polkadot-api"
+import { Binary, createClient } from "polkadot-api"
 import { withPolkadotSdkCompat } from "polkadot-api/polkadot-sdk-compat"
 import { getWsProvider } from "polkadot-api/ws-provider"
 import { ADDRESS } from "./util/address"

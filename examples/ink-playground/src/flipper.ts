@@ -1,8 +1,8 @@
-import { contracts, pop } from "@polkadot-api/descriptors"
-import { createReviveSdk } from "@polkadot-api/sdk-ink"
+import { contracts } from "@polkadot-api/descriptors"
+import { createInkSdk } from "@polkadot-api/sdk-ink"
 import { Binary, createClient } from "polkadot-api"
 import { withPolkadotSdkCompat } from "polkadot-api/polkadot-sdk-compat"
-import { getWsProvider } from "polkadot-api/ws-provider/web"
+import { getWsProvider } from "polkadot-api/ws-provider"
 import { ADDRESS } from "./util/address"
 import { aliceSigner } from "./util/signer"
 import { trackTx } from "./util/trackTx"
@@ -12,14 +12,13 @@ let CONTRACT_ADDRESS = ADDRESS.flipper
 const client = createClient(
   withPolkadotSdkCompat(
     getWsProvider([
-      "wss://rpc2.paseo.popnetwork.xyz",
-      "wss://rpc1.paseo.popnetwork.xyz",
+      "wss://testnet-passet-hub.polkadot.io",
+      "wss://passet-hub-paseo.ibp.network",
     ]),
   ),
 )
 
-const typedApi = client.getTypedApi(pop)
-const flipperSdk = createReviveSdk(typedApi, contracts.flipper)
+const flipperSdk = createInkSdk(client)
 
 console.log("Alice is mapped?", await flipperSdk.addressIsMapped(ADDRESS.alice))
 
@@ -27,7 +26,7 @@ const pvmFile = Bun.file("./contracts/flipper_inkv6/flipper.polkavm")
 console.log("Loading pvm file")
 const pvmBytes = Binary.fromBytes(await pvmFile.bytes())
 
-const deployer = flipperSdk.getDeployer(pvmBytes)
+const deployer = flipperSdk.getDeployer(contracts.flipper, pvmBytes)
 
 // Example on how to get an estimated deployed address
 const estimatedAddress = await deployer.estimateAddress("new", {
@@ -67,7 +66,7 @@ if (process.argv.includes("deploy")) {
 
   // After a long battle, we managed to get the `ContractInstantiated` event back https://github.com/paritytech/polkadot-sdk/issues/8677
   // For chains with this deployed, we can get the address directly from the events
-  const events = flipperSdk.readDeploymentEvents(fin.events)
+  const events = flipperSdk.readDeploymentEvents(contracts.flipper, fin.events)
   // It's an array because we can batch multiple deployments with one transaction.
   if (events.length) {
     console.log(`Deployed to address ${events[0].address}`)
@@ -79,15 +78,11 @@ if (process.argv.includes("deploy")) {
   }
 }
 
-const contract = flipperSdk.getContract(CONTRACT_ADDRESS)
+const contract = flipperSdk.getContract(contracts.flipper, CONTRACT_ADDRESS)
 console.log(`Deployed contract is compatible: ${await contract.isCompatible()}`)
 
-const contractAccount = await typedApi.query.System.Account.getValue(
-  contract.accountId,
-)
-console.log(
-  `Contract funds: ${contract.accountId} ${contractAccount.data.free}`,
-)
+const balance = await contract.getBalance()
+console.log(`Contract funds: ${contract.accountId} ${balance}`)
 
 const initialValueResult = await contract.query("get", {
   origin: ADDRESS.alice,

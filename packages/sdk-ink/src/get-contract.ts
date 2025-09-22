@@ -46,6 +46,7 @@ export function getContract<
 
   const contractApi: Contract<T, D, PublicAddr, StorageErr> = {
     accountId,
+    getBalance: () => provider.getBalance(address),
     async isCompatible() {
       try {
         const code_hash = await codeHash

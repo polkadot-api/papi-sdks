@@ -13,4 +13,6 @@ export const whitelist: WndAhWhitelistEntry[] = [
   "api.ReviveApi.get_storage",
   "api.ReviveApi.get_storage_var_key",
   "api.ReviveApi.trace_call",
+  "api.ReviveApi.balance",
+  "const.Revive.NativeToEthRatio",
 ]

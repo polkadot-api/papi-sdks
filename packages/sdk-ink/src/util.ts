@@ -40,12 +40,22 @@ export const reviveAddressIsMapped = (
   )
 
 const u64Range = 2n ** 64n
-export const valueToU256 = (value: bigint): U256 => [
-  value % u64Range,
-  (value / u64Range) % u64Range,
-  (value / u64Range ** 2n) % u64Range,
-  (value / u64Range ** 3n) % u64Range,
-]
+export const valueToU256 = (value: bigint, nativeToEth: number): U256 => {
+  const scaled = value * BigInt(nativeToEth)
+  return [
+    scaled % u64Range,
+    (scaled / u64Range) % u64Range,
+    (scaled / u64Range ** 2n) % u64Range,
+    (scaled / u64Range ** 3n) % u64Range,
+  ]
+}
+export const u256ToValue = (u256: U256, nativeToEth: number): bigint => {
+  const scaled = u256.reduce(
+    (acc, value, i) => acc + value * u64Range ** BigInt(i),
+    0n,
+  )
+  return scaled / BigInt(nativeToEth)
+}
 
 const parseReviveAddress = (address: SS58String | ReviveAddress | HexString) =>
   typeof address === "string"
