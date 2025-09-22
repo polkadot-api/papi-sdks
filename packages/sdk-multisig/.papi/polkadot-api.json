@@ -1,0 +1,21 @@
+{
+  "version": 0,
+  "descriptorPath": ".papi/descriptors",
+  "options": {
+    "noDescriptorsPackage": true
+  },
+  "entries": {
+    "dot": {
+      "chain": "polkadot",
+      "metadata": ".papi/metadata/dot.scale",
+      "genesis": "0x91b171bb158e2d3848fa23a9f1c25182fb8e20313b2c1eb49219da7a70ce90c3",
+      "codeHash": "0x0627ae9ae2a8d0de99a7dad056136f855f32f82391c48bf8a531506fe231a42b"
+    },
+    "moonbeam": {
+      "wsUrl": "wss://moonbeam-rpc.dwellir.com",
+      "metadata": ".papi/metadata/moonbeam.scale",
+      "genesis": "0xfe58ea77779b7abda7da4ec526d14db9b1e9cd40a217c34892af80a9b332b76d",
+      "codeHash": "0x802c6b285502245d97dc73bdb164c128b9c7794637c67a3f23a105327d5566d2"
+    }
+  }
+}

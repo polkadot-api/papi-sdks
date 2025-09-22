@@ -10,17 +10,22 @@ import {
 } from "@polkadot-api/substrate-bindings"
 import { AccountId, Transaction } from "polkadot-api"
 import { fromHex, toHex } from "polkadot-api/utils"
-import { MultisigSdkTypedApi } from "./descriptors"
-import { MultisigSdk, MultisigTxOptions } from "./sdk-types"
+import { dot, moonbeam } from "../.papi/descriptors/dist"
+import { CreateMultisigSdk, MultisigSdk, MultisigTxOptions } from "./sdk-types"
 
 const defaultMultisigTxOptions: MultisigTxOptions<unknown> = {
   method: (approvals, threshold) =>
     approvals.length === threshold - 1 ? "as_multi" : "approve_as_multi",
 }
 
-export const createMultisigSdk = <Addr extends SS58String | HexString>(
-  typedApi: MultisigSdkTypedApi<Addr>,
-): MultisigSdk<Addr> => {
+export const createMultisigSdk: CreateMultisigSdk = (client, addrType) => {
+  type Addr = typeof addrType extends "acc20" ? HexString : SS58String
+  const isAddr20 = addrType === "acc20"
+
+  const ss58Api = client.getTypedApi(dot)
+  const addr20Api = client.getTypedApi(moonbeam)
+  const activeApi = isAddr20 ? addr20Api : ss58Api
+
   const toSS58 = AccountId().dec
 
   const getMultisigTx: MultisigSdk<Addr>["getMultisigTx"] = (
@@ -35,7 +40,7 @@ export const createMultisigSdk = <Addr extends SS58String | HexString>(
     }
 
     const toAddress = (value: Uint8Array): Addr => {
-      if (multisig.signatories[0].startsWith("0x")) {
+      if (isAddr20) {
         return toHex(value) as Addr
       }
       return toSS58(value) as Addr
@@ -61,10 +66,10 @@ export const createMultisigSdk = <Addr extends SS58String | HexString>(
       const [tx, callData] =
         "getEncodedData" in txOrCallData
           ? [txOrCallData, await txOrCallData.getEncodedData()]
-          : [await typedApi.txFromCallData(txOrCallData), txOrCallData]
+          : [await activeApi.txFromCallData(txOrCallData), txOrCallData]
 
       if (multisig.threshold === 1) {
-        return typedApi.tx.Multisig.as_multi_threshold_1({
+        return activeApi.tx.Multisig.as_multi_threshold_1({
           other_signatories: otherSignatories.map(toAddress),
           call: tx.decodedCall,
         })
@@ -72,7 +77,7 @@ export const createMultisigSdk = <Addr extends SS58String | HexString>(
 
       const callHash = Blake2256(callData.asBytes())
       const [multisigInfo, weightInfo] = await Promise.all([
-        typedApi.query.Multisig.Multisigs.getValue(
+        activeApi.query.Multisig.Multisigs.getValue(
           toAddress(multisigId),
           Binary.fromBytes(callHash),
         ),
@@ -101,11 +106,11 @@ export const createMultisigSdk = <Addr extends SS58String | HexString>(
 
       const wrappedTx: Transaction<any, any, any, any> =
         method === "approve_as_multi"
-          ? typedApi.tx.Multisig.approve_as_multi({
+          ? activeApi.tx.Multisig.approve_as_multi({
               ...commonPayload,
               call_hash: Binary.fromBytes(callHash),
             })
-          : typedApi.tx.Multisig.as_multi({
+          : activeApi.tx.Multisig.as_multi({
               ...commonPayload,
               call: tx.decodedCall,
             })
@@ -150,7 +155,7 @@ export const createMultisigSdk = <Addr extends SS58String | HexString>(
           atBlockNumber,
           hasher,
         ) {
-          const tx = await typedApi.txFromCallData(Binary.fromBytes(callData))
+          const tx = await activeApi.txFromCallData(Binary.fromBytes(callData))
           const wrappedTx = getMultisigTx(
             multisig,
             toAddress(signerId),

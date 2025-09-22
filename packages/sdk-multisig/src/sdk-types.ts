@@ -1,5 +1,12 @@
 import { AsyncTransaction } from "@polkadot-api/common-sdk-utils"
-import { Binary, PolkadotSigner, Transaction } from "polkadot-api"
+import {
+  Binary,
+  HexString,
+  PolkadotClient,
+  PolkadotSigner,
+  SS58String,
+  Transaction,
+} from "polkadot-api"
 
 export interface MultisigAccount<Addr> {
   signatories: Addr[]
@@ -11,6 +18,13 @@ export interface MultisigTxOptions<Addr> {
     approvals: Array<Addr>,
     threshold: number,
   ) => "as_multi" | "approve_as_multi"
+}
+
+export interface CreateMultisigSdk {
+  <AType extends "ss58" | "acc20" = "ss58">(
+    client: PolkadotClient,
+    addrType?: AType,
+  ): MultisigSdk<AType extends "acc20" ? HexString : SS58String>
 }
 
 export interface MultisigSdk<Addr> {
