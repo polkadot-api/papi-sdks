@@ -5,6 +5,7 @@ import {
 } from "@polkadot-api/ink-contracts"
 import {
   AbiConstructor,
+  AbiError,
   AbiFallback,
   AbiFunction,
   AbiParameter,
@@ -13,12 +14,14 @@ import {
 import { Binary, FixedSizeBinary } from "polkadot-api"
 import {
   Abi,
+  decodeErrorResult,
   decodeEventLog,
   decodeFunctionResult,
   encodeDeployData,
   encodeFunctionData,
 } from "viem"
 import { GenericInkDescriptors } from "./descriptor-types"
+import { compactNumber } from "@polkadot-api/substrate-bindings"
 
 export interface EncodingProvider {
   isCompatible(codeHash: FixedSizeBinary<32>): boolean
@@ -47,6 +50,7 @@ export interface EncodingProvider {
     decode: (value: Binary) => unknown
   }
   storagePaths(): string[]
+  decodeError(data: Binary): unknown
 }
 
 export const inkEncoding = (
@@ -91,6 +95,20 @@ export const inkEncoding = (
     },
     storagePaths() {
       return Object.keys(lookup.storage)
+    },
+    decodeError(data) {
+      // In case of panic! or return_value(REVERT, &"some message"), the value comes back as an opaque string
+      // Meaning what we get over the wire is [payload_len,data]
+      // And `data` is a Vec<u8>, hence [msg_len,...chars]. In this case, the msg_len is redundant.
+      try {
+        const bytes = data.asBytes()
+        const length = compactNumber.dec(bytes)
+        const compactLength = compactNumber.enc(length).length
+        if (compactLength + length === bytes.length) {
+          return Binary.fromBytes(bytes.slice(compactLength)).asText()
+        }
+      } catch {}
+      return data.asHex()
     },
   }
 }
@@ -341,6 +359,23 @@ export const solEncoding = (
     },
     storagePaths() {
       throw new Error("Solidity contract storage unaccessible")
+    },
+    decodeError(data) {
+      try {
+        const error = decodeErrorResult({
+          abi,
+          data: data.asHex() as `0x${string}`,
+        })
+        const abiItem = error.abiItem as AbiError
+
+        return {
+          type: error.errorName,
+          value: viemToOutputs(error.args, abiItem.inputs),
+        }
+      } catch (ex) {
+        console.error(ex)
+        return data.asHex()
+      }
     },
   }
 }

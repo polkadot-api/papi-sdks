@@ -3,7 +3,6 @@ import {
   mapResult,
   wrapAsyncTx,
 } from "@polkadot-api/common-sdk-utils"
-import { Binary, compactNumber } from "@polkadot-api/substrate-bindings"
 import { Enum, SS58String } from "polkadot-api"
 import type {
   GenericInkDescriptors,
@@ -93,27 +92,13 @@ export function getContract<
         // In case REVERT flag is set, it might return a string with the error message or debug info.
         if (response.result.value.flags & 0x01) {
           const data = response.result.value.data
-          // In case of panic! or return_value(REVERT, &"some message"), the value comes back as an opaque string
-          // Meaning what we get over the wire is [payload_len,data]
-          // And `data` is a Vec<u8>, hence [msg_len,...chars]. In this case, the msg_len is redundant.
-          const decodeMessage = () => {
-            try {
-              const bytes = data.asBytes()
-              const length = compactNumber.dec(bytes)
-              const compactLength = compactNumber.enc(length).length
-              if (compactLength + length === bytes.length) {
-                return Binary.fromBytes(bytes.slice(compactLength)).asText()
-              }
-            } catch {}
-            return data.asHex()
-          }
           return {
             success: false,
             value: {
               type: "FlagReverted",
               value: {
                 ...availableData,
-                message: decodeMessage(),
+                message: encodingProvider.decodeError(data),
                 raw: response.result.value.data,
               },
             },
