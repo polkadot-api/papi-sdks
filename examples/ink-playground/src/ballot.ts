@@ -95,29 +95,44 @@ if (initialValueResult.success) {
   console.log(`initial value request failed`, initialValueResult.value)
 }
 
-const vote = await contract.query("vote", {
+const giveRight = await contract.query("giveRightToVote", {
   origin: ADDRESS.alice,
   data: {
-    // vote the opposite side
-    proposal: 1n - winning,
+    voter: "0xf2eb1d64d27105769772753cbf36766def13e947",
   },
 })
-if (!vote.success) {
-  console.log(`vote dry-run success request failed`, vote.value)
+if (!giveRight.success) {
+  console.log(`give right dry-run success request failed`, giveRight.value)
   process.exit(0)
 }
-console.log(`vote dry-run success`, {
-  gas: vote.value.gasRequired,
-  storageDeposit: vote.value.storageDeposit,
-  events: vote.value.events,
+console.log(`give right dry-run success`, {
+  gas: giveRight.value.gasRequired,
+  storageDeposit: giveRight.value.storageDeposit,
+  events: giveRight.value.events,
 })
 
-if (process.argv.includes("vote")) {
-  console.log("voting...")
-  // Note: we could also vote directly without dry-run with `contract.send`, but it would need the storageDeposit / weights.
-  await trackTx(vote.value.send().signSubmitAndWatch(aliceSigner))
-  console.log(`voted!`)
-  // TODO events
-}
+// const vote = await contract.query("vote", {
+//   origin: ADDRESS.alice,
+//   data: {
+//     // vote the opposite side
+//     proposal: 1n - winning,
+//   },
+// })
+// if (!vote.success) {
+//   console.log(`vote dry-run success request failed`, vote.value)
+//   process.exit(0)
+// }
+// console.log(`vote dry-run success`, {
+//   gas: vote.value.gasRequired,
+//   storageDeposit: vote.value.storageDeposit,
+//   events: vote.value.events,
+// })
+
+// if (process.argv.includes("vote")) {
+//   console.log("voting...")
+//   // Note: we could also vote directly without dry-run with `contract.send`, but it would need the storageDeposit / weights.
+//   await trackTx(vote.value.send().signSubmitAndWatch(aliceSigner))
+//   console.log(`voted!`)
+// }
 
 client.destroy()

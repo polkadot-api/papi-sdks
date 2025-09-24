@@ -13,6 +13,7 @@ import {
 import { Binary, FixedSizeBinary } from "polkadot-api"
 import {
   Abi,
+  decodeEventLog,
   decodeFunctionResult,
   encodeDeployData,
   encodeFunctionData,
@@ -302,8 +303,38 @@ export const solEncoding = (
         },
       }
     },
-    filterEvents() {
-      return []
+    filterEvents(address, events = []) {
+      const addrEq = (a: string | Binary) =>
+        (a instanceof Binary ? a.asHex() : a) === address
+
+      const contractEvents = events
+        .map((v) => ("event" in v ? v : { event: v, topics: v.topics }))
+        .filter(
+          (v) =>
+            v.event.type === "Revive" &&
+            (v.event.value as any).type === "ContractEmitted" &&
+            addrEq((v.event.value as any).value.contract),
+        )
+
+      return contractEvents
+        .map((v): GenericEvent | null => {
+          const topics = v.topics.map((v) => v.asHex())
+
+          try {
+            const evtLog = decodeEventLog({
+              abi,
+              topics: topics as any,
+              data: (v.event.value as any).value.data.asHex(),
+            })
+            return {
+              type: evtLog.eventName!,
+              value: evtLog.args,
+            }
+          } catch (ex) {
+            return null
+          }
+        })
+        .filter((v) => v !== null)
     },
     storage() {
       throw new Error("Solidity contract storage unaccessible")
