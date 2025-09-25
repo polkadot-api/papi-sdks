@@ -164,15 +164,15 @@ export const contractsProvider = (
       }),
     txInstantiate: (payload) =>
       typedApi.tx.Contracts.instantiate({
-        salt: defaultSalt,
         storage_deposit_limit: undefined,
         ...payload,
+        salt: payload.salt ?? defaultSalt,
       }),
     txInstantiateWithCode: (payload) =>
       typedApi.tx.Contracts.instantiate_with_code({
-        salt: defaultSalt,
         storage_deposit_limit: undefined,
         ...payload,
+        salt: payload.salt ?? defaultSalt,
       }),
   }
 }

@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## 0.4.4 2025-09-25
+
+### Fixed
+
+- Fix missing salt when deploying v5 contracts
+
 ## 0.4.3 2025-09-22
 
 ### Fixed
