@@ -11,7 +11,7 @@
   "dependencies": {
     "@polkadot-api/descriptors": "file:.papi/descriptors",
     "@polkadot-api/sdk-governance": "workspace:*",
-    "polkadot-api": "^1.18.0",
+    "polkadot-api": "^1.19.0",
     "rxjs": "7.8.2"
   }
 }
