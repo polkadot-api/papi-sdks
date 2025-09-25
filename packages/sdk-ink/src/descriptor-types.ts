@@ -1,9 +1,9 @@
 import { SdkDefinition } from "@polkadot-api/common-sdk-utils"
 import {
+  Event,
   InkCallableDescriptor,
   InkDescriptors,
   InkStorageDescriptor,
-  Event,
 } from "@polkadot-api/ink-contracts"
 import {
   ApisTypedef,
@@ -12,6 +12,7 @@ import {
   FixedSizeArray,
   FixedSizeBinary,
   PalletsTypedef,
+  PlainDescriptor,
   ResultPayload,
   RuntimeDescriptor,
   SS58String,
@@ -113,6 +114,18 @@ export type InkSdkApis<Ev = any, Err = any> = ApisTypedef<{
 
 export type InkSdkPallets = PalletsTypedef<
   {
+    System: {
+      Account: StorageDescriptor<
+        [Key: SS58String],
+        {
+          data: {
+            free: bigint
+          }
+        },
+        false,
+        never
+      >
+    }
     Contracts: {
       ContractInfoOf: StorageDescriptor<
         [Key: SS58String],
@@ -207,7 +220,7 @@ type ContractState = Array<
   [
     FixedSizeBinary<20>,
     {
-      balance?: FixedSizeArray<4, bigint> | undefined
+      balance?: U256 | undefined
       nonce?: number | undefined
       code?: Binary | undefined
       storage: Array<[Binary, Binary | undefined]>
@@ -272,6 +285,7 @@ export type ReviveSdkApis<Ev = any, Err = any> = ApisTypedef<{
         }>
       >
     >
+    balance: RuntimeDescriptor<[address: FixedSizeBinary<20>], U256>
   }
 }>
 export type ReviveSdkPallets<TStorage> = PalletsTypedef<
@@ -330,7 +344,11 @@ export type ReviveSdkPallets<TStorage> = PalletsTypedef<
   },
   {},
   {},
-  {},
+  {
+    Revive: {
+      NativeToEthRatio: PlainDescriptor<number>
+    }
+  },
   {}
 >
 

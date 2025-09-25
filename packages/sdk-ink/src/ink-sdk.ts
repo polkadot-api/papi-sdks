@@ -1,53 +1,103 @@
-import { getInkClient, getInkLookup } from "@polkadot-api/ink-contracts"
-import { Enum, SS58String } from "polkadot-api"
-import type {
-  GenericInkDescriptors,
-  InkSdkTypedApi,
-  StorageError,
-} from "./descriptor-types"
+import { Binary, Enum, HexString, PolkadotClient } from "polkadot-api"
+import { wndAh } from "../.papi/descriptors/dist"
+import { GenericInkDescriptors, ReviveStorageError } from "./descriptor-types"
+import { EncodingProvider, inkEncoding, solEncoding } from "./encoding-provider"
 import { getContract } from "./get-contract"
 import { getDeployer } from "./get-deployer"
-import { contractsProvider } from "./provider"
-import { defaultOptions, type InkSdk, type InkSdkOptions } from "./sdk-types"
+import { reviveProvider } from "./provider"
+import { getAccountId } from "./revive-sdk"
+import {
+  CommonTypedApi,
+  Contract,
+  defaultOptions,
+  Deployer,
+  GetContract,
+  InkSdk,
+  InkSdkOptions,
+} from "./sdk-types"
+import { reviveAddressIsMapped } from "./util"
 
-export const createInkSdk = <
-  T extends InkSdkTypedApi,
-  D extends GenericInkDescriptors,
->(
-  typedApi: T,
-  contractDescriptors: D,
+export const createInkSdk = (
+  client: PolkadotClient,
   options?: Partial<InkSdkOptions>,
-): InkSdk<T, D, SS58String, StorageError> => {
-  const { atBest } = { ...defaultOptions, ...options }
+): InkSdk => {
+  const typedApi: CommonTypedApi = client.getTypedApi(wndAh)
 
-  const provider = contractsProvider(typedApi, atBest)
-  const inkClient = getInkClient(contractDescriptors)
-  const lookup = getInkLookup(contractDescriptors.metadata)
+  const { atBest } = { ...defaultOptions, ...options }
+  const provider = reviveProvider(typedApi, atBest)
+
+  const getContractSdk = <D extends GenericInkDescriptors>(
+    encodingProvider: EncodingProvider,
+    address: HexString,
+  ): Contract<CommonTypedApi, D, HexString, ReviveStorageError> => {
+    return getContract(
+      provider,
+      encodingProvider,
+      Binary.fromHex(address),
+      (v) => v.asHex(),
+      getAccountId(address),
+    )
+  }
+
+  const getDeployerSdk = <D extends GenericInkDescriptors>(
+    contractDescriptors: D,
+    code: Binary,
+  ): Deployer<CommonTypedApi, D, HexString> => {
+    const encodingProvider = contractDescriptors.metadata
+      ? inkEncoding(contractDescriptors)
+      : solEncoding(contractDescriptors)
+
+    return getDeployer(provider, encodingProvider, Enum("Upload", code), (v) =>
+      v.asHex(),
+    )
+  }
+
+  const curriedGetContract: GetContract = ((
+    contractDescriptors,
+    address?: HexString,
+  ) => {
+    const encodingProvider = contractDescriptors.metadata
+      ? inkEncoding(contractDescriptors)
+      : solEncoding(contractDescriptors)
+
+    if (address == null) {
+      return (address: HexString) => getContractSdk(encodingProvider, address)
+    }
+    return getContractSdk(encodingProvider, address)
+  }) as GetContract
 
   return {
-    getContract: (address) =>
-      getContract(provider, inkClient, lookup, address, (v) => v, address),
-    getDeployer: (code) =>
-      getDeployer(provider, inkClient, Enum("Upload", code), (v) => v),
-    readDeploymentEvents(events) {
+    addressIsMapped(address) {
+      return reviveAddressIsMapped(typedApi, address)
+    },
+    getContract: curriedGetContract,
+    getDeployer: getDeployerSdk,
+    readDeploymentEvents: (contractDescriptors, events) => {
+      const encodingProvider = contractDescriptors.metadata
+        ? inkEncoding(contractDescriptors)
+        : solEncoding(contractDescriptors)
+
       const instantiatedEvents =
         events
           ?.filter(
             (evt) =>
-              evt.type === "Contracts" &&
+              evt.type === "Revive" &&
               (evt.value as any).type === "Instantiated",
           )
           .map(
             (v) =>
               (v.value as any).value as {
-                deployer: string
-                contract: string
+                deployer: Binary
+                contract: Binary
               },
           ) ?? []
 
       return instantiatedEvents.map((evt) => ({
-        address: evt.contract,
-        contractEvents: inkClient.event.filter(evt.contract, events),
+        address: evt.contract.asHex(),
+        contractEvents: encodingProvider.filterEvents(
+          evt.contract.asHex(),
+          events,
+        ),
       }))
     },
   }

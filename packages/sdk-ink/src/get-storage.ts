@@ -1,10 +1,7 @@
-import type {
-  InkClient,
-  InkMetadataLookup,
-  InkStorageDescriptor,
-} from "@polkadot-api/ink-contracts"
+import type { InkStorageDescriptor } from "@polkadot-api/ink-contracts"
 import type { ResultPayload } from "polkadot-api"
 import type { GenericInkDescriptors, StorageError } from "./descriptor-types"
+import { EncodingProvider } from "./encoding-provider"
 import { ContractsProvider } from "./provider"
 
 export type SdkStorage<
@@ -14,8 +11,7 @@ export type SdkStorage<
 
 export function getStorage<Addr, StorageErr, D extends GenericInkDescriptors>(
   provider: ContractsProvider<Addr, StorageErr>,
-  inkClient: InkClient<D>,
-  lookup: InkMetadataLookup,
+  encodingProvider: EncodingProvider,
   address: Addr,
 ): SdkStorage<D["__types"]["storage"], StorageErr> {
   type S = D["__types"]["storage"]
@@ -24,7 +20,7 @@ export function getStorage<Addr, StorageErr, D extends GenericInkDescriptors>(
     label: string,
     key: unknown,
   ): Promise<ResultPayload<unknown, StorageErr>> => {
-    const storage = inkClient.storage(label)
+    const storage = encodingProvider.storage(label)
     const result = await provider.getStorage(
       address,
       storage.encode(key as any),
@@ -61,7 +57,7 @@ export function getStorage<Addr, StorageErr, D extends GenericInkDescriptors>(
       }
 
       const value = root.value as S[""]["value"] & UnNest<Omit<S, "">>
-      for (const path in lookup.storage) {
+      for (const path of encodingProvider.storagePaths()) {
         if (path === "") continue
         assignFnAtPath(value, path.split("."), (key: any) =>
           getStorage(path, key),

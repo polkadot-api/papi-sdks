@@ -31,10 +31,12 @@ import {
   getDeploymentAddressWithSalt,
   getDeploymentHash,
   ss58ToEthereum,
+  u256ToValue,
   valueToU256,
 } from "./util"
 
 export interface ContractsProvider<Addr, StorageErr> {
+  getBalance(addr: Addr): Promise<bigint>
   dryRunCall(...args: DryRunCallParams<Addr>): Promise<DryRunCallResult>
   dryRunInstantiate(
     ...args: DryRunInstantiateParams
@@ -130,6 +132,10 @@ export const contractsProvider = (
   }
 
   return {
+    async getBalance(addr) {
+      const account = await typedApi.query.System.Account.getValue(addr)
+      return account.data.free
+    },
     dryRunCall: (...args) =>
       typedApi.apis.ContractsApi.call(...args, callOptions),
     dryRunInstantiate,
@@ -245,6 +251,12 @@ export const reviveProvider = (
     })
 
   return {
+    async getBalance(addr) {
+      const ethBalance = await typedApi.apis.ReviveApi.balance(addr)
+      const nativeToEth = await typedApi.constants.Revive.NativeToEthRatio()
+
+      return u256ToValue(ethBalance, nativeToEth)
+    },
     dryRunCall: (
       origin: SS58String,
       dest: ReviveAddress,
@@ -313,15 +325,17 @@ export const reviveProvider = (
           salt,
           callOptions,
         ),
-        traceCall({
-          from: ss58ToEthereum(origin),
-          input: {
-            input: Binary.fromBytes(
-              mergeUint8([code.value.asBytes(), data.asBytes()]),
-            ),
-          },
-          value: valueToU256(value),
-        }),
+        typedApi.constants.Revive.NativeToEthRatio().then((nativeToEth) =>
+          traceCall({
+            from: ss58ToEthereum(origin),
+            input: {
+              input: Binary.fromBytes(
+                mergeUint8([code.value.asBytes(), data.asBytes()]),
+              ),
+            },
+            value: valueToU256(value, nativeToEth),
+          }),
+        ),
       ]).then(([call, trace]) => {
         const events = (() => {
           if (call.events) return call.events

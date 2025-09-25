@@ -18,7 +18,7 @@
     "@rollup/plugin-alias": "^5.1.1",
     "@rollup/plugin-node-resolve": "^16.0.1",
     "prettier": "^3.6.2",
-    "rollup": "^4.50.2",
+    "rollup": "^4.52.2",
     "rollup-plugin-dts": "^6.2.3",
     "rollup-plugin-esbuild": "^6.2.1",
     "typescript": "^5.9.2",

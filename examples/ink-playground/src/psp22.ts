@@ -1,18 +1,24 @@
 import { contracts, pop } from "@polkadot-api/descriptors"
-import { createInkSdk } from "@polkadot-api/sdk-ink"
+import { createInkV5Sdk } from "@polkadot-api/sdk-ink"
 import { Binary, createClient } from "polkadot-api"
 import { withPolkadotSdkCompat } from "polkadot-api/polkadot-sdk-compat"
-import { getWsProvider } from "polkadot-api/ws-provider/web"
+import { getWsProvider } from "polkadot-api/ws-provider"
 import { ADDRESS } from "./util/address"
 import { aliceSigner } from "./util/signer"
 import { trackTx } from "./util/trackTx"
 
 const client = createClient(
-  withPolkadotSdkCompat(getWsProvider("wss://rpc1.paseo.popnetwork.xyz")),
+  withPolkadotSdkCompat(
+    getWsProvider([
+      "wss://rpc1.paseo.popnetwork.xyz",
+      "wss://rpc2.paseo.popnetwork.xyz",
+      "wss://rpc3.paseo.popnetwork.xyz",
+    ]),
+  ),
 )
 
 const typedApi = client.getTypedApi(pop)
-const psp22Sdk = createInkSdk(typedApi, contracts.psp22)
+const psp22Sdk = createInkV5Sdk(typedApi, contracts.psp22)
 
 const wasmFile = Bun.file("./contracts/psp22_mod/psp22.wasm")
 console.log("Loading wasm file")

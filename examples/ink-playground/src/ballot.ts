@@ -7,7 +7,7 @@ import { ADDRESS } from "./util/address"
 import { aliceSigner } from "./util/signer"
 import { trackTx } from "./util/trackTx"
 
-let CONTRACT_ADDRESS = ADDRESS.flipper
+let CONTRACT_ADDRESS = ADDRESS.ballot
 
 const client = createClient(
   withPolkadotSdkCompat(
@@ -18,20 +18,24 @@ const client = createClient(
   ),
 )
 
-const flipperSdk = createInkSdk(client)
+const inkSdk = createInkSdk(client)
 
-console.log("Alice is mapped?", await flipperSdk.addressIsMapped(ADDRESS.alice))
+console.log("Alice is mapped?", await inkSdk.addressIsMapped(ADDRESS.alice))
 
-const pvmFile = Bun.file("./contracts/flipper_inkv6/flipper.polkavm")
+const pvmFile = Bun.file("./contracts/ballot_sol/3_Ballot_sol_Ballot.polkavm")
 console.log("Loading pvm file")
 const pvmBytes = Binary.fromBytes(await pvmFile.bytes())
 
-const deployer = flipperSdk.getDeployer(contracts.flipper, pvmBytes)
+const deployer = inkSdk.getDeployer(contracts.ballot, pvmBytes)
+
+const titleToBinary = (title: string) =>
+  Binary.fromText(title.slice(0, 32).padStart(32, " "))
+const proposalNames = [titleToBinary("Proposal A"), titleToBinary("Proposal B")]
 
 // Example on how to get an estimated deployed address
 const estimatedAddress = await deployer.estimateAddress("new", {
   data: {
-    initial_value: false,
+    proposalNames,
   },
   origin: ADDRESS.alice,
 })
@@ -41,7 +45,7 @@ console.log("estimated address", estimatedAddress)
 console.log("Dry-running deploy")
 const dryRunResult = await deployer.dryRun("new", {
   data: {
-    initial_value: false,
+    proposalNames,
   },
   origin: ADDRESS.alice,
 })
@@ -66,7 +70,7 @@ if (process.argv.includes("deploy")) {
 
   // After a long battle, we managed to get the `ContractInstantiated` event back https://github.com/paritytech/polkadot-sdk/issues/8677
   // For chains with this deployed, we can get the address directly from the events
-  const events = flipperSdk.readDeploymentEvents(contracts.flipper, fin.events)
+  const events = inkSdk.readDeploymentEvents(contracts.ballot, fin.events)
   // It's an array because we can batch multiple deployments with one transaction.
   if (events.length) {
     console.log(`Deployed to address ${events[0].address}`)
@@ -78,55 +82,57 @@ if (process.argv.includes("deploy")) {
   }
 }
 
-const contract = flipperSdk.getContract(contracts.flipper, CONTRACT_ADDRESS)
-console.log(`Deployed contract is compatible: ${await contract.isCompatible()}`)
+const contract = inkSdk.getContract(contracts.ballot, CONTRACT_ADDRESS)
 
-const balance = await contract.getBalance()
-console.log(`Contract funds: ${contract.accountId} ${balance}`)
-
-const initialValueResult = await contract.query("get", {
+const initialValueResult = await contract.query("winningProposal", {
   origin: ADDRESS.alice,
 })
+let winning = 0n
 if (initialValueResult.success) {
-  console.log(`initial value: ${initialValueResult.value.response}`)
+  winning = initialValueResult.value.response.winningProposal_
+  console.log(`initial value: ${winning}`)
 } else {
   console.log(`initial value request failed`, initialValueResult.value)
 }
 
-const flipResult = await contract.query("flip", {
+const giveRight = await contract.query("giveRightToVote", {
   origin: ADDRESS.alice,
+  data: {
+    voter: "0xf2eb1d64d27105769772753cbf36766def13e947",
+  },
 })
-if (!flipResult.success) {
-  console.log(`flip dry-run success request failed`, flipResult.value)
+if (!giveRight.success) {
+  console.log(`give right dry-run success request failed`, giveRight.value)
   process.exit(0)
 }
-console.log(`flip dry-run success`, {
-  gas: flipResult.value.gasRequired,
-  storageDeposit: flipResult.value.storageDeposit,
-  events: flipResult.value.events,
+console.log(`give right dry-run success`, {
+  gas: giveRight.value.gasRequired,
+  storageDeposit: giveRight.value.storageDeposit,
+  events: giveRight.value.events,
 })
 
-if (process.argv.includes("flip")) {
-  console.log("flipping...")
-  // Note: we could also flip directly without dry-run with `contract.send`, but it would need the storageDeposit / weights.
-  const fin = await trackTx(
-    flipResult.value.send().signSubmitAndWatch(aliceSigner),
-  )
-  console.log(`Flipped!`)
-  const events = contract.filterEvents(fin.events)
-  const evt = events[0]
-  console.log(
-    "Event new flipped value",
-    evt.type === "Flipped" && evt.value.new_value,
-  )
-}
+// const vote = await contract.query("vote", {
+//   origin: ADDRESS.alice,
+//   data: {
+//     // vote the opposite side
+//     proposal: 1n - winning,
+//   },
+// })
+// if (!vote.success) {
+//   console.log(`vote dry-run success request failed`, vote.value)
+//   process.exit(0)
+// }
+// console.log(`vote dry-run success`, {
+//   gas: vote.value.gasRequired,
+//   storageDeposit: vote.value.storageDeposit,
+//   events: vote.value.events,
+// })
 
-// Storage not supported yet until get_storage_var_key is deployed
-const rootStorage = await contract.getStorage().getRoot()
-if (rootStorage.success) {
-  console.log("flip storage", rootStorage.value)
-} else {
-  console.log("root storage query failed", rootStorage.value)
-}
+// if (process.argv.includes("vote")) {
+//   console.log("voting...")
+//   // Note: we could also vote directly without dry-run with `contract.send`, but it would need the storageDeposit / weights.
+//   await trackTx(vote.value.send().signSubmitAndWatch(aliceSigner))
+//   console.log(`voted!`)
+// }
 
 client.destroy()
