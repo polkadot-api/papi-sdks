@@ -31,6 +31,9 @@ export const getStorageLimit = (
 export const ss58ToEthereum = (address: SS58String): Binary =>
   Binary.fromBytes(Keccak256(AccountId().enc(address)).slice(12))
 
+/**
+ * @deprecated Use `createInkSdk(client).addressIsMapped(address)` instead.
+ */
 export const reviveAddressIsMapped = (
   typedApi: ReviveSdkTypedApi,
   address: SS58String,

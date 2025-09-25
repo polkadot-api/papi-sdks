@@ -2,6 +2,16 @@
 
 ## Unreleased
 
+### Changed
+
+- `createInkSdk` renamed to `createInkV5Sdk`
+- `createInkSdk` now uses revive and:
+  - It takes a `PolkadotClient` instead of a typedApi
+  - Adds support for solidity contracts
+  - Adds `reviveAddressIsMapped` (without needing to supply a contract address)
+- `createReviveSdk` marked as deprecated, will be removed in next minor version. Move to the new `createInkSdk`
+- `reviveAddressIsMapped` marked as deprecated, will be removed in next minor version. Move to the new `createInkSdk`
+
 ## 0.4.4 2025-09-25
 
 ### Fixed
