@@ -1,0 +1,48 @@
+{
+  "name": "@polkadot-api/sdk-statement",
+  "version": "0.0.1",
+  "sideEffects": false,
+  "author": "Carlo Sala (https://github.com/carlosala)",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/polkadot-api/papi-sdks.git"
+  },
+  "exports": {
+    ".": {
+      "node": {
+        "production": {
+          "import": "./dist/esm/index.mjs",
+          "require": "./dist/min/index.js",
+          "default": "./dist/index.js"
+        },
+        "import": "./dist/esm/index.mjs",
+        "require": "./dist/index.js",
+        "default": "./dist/index.js"
+      },
+      "module": "./dist/esm/index.mjs",
+      "import": "./dist/esm/index.mjs",
+      "require": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "main": "./dist/index.js",
+  "module": "./dist/esm/index.mjs",
+  "browser": "./dist/esm/index.mjs",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc --noEmit && rollup -c ../../rollup.config.js",
+    "lint": "prettier --check README.md \"src/**/*.{js,jsx,ts,tsx,json,md}\"",
+    "format": "prettier --write README.md \"src/**/*.{js,jsx,ts,tsx,json,md}\"",
+    "prepack": "pnpm run build",
+    "test": "vitest"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@polkadot-api/substrate-bindings": "^0.16.3",
+    "@polkadot-api/utils": "^0.2.0"
+  }
+}
