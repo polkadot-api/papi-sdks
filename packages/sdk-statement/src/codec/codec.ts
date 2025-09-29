@@ -93,24 +93,22 @@ export const statementCodec = enhanceCodec<
   },
   (stmt) => {
     const statement: Statement = {}
-    const seenIdxs: Array<(typeof stmt)[number]["type"]> = []
     let maxTopicChecked = 0
-    stmt.forEach((v) => {
-      seenIdxs.push(v.type)
-      if (v.type.startsWith("topic")) {
-        if (v.type !== `topic${++maxTopicChecked}`)
-          throw new Error(`Unexpected ${v.type}`)
-        // first topic
-        if (maxTopicChecked === 1) statement.topics = []
-        statement.topics?.push(v.value as Binary)
-      } else (statement as any)[v.type] = v.value
-    })
     let maxIdx = -1
-    // ensure order and no repetition
-    seenIdxs.forEach((v) => {
-      const idx = sortIdxs[v]
+    stmt.forEach((v) => {
+      // ensure order and no repetition
+      const idx = sortIdxs[v.type]
       if (idx <= maxIdx) throw new Error("Unexpected entries order")
       maxIdx = idx
+
+      if (!v.type.startsWith("topic")) {
+        ;(statement as any)[v.type] = v.value
+      } else if (v.type !== `topic${++maxTopicChecked}`) {
+        throw new Error(`Unexpected ${v.type}`)
+      } else {
+        statement.topics ??= []
+        statement.topics?.push(v.value as Binary)
+      }
     })
     return statement
   },
