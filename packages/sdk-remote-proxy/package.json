@@ -1,6 +1,6 @@
 {
   "name": "@polkadot-api/sdk-remote-proxy",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "sideEffects": false,
   "author": "Josep M Sobrepere (https://github.com/josepot)",
   "repository": {
@@ -49,7 +49,7 @@
     "rxjs": ">=7.8.0"
   },
   "devDependencies": {
-    "polkadot-api": "^1.19.0",
+    "polkadot-api": "^1.19.1",
     "rxjs": "^7.8.2"
   }
 }

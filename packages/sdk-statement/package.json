@@ -1,6 +1,6 @@
 {
   "name": "@polkadot-api/sdk-statement",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "sideEffects": false,
   "author": "Carlo Sala (https://github.com/carlosala)",
   "repository": {
