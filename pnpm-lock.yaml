@@ -29,6 +29,9 @@ importers:
       typescript:
         specifier: ^5.9.2
         version: 5.9.2
+      vite-tsconfig-paths:
+        specifier: ^5.1.4
+        version: 5.1.4(typescript@5.9.2)(vite@7.1.6(@types/node@24.5.2))
       vitest:
         specifier: ^3.2.4
         version: 3.2.4(@types/node@24.5.2)
@@ -110,6 +113,34 @@ importers:
       vite:
         specifier: ^7.1.6
         version: 7.1.6(@types/node@24.5.2)
+
+  examples/statement-playground:
+    dependencies:
+      '@polkadot-api/sdk-statement':
+        specifier: workspace:*
+        version: link:../../packages/sdk-statement
+      '@polkadot-api/substrate-bindings':
+        specifier: ^0.16.3
+        version: 0.16.3
+      '@polkadot-api/substrate-client':
+        specifier: ^0.4.7
+        version: 0.4.7
+      '@polkadot-api/utils':
+        specifier: ^0.2.0
+        version: 0.2.0
+      '@polkadot-api/ws-provider':
+        specifier: ^0.6.0
+        version: 0.6.0
+      '@scure/sr25519':
+        specifier: ^0.3.0
+        version: 0.3.0
+      typescript:
+        specifier: ^5
+        version: 5.9.2
+    devDependencies:
+      '@types/bun':
+        specifier: latest
+        version: 1.2.23(@types/react@19.1.12)
 
   packages/common-utils:
     devDependencies:
@@ -214,6 +245,15 @@ importers:
       rxjs:
         specifier: ^7.8.2
         version: 7.8.2
+
+  packages/sdk-statement:
+    dependencies:
+      '@polkadot-api/substrate-bindings':
+        specifier: ^0.16.3
+        version: 0.16.3
+      '@polkadot-api/utils':
+        specifier: ^0.2.0
+        version: 0.2.0
 
 packages:
 
@@ -712,6 +752,9 @@ packages:
   '@types/bun@1.2.22':
     resolution: {integrity: sha512-5A/KrKos2ZcN0c6ljRSOa1fYIyCKhZfIVYeuyb4snnvomnpFqC0tTsEkdqNxbAgExV384OETQ//WAjl3XbYqQA==}
 
+  '@types/bun@1.2.23':
+    resolution: {integrity: sha512-le8ueOY5b6VKYf19xT3McVbXqLqmxzPXHsQT/q9JHgikJ2X22wyTW3g3ohz2ZMnp7dod6aduIiq8A14Xyimm0A==}
+
   '@types/chai@5.2.2':
     resolution: {integrity: sha512-8kB30R7Hwqf40JPiKhVzodJs2Qc1ZJ5zuT3uzw5Hq/dhNCl3G3l83jfpdI1e20BP348+fV7VIL/+FxaXkqBmWg==}
 
@@ -808,6 +851,11 @@ packages:
 
   bun-types@1.2.22:
     resolution: {integrity: sha512-hwaAu8tct/Zn6Zft4U9BsZcXkYomzpHJX28ofvx7k0Zz2HNz54n1n+tDgxoWFGB4PcFvJXJQloPhaV2eP3Q6EA==}
+    peerDependencies:
+      '@types/react': ^19
+
+  bun-types@1.2.23:
+    resolution: {integrity: sha512-R9f0hKAZXgFU3mlrA0YpE/fiDvwV0FT9rORApt2aQVWSuJDzZOyB5QLc0N/4HF57CS8IXJ6+L5E4W1bW6NS2Aw==}
     peerDependencies:
       '@types/react': ^19
 
@@ -982,6 +1030,9 @@ packages:
   glob@10.4.5:
     resolution: {integrity: sha512-7Bv8RF0k6xjo7d4A/PxYLbUCfb6c+Vpd2/mB2yRDlew7Jb5hEXiCD9ibfO7wpk8i4sevK6DFny9h7EYbM3/sHg==}
     hasBin: true
+
+  globrex@0.1.2:
+    resolution: {integrity: sha512-uHJgbwAMwNFf5mLst7IWLNg14x1CkeqglJb/K3doi4dw6q2IvAAmM/Y81kevy83wP+Sst+nutFTYOGg3d1lsxg==}
 
   hasown@2.0.2:
     resolution: {integrity: sha512-0hJU9SCPvmMzIBdZFqNPXWa6dqh7WdH0cII9y+CyS8rG3nL48Bclra9HmKhVVUHyPWNH5Y7xDwAB7bfgSjkUMQ==}
@@ -1416,6 +1467,16 @@ packages:
     peerDependencies:
       typescript: '>=4'
 
+  tsconfck@3.1.6:
+    resolution: {integrity: sha512-ks6Vjr/jEw0P1gmOVwutM3B7fWxoWBL2KRDb1JfqGVawBmO5UsvmWOQFGHBPl5yxYz4eERr19E6L7NMv+Fej4w==}
+    engines: {node: ^18 || >=20}
+    hasBin: true
+    peerDependencies:
+      typescript: ^5.0.0
+    peerDependenciesMeta:
+      typescript:
+        optional: true
+
   tslib@2.8.1:
     resolution: {integrity: sha512-oJFu94HQb+KVduSUQL7wnpmqnfmLsOA/nAh6b6EH0wCEoK0/mPeXU6c3wKDV83MkOuHPRHtSXKKU99IBazS/2w==}
 
@@ -1480,6 +1541,14 @@ packages:
     resolution: {integrity: sha512-EbKSKh+bh1E1IFxeO0pg1n4dvoOTt0UDiXMd/qn++r98+jPO1xtJilvXldeuQ8giIB5IkpjCgMleHMNEsGH6pg==}
     engines: {node: ^18.0.0 || ^20.0.0 || >=22.0.0}
     hasBin: true
+
+  vite-tsconfig-paths@5.1.4:
+    resolution: {integrity: sha512-cYj0LRuLV2c2sMqhqhGpaO3LretdtMn/BVX4cPLanIZuwwrkVl+lK84E/miEXkCHWXuq65rhNN4rXsBcOB3S4w==}
+    peerDependencies:
+      vite: '*'
+    peerDependenciesMeta:
+      vite:
+        optional: true
 
   vite@7.1.6:
     resolution: {integrity: sha512-SRYIB8t/isTwNn8vMB3MR6E+EQZM/WG1aKmmIUCfDXfVvKfc20ZpamngWHKzAmmu9ppsgxsg4b2I7c90JZudIQ==}
@@ -2070,6 +2139,12 @@ snapshots:
     transitivePeerDependencies:
       - '@types/react'
 
+  '@types/bun@1.2.23(@types/react@19.1.12)':
+    dependencies:
+      bun-types: 1.2.23(@types/react@19.1.12)
+    transitivePeerDependencies:
+      - '@types/react'
+
   '@types/chai@5.2.2':
     dependencies:
       '@types/deep-eql': 4.0.2
@@ -2165,6 +2240,11 @@ snapshots:
       balanced-match: 1.0.2
 
   bun-types@1.2.22(@types/react@19.1.12):
+    dependencies:
+      '@types/node': 24.5.2
+      '@types/react': 19.1.12
+
+  bun-types@1.2.23(@types/react@19.1.12):
     dependencies:
       '@types/node': 24.5.2
       '@types/react': 19.1.12
@@ -2341,6 +2421,8 @@ snapshots:
       minipass: 7.1.2
       package-json-from-dist: 1.0.1
       path-scurry: 1.11.1
+
+  globrex@0.1.2: {}
 
   hasown@2.0.2:
     dependencies:
@@ -2777,6 +2859,10 @@ snapshots:
     dependencies:
       typescript: 5.9.2
 
+  tsconfck@3.1.6(typescript@5.9.2):
+    optionalDependencies:
+      typescript: 5.9.2
+
   tslib@2.8.1: {}
 
   tsup@8.5.0(postcss@8.5.6)(typescript@5.9.2):
@@ -2855,6 +2941,17 @@ snapshots:
       - terser
       - tsx
       - yaml
+
+  vite-tsconfig-paths@5.1.4(typescript@5.9.2)(vite@7.1.6(@types/node@24.5.2)):
+    dependencies:
+      debug: 4.4.3
+      globrex: 0.1.2
+      tsconfck: 3.1.6(typescript@5.9.2)
+    optionalDependencies:
+      vite: 7.1.6(@types/node@24.5.2)
+    transitivePeerDependencies:
+      - supports-color
+      - typescript
 
   vite@7.1.6(@types/node@24.5.2):
     dependencies:

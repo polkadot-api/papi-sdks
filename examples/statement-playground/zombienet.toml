@@ -1,0 +1,37 @@
+# to be used with polkadot-sdk stable2506 or greater
+# the following impl can be modified to allow any statement submitters for testing purposes
+# https://github.com/paritytech/polkadot-sdk/blob/f239e76aadf90ed1023debaef155710239f9d865/cumulus/parachains/runtimes/people/people-westend/src/lib.rs#L1141-L1172
+
+[relaychain]
+default_command = "polkadot"
+default_args = ["-lparachain=debug"]
+
+chain = "westend-local"
+
+[[relaychain.nodes]]
+name = "alice"
+validator = true
+rpc_port = 9933
+
+[[relaychain.nodes]]
+name = "bob"
+rpc_port = 9934
+validator = true
+
+[[parachains]]
+id = 2400
+chain = "people-westend-local"
+default_command = "polkadot-parachain"
+default_args = [
+  "-lparachain=debug",
+  "--force-authoring",
+  "--enable-statement-store",
+]
+
+[[parachains.collators]]
+name = "charlie"
+rpc_port = 9935
+
+[[parachains.collators]]
+name = "dave"
+rpc_port = 9936
