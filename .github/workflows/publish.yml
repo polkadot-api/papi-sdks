@@ -39,7 +39,6 @@ jobs:
             sdk-ink,
             sdk-accounts,
             sdk-remote-proxy,
-            sdk-statement,
           ]
     steps:
       - uses: actions/checkout@v4
