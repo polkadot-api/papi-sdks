@@ -7,3 +7,5 @@ export {
   getDeploymentAddressWithNonce,
   reviveAddressIsMapped,
 } from "./util"
+export type { InkSdk, ContractSdk, DeployerSdk } from "./sdk-types"
+export type { AsyncTransaction } from "@polkadot-api/common-sdk-utils"

@@ -66,13 +66,24 @@ export interface ReviveSdk<
   addressIsMapped: (address: SS58String) => Promise<boolean>
 }
 
+export type ContractSdk<D extends GenericInkDescriptors> = Contract<
+  CommonTypedApi,
+  D,
+  HexString,
+  ReviveStorageError
+>
+export type DeployerSdk<D extends GenericInkDescriptors> = Deployer<
+  CommonTypedApi,
+  D,
+  HexString
+>
 export interface InkSdk {
   addressIsMapped: (address: SS58String) => Promise<boolean>
   getContract: GetContract
   getDeployer: <D extends GenericInkDescriptors>(
     contractDescriptors: D,
     code: Binary,
-  ) => Deployer<CommonTypedApi, D, HexString>
+  ) => DeployerSdk<D>
   readDeploymentEvents: <D extends GenericInkDescriptors>(
     contractDescriptors: D,
     events?: Array<
@@ -89,13 +100,11 @@ export interface InkSdk {
 export interface GetContract {
   <D extends GenericInkDescriptors>(
     contractDescriptors: D,
-  ): (
-    address: HexString,
-  ) => Contract<CommonTypedApi, D, HexString, ReviveStorageError>
+  ): (address: HexString) => ContractSdk<D>
   <D extends GenericInkDescriptors>(
     contractDescriptors: D,
     address: HexString,
-  ): Contract<CommonTypedApi, D, HexString, ReviveStorageError>
+  ): ContractSdk<D>
 }
 
 export interface InkSdkOptions {
