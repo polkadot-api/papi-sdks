@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+### Added
+
+- Identity SDK
+  - `getIdentities` to query multiple identities simultaneously.
+
 ## 0.4.0 2025-07-25
 
 ### Added

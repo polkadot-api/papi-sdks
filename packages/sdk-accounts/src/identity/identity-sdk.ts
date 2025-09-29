@@ -12,54 +12,82 @@ const normalizeIdentityValue = (
 ): IdentityValue => (Array.isArray(value) ? value[0] : value)
 
 export function createIdentitySdk(typedApi: IdentitySdkTypedApi): IdentitySdk {
-  const getIdentity = async (address: SS58String): Promise<Identity | null> => {
-    let [identity, superOf] = await Promise.all([
-      typedApi.query.Identity.IdentityOf.getValue(address).then((v) =>
-        v ? normalizeIdentityValue(v) : v,
+  const getIdentities = async (
+    addresses: SS58String[],
+  ): Promise<Record<SS58String, Identity | null>> => {
+    const keys = addresses.map((v): [SS58String] => [v])
+
+    let [identities, supersOf] = await Promise.all([
+      typedApi.query.Identity.IdentityOf.getValues(keys).then((res) =>
+        Object.fromEntries(
+          res.map((v, i) => [addresses[i], v ? normalizeIdentityValue(v) : v]),
+        ),
       ),
-      typedApi.query.Identity.SuperOf.getValue(address),
+      typedApi.query.Identity.SuperOf.getValues(keys).then((res) =>
+        Object.fromEntries(res.map((v, i) => [addresses[i], v])),
+      ),
     ])
 
-    if (!identity && superOf) {
-      identity = await typedApi.query.Identity.IdentityOf.getValue(
-        superOf[0],
-      ).then((v) => (v ? normalizeIdentityValue(v) : v))
+    const pendingSuperIdentities = Object.entries(identities)
+      .filter(([, identity], i) => !identity && supersOf[i])
+      .map(([key]): [SS58String] => [key])
+
+    if (pendingSuperIdentities.length) {
+      const superIdentities =
+        await typedApi.query.Identity.IdentityOf.getValues(
+          pendingSuperIdentities,
+        )
+      superIdentities.forEach((v, i) => {
+        identities[pendingSuperIdentities[i][0]] = v
+          ? normalizeIdentityValue(v)
+          : v
+      })
     }
 
-    if (!identity) return null
+    return Object.fromEntries(
+      Object.entries(identities).map(([key, identity]) => {
+        if (!identity) return [key, null]
+        const subIdentity = supersOf[key]
+          ? readIdentityData(supersOf[key][1])?.asText()
+          : undefined
 
-    const subIdentity = superOf
-      ? readIdentityData(superOf[1])?.asText()
-      : undefined
+        const info: Identity["info"] = Object.fromEntries(
+          Object.entries(identity.info).map(([key, value]) => [
+            key,
+            value instanceof Binary
+              ? value
+              : (readIdentityData(value)?.asText() ?? null),
+          ]),
+        )
+        const judgements: Identity["judgements"] = identity.judgements.map(
+          ([registrar, judgement]) =>
+            judgement.type === "FeePaid"
+              ? { registrar, judgement: judgement.type, fee: judgement.value }
+              : { registrar, judgement: judgement.type },
+        )
 
-    const info: Identity["info"] = Object.fromEntries(
-      Object.entries(identity.info).map(([key, value]) => [
-        key,
-        value instanceof Binary
-          ? value
-          : (readIdentityData(value)?.asText() ?? null),
-      ]),
+        const verified = judgements.some((v) =>
+          ["Reasonable", "KnownGood"].includes(v.judgement),
+        )
+
+        return [
+          key,
+          {
+            verified,
+            info,
+            judgements,
+            subIdentity,
+          },
+        ]
+      }),
     )
-    const judgements: Identity["judgements"] = identity.judgements.map(
-      ([registrar, judgement]) =>
-        judgement.type === "FeePaid"
-          ? { registrar, judgement: judgement.type, fee: judgement.value }
-          : { registrar, judgement: judgement.type },
-    )
-
-    const verified = judgements.some((v) =>
-      ["Reasonable", "KnownGood"].includes(v.judgement),
-    )
-
-    return {
-      verified,
-      info,
-      judgements,
-      subIdentity,
-    }
   }
 
+  const getIdentity = (address: SS58String): Promise<Identity | null> =>
+    getIdentities([address]).then((res) => res[address])
+
   return {
+    getIdentities,
     getIdentity,
   }
 }

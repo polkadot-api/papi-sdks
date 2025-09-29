@@ -22,5 +22,8 @@ export interface Identity {
 }
 
 export interface IdentitySdk {
+  getIdentities: (
+    addresses: SS58String[],
+  ) => Promise<Record<SS58String, Identity | null>>
   getIdentity: (address: SS58String) => Promise<Identity | null>
 }
