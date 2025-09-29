@@ -35,10 +35,12 @@ jobs:
         value:
           [
             common-utils,
+            sdk-accounts,
             sdk-governance,
             sdk-ink,
-            sdk-accounts,
+            sdk-multisig,
             sdk-remote-proxy,
+            sdk-statement,
           ]
     steps:
       - uses: actions/checkout@v4

@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 0.5.0 2025-09-29
+
 ### Changed
 
 - `createInkSdk` renamed to `createInkV5Sdk`

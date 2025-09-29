@@ -1,6 +1,6 @@
 {
   "name": "@polkadot-api/sdk-multisig",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "sideEffects": false,
   "author": "Victor Oliva (https://github.com/voliva)",
   "repository": {
