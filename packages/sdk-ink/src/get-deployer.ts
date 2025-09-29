@@ -1,15 +1,16 @@
 import {
   flattenResult,
+  FlattenValues,
   mapResult,
   wrapAsyncTx,
 } from "@polkadot-api/common-sdk-utils"
-import { type InkClient } from "@polkadot-api/ink-contracts"
 import { Binary, Enum, FixedSizeBinary } from "polkadot-api"
 import type {
   GenericInkDescriptors,
   InkSdkTypedApi,
   ReviveSdkTypedApi,
 } from "./descriptor-types"
+import { EncodingProvider } from "./encoding-provider"
 import { ContractsProvider } from "./provider"
 import type { Deployer } from "./sdk-types"
 import { getSignedStorage, getStorageLimit } from "./util"
@@ -22,7 +23,7 @@ export function getDeployer<
   PublicAddr extends string,
 >(
   provider: ContractsProvider<Addr, StorageErr>,
-  inkClient: InkClient<D>,
+  encodingProvider: EncodingProvider,
   code: Enum<{
     Upload: Binary
     Existing: Promise<FixedSizeBinary<32>>
@@ -44,7 +45,7 @@ export function getDeployer<
 
   const deployer: Deployer<T, D, PublicAddr> = {
     async dryRun(constructorLabel, args) {
-      const ctor = inkClient.constructor(constructorLabel)
+      const ctor = encodingProvider.constructor(constructorLabel)
       const value = args.value ?? 0n
       const data = ctor.encode(args.data ?? {})
 
@@ -58,14 +59,21 @@ export function getDeployer<
         args.options?.salt,
       )
       if (response.result.success) {
-        const decoded = ctor.decode(response.result.value.result)
+        const decoded = ctor.decode(
+          response.result.value.result.data,
+        ) as FlattenValues<
+          D["__types"]["messages"][typeof constructorLabel]["response"]
+        >
         const address = response.result.value.addr
 
         return mapResult(flattenResult(decoded), {
           value: (value) => ({
             address: mapAddr(address),
             response: value,
-            events: inkClient.event.filter(mapAddr(address), response.events),
+            events: encodingProvider.filterEvents(
+              mapAddr(address),
+              response.events,
+            ),
             gasRequired: response.gas_required,
             storageDeposit: getSignedStorage(response.storage_deposit),
             deploy() {
@@ -88,7 +96,7 @@ export function getDeployer<
     },
     deploy: (constructorLabel, args) =>
       wrapAsyncTx(async () => {
-        const ctor = inkClient.constructor(constructorLabel)
+        const ctor = encodingProvider.constructor(constructorLabel)
 
         const limits = await (async () => {
           if ("gasLimit" in args)
@@ -134,7 +142,7 @@ export function getDeployer<
             })
       }),
     estimateAddress: async (constructorLabel, args) => {
-      const ctor = inkClient.constructor(constructorLabel)
+      const ctor = encodingProvider.constructor(constructorLabel)
       const data = ctor.encode(args.data ?? {})
 
       const addr = await provider.getEstimatedAddress(

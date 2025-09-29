@@ -11,30 +11,30 @@
     ".": {
       "node": {
         "production": {
-          "import": "./dist/esm/index.mjs",
+          "import": "./dist/esm/src/index.mjs",
           "require": "./dist/min/index.js",
           "default": "./dist/index.js"
         },
-        "import": "./dist/esm/index.mjs",
+        "import": "./dist/esm/src/index.mjs",
         "require": "./dist/index.js",
         "default": "./dist/index.js"
       },
-      "module": "./dist/esm/index.mjs",
-      "import": "./dist/esm/index.mjs",
+      "module": "./dist/esm/src/index.mjs",
+      "import": "./dist/esm/src/index.mjs",
       "require": "./dist/index.js",
       "default": "./dist/index.js"
     },
     "./package.json": "./package.json"
   },
   "main": "./dist/index.js",
-  "module": "./dist/esm/index.mjs",
-  "browser": "./dist/esm/index.mjs",
+  "module": "./dist/esm/src/index.mjs",
+  "browser": "./dist/esm/src/index.mjs",
   "types": "./dist/index.d.ts",
   "files": [
     "dist"
   ],
   "scripts": {
-    "build": "tsc --noEmit && rollup -c ../../rollup.config.js",
+    "build": "papi generate --whitelist .papi/whitelist.ts && mv .papi/descriptors/dist/index.mjs .papi/descriptors/dist/index.js && tsc --noEmit && rollup -c ../../rollup.config.js",
     "lint": "prettier --check README.md \"src/**/*.{js,jsx,ts,tsx,json,md}\"",
     "format": "prettier --write README.md \"src/**/*.{js,jsx,ts,tsx,json,md}\"",
     "prepack": "pnpm run build"
@@ -43,16 +43,18 @@
   "dependencies": {
     "@ethereumjs/rlp": "^10.0.0",
     "@polkadot-api/common-sdk-utils": "workspace:*",
-    "@polkadot-api/substrate-bindings": "^0.16.3"
+    "@polkadot-api/substrate-bindings": "^0.16.3",
+    "abitype": "^1.1.1",
+    "viem": "^2.37.8"
   },
   "peerDependencies": {
     "@polkadot-api/ink-contracts": ">=0.3.4",
-    "polkadot-api": ">=1.13.1",
+    "polkadot-api": ">=1.19.0",
     "rxjs": ">=7.8.0"
   },
   "devDependencies": {
-    "@polkadot-api/ink-contracts": "^0.3.11",
-    "polkadot-api": "^1.18.0",
+    "@polkadot-api/ink-contracts": "^0.4.0",
+    "polkadot-api": "^1.19.0",
     "rxjs": "^7.8.2"
   }
 }

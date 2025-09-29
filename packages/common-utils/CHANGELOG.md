@@ -2,7 +2,7 @@
 
 ## Unreleased
 
-## Added
+### Added
 
 - Property `waited` in `AsyncTransaction` to get a `Promise<Transaction>`
 

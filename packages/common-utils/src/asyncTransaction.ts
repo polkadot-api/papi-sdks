@@ -2,10 +2,10 @@ import type { Transaction, Binary } from "polkadot-api"
 import { from, switchMap } from "rxjs"
 
 export type AsyncTransaction<
-  Arg extends {} | undefined,
-  Pallet extends string,
-  Name extends string,
-  Asset,
+  Arg extends {} | undefined = any,
+  Pallet extends string = any,
+  Name extends string = any,
+  Asset = any,
 > = Omit<
   Transaction<Arg, Pallet, Name, Asset>,
   "decodedCall" | "getEncodedData"

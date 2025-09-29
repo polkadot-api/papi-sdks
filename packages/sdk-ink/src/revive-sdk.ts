@@ -1,4 +1,3 @@
-import { getInkClient, getInkLookup } from "@polkadot-api/ink-contracts"
 import { AccountId, Binary, Enum, HexString } from "polkadot-api"
 import { mergeUint8 } from "polkadot-api/utils"
 import type {
@@ -6,12 +5,16 @@ import type {
   ReviveSdkTypedApi,
   ReviveStorageError,
 } from "./descriptor-types"
+import { inkEncoding, solEncoding } from "./encoding-provider"
 import { getContract } from "./get-contract"
 import { getDeployer } from "./get-deployer"
 import { reviveProvider } from "./provider"
 import { defaultOptions, type InkSdkOptions, type ReviveSdk } from "./sdk-types"
 import { ss58ToEthereum } from "./util"
 
+/**
+ * @deprecated use `createInkSdk(client)` instead
+ */
 export const createReviveSdk = <
   T extends ReviveSdkTypedApi,
   D extends GenericInkDescriptors,
@@ -22,21 +25,23 @@ export const createReviveSdk = <
 ): ReviveSdk<T, D, HexString, ReviveStorageError> => {
   const { atBest } = { ...defaultOptions, ...options }
   const provider = reviveProvider(typedApi, atBest)
-  const inkClient = getInkClient(contractDescriptors)
-  const lookup = getInkLookup(contractDescriptors.metadata)
+  const encodingProvider = contractDescriptors.metadata
+    ? inkEncoding(contractDescriptors)
+    : solEncoding(contractDescriptors)
 
   return {
     getContract: (address) =>
       getContract(
         provider,
-        inkClient,
-        lookup,
+        encodingProvider,
         Binary.fromHex(address),
         (v) => v.asHex(),
         getAccountId(address),
       ),
     getDeployer: (code) =>
-      getDeployer(provider, inkClient, Enum("Upload", code), (v) => v.asHex()),
+      getDeployer(provider, encodingProvider, Enum("Upload", code), (v) =>
+        v.asHex(),
+      ),
     readDeploymentEvents(events) {
       // Contract.Instantiated event not available yet in pallet-revive
       // but we can find events if the contract emits something on deploy
@@ -57,7 +62,10 @@ export const createReviveSdk = <
 
       return contractAddresses.map((address) => ({
         address,
-        contractEvents: inkClient.event.filter(address, contractEmittedEvents),
+        contractEvents: encodingProvider.filterEvents(
+          address,
+          contractEmittedEvents,
+        ),
       }))
     },
     addressIsMapped: (address) =>
@@ -68,7 +76,7 @@ export const createReviveSdk = <
   }
 }
 
-const getAccountId = (address: HexString) => {
+export const getAccountId = (address: HexString) => {
   const publicKey = mergeUint8([
     Binary.fromHex(address).asBytes(),
     new Uint8Array(new Array(32 - 20).fill(0xee)),

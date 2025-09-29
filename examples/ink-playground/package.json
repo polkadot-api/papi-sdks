@@ -13,7 +13,7 @@
     "@polkadot-api/sdk-ink": "workspace:*",
     "@polkadot-labs/hdkd": "^0.0.24",
     "@polkadot-labs/hdkd-helpers": "^0.0.25",
-    "polkadot-api": "^1.18.0",
+    "polkadot-api": "^1.19.0",
     "rxjs": "7.8.2"
   }
 }
