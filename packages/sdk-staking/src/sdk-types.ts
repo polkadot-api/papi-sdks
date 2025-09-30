@@ -14,6 +14,43 @@ export interface ValidatorRewards {
   nominatorCount: number
 }
 
+export interface AccountStatus {
+  balance: {
+    raw: {
+      free: bigint
+      reserved: bigint
+      frozen: bigint
+      existentialDeposit: bigint
+    }
+    // Total tokens in the account
+    total: bigint
+    // Portion of `total` balance that is somehow locked (overlap reserved, frozen and existential deposit)
+    locked: bigint
+    // Portion of `free` balance that can't be transferred.
+    untouchable: bigint
+    // Portion of `free` balance that can be transferred.
+    spendable: bigint
+  }
+  nomination: {
+    canNominate: boolean
+    minNominationBond: bigint
+    lastMinRewardingBond: bigint
+    controller: SS58String | null
+    currentBond: bigint
+    maxBond: bigint
+    nominating: {
+      validators: SS58String[]
+    } | null
+    // unlocks: Array<{}>
+  }
+  nominationPool: {
+    currentBond: bigint
+    pendingRewards: bigint
+    pool: number | null
+    // unlocks: Array<{}>
+  }
+}
+
 export interface StakingSdk {
   /**
    * Get validator rewards for a specific era.
@@ -38,39 +75,7 @@ export interface StakingSdk {
     validators: ValidatorRewards[]
   }>
 
-  getAccountStatus: (address: SS58String) => Promise<{
-    balance: {
-      raw: {
-        free: bigint
-        reserved: bigint
-        frozen: bigint
-        existentialDeposit: bigint
-      }
-      // Total tokens in the account
-      total: bigint
-      // Portion of `total` balance that is somehow locked (overlap reserved, frozen and existential deposit)
-      locked: bigint
-      // Portion of `free` balance that can't be transferred.
-      untouchable: bigint
-      // Portion of `free` balance that can be transferred.
-      spendable: bigint
-    }
-    nomination: {
-      canNominate: boolean
-      minNominationBond: bigint
-      lastMinRewardingBond: bigint
-      currentBond: bigint
-      nominating: {
-        validators: SS58String[]
-      } | null
-      unlocks: Array<{}>
-    }
-    nominationPool: {
-      currentBond: bigint
-      pool: SS58String | null
-      unlocks: Array<{}>
-    }
-  }>
+  getAccountStatus: (address: SS58String) => Promise<AccountStatus>
 
   /**
    * Get nominator status for specific era.

@@ -1,5 +1,5 @@
 import { PolkadotClient, SS58String } from "polkadot-api"
-import { dot } from "../.papi/descriptors"
+import { dot } from "../.papi/descriptors/dist"
 import { createEraCache, createKeyedEraCache } from "./eraCache"
 import {
   EraOverview,

@@ -1,5 +1,5 @@
 import { PolkadotClient } from "polkadot-api"
-import { dot } from "../.papi/descriptors"
+import { dot } from "../.papi/descriptors/dist"
 import { getAccountStatus } from "./accountStatus"
 import { getNominatorRewardsFn } from "./nominatorRewards"
 import { StakingSdk } from "./sdk-types"
