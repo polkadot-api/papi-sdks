@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## 0.5.1 2025-09-30
+
+### Fixed
+
+- Incorrect peer dependency version requirement
+
 ## 0.5.0 2025-09-29
 
 ### Changed
