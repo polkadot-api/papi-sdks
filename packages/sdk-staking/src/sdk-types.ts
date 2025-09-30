@@ -16,15 +16,83 @@ export interface ValidatorRewards {
 
 export interface StakingSdk {
   /**
-   * Get nominator status for specific era.
-   * @param address Nominator address to check.
-   * @param era Optionally pass era, defaults to ActiveEra.
+   * Get validator rewards for a specific era.
+   *
+   * @param address Validator address to check.
+   * @param era Optional era, defaults to ActiveEra.
    */
-  getNominatorStatus: (
+  getValidatorRewards: (
+    address: SS58String,
+    era?: number,
+  ) => Promise<ValidatorRewards | null>
+
+  /**
+   * Gets the active validators info for a specific era
+   *
+   * @param era Optional era, defaults to ActiveEra.
+   */
+  getEraValidators: (era?: number) => Promise<{
+    totalRewards: bigint
+    totalPoints: number
+    totalBond: bigint
+    validators: ValidatorRewards[]
+  }>
+
+  getAccountStatus: (address: SS58String) => Promise<{
+    balance: {
+      raw: {
+        free: bigint
+        reserved: bigint
+        frozen: bigint
+        existentialDeposit: bigint
+      }
+      // Total tokens in the account
+      total: bigint
+      // Portion of `total` balance that is somehow locked (overlap reserved, frozen and existential deposit)
+      locked: bigint
+      // Portion of `free` balance that can't be transferred.
+      untouchable: bigint
+      // Portion of `free` balance that can be transferred.
+      spendable: bigint
+    }
+    nomination: {
+      canNominate: boolean
+      minNominationBond: bigint
+      lastMinRewardingBond: bigint
+      currentBond: bigint
+      nominating: {
+        validators: SS58String[]
+      } | null
+      unlocks: Array<{}>
+    }
+    nominationPool: {
+      currentBond: bigint
+      pool: SS58String | null
+      unlocks: Array<{}>
+    }
+  }>
+
+  /**
+   * Get nominator status for specific era.
+   *
+   * Expensive operation: will fetch (and cache) every nominator
+   *
+   * @param address Nominator address to check.
+   * @param era Optional era, defaults to ActiveEra.
+   */
+  getNominatorActiveValidators: (
     address: SS58String,
     era?: number,
   ) => Promise<Array<{ validator: SS58String; activeBond: bigint }>>
 
+  /**
+   * Get nominator rewards for specific era.
+   *
+   * Expensive operation: will fetch (and cache) every nominator
+   *
+   * @param address Nominator address to check.
+   * @param era Optional era, defaults to ActiveEra.
+   */
   getNominatorRewards: (
     address: SS58String,
     era?: number,
@@ -42,25 +110,4 @@ export interface StakingSdk {
       }
     >
   }>
-
-  getValidatorRewards: (
-    address: SS58String,
-    era?: number,
-  ) => Promise<ValidatorRewards | null>
-
-  getEraValidators: (era?: number) => Promise<{
-    totalRewards: bigint
-    totalPoints: number
-    totalBond: bigint
-    validators: ValidatorRewards[]
-  }>
-
-  canNominate: (address: SS58String) => Promise<
-    | { canNominate: false }
-    | {
-        canNominate: true
-        currentBond: bigint
-        maxBond: bigint
-      }
-  >
 }
