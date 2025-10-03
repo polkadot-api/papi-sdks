@@ -41,7 +41,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@polkadot-api/common-sdk-utils": "0.0.1-1"
+    "@polkadot-api/common-sdk-utils": "workspace:*"
   },
   "peerDependencies": {
     "polkadot-api": ">=1.12.0",

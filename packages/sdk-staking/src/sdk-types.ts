@@ -37,17 +37,24 @@ export interface AccountStatus {
     lastMinRewardingBond: bigint
     controller: SS58String | null
     currentBond: bigint
+    activeBond: bigint
     maxBond: bigint
     nominating: {
       validators: SS58String[]
     } | null
-    // unlocks: Array<{}>
+    unlocks: Array<{
+      value: bigint
+      era: number
+    }>
   }
   nominationPool: {
     currentBond: bigint
     pendingRewards: bigint
     pool: number | null
-    // unlocks: Array<{}>
+    unlocks: Array<{
+      value: bigint
+      era: number
+    }>
   }
 }
 

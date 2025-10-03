@@ -70,6 +70,8 @@ const getNomination = async (
     ])
 
   const currentBond = bonded?.ledger?.total ?? 0n
+  const activeBond = bonded?.ledger?.active ?? 0n
+  const unlocks = bonded?.ledger?.unlocking ?? []
   const maxBond =
     currentBond + balance.raw.free - balance.raw.existentialDeposit
   const canNominate = maxBond >= minNominationBond
@@ -85,6 +87,8 @@ const getNomination = async (
     lastMinRewardingBond,
     controller: bonded?.controller ?? null,
     currentBond,
+    activeBond,
+    unlocks,
     maxBond,
     nominating,
   }
@@ -97,7 +101,7 @@ const getNominationPool = async (api: TypedApi<Dot>, addr: SS58String) => {
   ])
 
   if (!member) {
-    return { currentBond: 0n, pendingRewards, pool: null }
+    return { currentBond: 0n, pendingRewards, pool: null, unlocks: [] }
   }
 
   const currentBond = await api.apis.NominationPoolsApi.points_to_balance(
@@ -105,5 +109,7 @@ const getNominationPool = async (api: TypedApi<Dot>, addr: SS58String) => {
     member.points,
   )
 
-  return { currentBond, pendingRewards, pool: member.pool_id }
+  const unlocks = member.unbonding_eras.map(([era, value]) => ({ era, value }))
+
+  return { currentBond, pendingRewards, pool: member.pool_id, unlocks }
 }

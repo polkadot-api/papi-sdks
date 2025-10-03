@@ -277,8 +277,8 @@ importers:
   packages/sdk-staking:
     dependencies:
       '@polkadot-api/common-sdk-utils':
-        specifier: 0.0.1-1
-        version: 0.0.1-1(polkadot-api@1.19.1(postcss@8.5.6)(rxjs@7.8.2))(rxjs@7.8.2)
+        specifier: workspace:*
+        version: link:../common-utils
     devDependencies:
       polkadot-api:
         specifier: ^1.13.1
@@ -529,12 +529,6 @@ packages:
 
   '@polkadot-api/codegen@0.19.1':
     resolution: {integrity: sha512-129a0vHChzKuvQDELMYPpmqZtA5VFlJ7vo5HZh47bo67qYi1veRgDrNQVGM8yaHzi7Coo481b/SDruZbbbgd3Q==}
-
-  '@polkadot-api/common-sdk-utils@0.0.1-1':
-    resolution: {integrity: sha512-LaAacWhJO9jYyhTD2avY/LCy7kn29qB1gc0D0ziWjL1r48kqLB0rOORxWYDdDw6kX+ypiWBKL0eQPa/VF7qVSA==}
-    peerDependencies:
-      polkadot-api: ^1.8.1
-      rxjs: '>=7.8.1'
 
   '@polkadot-api/descriptors@file:examples/governance/.papi/descriptors':
     resolution: {directory: examples/governance/.papi/descriptors, type: directory}
@@ -1985,11 +1979,6 @@ snapshots:
       '@polkadot-api/metadata-compatibility': 0.3.6
       '@polkadot-api/substrate-bindings': 0.16.3
       '@polkadot-api/utils': 0.2.0
-
-  '@polkadot-api/common-sdk-utils@0.0.1-1(polkadot-api@1.19.1(postcss@8.5.6)(rxjs@7.8.2))(rxjs@7.8.2)':
-    dependencies:
-      polkadot-api: 1.19.1(postcss@8.5.6)(rxjs@7.8.2)
-      rxjs: 7.8.2
 
   '@polkadot-api/descriptors@file:examples/governance/.papi/descriptors(polkadot-api@1.19.1(postcss@8.5.6)(rxjs@7.8.2))':
     dependencies:
