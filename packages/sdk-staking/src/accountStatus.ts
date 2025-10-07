@@ -101,7 +101,13 @@ const getNominationPool = async (api: TypedApi<Dot>, addr: SS58String) => {
   ])
 
   if (!member) {
-    return { currentBond: 0n, pendingRewards, pool: null, unlocks: [] }
+    return {
+      currentBond: 0n,
+      points: 0n,
+      pendingRewards,
+      pool: null,
+      unlocks: [],
+    }
   }
 
   const currentBond = await api.apis.NominationPoolsApi.points_to_balance(
@@ -111,5 +117,11 @@ const getNominationPool = async (api: TypedApi<Dot>, addr: SS58String) => {
 
   const unlocks = member.unbonding_eras.map(([era, value]) => ({ era, value }))
 
-  return { currentBond, pendingRewards, pool: member.pool_id, unlocks }
+  return {
+    currentBond,
+    points: member.points ?? 0n,
+    pendingRewards,
+    pool: member.pool_id,
+    unlocks,
+  }
 }

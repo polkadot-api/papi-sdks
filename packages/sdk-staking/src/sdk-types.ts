@@ -1,3 +1,4 @@
+import { AsyncTransaction } from "@polkadot-api/common-sdk-utils"
 import { SS58String } from "polkadot-api"
 
 export interface ValidatorRewards {
@@ -49,6 +50,7 @@ export interface AccountStatus {
   }
   nominationPool: {
     currentBond: bigint
+    points: bigint
     pendingRewards: bigint
     pool: number | null
     unlocks: Array<{
@@ -122,4 +124,11 @@ export interface StakingSdk {
       }
     >
   }>
+
+  /**
+   * Unbonds `amount` tokens from the nomination pool of `member`.
+   *
+   * Will throw an error if the member is not in a nomination pool, or if it doesn't have a large enough bond.
+   */
+  unbondNominationPool: (member: SS58String, amount: bigint) => AsyncTransaction
 }
