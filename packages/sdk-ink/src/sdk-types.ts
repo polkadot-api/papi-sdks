@@ -16,7 +16,7 @@ import {
   type SS58String,
   type TypedApi,
 } from "polkadot-api"
-import type { Passet, WndAh } from "../.papi/descriptors"
+import type { Passet, WndAh } from "../.papi/descriptors/dist"
 import type {
   Gas,
   GenericInkDescriptors,
