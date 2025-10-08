@@ -87,6 +87,7 @@ export interface NominationPool {
     claimPermission?: NominationPoolsCommissionClaimPermission
   }
   memberCount: number
+  bond: bigint
   points: bigint
   state: NominationPoolsPoolState["type"]
   nominations: SS58String[]

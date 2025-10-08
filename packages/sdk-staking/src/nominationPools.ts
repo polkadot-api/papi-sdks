@@ -63,6 +63,7 @@ const mapPool = (
   pool: DotQueries["NominationPools"]["BondedPools"]["Value"],
   nominations: DotQueries["Staking"]["Nominators"]["Value"] | undefined,
   address: SS58String,
+  bond: bigint,
   name?: Binary,
 ): NominationPool => ({
   id,
@@ -79,6 +80,7 @@ const mapPool = (
   memberCount: pool.member_counter,
   nominations: nominations?.targets ?? [],
   points: pool.points,
+  bond,
   state: pool.state.type,
 })
 
@@ -101,10 +103,19 @@ export const getNominationPool$Fn =
 
           const address = getNominationPoolAddress(id, ss58Format)
 
-          const nominations =
-            await api.query.Staking.Nominators.getValue(address)
+          const [nominations, ledger] = await Promise.all([
+            api.query.Staking.Nominators.getValue(address),
+            api.query.Staking.Ledger.getValue(address),
+          ])
 
-          return mapPool(id, pool, nominations, address, name)
+          return mapPool(
+            id,
+            pool,
+            nominations,
+            address,
+            ledger?.total ?? 0n,
+            name,
+          )
         },
       ),
     )
@@ -128,6 +139,12 @@ export const getNominationPoolsFn =
         api.query.Staking.Nominators.getValues(pools.map((p) => [p.address])),
       ),
     )
+    const bonds$ = pools$.pipe(
+      switchMap((pools) =>
+        api.query.Staking.Ledger.getValues(pools.map((p) => [p.address])),
+      ),
+      map((ledgers) => ledgers.map((v) => v?.total)),
+    )
     const names$ = defer(api.query.NominationPools.Metadata.getEntries).pipe(
       map((values) =>
         values.reduce((acc: Record<number, Binary>, v) => {
@@ -140,11 +157,19 @@ export const getNominationPoolsFn =
     const result$ = combineLatest({
       pools: pools$,
       nominations: nominations$,
+      bonds: bonds$,
       names: names$,
     }).pipe(
-      map(({ pools, nominations, names }): NominationPool[] =>
+      map(({ pools, nominations, bonds, names }): NominationPool[] =>
         pools.map((pool, i) =>
-          mapPool(pool.id, pool, nominations[i], pool.address, names[pool.id]),
+          mapPool(
+            pool.id,
+            pool,
+            nominations[i],
+            pool.address,
+            bonds[pool.id] ?? 0n,
+            names[pool.id],
+          ),
         ),
       ),
     )
