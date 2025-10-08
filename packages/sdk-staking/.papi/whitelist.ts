@@ -4,6 +4,7 @@ export const whitelist: DotWhitelistEntry[] = [
   "query.System.Account",
   "*.Staking",
   "const.Balances.ExistentialDeposit",
+  "const.System.SS58Prefix",
   "query.NominationPools.*",
   "tx.NominationPools.*",
   "api.NominationPoolsApi.points_to_balance",

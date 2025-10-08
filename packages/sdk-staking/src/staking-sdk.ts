@@ -1,11 +1,15 @@
 import { PolkadotClient } from "polkadot-api"
-import { dot, MultiAddress } from "../.papi/descriptors/dist"
-import { getAccountStatus } from "./accountStatus"
+import { dot } from "../.papi/descriptors/dist"
+import { getAccountStatus$ } from "./accountStatus"
+import {
+  getNominationPool$Fn,
+  getNominationPoolsFn,
+  unbondNominationPoolFn,
+} from "./nominationPools"
 import { getNominatorRewardsFn } from "./nominatorRewards"
 import { StakingSdk } from "./sdk-types"
 import { createStakingApi } from "./staking-api"
 import { getEraValidatorsFn, getValidatorRewardsFn } from "./validatorRewards"
-import { wrapAsyncTx } from "@polkadot-api/common-sdk-utils"
 
 export function createStakingSdk(client: PolkadotClient): StakingSdk {
   const api = client.getTypedApi(dot)
@@ -41,48 +45,13 @@ export function createStakingSdk(client: PolkadotClient): StakingSdk {
   const getValidatorRewards = getValidatorRewardsFn(stakingApi)
   const getEraValidators = getEraValidatorsFn(stakingApi)
 
-  const unbondNominationPool: StakingSdk["unbondNominationPool"] = (
-    address,
-    unbond,
-  ) =>
-    wrapAsyncTx(async () => {
-      const member =
-        await api.query.NominationPools.PoolMembers.getValue(address)
-      if (!member) {
-        // Unsure what's expected. I could return a transaction that will be invalid, but I guess it's better to fail fast.
-        throw new Error("Not a member of a pool")
-      }
-
-      const currentBond = await api.apis.NominationPoolsApi.points_to_balance(
-        member.pool_id,
-        member.points,
-      )
-      if (unbond > currentBond) {
-        throw new Error(
-          `Current bond is smaller than unbonding amount ${currentBond} < ${unbond}`,
-        )
-      }
-
-      const resultingBond = currentBond - unbond
-      const resultingPoints =
-        await api.apis.NominationPoolsApi.balance_to_points(
-          member.pool_id,
-          resultingBond,
-        )
-
-      return api.tx.NominationPools.unbond({
-        member_account: MultiAddress.Id(address),
-        unbonding_points: member.points - resultingPoints,
-      })
-    })
-
   return {
     getNominatorActiveValidators,
     getNominatorRewards: async (addr, era) => {
       era = await eraOrActive(era)
       return getNominatorRewards(addr, era)
     },
-    getAccountStatus: getAccountStatus(api),
+    getAccountStatus$: getAccountStatus$(api),
     getValidatorRewards: async (addr, era) => {
       era = await eraOrActive(era)
       return getValidatorRewards(addr, era)
@@ -91,6 +60,8 @@ export function createStakingSdk(client: PolkadotClient): StakingSdk {
       era = await eraOrActive(era)
       return getEraValidators(era)
     },
-    unbondNominationPool,
+    unbondNominationPool: unbondNominationPoolFn(api),
+    getNominationPool$: getNominationPool$Fn(api),
+    getNominationPools: getNominationPoolsFn(api),
   }
 }

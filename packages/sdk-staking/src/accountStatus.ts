@@ -1,127 +1,164 @@
 import { SS58String, TypedApi } from "polkadot-api"
+import {
+  combineLatest,
+  defer,
+  distinctUntilChanged,
+  map,
+  Observable,
+  share,
+  switchMap,
+} from "rxjs"
 import { Dot } from "../.papi/descriptors/dist"
 import { AccountStatus, StakingSdk } from "./sdk-types"
 
-export const getAccountStatus =
-  (api: TypedApi<Dot>): StakingSdk["getAccountStatus"] =>
-  async (addr: SS58String) => {
-    const asyncBalance = getBalance(api, addr)
-    const [balance, nomination, nominationPool] = await Promise.all([
-      asyncBalance,
-      getNomination(api, addr, asyncBalance),
-      getNominationPool(api, addr),
-    ])
+export const getAccountStatus$ =
+  (api: TypedApi<Dot>): StakingSdk["getAccountStatus$"] =>
+  (addr: SS58String) => {
+    const balance$ = getBalance$(api, addr).pipe(share())
 
-    return { balance, nomination, nominationPool }
+    return combineLatest({
+      balance: balance$,
+      nomination: getNomination$(api, addr, balance$),
+      nominationPool: getNominationPool$(api, addr),
+    })
   }
 
 const maxBigInt = (a: bigint, b: bigint) => (a > b ? a : b)
 
-const getBalance = async (
+const getBalance$ = (
   api: TypedApi<Dot>,
   addr: SS58String,
-): Promise<AccountStatus["balance"]> => {
-  const { data } = await api.query.System.Account.getValue(addr)
-  const existentialDeposit = await api.constants.Balances.ExistentialDeposit()
+): Observable<AccountStatus["balance"]> =>
+  combineLatest([
+    api.query.System.Account.watchValue(addr),
+    api.constants.Balances.ExistentialDeposit(),
+  ]).pipe(
+    map(([{ data }, existentialDeposit]) => {
+      // https://wiki.polkadot.network/learn/learn-account-balances/
+      // Total tokens in the account
+      const total = data.reserved + data.free
+      // Portion of "free" balance that can't be transferred.
+      const untouchable =
+        total == 0n
+          ? 0n
+          : maxBigInt(data.frozen - data.reserved, existentialDeposit)
+      // Portion of "free" balance that can be transferred
+      const spendable = data.free - untouchable
+      // Portion of "total" balance that is somehow locked
+      const locked = data.reserved + untouchable
 
-  // https://wiki.polkadot.network/learn/learn-account-balances/
-  // Total tokens in the account
-  const total = data.reserved + data.free
-  // Portion of "free" balance that can't be transferred.
-  const untouchable =
-    total == 0n
-      ? 0n
-      : maxBigInt(data.frozen - data.reserved, existentialDeposit)
-  // Portion of "free" balance that can be transferred
-  const spendable = data.free - untouchable
-  // Portion of "total" balance that is somehow locked
-  const locked = data.reserved + untouchable
-
-  return {
-    raw: {
-      ...data,
-      existentialDeposit: total > 0n ? existentialDeposit : 0n,
-    },
-    total,
-    locked,
-    untouchable,
-    spendable,
-  }
-}
-
-const getNomination = async (
-  api: TypedApi<Dot>,
-  addr: SS58String,
-  asyncBalance: Promise<AccountStatus["balance"]>,
-) => {
-  const [balance, bonded, minNominationBond, lastMinRewardingBond, nominator] =
-    await Promise.all([
-      asyncBalance,
-      api.query.Staking.Bonded.getValue(addr).then(async (controller) => {
-        if (!controller) return null
-        return {
-          controller,
-          ledger: await api.query.Staking.Ledger.getValue(controller),
-        }
-      }),
-      api.query.Staking.MinNominatorBond.getValue(),
-      api.query.Staking.MinimumActiveStake.getValue(),
-      api.query.Staking.Nominators.getValue(addr),
-    ])
-
-  const currentBond = bonded?.ledger?.total ?? 0n
-  const activeBond = bonded?.ledger?.active ?? 0n
-  const unlocks = bonded?.ledger?.unlocking ?? []
-  const maxBond =
-    currentBond + balance.raw.free - balance.raw.existentialDeposit
-  const canNominate = maxBond >= minNominationBond
-  const nominating = nominator?.targets
-    ? {
-        validators: nominator.targets,
+      return {
+        raw: {
+          ...data,
+          existentialDeposit: total > 0n ? existentialDeposit : 0n,
+        },
+        total,
+        locked,
+        untouchable,
+        spendable,
       }
-    : null
-
-  return {
-    canNominate,
-    minNominationBond,
-    lastMinRewardingBond,
-    controller: bonded?.controller ?? null,
-    currentBond,
-    activeBond,
-    unlocks,
-    maxBond,
-    nominating,
-  }
-}
-
-const getNominationPool = async (api: TypedApi<Dot>, addr: SS58String) => {
-  const [member, pendingRewards] = await Promise.all([
-    api.query.NominationPools.PoolMembers.getValue(addr),
-    api.apis.NominationPoolsApi.pending_rewards(addr),
-  ])
-
-  if (!member) {
-    return {
-      currentBond: 0n,
-      points: 0n,
-      pendingRewards,
-      pool: null,
-      unlocks: [],
-    }
-  }
-
-  const currentBond = await api.apis.NominationPoolsApi.points_to_balance(
-    member.pool_id,
-    member.points,
+    }),
   )
 
-  const unlocks = member.unbonding_eras.map(([era, value]) => ({ era, value }))
+const getNomination$ = (
+  api: TypedApi<Dot>,
+  addr: SS58String,
+  balance$: Observable<AccountStatus["balance"]>,
+) => {
+  const bonded$ = defer(() => api.query.Staking.Bonded.getValue(addr)).pipe(
+    switchMap((controller) => {
+      if (!controller) return [null]
+      return api.query.Staking.Ledger.watchValue(controller).pipe(
+        map((ledger) => ({ controller, ledger })),
+      )
+    }),
+    share(),
+  )
 
-  return {
-    currentBond,
-    points: member.points ?? 0n,
-    pendingRewards,
-    pool: member.pool_id,
-    unlocks,
-  }
+  // Setting maxBond$ aside, since we don't want every change in account balance to trigger an update on the nomination
+  const maxBond$ = combineLatest([bonded$, balance$]).pipe(
+    map(
+      ([bonded, balance]) =>
+        (bonded?.ledger?.total ?? 0n) +
+        balance.raw.free -
+        balance.raw.existentialDeposit,
+    ),
+    distinctUntilChanged(),
+  )
+
+  return combineLatest([
+    bonded$,
+    maxBond$,
+    api.query.Staking.MinNominatorBond.getValue(),
+    api.query.Staking.MinimumActiveStake.getValue(),
+    api.query.Staking.Nominators.watchValue(addr),
+  ]).pipe(
+    map(
+      ([
+        bonded,
+        maxBond,
+        minNominationBond,
+        lastMinRewardingBond,
+        nominator,
+      ]) => {
+        const currentBond = bonded?.ledger?.total ?? 0n
+        const activeBond = bonded?.ledger?.active ?? 0n
+        const unlocks = bonded?.ledger?.unlocking ?? []
+        const canNominate = maxBond >= minNominationBond
+        const nominating = nominator?.targets
+          ? {
+              validators: nominator.targets,
+            }
+          : null
+
+        return {
+          canNominate,
+          minNominationBond,
+          lastMinRewardingBond,
+          controller: bonded?.controller ?? null,
+          currentBond,
+          activeBond,
+          unlocks,
+          maxBond,
+          nominating,
+        }
+      },
+    ),
+  )
 }
+
+const getNominationPool$ = (api: TypedApi<Dot>, addr: SS58String) =>
+  combineLatest([
+    api.query.NominationPools.PoolMembers.watchValue(addr),
+    api.apis.NominationPoolsApi.pending_rewards(addr),
+  ]).pipe(
+    switchMap(async ([member, pendingRewards]) => {
+      if (!member) {
+        return {
+          currentBond: 0n,
+          points: 0n,
+          pendingRewards,
+          pool: null,
+          unlocks: [],
+        }
+      }
+
+      const currentBond = await api.apis.NominationPoolsApi.points_to_balance(
+        member.pool_id,
+        member.points,
+      )
+
+      const unlocks = member.unbonding_eras.map(([era, value]) => ({
+        era,
+        value,
+      }))
+
+      return {
+        currentBond,
+        points: member.points ?? 0n,
+        pendingRewards,
+        pool: member.pool_id,
+        unlocks,
+      }
+    }),
+  )

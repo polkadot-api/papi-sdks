@@ -1,5 +1,10 @@
 import { AsyncTransaction } from "@polkadot-api/common-sdk-utils"
 import { SS58String } from "polkadot-api"
+import { Observable } from "rxjs"
+import {
+  NominationPoolsCommissionClaimPermission,
+  NominationPoolsPoolState,
+} from "../.papi/descriptors/dist"
 
 export interface ValidatorRewards {
   address: SS58String
@@ -60,6 +65,33 @@ export interface AccountStatus {
   }
 }
 
+export interface NominationPool {
+  id: number
+  name: string
+  addresses: {
+    pool: SS58String
+    depositor: SS58String
+    commission?: SS58String
+    root?: SS58String
+    nominator?: SS58String
+    bouncer?: SS58String
+  }
+  commission: {
+    current: number
+    max?: number
+    change_rate?: {
+      max_increase: number
+      min_delay: number
+    }
+    throttleFrom?: number
+    claimPermission?: NominationPoolsCommissionClaimPermission
+  }
+  memberCount: number
+  points: bigint
+  state: NominationPoolsPoolState["type"]
+  nominations: SS58String[]
+}
+
 export interface StakingSdk {
   /**
    * Get validator rewards for a specific era.
@@ -84,7 +116,7 @@ export interface StakingSdk {
     validators: ValidatorRewards[]
   }>
 
-  getAccountStatus: (address: SS58String) => Promise<AccountStatus>
+  getAccountStatus$: (address: SS58String) => Observable<AccountStatus>
 
   /**
    * Get nominator status for specific era.
@@ -131,4 +163,6 @@ export interface StakingSdk {
    * Will throw an error if the member is not in a nomination pool, or if it doesn't have a large enough bond.
    */
   unbondNominationPool: (member: SS58String, amount: bigint) => AsyncTransaction
+  getNominationPools: () => Promise<NominationPool[]>
+  getNominationPool$: (id: number) => Observable<NominationPool | null>
 }
