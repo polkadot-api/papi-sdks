@@ -29,16 +29,19 @@ export function createIdentitySdk(typedApi: IdentitySdkTypedApi): IdentitySdk {
     ])
 
     const pendingSuperIdentities = Object.entries(identities)
-      .filter(([, identity], i) => !identity && supersOf[i])
-      .map(([key]): [SS58String] => [key])
+      .filter(([key, identity]) => !identity && supersOf[key])
+      .map(([child]) => ({
+        child,
+        super: supersOf[child]![0],
+      }))
 
     if (pendingSuperIdentities.length) {
       const superIdentities =
         await typedApi.query.Identity.IdentityOf.getValues(
-          pendingSuperIdentities,
+          pendingSuperIdentities.map((v) => [v.super]),
         )
       superIdentities.forEach((v, i) => {
-        identities[pendingSuperIdentities[i][0]] = v
+        identities[pendingSuperIdentities[i].child] = v
           ? normalizeIdentityValue(v)
           : v
       })
