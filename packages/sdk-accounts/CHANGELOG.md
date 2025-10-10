@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+## 0.5.1 2025-10-10
+
+### Fixed
+
+- Identity SDK
+  - `getIdentities` doesn't resolve sub-identities.
+
 ## 0.5.0 2025-09-29
 
 ### Added
