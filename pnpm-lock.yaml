@@ -114,6 +114,28 @@ importers:
         specifier: ^7.1.7
         version: 7.1.7(@types/node@24.5.2)
 
+  examples/staking:
+    dependencies:
+      '@polkadot-api/descriptors':
+        specifier: file:.papi/descriptors
+        version: file:examples/staking/.papi/descriptors(polkadot-api@1.19.1(postcss@8.5.6)(rxjs@7.8.2))
+      '@polkadot-api/sdk-staking':
+        specifier: workspace:*
+        version: link:../../packages/sdk-staking
+      polkadot-api:
+        specifier: ^1.13.1
+        version: 1.19.1(postcss@8.5.6)(rxjs@7.8.2)
+      rxjs:
+        specifier: 7.8.2
+        version: 7.8.2
+      typescript:
+        specifier: ^5.0.0
+        version: 5.9.2
+    devDependencies:
+      '@types/bun':
+        specifier: ^1.2.15
+        version: 1.2.23(@types/react@19.1.12)
+
   examples/statement-playground:
     dependencies:
       '@polkadot-api/sdk-statement':
@@ -247,6 +269,22 @@ importers:
     devDependencies:
       polkadot-api:
         specifier: ^1.19.1
+        version: 1.19.1(postcss@8.5.6)(rxjs@7.8.2)
+      rxjs:
+        specifier: ^7.8.2
+        version: 7.8.2
+
+  packages/sdk-staking:
+    dependencies:
+      '@polkadot-api/common-sdk-utils':
+        specifier: workspace:*
+        version: link:../common-utils
+      '@polkadot-api/substrate-bindings':
+        specifier: ^0.16.3
+        version: 0.16.3
+    devDependencies:
+      polkadot-api:
+        specifier: ^1.13.1
         version: 1.19.1(postcss@8.5.6)(rxjs@7.8.2)
       rxjs:
         specifier: ^7.8.2
@@ -507,6 +545,11 @@ packages:
 
   '@polkadot-api/descriptors@file:examples/remote-proxy/.papi/descriptors':
     resolution: {directory: examples/remote-proxy/.papi/descriptors, type: directory}
+    peerDependencies:
+      polkadot-api: '>=1.11.2'
+
+  '@polkadot-api/descriptors@file:examples/staking/.papi/descriptors':
+    resolution: {directory: examples/staking/.papi/descriptors, type: directory}
     peerDependencies:
       polkadot-api: '>=1.11.2'
 
@@ -1949,6 +1992,10 @@ snapshots:
       polkadot-api: 1.19.1(postcss@8.5.6)(rxjs@7.8.2)
 
   '@polkadot-api/descriptors@file:examples/remote-proxy/.papi/descriptors(polkadot-api@1.19.1(postcss@8.5.6)(rxjs@7.8.2))':
+    dependencies:
+      polkadot-api: 1.19.1(postcss@8.5.6)(rxjs@7.8.2)
+
+  '@polkadot-api/descriptors@file:examples/staking/.papi/descriptors(polkadot-api@1.19.1(postcss@8.5.6)(rxjs@7.8.2))':
     dependencies:
       polkadot-api: 1.19.1(postcss@8.5.6)(rxjs@7.8.2)
 
