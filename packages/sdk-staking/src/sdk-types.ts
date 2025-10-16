@@ -43,7 +43,7 @@ export interface AccountStatus {
     lastMinRewardingBond: bigint
     controller: SS58String | null
     currentBond: bigint
-    activeBond: bigint
+    totalLocked: bigint
     maxBond: bigint
     nominating: {
       validators: SS58String[]

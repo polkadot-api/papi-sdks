@@ -113,7 +113,7 @@ export const getNominationPool$Fn =
             pool,
             nominations,
             address,
-            ledger?.total ?? 0n,
+            ledger?.active ?? 0n,
             name,
           )
         },
@@ -143,7 +143,7 @@ export const getNominationPoolsFn =
       switchMap((pools) =>
         api.query.Staking.Ledger.getValues(pools.map((p) => [p.address])),
       ),
-      map((ledgers) => ledgers.map((v) => v?.total)),
+      map((ledgers) => ledgers.map((v) => v?.active)),
     )
     const names$ = defer(api.query.NominationPools.Metadata.getEntries).pipe(
       map((values) =>

@@ -12,7 +12,7 @@ const client = createClient(
 const api = client.getTypedApi(dot)
 // console.log(await api.query.System.ParentHash.getValue())
 
-const sdk = createStakingSdk(api, { maxActiveNominators: 22_500 })
+const sdk = createStakingSdk(api)
 // const info = await api.query.Staking.Bonded.getEntries()
 // console.log(info.filter(({ keyArgs: [stash], value }) => stash !== value))
 
@@ -24,7 +24,7 @@ console.log("consulting era", previousEra)
 
 console.log(
   "nominator status",
-  await sdk.getNominatorStatus(TARGET, previousEra),
+  await sdk.getNominatorActiveValidators(TARGET, previousEra),
 )
 
 const nominatorRewards = await sdk.getNominatorRewards(TARGET, previousEra)

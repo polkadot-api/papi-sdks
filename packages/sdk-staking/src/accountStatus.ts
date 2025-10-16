@@ -101,8 +101,8 @@ const getNomination$ = (
         lastMinRewardingBond,
         nominator,
       ]) => {
-        const currentBond = bonded?.ledger?.total ?? 0n
-        const activeBond = bonded?.ledger?.active ?? 0n
+        const totalLocked = bonded?.ledger?.total ?? 0n
+        const currentBond = bonded?.ledger?.active ?? 0n
         const unlocks = bonded?.ledger?.unlocking ?? []
         const canNominate = maxBond >= minNominationBond
         const nominating = nominator?.targets
@@ -117,7 +117,7 @@ const getNomination$ = (
           lastMinRewardingBond,
           controller: bonded?.controller ?? null,
           currentBond,
-          activeBond,
+          totalLocked,
           unlocks,
           maxBond,
           nominating,
