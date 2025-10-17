@@ -1,4 +1,4 @@
-import type { Transaction, Binary } from "polkadot-api"
+import type { Binary, Transaction } from "polkadot-api"
 import { from, switchMap } from "rxjs"
 
 export type AsyncTransaction<

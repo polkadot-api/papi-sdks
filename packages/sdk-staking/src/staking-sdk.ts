@@ -1,6 +1,7 @@
 import { PolkadotClient } from "polkadot-api"
 import { dot } from "../.papi/descriptors/dist"
 import { getAccountStatus$ } from "./accountStatus"
+import { stopNominationFn, upsertNominationFn } from "./nominationActions"
 import {
   getNominationPool$Fn,
   getNominationPoolsFn,
@@ -68,5 +69,7 @@ export function createStakingSdk(client: PolkadotClient): StakingSdk {
     unbondNominationPool: unbondNominationPoolFn(api),
     getNominationPool$: getNominationPool$Fn(api),
     getNominationPools: getNominationPoolsFn(api),
+    stopNomination: stopNominationFn(client),
+    upsertNomination: upsertNominationFn(client),
   }
 }

@@ -92,6 +92,7 @@ const getNomination$ = (
     api.query.Staking.MinNominatorBond.getValue(),
     api.query.Staking.MinimumActiveStake.getValue(),
     api.query.Staking.Nominators.watchValue(addr),
+    api.query.Staking.Payee.watchValue(addr),
   ]).pipe(
     map(
       ([
@@ -100,6 +101,7 @@ const getNomination$ = (
         minNominationBond,
         lastMinRewardingBond,
         nominator,
+        payee,
       ]) => {
         const totalLocked = bonded?.ledger?.total ?? 0n
         const currentBond = bonded?.ledger?.active ?? 0n
@@ -121,6 +123,7 @@ const getNomination$ = (
           unlocks,
           maxBond,
           nominating,
+          payee: payee ?? null,
         }
       },
     ),

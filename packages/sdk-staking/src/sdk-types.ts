@@ -4,6 +4,7 @@ import { Observable } from "rxjs"
 import {
   NominationPoolsCommissionClaimPermission,
   NominationPoolsPoolState,
+  StakingRewardDestination,
 } from "../.papi/descriptors/dist"
 
 export interface ValidatorRewards {
@@ -52,6 +53,7 @@ export interface AccountStatus {
       value: bigint
       era: number
     }>
+    payee: StakingRewardDestination | null
   }
   nominationPool: {
     currentBond: bigint
@@ -173,4 +175,14 @@ export interface StakingSdk {
   unbondNominationPool: (member: SS58String, amount: bigint) => AsyncTransaction
   getNominationPools: () => Promise<NominationPool[]>
   getNominationPool$: (id: number) => Observable<NominationPool | null>
+
+  upsertNomination: (
+    nominator: SS58String,
+    config: Partial<{
+      bond: bigint
+      validators: SS58String[]
+      payee: StakingRewardDestination
+    }>,
+  ) => AsyncTransaction
+  stopNomination: (nominator: SS58String) => AsyncTransaction
 }
