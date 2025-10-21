@@ -41,6 +41,7 @@ jobs:
             sdk-multisig,
             sdk-remote-proxy,
             sdk-statement,
+            sdk-staking,
           ]
     steps:
       - uses: actions/checkout@v4
