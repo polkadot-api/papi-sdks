@@ -41,6 +41,10 @@ export function createStakingSdk(client: PolkadotClient): StakingSdk {
         }))
     }
 
+  const getActiveNominators = async (era?: number) => [
+    ...(await stakingApi.getEraNominators(await eraOrActive(era))),
+  ]
+
   const getNominatorRewards = getNominatorRewardsFn(stakingApi)
   const getValidatorRewards = getValidatorRewardsFn(stakingApi)
   const getEraValidators = getEraValidatorsFn(stakingApi)
@@ -60,6 +64,7 @@ export function createStakingSdk(client: PolkadotClient): StakingSdk {
       era = await eraOrActive(era)
       return getEraValidators(era)
     },
+    getActiveNominators,
     unbondNominationPool: unbondNominationPoolFn(api),
     getNominationPool$: getNominationPool$Fn(api),
     getNominationPools: getNominationPoolsFn(api),

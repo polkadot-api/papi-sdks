@@ -117,6 +117,13 @@ export interface StakingSdk {
     validators: ValidatorRewards[]
   }>
 
+  /**
+   * Gets the list of nominators that were active for a specific era
+   *
+   * @param era Optional era, defaults to ActiveEra.
+   */
+  getActiveNominators: (era?: number) => Promise<Array<SS58String>>
+
   getAccountStatus$: (address: SS58String) => Observable<AccountStatus>
 
   /**
