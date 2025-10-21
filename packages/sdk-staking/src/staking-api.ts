@@ -15,23 +15,36 @@ export const createStakingApi = (client: PolkadotClient) => {
     api.query.Staking.ActiveEra.getValue().then((val) => val!.index)
 
   // Very expensive operation
-  const [getEraStakers] = createEraCache<EraStakers>(async (era) => {
+  const [getEraStakersAndNominators] = createEraCache<{
+    stakers: EraStakers
+    nominators: Set<string>
+  }>(async (era) => {
     const entries = await api.query.Staking.ErasStakersPaged.getEntries(era)
 
-    const result: Record<SS58String, Record<SS58String, bigint>> = {}
+    const stakers: Record<SS58String, Record<SS58String, bigint>> = {}
+    const nominators = new Set<SS58String>()
 
     entries.forEach(({ keyArgs: [_, addr], value }) => {
-      result[addr] ??= {}
-      result[addr] = {
-        ...result[addr],
+      stakers[addr] ??= {}
+      stakers[addr] = {
+        ...stakers[addr],
         ...Object.fromEntries(
-          value.others.map(({ who, value }) => [who, value]),
+          value.others.map(({ who, value }) => {
+            nominators.add(who)
+            return [who, value]
+          }),
         ),
       }
     })
 
-    return result
+    return { stakers, nominators }
   }, getActiveEra)
+
+  const getEraStakers = async (era: number) =>
+    (await getEraStakersAndNominators(era)).stakers
+
+  const getEraNominators = async (era: number) =>
+    (await getEraStakersAndNominators(era)).nominators
 
   const [getEraOverview, getEraStakerOverview] =
     createKeyedEraCache<EraOverview>(
@@ -85,6 +98,7 @@ export const createStakingApi = (client: PolkadotClient) => {
   return {
     getActiveEra,
     getEraStakers,
+    getEraNominators,
     getEraOverview,
     getEraStakerOverview,
     getEraValidatorPrefs,
