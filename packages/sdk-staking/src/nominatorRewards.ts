@@ -30,14 +30,15 @@ export const getNominatorRewardsFn =
       .map(([validator, stakers]) => {
         const bond = stakers[addr]
 
-        const validatorPoints = rewardPoints.individual[validator] ?? null
+        const validatorPoints = rewardPoints.individual[validator] ?? 0
         const validatorPrefs = erasValidatorPrefs[validator] ?? null
         const validatorOverview = eraOverview[validator] ?? null
-        if (validatorPoints == null || !validatorPrefs || !validatorOverview) {
-          console.error("Validator doesn't have points or prefs", {
-            rewardPoints,
-            validatorPrefs,
+        if (!validatorPrefs || !validatorOverview) {
+          console.error("Validator doesn't have prefs", {
+            era,
+            addr,
             validator,
+            validatorPrefs,
             validatorOverview,
           })
           return [validator, { bond, commission: 0n, reward: 0n }] as const
