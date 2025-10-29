@@ -2,8 +2,6 @@
 
 ## Unreleased
 
-## 0.3.1 2025-10-29
-
 ### Fixed
 
 - `accountStatus$` not updating when starting a nomination.
