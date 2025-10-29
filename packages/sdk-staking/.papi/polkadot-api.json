@@ -10,6 +10,12 @@
       "metadata": ".papi/metadata/dot.scale",
       "genesis": "0x91b171bb158e2d3848fa23a9f1c25182fb8e20313b2c1eb49219da7a70ce90c3",
       "codeHash": "0x0627ae9ae2a8d0de99a7dad056136f855f32f82391c48bf8a531506fe231a42b"
+    },
+    "wndAh": {
+      "chain": "westend2_asset_hub",
+      "metadata": ".papi/metadata/wndAh.scale",
+      "genesis": "0x67f9723393ef76214df0118c34bbbd3dbebc8ed46a10973a8c969d48fe7598c9",
+      "codeHash": "0x8dae40e2ea9f0d94908bacd3a437ed9c9adc31dc7e6fffed0dcb838194a57f98"
     }
   }
 }

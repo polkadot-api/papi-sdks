@@ -2,6 +2,7 @@ import { wrapAsyncTx } from "@polkadot-api/common-sdk-utils"
 import { PolkadotClient, Transaction } from "polkadot-api"
 import {
   dot,
+  wndAh,
   MultiAddress,
   StakingRewardDestination,
 } from "../.papi/descriptors/dist"
@@ -11,6 +12,7 @@ export const stopNominationFn = (
   client: PolkadotClient,
 ): StakingSdk["stopNomination"] => {
   const api = client.getTypedApi(dot)
+  const wndApi = client.getTypedApi(wndAh)
   const unsafeApi = client.getUnsafeApi()
 
   return (address) =>
@@ -18,7 +20,7 @@ export const stopNominationFn = (
       const [nominator, ledger, payee] = await Promise.all([
         api.query.Staking.Nominators.getValue(address),
         api.query.Staking.Bonded.getValue(address).then((controller) =>
-          controller ? api.query.Staking.Ledger.getValue(controller) : null,
+          controller ? wndApi.query.Staking.Ledger.getValue(controller) : null,
         ),
         api.query.Staking.Payee.getValue(address),
       ])
@@ -67,6 +69,7 @@ export const upsertNominationFn = (
   client: PolkadotClient,
 ): StakingSdk["upsertNomination"] => {
   const api = client.getTypedApi(dot)
+  const wndApi = client.getTypedApi(wndAh)
   const unsafeApi = client.getUnsafeApi()
 
   return (address, { bond, payee, validators }) =>
@@ -74,7 +77,7 @@ export const upsertNominationFn = (
       const [nominator, ledger, currentPayee] = await Promise.all([
         api.query.Staking.Nominators.getValue(address),
         api.query.Staking.Bonded.getValue(address).then((controller) =>
-          controller ? api.query.Staking.Ledger.getValue(controller) : null,
+          controller ? wndApi.query.Staking.Ledger.getValue(controller) : null,
         ),
         api.query.Staking.Payee.getValue(address),
       ])
