@@ -1,12 +1,12 @@
 import { SS58String, TypedApi } from "polkadot-api"
 import {
   combineLatest,
-  defer,
   distinctUntilChanged,
   map,
   Observable,
   share,
   switchMap,
+  takeWhile,
 } from "rxjs"
 import { Dot } from "../.papi/descriptors/dist"
 import { AccountStatus, StakingSdk } from "./sdk-types"
@@ -65,7 +65,12 @@ const getNomination$ = (
   addr: SS58String,
   balance$: Observable<AccountStatus["balance"]>,
 ) => {
-  const bonded$ = defer(() => api.query.Staking.Bonded.getValue(addr)).pipe(
+  const bonded$ = api.query.Staking.Bonded.watchValue(addr).pipe(
+    // Keep watching until we have a controller account.
+    // We have to find a compromise on active storage subscriptions vs reactivity
+    // For "Is nominating" we can just watch ledger, with the pre-condition that
+    // Staking.Bonded has a controller.
+    takeWhile((controller) => !controller, true),
     switchMap((controller) => {
       if (!controller) return [null]
       return api.query.Staking.Ledger.watchValue(controller).pipe(

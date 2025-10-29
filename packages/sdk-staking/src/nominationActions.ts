@@ -15,22 +15,35 @@ export const stopNominationFn = (
 
   return (address) =>
     wrapAsyncTx(async () => {
-      const [nominator, ledger] = await Promise.all([
+      const [nominator, ledger, payee] = await Promise.all([
         api.query.Staking.Nominators.getValue(address),
         api.query.Staking.Bonded.getValue(address).then((controller) =>
           controller ? api.query.Staking.Ledger.getValue(controller) : null,
         ),
+        api.query.Staking.Payee.getValue(address),
       ])
 
       const txs: Transaction<any, any, any, any>[] = []
+      // Chill only if it has targets selected
       if (nominator?.targets.length) {
         txs.push(api.tx.Staking.chill())
       }
+
+      // Unbond only if it has active bond
       const currentBond = ledger?.active ?? 0n
       if (currentBond > 0n) {
         txs.push(
           api.tx.Staking.unbond({
             value: currentBond,
+          }),
+        )
+      }
+
+      // Move payee from staked to stash for the upcoming era payout
+      if (payee?.type === "Staked") {
+        txs.push(
+          api.tx.Staking.set_payee({
+            payee: StakingRewardDestination.Stash(),
           }),
         )
       }
