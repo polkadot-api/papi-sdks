@@ -8,17 +8,20 @@ import {
   switchMap,
   takeWhile,
 } from "rxjs"
-import { Dot } from "../.papi/descriptors/dist"
+import { Dot, WndAh } from "../.papi/descriptors/dist"
 import { AccountStatus, StakingSdk } from "./sdk-types"
 
 export const getAccountStatus$ =
-  (api: TypedApi<Dot>): StakingSdk["getAccountStatus$"] =>
+  (
+    api: TypedApi<Dot>,
+    wndApi: TypedApi<WndAh>,
+  ): StakingSdk["getAccountStatus$"] =>
   (addr: SS58String) => {
     const balance$ = getBalance$(api, addr).pipe(share())
 
     return combineLatest({
       balance: balance$,
-      nomination: getNomination$(api, addr, balance$),
+      nomination: getNomination$(wndApi, addr, balance$),
       nominationPool: getNominationPool$(api, addr),
     })
   }
@@ -61,7 +64,7 @@ const getBalance$ = (
   )
 
 const getNomination$ = (
-  api: TypedApi<Dot>,
+  api: TypedApi<WndAh>,
   addr: SS58String,
   balance$: Observable<AccountStatus["balance"]>,
 ) => {

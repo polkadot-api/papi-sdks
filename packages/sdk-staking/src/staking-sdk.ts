@@ -1,5 +1,5 @@
 import { PolkadotClient } from "polkadot-api"
-import { dot } from "../.papi/descriptors/dist"
+import { dot, wndAh } from "../.papi/descriptors/dist"
 import { getAccountStatus$ } from "./accountStatus"
 import { stopNominationFn, upsertNominationFn } from "./nominationActions"
 import {
@@ -14,6 +14,7 @@ import { getEraValidatorsFn, getValidatorRewardsFn } from "./validatorRewards"
 
 export function createStakingSdk(client: PolkadotClient): StakingSdk {
   const api = client.getTypedApi(dot)
+  const wndApi = client.getTypedApi(wndAh)
   const stakingApi = createStakingApi(client)
 
   const eraOrActive = async (era?: number) => {
@@ -56,7 +57,7 @@ export function createStakingSdk(client: PolkadotClient): StakingSdk {
       era = await eraOrActive(era)
       return getNominatorRewards(addr, era)
     },
-    getAccountStatus$: getAccountStatus$(api),
+    getAccountStatus$: getAccountStatus$(api, wndApi),
     getValidatorRewards: async (addr, era) => {
       era = await eraOrActive(era)
       return getValidatorRewards(addr, era)
@@ -67,8 +68,8 @@ export function createStakingSdk(client: PolkadotClient): StakingSdk {
     },
     getActiveNominators,
     unbondNominationPool: unbondNominationPoolFn(api),
-    getNominationPool$: getNominationPool$Fn(api),
-    getNominationPools: getNominationPoolsFn(api),
+    getNominationPool$: getNominationPool$Fn(api, wndApi),
+    getNominationPools: getNominationPoolsFn(api, wndApi),
     stopNomination: stopNominationFn(client),
     upsertNomination: upsertNominationFn(client),
   }

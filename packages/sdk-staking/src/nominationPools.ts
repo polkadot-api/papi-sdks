@@ -11,7 +11,7 @@ import {
   switchMap,
   withLatestFrom,
 } from "rxjs"
-import { Dot, DotQueries, MultiAddress } from "../.papi/descriptors/dist"
+import { Dot, DotQueries, MultiAddress, WndAh } from "../.papi/descriptors/dist"
 import { NominationPool, StakingSdk } from "./sdk-types"
 
 export const unbondNominationPoolFn =
@@ -85,7 +85,10 @@ const mapPool = (
 })
 
 export const getNominationPool$Fn =
-  (api: TypedApi<Dot>): StakingSdk["getNominationPool$"] =>
+  (
+    api: TypedApi<Dot>,
+    wndApi: TypedApi<WndAh>,
+  ): StakingSdk["getNominationPool$"] =>
   (id) =>
     combineLatest({
       pool: api.query.NominationPools.BondedPools.watchValue(id),
@@ -105,7 +108,7 @@ export const getNominationPool$Fn =
 
           const [nominations, ledger] = await Promise.all([
             api.query.Staking.Nominators.getValue(address),
-            api.query.Staking.Ledger.getValue(address),
+            wndApi.query.Staking.Ledger.getValue(address),
           ])
 
           return mapPool(
@@ -121,7 +124,10 @@ export const getNominationPool$Fn =
     )
 
 export const getNominationPoolsFn =
-  (api: TypedApi<Dot>): StakingSdk["getNominationPools"] =>
+  (
+    api: TypedApi<Dot>,
+    wndApi: TypedApi<WndAh>,
+  ): StakingSdk["getNominationPools"] =>
   () => {
     const pools$ = defer(api.query.NominationPools.BondedPools.getEntries).pipe(
       withLatestFrom(api.constants.System.SS58Prefix()),
@@ -141,7 +147,7 @@ export const getNominationPoolsFn =
     )
     const bonds$ = pools$.pipe(
       switchMap((pools) =>
-        api.query.Staking.Ledger.getValues(pools.map((p) => [p.address])),
+        wndApi.query.Staking.Ledger.getValues(pools.map((p) => [p.address])),
       ),
       map((ledgers) => ledgers.map((v) => v?.active)),
     )

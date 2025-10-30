@@ -6,6 +6,7 @@
 
 - `accountStatus$` not updating when starting a nomination.
 - Receiving bonded rewards after calling `stopNomination`.
+- Incompatible staking.ledger entry on other chains than polkadot.
 
 ## 0.3.0 2025-10-22
 
