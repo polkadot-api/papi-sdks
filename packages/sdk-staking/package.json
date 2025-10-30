@@ -1,6 +1,6 @@
 {
   "name": "@polkadot-api/sdk-staking",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "sideEffects": false,
   "author": "Carlo Sala (https://github.com/carlosala)",
   "repository": {
