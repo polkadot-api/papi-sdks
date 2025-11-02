@@ -36,14 +36,16 @@ const getBalance$ = (
     api.query.System.Account.watchValue(addr),
     api.constants.Balances.ExistentialDeposit(),
   ]).pipe(
-    map(([{ data, providers, consumers }, existentialDeposit]) => {
-      const accountExists = providers + consumers > 0
-      const accountEd = accountExists ? existentialDeposit : 0n
+    map(([{ data }, existentialDeposit]) => {
       // https://wiki.polkadot.network/learn/learn-account-balances/
       // Total tokens in the account
-      const total = data.reserved + data.free + accountEd
+      const total = data.reserved + data.free
+      const accountEd = total == 0n ? 0n : existentialDeposit
       // Portion of "free" balance that can't be transferred.
-      const untouchable = maxBigInt(data.frozen - data.reserved, accountEd)
+      const untouchable = maxBigInt(
+        data.frozen - data.reserved,
+        existentialDeposit,
+      )
       // Portion of "free" balance that can be transferred
       const spendable = data.free - untouchable
       // Portion of "total" balance that is somehow locked
