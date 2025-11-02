@@ -13,6 +13,7 @@ import {
 } from "rxjs"
 import { Dot, DotQueries, MultiAddress, WndAh } from "../.papi/descriptors/dist"
 import { NominationPool, StakingSdk } from "./sdk-types"
+import { PERBILL } from "./types"
 
 export const unbondNominationPoolFn =
   (api: TypedApi<Dot>): StakingSdk["unbondNominationPool"] =>
@@ -65,24 +66,41 @@ const mapPool = (
   address: SS58String,
   bond: bigint,
   name?: Binary,
-): NominationPool => ({
-  id,
-  name: name?.asText() ?? "",
-  addresses: {
-    ...pool?.roles,
-    commission: pool.commission.current?.[1],
-    pool: address,
-  },
-  commission: {
-    ...pool.commission,
-    current: pool.commission.current?.[0] ?? 0,
-  },
-  memberCount: pool.member_counter,
-  nominations: nominations?.targets ?? [],
-  points: pool.points,
-  bond,
-  state: pool.state.type,
-})
+): NominationPool => {
+  const [currentCommission, commissionAddr] = pool.commission.current ?? [
+    0,
+    undefined,
+  ]
+
+  return {
+    id,
+    name: name?.asText() ?? "",
+    addresses: {
+      ...pool?.roles,
+      commission: commissionAddr,
+      pool: address,
+    },
+    commission: {
+      ...pool.commission,
+      current: currentCommission / Number(PERBILL),
+      max: pool.commission.max
+        ? pool.commission.max / Number(PERBILL)
+        : undefined,
+      change_rate: pool.commission.change_rate
+        ? {
+            max_increase:
+              pool.commission.change_rate.max_increase / Number(PERBILL),
+            min_delay: pool.commission.change_rate.min_delay,
+          }
+        : undefined,
+    },
+    memberCount: pool.member_counter,
+    nominations: nominations?.targets ?? [],
+    points: pool.points,
+    bond,
+    state: pool.state.type,
+  }
+}
 
 export const getNominationPool$Fn =
   (

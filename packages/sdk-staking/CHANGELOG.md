@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## 0.3.2 2025-11-01
+
+### Fixed
+
+- Pool commissions not in per one.
+
 ## 0.3.1 2025-10-30
 
 ### Fixed
