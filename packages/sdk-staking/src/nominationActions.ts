@@ -74,12 +74,13 @@ export const upsertNominationFn = (
 
   return (address, { bond, payee, validators }) =>
     wrapAsyncTx(async () => {
-      const [nominator, ledger, currentPayee] = await Promise.all([
+      const [nominator, ledger, currentPayee, minBond] = await Promise.all([
         api.query.Staking.Nominators.getValue(address),
         api.query.Staking.Bonded.getValue(address).then((controller) =>
           controller ? wndApi.query.Staking.Ledger.getValue(controller) : null,
         ),
         api.query.Staking.Payee.getValue(address),
+        api.query.Staking.MinNominatorBond.getValue(),
       ])
       const currentBond = ledger?.active ?? 0n
       const totalLocked = ledger?.total ?? 0n
@@ -89,6 +90,10 @@ export const upsertNominationFn = (
 
       const bondDiff = bond != null ? bond - currentBond : 0n
       if (bondDiff > 0) {
+        if (bond! < minBond) {
+          throw new Error("InsufficientBond")
+        }
+
         if (totalLocked == 0n) {
           txs.push(
             api.tx.Staking.bond({
@@ -97,22 +102,47 @@ export const upsertNominationFn = (
             }),
           )
         } else {
-          const rebond = unlocking < bondDiff ? unlocking : bondDiff
-          const bondAfterRebond = bondDiff - rebond
-
-          if (rebond > 0) {
-            txs.push(
-              api.tx.Staking.rebond({
-                value: rebond,
-              }),
-            )
-          }
-          if (bondAfterRebond > 0) {
+          // We will try to rebond `unlocking` tokens first
+          // However, there's an edge case: the account might have `unlocking` tokens smaller then `minBond`. In that case, the rebond transaction fails with `InsufficientBond`.
+          // Let's check for that case first.
+          if (currentBond + unlocking < minBond) {
+            // In this case we should do first the bond_extra, and then the rebond
+            let tokensToBond = bondDiff - unlocking
+            const minBondExtra = minBond - currentBond
+            if (minBondExtra > tokensToBond) {
+              tokensToBond = minBondExtra
+            }
             txs.push(
               api.tx.Staking.bond_extra({
-                max_additional: bondAfterRebond,
+                max_additional: tokensToBond,
               }),
             )
+            const tokensToRebond = bondDiff - tokensToBond
+            if (tokensToRebond > 0) {
+              txs.push(
+                api.tx.Staking.rebond({
+                  value: tokensToRebond,
+                }),
+              )
+            }
+          } else {
+            const rebond = unlocking < bondDiff ? unlocking : bondDiff
+            const bondAfterRebond = bondDiff - rebond
+
+            if (rebond > 0) {
+              txs.push(
+                api.tx.Staking.rebond({
+                  value: rebond,
+                }),
+              )
+            }
+            if (bondAfterRebond > 0) {
+              txs.push(
+                api.tx.Staking.bond_extra({
+                  max_additional: bondAfterRebond,
+                }),
+              )
+            }
           }
         }
       } else if (bondDiff < 0) {
