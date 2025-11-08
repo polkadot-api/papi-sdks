@@ -5,6 +5,8 @@ import {
   map,
   Observable,
   share,
+  skip,
+  startWith,
   switchMap,
   takeWhile,
 } from "rxjs"
@@ -142,7 +144,11 @@ const getNomination$ = (
 const getNominationPool$ = (api: TypedApi<Dot>, addr: SS58String) =>
   combineLatest([
     api.query.NominationPools.PoolMembers.watchValue(addr),
-    api.apis.NominationPoolsApi.pending_rewards(addr),
+    api.query.System.Account.watchValue(addr).pipe(
+      skip(1),
+      startWith(null),
+      switchMap(() => api.apis.NominationPoolsApi.pending_rewards(addr)),
+    ),
   ]).pipe(
     switchMap(async ([member, pendingRewards]) => {
       if (!member) {
