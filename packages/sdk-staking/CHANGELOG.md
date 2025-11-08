@@ -2,9 +2,12 @@
 
 ## Unreleased
 
+## 0.3.3 2025-11-02
+
 ### Fixed
 
 - Rebond + bond_extra fails in case rebond results in a bond smaller than minBond.
+- Pool rewards observable not refreshing after claiming/compounding
 
 ## 0.3.2 2025-11-02
 
