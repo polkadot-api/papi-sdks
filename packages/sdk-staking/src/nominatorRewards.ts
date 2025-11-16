@@ -33,6 +33,7 @@ export const getNominatorRewardsFn =
         const validatorPoints = rewardPoints.individual[validator] ?? 0
         const validatorPrefs = erasValidatorPrefs[validator] ?? null
         const validatorOverview = eraOverview[validator] ?? null
+        const empty = [validator, { bond, commission: 0n, reward: 0n }] as const
         if (!validatorPrefs || !validatorOverview) {
           console.error("Validator doesn't have prefs", {
             era,
@@ -41,7 +42,18 @@ export const getNominatorRewardsFn =
             validatorPrefs,
             validatorOverview,
           })
-          return [validator, { bond, commission: 0n, reward: 0n }] as const
+          return empty
+        }
+        if (!validatorOverview.total) {
+          console.error("Validator doesn't have bond?!", {
+            era,
+            addr,
+            validatorOverview,
+          })
+          return empty
+        }
+        if (!rewardPoints.total) {
+          return empty
         }
 
         const validatorShare =

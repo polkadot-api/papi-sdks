@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## 0.3.5 2025-11-16
+
+### Fixed
+
+- Nominator rewards: Division by zero when a validator has 0 points.
+
 ## 0.3.4 2025-11-08
 
 ### Fixed
