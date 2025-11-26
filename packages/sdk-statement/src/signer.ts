@@ -4,14 +4,14 @@ import { SignedStatement, Statement, statementCodec } from "./codec"
 export const getStatementSigner = (
   publicKey: Uint8Array,
   type: "ed25519" | "sr25519" | "ecdsa",
-  signFn: (payload: Uint8Array) => Uint8Array,
+  signFn: (payload: Uint8Array) => Promise<Uint8Array> | Uint8Array,
 ) => ({
   publicKey,
-  sign: (stmt: Statement): SignedStatement => {
+  sign: async (stmt: Statement): Promise<SignedStatement> => {
     if (stmt.proof) throw new Error("Statement already signed")
     const encoded = statementCodec.enc(stmt)
     const compactLen = compact.enc(compact.dec(encoded)).length
-    const signature = signFn(encoded.slice(compactLen))
+    const signature = await signFn(encoded.slice(compactLen))
     const result = statementCodec.dec(encoded)
     result.proof = Enum(type, {
       signature: Binary.fromBytes(signature),
