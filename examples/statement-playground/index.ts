@@ -28,7 +28,7 @@ const stmt1: Statement = {
 }
 
 // SIGN AND SUBMIT STATEMENT
-const signed1 = alice.sign(stmt1)
+const signed1 = await alice.sign(stmt1)
 await sdk.submit(signed1)
 
 console.log(

@@ -1,6 +1,6 @@
 {
   "name": "@polkadot-api/sdk-statement",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "sideEffects": false,
   "author": "Carlo Sala (https://github.com/carlosala)",
   "repository": {
@@ -42,7 +42,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@polkadot-api/substrate-bindings": "^0.16.3",
+    "@polkadot-api/substrate-bindings": "^0.16.5",
     "@polkadot-api/utils": "^0.2.0"
   }
 }
