@@ -21,8 +21,8 @@ export interface ProposedBounty<
   TEnums extends {
     origin: unknown
   } = { origin: unknown },
-> extends GenericBounty,
-    ClosableBounty {
+>
+  extends GenericBounty, ClosableBounty {
   type: "Proposed"
   approve(): Transaction<any, string, string, unknown>
   filterApprovingReferenda(referenda: OngoingReferendum<TEnums>[]): Promise<
@@ -44,8 +44,8 @@ export interface FundedBounty<
   TEnums extends {
     origin: unknown
   } = { origin: unknown },
-> extends GenericBounty,
-    ClosableBounty {
+>
+  extends GenericBounty, ClosableBounty {
   type: "Funded"
   proposeCurator(
     curator: SS58String,
@@ -75,17 +75,13 @@ interface CuratorUnassignable {
   unassignCurator(): Transaction<any, string, string, unknown>
 }
 export interface CuratorProposedBounty
-  extends GenericBounty,
-    CuratorUnassignable,
-    ClosableBounty {
+  extends GenericBounty, CuratorUnassignable, ClosableBounty {
   type: "CuratorProposed"
   curator: SS58String
   acceptCuratorRole(): Transaction<any, string, string, unknown>
 }
 export interface ActiveBounty
-  extends GenericBounty,
-    CuratorUnassignable,
-    ClosableBounty {
+  extends GenericBounty, CuratorUnassignable, ClosableBounty {
   type: "Active"
   curator: SS58String
   updateDue: number
@@ -93,8 +89,7 @@ export interface ActiveBounty
   award(beneficiary: SS58String): Transaction<any, string, string, unknown>
 }
 export interface PendingPayoutBounty
-  extends GenericBounty,
-    CuratorUnassignable {
+  extends GenericBounty, CuratorUnassignable {
   type: "PendingPayout"
   curator: SS58String
   beneficiary: SS58String

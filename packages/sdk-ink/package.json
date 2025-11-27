@@ -1,6 +1,6 @@
 {
   "name": "@polkadot-api/sdk-ink",
-  "version": "0.5.1",
+  "version": "0.6.0",
   "sideEffects": false,
   "author": "Victor Oliva (https://github.com/voliva)",
   "repository": {
@@ -41,20 +41,20 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@ethereumjs/rlp": "^10.0.0",
+    "@ethereumjs/rlp": "^10.1.0",
     "@polkadot-api/common-sdk-utils": "workspace:*",
-    "@polkadot-api/substrate-bindings": "^0.16.3",
-    "abitype": "^1.1.1",
-    "viem": "^2.37.9"
+    "@polkadot-api/substrate-bindings": "^0.16.5",
+    "abitype": "^1.2.0",
+    "viem": "^2.40.3"
   },
   "peerDependencies": {
     "@polkadot-api/ink-contracts": ">=0.4.0",
-    "polkadot-api": ">=1.19.0",
+    "polkadot-api": ">=1.22.0",
     "rxjs": ">=7.8.0"
   },
   "devDependencies": {
-    "@polkadot-api/ink-contracts": "^0.4.0",
-    "polkadot-api": "^1.19.1",
+    "@polkadot-api/ink-contracts": "^0.4.3",
+    "polkadot-api": "^1.22.0",
     "rxjs": "^7.8.2"
   }
 }
