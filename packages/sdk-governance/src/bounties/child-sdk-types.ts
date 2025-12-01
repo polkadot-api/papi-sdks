@@ -27,24 +27,19 @@ interface CuratorUnassignable {
   unassignCurator(): Transaction<any, string, string, unknown>
 }
 export interface CuratorProposedChildBounty
-  extends GenericChildBounty,
-    CuratorUnassignable,
-    ClosableBounty {
+  extends GenericChildBounty, CuratorUnassignable, ClosableBounty {
   type: "CuratorProposed"
   curator: SS58String
   acceptCuratorRole(): Transaction<any, string, string, unknown>
 }
 export interface ActiveChildBounty
-  extends GenericChildBounty,
-    CuratorUnassignable,
-    ClosableBounty {
+  extends GenericChildBounty, CuratorUnassignable, ClosableBounty {
   type: "Active"
   curator: SS58String
   award(beneficiary: SS58String): Transaction<any, string, string, unknown>
 }
 export interface PendingPayoutChildBounty
-  extends GenericChildBounty,
-    CuratorUnassignable {
+  extends GenericChildBounty, CuratorUnassignable {
   type: "PendingPayout"
   curator: SS58String
   beneficiary: SS58String

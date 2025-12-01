@@ -1,4 +1,4 @@
-import type { Binary, Transaction } from "polkadot-api"
+import type { Binary, HexString, Transaction } from "polkadot-api"
 import { from, switchMap } from "rxjs"
 
 export type AsyncTransaction<
@@ -8,10 +8,11 @@ export type AsyncTransaction<
   Asset = any,
 > = Omit<
   Transaction<Arg, Pallet, Name, Asset>,
-  "decodedCall" | "getEncodedData"
+  "decodedCall" | "getEncodedData" | "getBareTx"
 > & {
   decodedCall: Promise<Transaction<Arg, Pallet, Name, Asset>["decodedCall"]>
   getEncodedData: () => Promise<Binary>
+  getBareTx: () => Promise<HexString>
   waited: Promise<Transaction<Arg, Pallet, Name, Asset>>
 }
 
@@ -41,6 +42,7 @@ export const wrapAsyncTx = <
       promise.then((tx) => tx.getPaymentInfo(...args)),
     decodedCall: promise.then((tx) => tx.decodedCall),
     getEncodedData: () => promise.then((tx) => tx.getEncodedData()),
+    getBareTx: () => promise.then((tx) => tx.getBareTx()),
     waited: promise,
   }
 }
