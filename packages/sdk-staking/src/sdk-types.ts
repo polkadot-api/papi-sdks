@@ -99,8 +99,8 @@ export interface StakingSdk {
   /**
    * Get validator rewards for a specific era.
    *
-   * @param address Validator address to check.
-   * @param era Optional era, defaults to ActiveEra.
+   * @param address  Validator address to check.
+   * @param era      Optional era, defaults to ActiveEra.
    */
   getValidatorRewards: (
     address: SS58String,
@@ -108,9 +108,9 @@ export interface StakingSdk {
   ) => Promise<ValidatorRewards | null>
 
   /**
-   * Gets the active validators info for a specific era
+   * Gets the active validators info for a specific era.
    *
-   * @param era Optional era, defaults to ActiveEra.
+   * @param era  Optional era, defaults to ActiveEra.
    */
   getEraValidators: (era?: number) => Promise<{
     totalRewards: bigint
@@ -124,19 +124,19 @@ export interface StakingSdk {
   /**
    * Gets the list of nominators that were active for a specific era
    *
-   * Expensive operation: will fetch (and cache) every nominator
+   * Expensive operation: will fetch (and cache) every nominator.
    *
-   * @param era Optional era, defaults to ActiveEra.
+   * @param era  Optional era, defaults to ActiveEra.
    */
   getActiveNominators: (era?: number) => Promise<Array<SS58String>>
 
   /**
    * Get nominator status for specific era.
    *
-   * Expensive operation: will fetch (and cache) every nominator
+   * Expensive operation: will fetch (and cache) every nominator.
    *
-   * @param address Nominator address to check.
-   * @param era Optional era, defaults to ActiveEra.
+   * @param address  Nominator address to check.
+   * @param era      Optional era, defaults to ActiveEra.
    */
   getNominatorActiveValidators: (
     address: SS58String,
@@ -146,10 +146,10 @@ export interface StakingSdk {
   /**
    * Get nominator rewards for specific era.
    *
-   * Expensive operation: will fetch (and cache) every nominator
+   * Expensive operation: will fetch (and cache) every nominator.
    *
-   * @param address Nominator address to check.
-   * @param era Optional era, defaults to ActiveEra.
+   * @param address  Nominator address to check.
+   * @param era      Optional era, defaults to ActiveEra.
    */
   getNominatorRewards: (
     address: SS58String,
@@ -172,7 +172,8 @@ export interface StakingSdk {
   /**
    * Unbonds `amount` tokens from the nomination pool of `member`.
    *
-   * Will throw an error if the member is not in a nomination pool, or if it doesn't have a large enough bond.
+   * Will throw an error if the member is not in a nomination pool, or if it
+   * doesn't have a large enough bond.
    */
   unbondNominationPool: (member: SS58String, amount: bigint) => AsyncTransaction
   getNominationPools: () => Promise<NominationPool[]>

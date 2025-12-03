@@ -55,7 +55,7 @@ export interface InkV5Sdk<
 }
 
 /**
- * @deprecated Old interface, will be removed in a future version
+ * @deprecated Old interface, will be removed in a future version.
  */
 export interface ReviveSdk<
   T extends ReviveSdkTypedApi,
@@ -109,12 +109,14 @@ export interface GetContract {
 
 export interface InkSdkOptions {
   /**
-   * Target the latest block instead of the finalized block for any query or dry-run operation.
+   * Target the latest block instead of the finalized block for any query or
+   * dry-run operation.
    *
-   * This makes it possible to have quicker updates, but be mindful that the data returned might become
-   * invalid at any point, e.g. a contract that apparently was successfully deployed might suddenly
-   * disappear, just to reappear a few seconds later, or maybe never? Be really mindful
-   * you can get inconsistencies.
+   * This makes it possible to have quicker updates, but be mindful that the
+   * data returned might become invalid at any point, e.g. a contract that
+   * apparently was successfully deployed might suddenly disappear, just to
+   * reappear a few seconds later, or maybe never? Be really mindful you can get
+   * inconsistencies.
    */
   atBest: boolean
 }

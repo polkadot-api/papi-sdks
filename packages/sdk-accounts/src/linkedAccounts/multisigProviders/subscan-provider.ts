@@ -4,10 +4,12 @@ import { MultisigProvider } from "../sdk-types"
 /**
  * Multisig provider for subscan API.
  *
- * See `throttleMultisigProvider` to throttle down requests to your API key limits.
+ * See `throttleMultisigProvider` to throttle down requests to your API key
+ * limits.
  *
- * @param chain See supported chains in https://support.subscan.io/doc-361776
- * @param subscanApiKey API key from subscan
+ * @param chain          See supported chains in
+ *                       https://support.subscan.io/doc-361776
+ * @param subscanApiKey  API key from subscan.
  */
 export function subscanProvider(
   chain: string,

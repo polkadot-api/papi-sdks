@@ -92,8 +92,9 @@ type IdentitySdkPallets = PalletsTypedef<
   {
     Identity: {
       /**
-       * Information that is pertinent to identify the entity behind an account. First item is the
-       * registration, second is the account's primary username.
+       * Information that is pertinent to identify the entity behind an account.
+       * First item is the registration, second is the account's primary
+       * username.
        *
        * TWOX-NOTE: OK ― `AccountId` is a secure hash.
        */ IdentityOf: StorageDescriptor<
@@ -103,8 +104,9 @@ type IdentitySdkPallets = PalletsTypedef<
         never
       >
       /**
-       * The super-identity of an alternative "sub" identity together with its name, within that
-       * context. If the account is not some other account's sub-identity, then just `None`.
+       * The super-identity of an alternative "sub" identity together with its
+       * name, within that context. If the account is not some other account's
+       * sub-identity, then just `None`.
        */
       SuperOf: StorageDescriptor<
         [Key: SS58String],

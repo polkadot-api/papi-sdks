@@ -13,7 +13,7 @@ import { defaultOptions, type InkSdkOptions, type ReviveSdk } from "./sdk-types"
 import { ss58ToEthereum } from "./util"
 
 /**
- * @deprecated use `createInkSdk(client)` instead
+ * @deprecated Use `createInkSdk(client)` instead.
  */
 export const createReviveSdk = <
   T extends ReviveSdkTypedApi,

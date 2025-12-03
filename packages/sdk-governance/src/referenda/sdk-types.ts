@@ -66,7 +66,7 @@ export interface ReferendaSdkConfig {
 }
 
 /**
- * threshold are in perbillion
+ * Threshold are in perbillion.
  */
 export interface TrackFunctionDetails {
   curve: ReferendaTypesCurve

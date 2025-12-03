@@ -74,7 +74,8 @@ type BountiesSdkPallets<TOrigin> = PalletsTypedef<
     }
     Scheduler: {
       /**
-       * Items to be executed, indexed by the block number that they should be executed on.
+       * Items to be executed, indexed by the block number that they should be
+       * executed on.
        */
       Agenda: StorageDescriptor<
         [Key: number],
@@ -128,7 +129,7 @@ type BountiesSdkPallets<TOrigin> = PalletsTypedef<
   {
     Bounties: {
       /**
-       *New bounty proposal.
+       * New bounty proposal.
        */
       BountyProposed: PlainDescriptor<{
         index: number

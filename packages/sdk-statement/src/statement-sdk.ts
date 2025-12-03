@@ -7,10 +7,12 @@ import { filterDecKey, filterTopics } from "./utils"
 /**
  * Create statement sdk.
  *
- * @param {RequestFn} req Takes a req-res function, which accepts Statement RPC
- *                        calls. This can be `client._request` (from `polkadot-api`)
- *                        client, `client.request` (from `@polkadot-api/substrate-client`)
- *                        or any other crafted by the consumer.
+ * @param {RequestFn} req  Takes a req-res function, which accepts Statement RPC
+ *                         calls. This can be `client._request` (from
+ *                         `polkadot-api`)
+ *                         client, `client.request` (from
+ *                         `@polkadot-api/substrate-client`)
+ *                         or any other crafted by the consumer.
  */
 export const createStatementSdk = (req: RequestFn) => {
   const api = getApi(req)
@@ -24,9 +26,11 @@ export const createStatementSdk = (req: RequestFn) => {
 
     /**
      * Get statements from store.
-     * dest: `Binary` means to get all statements with that specific `decryptionKey` set.
-     *       `null` means to get all statements with no `decryptionKey` set.
-     *       `undefined` (or unset) means to get all statements disregarding `decryptionKey`.
+     * dest: `Binary` means to get all statements with that specific
+     * `decryptionKey` set.
+     * `null` means to get all statements with no `decryptionKey` set.
+     * `undefined` (or unset) means to get all statements disregarding
+     * `decryptionKey`.
      */
     getStatements: async ({
       dest,

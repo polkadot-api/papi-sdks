@@ -11,8 +11,9 @@ type LinkedAccountsSdkPallets = PalletsTypedef<
   {
     Proxy: {
       /**
-       * The set of account proxies. Maps the account which has delegated to the accounts
-       * which are being delegated to, together with the amount held on deposit.
+       * The set of account proxies. Maps the account which has delegated to the
+       * accounts which are being delegated to, together with the amount held on
+       * deposit.
        */
       Proxies: StorageDescriptor<
         [Key: SS58String],

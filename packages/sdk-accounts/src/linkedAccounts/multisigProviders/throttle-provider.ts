@@ -4,9 +4,10 @@ import { MultisigProvider } from "../sdk-types"
  * Throttles down the requests to the provider. By default it drops new requests
  * after the maximum concurrent requests has been reached.
  *
- * @param provider Multisig provider to throttle
- * @param maxConcurrent Maximum amount of concurrent requests
- * @param wait Queue requests instead of dropping them. It can cause backpressure.
+ * @param provider       Multisig provider to throttle.
+ * @param maxConcurrent  Maximum amount of concurrent requests.
+ * @param wait           Queue requests instead of dropping them. It can
+ *                       cause backpressure.
  */
 export function throttleMultisigProvider(
   provider: MultisigProvider,

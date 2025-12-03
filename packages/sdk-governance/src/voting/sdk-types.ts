@@ -9,10 +9,14 @@ export type PollOutcome = {
 
 /**
  * Types:
- * - free: The funds locked by this vote will become free once the vote is removed.
- * - locked: The funds locked by this vote will become locked once the vote is removed.
- * - extends: Removing this vote will extend the duration of a pre-existing lock.
- * - extended: Removing this vote before its end will have it locked for the duration of the pre-existing lock.
+ * - free: The funds locked by this vote will become free once the vote is
+ * removed.
+ * - locked: The funds locked by this vote will become locked once the vote is
+ * removed.
+ * - extends: Removing this vote will extend the duration of a pre-existing
+ * lock.
+ * - extended: Removing this vote before its end will have it locked for the
+ * duration of the pre-existing lock.
  */
 export type VoteLock =
   | {

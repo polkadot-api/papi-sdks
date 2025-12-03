@@ -10,8 +10,8 @@ export type Result<S = unknown, E = unknown> =
   | { success: false; value: E }
 
 /**
- * Flattens a nested Result<Result<Result<number>, ErrorA>, ErrorB>, ErrorC> into
- * { value: number } | null
+ * Flattens a nested Result<Result<Result<number>, ErrorA>, ErrorB>, ErrorC>
+ * into { value: number } | null.
  */
 export const flattenValues = <T>(v: T): { value: FlattenValues<T> } | null => {
   const result = flattenResult(v)
@@ -25,8 +25,8 @@ export type FlattenValues<T> =
       : T
 
 /**
- * Flattens a nested Result<Result<Result<number>, ErrorA>, ErrorB>, ErrorC> into
- * { error: ErrorA | ErrorB | ErrorC } | null
+ * Flattens a nested Result<Result<Result<number>, ErrorA>, ErrorB>, ErrorC>
+ * into { error: ErrorA | ErrorB | ErrorC } | null.
  */
 export const flattenErrors = <T>(v: T): { error: FlattenErrors<T> } | null => {
   const result = flattenResult(v)
@@ -42,8 +42,8 @@ export type FlattenErrors<T> =
       : never
 
 /**
- * Flattens a nested Result<Result<Result<number>, ErrorA>, ErrorB>, ErrorC> into
- * Result<number, ErrorA | ErrorB | ErrorC>
+ * Flattens a nested Result<Result<Result<number>, ErrorA>, ErrorB>, ErrorC>
+ * into Result<number, ErrorA | ErrorB | ErrorC>
  */
 export const flattenResult = <T>(v: T): FlattenResult<T> =>
   isResult(v)
