@@ -19,7 +19,7 @@ export const createStatementSdk = (req: RequestFn) => {
   const api = getApi(req)
   return {
     /**
-     * Submit an Statement to the store.
+     * Submit a Statement to the store.
      * It must be signed to be accepted.
      */
     submit: (stmt: Statement): Promise<SubmitResult> =>
