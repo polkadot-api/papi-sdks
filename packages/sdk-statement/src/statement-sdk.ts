@@ -3,6 +3,7 @@ import { Statement, statementCodec } from "./codec"
 import { toHex } from "@polkadot-api/utils"
 import { getApi, RequestFn } from "./api"
 import { filterDecKey, filterTopics } from "./utils"
+import { SubmitResult } from "./types"
 
 /**
  * Create statement sdk.
@@ -19,10 +20,16 @@ export const createStatementSdk = (req: RequestFn) => {
   return {
     /**
      * Submit an Statement to the store.
-     * Generally it must be signed to be accepted.
+     * It must be signed to be accepted.
      */
-    submit: (stmt: Statement): Promise<void> =>
-      api.submit(toHex(statementCodec.enc(stmt))),
+    submit: (stmt: Statement): Promise<SubmitResult> =>
+      api
+        .submit(toHex(statementCodec.enc(stmt)))
+        // TODO: remove in due time
+        // prior to https://github.com/paritytech/polkadot-sdk/pull/10421
+        // everything that was not `"new"` yielded an error, and `"new"` returned undefined
+        // catching the errors is not an option since we can't feasibly know what is the actual error
+        .then((v) => v ?? { status: "new" }),
 
     /**
      * Get statements from store.
