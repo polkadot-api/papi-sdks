@@ -16,7 +16,7 @@ import {
   type SS58String,
   type TypedApi,
 } from "polkadot-api"
-import type { Passet, WndAh } from "../.papi/descriptors/dist"
+import type { PasAh, Passet, WndAh } from "../.papi/descriptors/dist"
 import type {
   Gas,
   GenericInkDescriptors,
@@ -30,7 +30,12 @@ import type {
 } from "./descriptor-types"
 import type { SdkStorage } from "./get-storage"
 
-export type CommonTypedApi = TypedApi<Passet> | TypedApi<WndAh>
+export type AllTypedApis = {
+  passet: TypedApi<Passet>
+  pasAh: TypedApi<PasAh>
+  wndAh: TypedApi<WndAh>
+}
+export type CommonTypedApi = AllTypedApis[keyof AllTypedApis]
 
 export type ReadDeployerEvents<D extends GenericInkDescriptors, Addr> = (
   events?: Array<
@@ -125,7 +130,7 @@ export const defaultOptions: InkSdkOptions = {
 }
 
 type DryRunDeployFn<
-  T extends InkSdkTypedApi | ReviveSdkTypedApi,
+  T extends InkSdkTypedApi | ReviveSdkTypedApi | CommonTypedApi,
   Addr,
   D extends GenericInkDescriptors,
 > = <L extends string & keyof D["__types"]["constructors"]>(
@@ -165,7 +170,7 @@ type EstimateAddrFn<D extends GenericInkDescriptors, Addr> = <
 ) => Promise<Addr | null>
 
 export interface Deployer<
-  T extends InkSdkTypedApi | ReviveSdkTypedApi,
+  T extends InkSdkTypedApi | ReviveSdkTypedApi | CommonTypedApi,
   D extends GenericInkDescriptors,
   Addr,
 > {
@@ -188,7 +193,7 @@ export type StorageRootType<T extends InkStorageDescriptor> = "" extends keyof T
   : never
 
 export interface Contract<
-  T extends InkSdkTypedApi | ReviveSdkTypedApi,
+  T extends InkSdkTypedApi | ReviveSdkTypedApi | CommonTypedApi,
   D extends GenericInkDescriptors,
   Addr,
   StorageErr,

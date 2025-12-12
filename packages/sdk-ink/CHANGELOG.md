@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## 0.6.1 2025-12-13
+
+### Fixed
+
+- Support chains with renamed `gas_limit` to `weight_limit` 
+
 ## 0.6.0 2025-11-28
 
 ### Fixed

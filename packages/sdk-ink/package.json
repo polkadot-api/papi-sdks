@@ -1,6 +1,6 @@
 {
   "name": "@polkadot-api/sdk-ink",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "sideEffects": false,
   "author": "Victor Oliva (https://github.com/voliva)",
   "repository": {
@@ -34,7 +34,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "papi generate --whitelist .papi/whitelist.ts && mv .papi/descriptors/dist/index.mjs .papi/descriptors/dist/index.js && tsc --noEmit && rollup -c ../../rollup.config.js",
+    "build": "papi generate && mv .papi/descriptors/dist/index.mjs .papi/descriptors/dist/index.js && tsc --noEmit && rollup -c ../../rollup.config.js",
     "lint": "prettier --check README.md \"src/**/*.{js,jsx,ts,tsx,json,md}\"",
     "format": "prettier --write README.md \"src/**/*.{js,jsx,ts,tsx,json,md}\"",
     "prepack": "pnpm run build"
@@ -44,8 +44,8 @@
     "@ethereumjs/rlp": "^10.1.0",
     "@polkadot-api/common-sdk-utils": "workspace:*",
     "@polkadot-api/substrate-bindings": "^0.16.5",
-    "abitype": "^1.2.0",
-    "viem": "^2.40.3"
+    "abitype": "^1.2.2",
+    "viem": "^2.41.2"
   },
   "peerDependencies": {
     "@polkadot-api/ink-contracts": ">=0.4.0",
@@ -53,8 +53,8 @@
     "rxjs": ">=7.8.0"
   },
   "devDependencies": {
-    "@polkadot-api/ink-contracts": "^0.4.3",
-    "polkadot-api": "^1.22.0",
+    "@polkadot-api/ink-contracts": "^0.4.4",
+    "polkadot-api": "^1.23.1",
     "rxjs": "^7.8.2"
   }
 }

@@ -1,4 +1,9 @@
-import { mapResult, Result } from "@polkadot-api/common-sdk-utils"
+import {
+  AsyncTransaction,
+  mapResult,
+  Result,
+  wrapAsyncTx,
+} from "@polkadot-api/common-sdk-utils"
 import { GenericEvent } from "@polkadot-api/ink-contracts"
 import {
   Binary,
@@ -8,6 +13,7 @@ import {
   ResultPayload,
   SS58String,
   Transaction,
+  TypedApi,
 } from "polkadot-api"
 import { mergeUint8 } from "polkadot-api/utils"
 import {
@@ -34,6 +40,8 @@ import {
   u256ToValue,
   valueToU256,
 } from "./util"
+import { AllTypedApis, CommonTypedApi } from "./sdk-types"
+import { Passet } from "../.papi/descriptors/dist"
 
 export interface ContractsProvider<Addr, StorageErr> {
   getBalance(addr: Addr): Promise<bigint>
@@ -63,7 +71,7 @@ export interface ContractsProvider<Addr, StorageErr> {
     gas_limit: Gas
     storage_deposit_limit?: bigint
     data: Binary
-  }): Transaction<any, any, any, any>
+  }): AsyncTransaction
   txInstantiate(payload: {
     value: bigint
     gas_limit: Gas
@@ -71,7 +79,7 @@ export interface ContractsProvider<Addr, StorageErr> {
     code_hash: FixedSizeBinary<32>
     data: Binary
     salt?: Binary
-  }): Transaction<any, any, any, any>
+  }): AsyncTransaction
   txInstantiateWithCode(payload: {
     value: bigint
     gas_limit: Gas
@@ -79,7 +87,7 @@ export interface ContractsProvider<Addr, StorageErr> {
     code: Binary
     data: Binary
     salt?: Binary
-  }): Transaction<any, any, any, any>
+  }): AsyncTransaction
 }
 
 const defaultSalt = Binary.fromText("")
@@ -157,7 +165,7 @@ export const contractsProvider = (
       typedApi.query.Contracts.ContractInfoOf.getValue(addr, callOptions).then(
         (r) => r?.code_hash,
       ),
-    txCall: ({ data, dest, gas_limit, value, storage_deposit_limit }) =>
+    txCall: ({ data, dest, gas_limit, value, storage_deposit_limit }) => wrapAsyncTx(async () => 
       typedApi.tx.Contracts.call({
         data,
         dest: {
@@ -167,19 +175,19 @@ export const contractsProvider = (
         gas_limit,
         storage_deposit_limit,
         value,
-      }),
-    txInstantiate: (payload) =>
+      })),
+    txInstantiate: (payload) =>wrapAsyncTx(async () => 
       typedApi.tx.Contracts.instantiate({
         storage_deposit_limit: undefined,
         ...payload,
         salt: payload.salt ?? defaultSalt,
-      }),
-    txInstantiateWithCode: (payload) =>
+      })),
+    txInstantiateWithCode: (payload) =>wrapAsyncTx(async () => 
       typedApi.tx.Contracts.instantiate_with_code({
         storage_deposit_limit: undefined,
         ...payload,
         salt: payload.salt ?? defaultSalt,
-      }),
+      })),
   }
 }
 
@@ -218,9 +226,11 @@ const getEventsFromTrace = (
 ]
 
 export const reviveProvider = (
-  typedApi: ReviveSdkTypedApi,
+  allApis: AllTypedApis,
   atBest: boolean,
 ): ContractsProvider<ReviveAddress, ReviveStorageError> => {
+  const typedApi = allApis.passet as CommonTypedApi | ReviveSdkTypedApi
+
   const callOptions = atBest ? { at: "best" } : {}
   const traceCall = ({
     from,
@@ -234,9 +244,21 @@ export const reviveProvider = (
         blob_versioned_hashes: [],
         blobs: [],
         from,
-        input,
+        input: {
+          data: input.data,
+          input: input.input,
+        },
         to,
         value,
+        access_list: undefined,
+        chain_id: undefined,
+        "r#type": undefined,
+        gas: undefined,
+        gas_price: undefined,
+        max_fee_per_blob_gas: undefined,
+        max_fee_per_gas: undefined,
+        max_priority_fee_per_gas: undefined,
+        nonce: undefined,
       },
       Enum("CallTracer", {
         only_top_call: false,
@@ -284,7 +306,7 @@ export const reviveProvider = (
         }),
       ]).then(([call, trace]) => {
         const events = (() => {
-          if (call.events) return call.events
+          if ("events" in call && call.events) return call.events
           if (!trace.success) return undefined
 
           if ("type" in trace.value) {
@@ -297,9 +319,18 @@ export const reviveProvider = (
           return getEventsFromTrace(trace.value)
         })()
 
-        return {
-          ...call,
-          events,
+        if ("weight_required" in call) {
+          return {
+            ...call,
+            events,
+            gas_required: call.weight_required,
+            gas_consumed: call.weight_consumed,
+          }
+        } else {
+          return {
+            ...call,
+            events,
+          }
         }
       }),
     dryRunInstantiate: (
@@ -338,7 +369,7 @@ export const reviveProvider = (
         ),
       ]).then(([call, trace]) => {
         const events = (() => {
-          if (call.events) return call.events
+          if ("events" in call && call.events) return call.events
           if (!trace.success) return undefined
 
           if ("type" in trace.value) {
@@ -351,9 +382,18 @@ export const reviveProvider = (
           return getEventsFromTrace(trace.value)
         })()
 
-        return {
-          ...call,
-          events,
+        if ("weight_required" in call) {
+          return {
+            ...call,
+            events,
+            gas_required: call.weight_required,
+            gas_consumed: call.weight_consumed,
+          }
+        } else {
+          return {
+            ...call,
+            events,
+          }
         }
       }),
     getEstimatedAddress: async (
@@ -389,12 +429,18 @@ export const reviveProvider = (
     },
     getStorage: async (...args) => {
       // the optional part makes it awkward to work with…
-      const var_key_call: any = typedApi.apis.ReviveApi.get_storage_var_key
-      const call = var_key_call.isCompatible(CompatibilityLevel.Partial)
-        ? (var_key_call as typeof typedApi.apis.ReviveApi.get_storage)
+      const var_key_call = typedApi.apis.ReviveApi
+        .get_storage_var_key as CommonTypedApi["apis"]["ReviveApi"]["get_storage_var_key"]
+      const call = (await var_key_call.isCompatible(CompatibilityLevel.Partial))
+        ? var_key_call
         : typedApi.apis.ReviveApi.get_storage
 
-      return call(...args, callOptions)
+      const res = await call(...args, callOptions)
+      if (res.success) return res
+      return {
+        success: false as const,
+        value: res.value as ReviveStorageError,
+      }
     },
     getCodeHash: async (addr) => {
       const newApi = typedApi as NewReviveSdkTypedApi
@@ -421,32 +467,97 @@ export const reviveProvider = (
       return result?.code_hash
     },
     txCall: (payload) => {
-      if (payload.storage_deposit_limit == null) {
+      const { storage_deposit_limit } = payload
+      if (storage_deposit_limit == null) {
         throw new Error("Pallet revive requires storage deposit limit")
       }
-      return typedApi.tx.Revive.call({
-        storage_deposit_limit: payload.storage_deposit_limit,
-        ...payload,
+
+      return wrapAsyncTx(async (): Promise<Transaction> => {
+        if (
+          await allApis.passet.tx.Revive.call.isCompatible(
+            CompatibilityLevel.Partial,
+          )
+        ) {
+          return allApis.passet.tx.Revive.call({
+            storage_deposit_limit,
+            weight_limit: payload.gas_limit,
+            ...payload,
+          })
+        }
+
+        return (
+          typedApi as Exclude<
+            CommonTypedApi | ReviveSdkTypedApi,
+            TypedApi<Passet>
+          >
+        ).tx.Revive.call({
+          storage_deposit_limit,
+          ...payload,
+        })
       })
     },
     txInstantiate: (payload) => {
-      if (payload.storage_deposit_limit == null) {
+      const { salt, storage_deposit_limit } = payload
+      if (storage_deposit_limit == null) {
         throw new Error("Pallet revive requires storage deposit limit")
       }
-      return typedApi.tx.Revive.instantiate({
-        storage_deposit_limit: payload.storage_deposit_limit,
-        salt: payload.salt,
-        ...payload,
+
+      return wrapAsyncTx(async () => {
+        if (
+          await allApis.passet.tx.Revive.instantiate.isCompatible(
+            CompatibilityLevel.Partial,
+          )
+        ) {
+          return allApis.passet.tx.Revive.instantiate({
+            storage_deposit_limit,
+            salt,
+            weight_limit: payload.gas_limit,
+            ...payload,
+          })
+        }
+
+        return (
+          typedApi as Exclude<
+            CommonTypedApi | ReviveSdkTypedApi,
+            TypedApi<Passet>
+          >
+        ).tx.Revive.instantiate({
+          storage_deposit_limit,
+          salt,
+          ...payload,
+        }) as Transaction
       })
     },
     txInstantiateWithCode: (payload) => {
-      if (payload.storage_deposit_limit == null) {
+      const { salt, storage_deposit_limit } = payload
+      if (storage_deposit_limit == null) {
         throw new Error("Pallet revive requires storage deposit limit")
       }
-      return typedApi.tx.Revive.instantiate_with_code({
-        storage_deposit_limit: payload.storage_deposit_limit,
-        salt: payload.salt,
-        ...payload,
+
+      return wrapAsyncTx(async () => {
+        if (
+          await allApis.passet.tx.Revive.instantiate.isCompatible(
+            CompatibilityLevel.Partial,
+          )
+        ) {
+          return allApis.passet.tx.Revive.instantiate_with_code({
+            storage_deposit_limit,
+            salt,
+            weight_limit: payload.gas_limit,
+            ...payload,
+          })
+        }
+
+        return (
+          typedApi as Exclude<
+            CommonTypedApi | ReviveSdkTypedApi,
+            TypedApi<Passet>
+          >
+        ).tx.Revive.instantiate_with_code({
+          storage_deposit_limit,
+          salt,
+          ...payload,
+        }) as Transaction
       })
     },
   }

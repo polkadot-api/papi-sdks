@@ -12,11 +12,11 @@ import type {
 } from "./descriptor-types"
 import { EncodingProvider } from "./encoding-provider"
 import { ContractsProvider } from "./provider"
-import type { Deployer } from "./sdk-types"
+import type { CommonTypedApi, Deployer } from "./sdk-types"
 import { getSignedStorage, getStorageLimit } from "./util"
 
 export function getDeployer<
-  T extends InkSdkTypedApi | ReviveSdkTypedApi,
+  T extends InkSdkTypedApi | ReviveSdkTypedApi | CommonTypedApi,
   Addr,
   StorageErr,
   D extends GenericInkDescriptors,
@@ -135,11 +135,11 @@ export function getDeployer<
           ? provider.txInstantiateWithCode({
               ...params,
               code: code.value,
-            })
+            }).waited
           : provider.txInstantiate({
               ...params,
               code_hash: await code.value,
-            })
+            }).waited
       }),
     estimateAddress: async (constructorLabel, args) => {
       const ctor = encodingProvider.constructor(constructorLabel)

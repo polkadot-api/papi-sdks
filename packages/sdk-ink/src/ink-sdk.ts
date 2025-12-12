@@ -1,5 +1,5 @@
 import { Binary, Enum, HexString, PolkadotClient } from "polkadot-api"
-import { wndAh } from "../.papi/descriptors/dist"
+import { pasAh, passet, wndAh } from "../.papi/descriptors/dist"
 import { GenericInkDescriptors, ReviveStorageError } from "./descriptor-types"
 import { EncodingProvider, inkEncoding, solEncoding } from "./encoding-provider"
 import { getContract } from "./get-contract"
@@ -7,6 +7,7 @@ import { getDeployer } from "./get-deployer"
 import { reviveProvider } from "./provider"
 import { getAccountId } from "./revive-sdk"
 import {
+  AllTypedApis,
   CommonTypedApi,
   Contract,
   defaultOptions,
@@ -21,7 +22,11 @@ export const createInkSdk = (
   client: PolkadotClient,
   options?: Partial<InkSdkOptions>,
 ): InkSdk => {
-  const typedApi: CommonTypedApi = client.getTypedApi(wndAh)
+  const typedApi: AllTypedApis = {
+    passet: client.getTypedApi(passet),
+    pasAh: client.getTypedApi(pasAh),
+    wndAh: client.getTypedApi(wndAh),
+  }
 
   const { atBest } = { ...defaultOptions, ...options }
   const provider = reviveProvider(typedApi, atBest)
@@ -68,7 +73,7 @@ export const createInkSdk = (
 
   return {
     addressIsMapped(address) {
-      return reviveAddressIsMapped(typedApi, address)
+      return reviveAddressIsMapped(typedApi.passet, address)
     },
     getContract: curriedGetContract,
     getDeployer: getDeployerSdk,
