@@ -43,11 +43,6 @@ contract Ballot {
         }
     }
 
-    error InsufficientBalance(uint available, uint required);
-    event RightGiven(address indexed voter, uint value);
-    event AnonRightGiven(address indexed voter) anonymous;
-    event AnonRightGiven2(address voter, uint value) anonymous;
-
     /**
      * @dev Give 'voter' the right to vote on this ballot. May only be called by 'chairperson'.
      * @param voter address of voter
@@ -60,11 +55,6 @@ contract Ballot {
         require(!voters[voter].voted, "The voter already voted.");
         require(voters[voter].weight == 0);
         voters[voter].weight = 1;
-
-        revert InsufficientBalance({available: 100, required: 400});
-        // emit RightGiven(voter, 5);
-        // emit AnonRightGiven(voter);
-        // emit AnonRightGiven2(voter, 5);
     }
 
     /**
