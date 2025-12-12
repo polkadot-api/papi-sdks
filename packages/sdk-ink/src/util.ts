@@ -10,6 +10,7 @@ import {
 } from "polkadot-api"
 import { mergeUint8 } from "polkadot-api/utils"
 import { ReviveAddress, ReviveSdkTypedApi, U256 } from "./descriptor-types"
+import { CommonTypedApi } from "./sdk-types"
 
 export const getSignedStorage = (
   depositResponse: Enum<{
@@ -35,7 +36,7 @@ export const ss58ToEthereum = (address: SS58String): Binary =>
  * @deprecated Use `createInkSdk(client).addressIsMapped(address)` instead.
  */
 export const reviveAddressIsMapped = (
-  typedApi: ReviveSdkTypedApi,
+  typedApi: ReviveSdkTypedApi | CommonTypedApi,
   address: SS58String,
 ) =>
   typedApi.query.Revive.OriginalAccount.getValue(ss58ToEthereum(address)).then(

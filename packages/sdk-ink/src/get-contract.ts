@@ -13,11 +13,11 @@ import { EncodingProvider } from "./encoding-provider"
 import { getDeployer } from "./get-deployer"
 import { getStorage } from "./get-storage"
 import { ContractsProvider } from "./provider"
-import type { Contract } from "./sdk-types"
+import type { CommonTypedApi, Contract } from "./sdk-types"
 import { getSignedStorage, getStorageLimit } from "./util"
 
 export function getContract<
-  T extends InkSdkTypedApi | ReviveSdkTypedApi,
+  T extends InkSdkTypedApi | ReviveSdkTypedApi | CommonTypedApi,
   Addr,
   StorageErr,
   D extends GenericInkDescriptors,
@@ -152,7 +152,7 @@ export function getContract<
           gas_limit: limits.gas,
           storage_deposit_limit: limits.storage,
           data,
-        })
+        }).waited
       }),
     dryRunRedeploy: deployer.dryRun,
     redeploy: deployer.deploy,

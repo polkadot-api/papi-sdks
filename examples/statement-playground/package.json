@@ -6,10 +6,10 @@
   "dependencies": {
     "@polkadot-api/sdk-statement": "workspace:*",
     "@polkadot-api/substrate-bindings": "^0.16.5",
-    "@polkadot-api/substrate-client": "^0.4.7",
+    "@polkadot-api/substrate-client": "^0.5.0",
     "@polkadot-api/utils": "^0.2.0",
     "@polkadot-api/ws-provider": "^0.7.4",
-    "@scure/sr25519": "^0.3.0"
+    "@scure/sr25519": "^1.0.0"
   },
   "devDependencies": {
     "@types/bun": "latest"
