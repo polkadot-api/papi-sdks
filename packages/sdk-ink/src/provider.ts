@@ -165,29 +165,35 @@ export const contractsProvider = (
       typedApi.query.Contracts.ContractInfoOf.getValue(addr, callOptions).then(
         (r) => r?.code_hash,
       ),
-    txCall: ({ data, dest, gas_limit, value, storage_deposit_limit }) => wrapAsyncTx(async () => 
-      typedApi.tx.Contracts.call({
-        data,
-        dest: {
-          type: "Id",
-          value: dest,
-        },
-        gas_limit,
-        storage_deposit_limit,
-        value,
-      })),
-    txInstantiate: (payload) =>wrapAsyncTx(async () => 
-      typedApi.tx.Contracts.instantiate({
-        storage_deposit_limit: undefined,
-        ...payload,
-        salt: payload.salt ?? defaultSalt,
-      })),
-    txInstantiateWithCode: (payload) =>wrapAsyncTx(async () => 
-      typedApi.tx.Contracts.instantiate_with_code({
-        storage_deposit_limit: undefined,
-        ...payload,
-        salt: payload.salt ?? defaultSalt,
-      })),
+    txCall: ({ data, dest, gas_limit, value, storage_deposit_limit }) =>
+      wrapAsyncTx(async () =>
+        typedApi.tx.Contracts.call({
+          data,
+          dest: {
+            type: "Id",
+            value: dest,
+          },
+          gas_limit,
+          storage_deposit_limit,
+          value,
+        }),
+      ),
+    txInstantiate: (payload) =>
+      wrapAsyncTx(async () =>
+        typedApi.tx.Contracts.instantiate({
+          storage_deposit_limit: undefined,
+          ...payload,
+          salt: payload.salt ?? defaultSalt,
+        }),
+      ),
+    txInstantiateWithCode: (payload) =>
+      wrapAsyncTx(async () =>
+        typedApi.tx.Contracts.instantiate_with_code({
+          storage_deposit_limit: undefined,
+          ...payload,
+          salt: payload.salt ?? defaultSalt,
+        }),
+      ),
   }
 }
 

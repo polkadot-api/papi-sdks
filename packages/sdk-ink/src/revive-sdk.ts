@@ -9,7 +9,12 @@ import { inkEncoding, solEncoding } from "./encoding-provider"
 import { getContract } from "./get-contract"
 import { getDeployer } from "./get-deployer"
 import { reviveProvider } from "./provider"
-import { AllTypedApis, defaultOptions, type InkSdkOptions, type ReviveSdk } from "./sdk-types"
+import {
+  AllTypedApis,
+  defaultOptions,
+  type InkSdkOptions,
+  type ReviveSdk,
+} from "./sdk-types"
 import { ss58ToEthereum } from "./util"
 
 /**
@@ -24,11 +29,14 @@ export const createReviveSdk = <
   options?: Partial<InkSdkOptions>,
 ): ReviveSdk<T, D, HexString, ReviveStorageError> => {
   const { atBest } = { ...defaultOptions, ...options }
-  const provider = reviveProvider({
-    passet: typedApi,
-    pasAh: typedApi,
-    wndAh: typedApi
-  } as any as AllTypedApis, atBest)
+  const provider = reviveProvider(
+    {
+      passet: typedApi,
+      pasAh: typedApi,
+      wndAh: typedApi,
+    } as any as AllTypedApis,
+    atBest,
+  )
   const encodingProvider = contractDescriptors.metadata
     ? inkEncoding(contractDescriptors)
     : solEncoding(contractDescriptors)
