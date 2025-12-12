@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## 0.6.2 2025-12-13
+
+### Fixed
+
+- Fix incompatible error when dry-running on old chains.
+
 ## 0.6.1 2025-12-13
 
 ### Fixed

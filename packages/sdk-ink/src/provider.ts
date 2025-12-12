@@ -238,13 +238,18 @@ export const reviveProvider = (
   const typedApi = allApis.passet as CommonTypedApi | ReviveSdkTypedApi
 
   const callOptions = atBest ? { at: "best" } : {}
-  const traceCall = ({
+  const traceCall = async ({
     from,
     to,
     input,
     value,
-  }: Pick<GenericTransaction, "from" | "to" | "input" | "value">) =>
-    typedApi.apis.ReviveApi.trace_call(
+  }: Pick<GenericTransaction, "from" | "to" | "input" | "value">) => {
+    const isPasset =
+      await allApis.passet.apis.ReviveApi.trace_call.isCompatible(
+        CompatibilityLevel.BackwardsCompatible,
+      )
+    const api = isPasset ? allApis.passet : allApis.pasAh
+    return api.apis.ReviveApi.trace_call(
       {
         authorization_list: [],
         blob_versioned_hashes: [],
@@ -277,6 +282,7 @@ export const reviveProvider = (
         success: false as const,
       }
     })
+  }
 
   return {
     async getBalance(addr) {
@@ -294,15 +300,25 @@ export const reviveProvider = (
       input: Binary,
     ) =>
       Promise.all([
-        typedApi.apis.ReviveApi.call(
-          origin,
-          dest,
-          value,
-          gas_limit,
-          storage_deposit_limit,
-          input,
-          callOptions,
-        ),
+        allApis.passet.apis.ReviveApi.call
+          .isCompatible(CompatibilityLevel.Partial)
+          .then(
+            (isPasset) =>
+              (isPasset ? allApis.passet : allApis.pasAh) as
+                | CommonTypedApi
+                | ReviveSdkTypedApi,
+          )
+          .then(async (api) =>
+            api.apis.ReviveApi.call(
+              origin,
+              dest,
+              value,
+              gas_limit,
+              storage_deposit_limit,
+              input,
+              callOptions,
+            ),
+          ),
         traceCall({
           from: ss58ToEthereum(origin),
           input: {
@@ -352,16 +368,26 @@ export const reviveProvider = (
       salt: Binary | undefined,
     ) =>
       Promise.all([
-        typedApi.apis.ReviveApi.instantiate(
-          origin,
-          value,
-          gas_limit,
-          storage_deposit_limit,
-          code,
-          data,
-          salt,
-          callOptions,
-        ),
+        allApis.passet.apis.ReviveApi.instantiate
+          .isCompatible(CompatibilityLevel.Partial)
+          .then(
+            (isPasset) =>
+              (isPasset ? allApis.passet : allApis.pasAh) as
+                | CommonTypedApi
+                | ReviveSdkTypedApi,
+          )
+          .then(async (api) =>
+            api.apis.ReviveApi.instantiate(
+              origin,
+              value,
+              gas_limit,
+              storage_deposit_limit,
+              code,
+              data,
+              salt,
+              callOptions,
+            ),
+          ),
         typedApi.constants.Revive.NativeToEthRatio().then((nativeToEth) =>
           traceCall({
             from: ss58ToEthereum(origin),
@@ -492,7 +518,7 @@ export const reviveProvider = (
         }
 
         return (
-          typedApi as Exclude<
+          allApis.pasAh as Exclude<
             CommonTypedApi | ReviveSdkTypedApi,
             TypedApi<Passet>
           >
@@ -555,7 +581,7 @@ export const reviveProvider = (
         }
 
         return (
-          typedApi as Exclude<
+          allApis.pasAh as Exclude<
             CommonTypedApi | ReviveSdkTypedApi,
             TypedApi<Passet>
           >
