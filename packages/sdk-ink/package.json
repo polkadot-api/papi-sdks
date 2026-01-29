@@ -43,7 +43,7 @@
   "dependencies": {
     "@ethereumjs/rlp": "^10.1.0",
     "@polkadot-api/common-sdk-utils": "workspace:*",
-    "@polkadot-api/substrate-bindings": "^0.16.5",
+    "polkadot-api": "0.0.1-local.2.0.0",
     "abitype": "^1.2.2",
     "viem": "^2.41.2"
   },
@@ -54,7 +54,7 @@
   },
   "devDependencies": {
     "@polkadot-api/ink-contracts": "^0.4.4",
-    "polkadot-api": "^1.23.1",
+    "polkadot-api": "0.0.1-local.2.0.0",
     "rxjs": "^7.8.2"
   }
 }
