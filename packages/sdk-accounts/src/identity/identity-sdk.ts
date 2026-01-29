@@ -51,15 +51,23 @@ export function createIdentitySdk(typedApi: IdentitySdkTypedApi): IdentitySdk {
       Object.entries(identities).map(([key, identity]) => {
         if (!identity) return [key, null]
         const subIdentity = supersOf[key]
-          ? readIdentityData(supersOf[key][1])?.asText()
+          ? (() => {
+              const data = readIdentityData(supersOf[key][1])
+              return data ? Binary.toText(data) : undefined
+            })()
           : undefined
 
         const info: Identity["info"] = Object.fromEntries(
           Object.entries(identity.info).map(([key, value]) => [
             key,
-            value instanceof Binary
+            value instanceof Uint8Array
               ? value
-              : (readIdentityData(value)?.asText() ?? null),
+              : typeof value === "string"
+              ? value  // SizedHex - keep as hex string
+              : (() => {
+                  const data = readIdentityData(value)
+                  return data ? Binary.toText(data) : null
+                })(),
           ]),
         )
         const judgements: Identity["judgements"] = identity.judgements.map(
@@ -95,7 +103,7 @@ export function createIdentitySdk(typedApi: IdentitySdkTypedApi): IdentitySdk {
   }
 }
 
-const readIdentityData = (identityData?: IdentityData): Binary | null => {
+const readIdentityData = (identityData?: IdentityData): Uint8Array | null => {
   if (
     !identityData ||
     identityData.type === "None" ||
@@ -103,6 +111,7 @@ const readIdentityData = (identityData?: IdentityData): Binary | null => {
   )
     return null
   if (identityData.type === "Raw1")
-    return Binary.fromBytes(new Uint8Array([identityData.value]))
-  return identityData.value
+    return new Uint8Array([identityData.value])
+  // For Raw2-Raw32 and hash types, value is now SizedHex<N> (hex string)
+  return Binary.fromHex(identityData.value)
 }

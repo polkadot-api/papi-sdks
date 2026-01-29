@@ -42,7 +42,8 @@
   },
   "license": "MIT",
   "dependencies": {
-    "polkadot-api": "0.0.1-local.2.0.0",
-    "@polkadot-api/utils": "^0.2.0"
+    "@polkadot-api/substrate-bindings": "0.0.1-local.2.0.0",
+    "@polkadot-api/utils": "^0.2.0",
+    "polkadot-api": "0.0.1-local.2.0.0"
   }
 }

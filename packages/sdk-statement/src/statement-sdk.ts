@@ -1,4 +1,4 @@
-import { FixedSizeBinary, HexString } from "@polkadot-api/substrate-bindings"
+import { SizedHex, HexString } from "@polkadot-api/substrate-bindings"
 import { Statement, statementCodec } from "./codec"
 import { toHex } from "@polkadot-api/utils"
 import { getApi, RequestFn } from "./api"
@@ -36,18 +36,18 @@ export const createStatementSdk = (req: RequestFn) => {
       dest,
       topics,
     }: Partial<{
-      topics: Array<FixedSizeBinary<32>>
-      dest: FixedSizeBinary<32> | null
+      topics: Array<SizedHex<32>>
+      dest: SizedHex<32> | null
     }> = {}): Promise<Statement[]> => {
       if (dest === null)
-        return (await api.broadcasts(topics?.map((v) => v.asHex()) ?? [])).map(
+        return (await api.broadcasts(topics ?? [])).map(
           statementCodec.dec,
         )
       if (topics && dest)
         return (
           await api.posted(
-            topics.map((v) => v.asHex()),
-            dest.asHex(),
+            topics,
+            dest,
           )
         ).map(statementCodec.dec)
       return (await api.dump())

@@ -92,9 +92,9 @@ export function createReferendaSdk<TOrigin extends PolkadotRuntimeOriginCaller>(
         resolve: resolveProposal,
         decodedCall: async () => {
           const proposal = await resolveProposal()
-          const token = await typedApi.compatibilityToken
+          const staticApis = await typedApi.getStaticApis()
 
-          return typedApi.txFromCallData(proposal, token).decodedCall
+          return staticApis.decodeCallData(proposal)
         },
       },
       async getDetails(subscanApiKey: string) {

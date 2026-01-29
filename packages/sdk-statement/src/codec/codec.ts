@@ -1,35 +1,35 @@
 import {
-  Bin,
-  Binary,
   CodecType,
   enhanceCodec,
   Enum,
-  FixedSizeBinary,
+  SizedHex,
   Struct,
   u32,
   u64,
   Variant,
   Vector,
+  Bytes,
 } from "@polkadot-api/substrate-bindings"
+import { Binary } from "polkadot-api"
 
 export type Proof = Enum<{
-  sr25519: { signature: FixedSizeBinary<64>; signer: FixedSizeBinary<32> }
-  ed25519: { signature: FixedSizeBinary<64>; signer: FixedSizeBinary<32> }
-  ecdsa: { signature: FixedSizeBinary<65>; signer: FixedSizeBinary<33> }
+  sr25519: { signature: SizedHex<64>; signer: SizedHex<32> }
+  ed25519: { signature: SizedHex<64>; signer: SizedHex<32> }
+  ecdsa: { signature: SizedHex<65>; signer: SizedHex<33> }
   onChain: {
-    who: FixedSizeBinary<32>
-    blockHash: FixedSizeBinary<32>
+    who: SizedHex<32>
+    blockHash: SizedHex<32>
     event: bigint
   }
 }>
 
 export type Statement = Partial<{
   proof: Proof
-  decryptionKey: FixedSizeBinary<32>
+  decryptionKey: SizedHex<32>
   priority: number
-  channel: FixedSizeBinary<32>
-  topics: Array<FixedSizeBinary<32>>
-  data: Binary
+  channel: SizedHex<32>
+  topics: Array<SizedHex<32>>
+  data: Uint8Array
 }>
 
 const sortIdxs = {
@@ -48,14 +48,14 @@ const sortIdxs = {
 export type UnsignedStatement = Omit<Statement, "proof">
 export type SignedStatement = UnsignedStatement & { proof: Proof }
 
-const bin32 = Bin(32)
-const bin64 = Bin(64)
+const bin32 = Bytes(32)
+const bin64 = Bytes(64)
 
 const field = Variant({
   proof: Variant({
     sr25519: Struct({ signature: bin64, signer: bin32 }),
     ed25519: Struct({ signature: bin64, signer: bin32 }),
-    ecdsa: Struct({ signature: Bin(65), signer: Bin(33) }),
+    ecdsa: Struct({ signature: Bytes(65), signer: Bytes(33) }),
     onChain: Struct({ who: bin32, blockHash: bin32, event: u64 }),
   }),
   decryptionKey: bin32,
@@ -65,7 +65,7 @@ const field = Variant({
   topic2: bin32,
   topic3: bin32,
   topic4: bin32,
-  data: Bin(),
+  data: Bytes(),
 })
 const innerStatement = Vector(field)
 
@@ -85,9 +85,15 @@ export const statementCodec = enhanceCodec<
               `Max topics length is 4. Received ${stmt[k]?.length}`,
             )
           stmt[k]!.forEach((v, i) => {
-            statement.push(Enum(`topic${i + 1}` as `topic${1 | 2 | 3 | 4}`, v))
+            // Convert SizedHex (string) to Uint8Array for encoding
+            statement.push(Enum(`topic${i + 1}` as `topic${1 | 2 | 3 | 4}`, Binary.fromHex(v)))
           })
-        } else statement.push(Enum(k, stmt[k]!))
+        } else {
+          // Convert SizedHex fields to Uint8Array
+          const value = stmt[k]!
+          const convertedValue = typeof value === "string" ? Binary.fromHex(value) : value
+          statement.push(Enum(k, convertedValue as any))
+        }
       })
     return statement
   },
@@ -102,12 +108,19 @@ export const statementCodec = enhanceCodec<
       maxIdx = idx
 
       if (!v.type.startsWith("topic")) {
-        ;(statement as any)[v.type] = v.value
+        // Convert Uint8Array back to SizedHex (string) for supported fields
+        const value = v.value
+        if (v.type === "decryptionKey" || v.type === "channel") {
+          ;(statement as any)[v.type] = Binary.toHex(value as Uint8Array)
+        } else {
+          ;(statement as any)[v.type] = value
+        }
       } else if (v.type !== `topic${++maxTopicChecked}`) {
         throw new Error(`Unexpected ${v.type}`)
       } else {
         statement.topics ??= []
-        statement.topics?.push(v.value as Binary)
+        // Convert Uint8Array to SizedHex (hex string)
+        statement.topics?.push(Binary.toHex(v.value as Uint8Array) as SizedHex<32>)
       }
     })
     return statement
