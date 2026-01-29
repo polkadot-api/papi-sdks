@@ -40,7 +40,7 @@ export type CommonTypedApi = AllTypedApis[keyof AllTypedApis]
 export type ReadDeployerEvents<D extends GenericInkDescriptors, Addr> = (
   events?: Array<
     GenericEvent & {
-      topics: FixedSizeBinary<number>[]
+      topics: SizedHex<number>[]
     }
   >,
 ) => Array<{
@@ -55,7 +55,7 @@ export interface InkV5Sdk<
   StorageErr,
 > {
   getContract(adddress: Addr): Contract<T, D, Addr, StorageErr>
-  getDeployer(code: Binary): Deployer<T, D, Addr>
+  getDeployer(code: Uint8Array): Deployer<T, D, Addr>
   readDeploymentEvents: ReadDeployerEvents<D, Addr>
 }
 
@@ -87,13 +87,13 @@ export interface InkSdk {
   getContract: GetContract
   getDeployer: <D extends GenericInkDescriptors>(
     contractDescriptors: D,
-    code: Binary,
+    code: Uint8Array,
   ) => DeployerSdk<D>
   readDeploymentEvents: <D extends GenericInkDescriptors>(
     contractDescriptors: D,
     events?: Array<
       GenericEvent & {
-        topics: FixedSizeBinary<number>[]
+        topics: SizedHex<number>[]
       }
     >,
   ) => Array<{
@@ -165,7 +165,7 @@ type EstimateAddrFn<D extends GenericInkDescriptors, Addr> = <
     origin: SS58String
     value?: bigint
     nonce?: number
-    salt?: FixedSizeBinary<32>
+    salt?: SizedHex<32>
   },
 ) => Promise<Addr | null>
 
@@ -220,7 +220,7 @@ export interface Contract<
           type: "FlagReverted"
           value: {
             message: string
-            raw: Binary
+            raw: Uint8Array
             gasRequired: Gas
             storageDeposit: bigint
             send: () => AsyncTransaction<any, any, any, any>
@@ -238,10 +238,10 @@ export interface Contract<
     events?: Array<
       | {
           event: GenericEvent
-          topics: Binary[]
+          topics: Uint8Array[]
         }
       | (GenericEvent & {
-          topics: Binary[]
+          topics: Uint8Array[]
         })
     >,
   ) => Array<D["__types"]["event"]>
@@ -281,7 +281,7 @@ type SendArgs<D> = Data<D> & {
 type DeployOptions = Partial<{
   gasLimit: Gas
   storageDepositLimit: bigint
-  salt: FixedSizeBinary<32>
+  salt: SizedHex<32>
 }>
 type DryRunDeployArgs<D> = Data<D> & {
   options?: DeployOptions

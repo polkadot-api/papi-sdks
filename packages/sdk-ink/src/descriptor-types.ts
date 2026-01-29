@@ -5,12 +5,11 @@ import {
   InkDescriptors,
   InkStorageDescriptor,
 } from "@polkadot-api/ink-contracts"
+import { SizedHex } from "@polkadot-api/substrate-bindings"
 import {
   ApisTypedef,
-  Binary,
   Enum,
   FixedSizeArray,
-  FixedSizeBinary,
   PalletsTypedef,
   PlainDescriptor,
   ResultPayload,
@@ -24,9 +23,9 @@ import {
 export type MultiAddress = Enum<{
   Id: SS58String
   Index: undefined
-  Raw: Binary
-  Address32: FixedSizeBinary<32>
-  Address20: FixedSizeBinary<20>
+  Raw: Uint8Array
+  Address32: SizedHex<32>
+  Address20: SizedHex<20>
 }>
 
 export type Gas = {
@@ -46,7 +45,7 @@ export type DryRunCallParams<Addr> = [
   value: bigint,
   gas_limit: Gas | undefined,
   storage_deposit_limit: bigint | undefined,
-  input_data: Binary,
+  input_data: Uint8Array,
 ]
 export type DryRunCallResult<Ev = any, Err = any> = {
   gas_consumed: Gas
@@ -58,7 +57,7 @@ export type DryRunCallResult<Ev = any, Err = any> = {
   result: ResultPayload<
     {
       flags: number
-      data: Binary
+      data: Uint8Array
     },
     Err
   >
@@ -70,11 +69,11 @@ export type DryRunInstantiateParams = [
   gas_limit: Gas | undefined,
   storage_deposit_limit: bigint | undefined,
   code: Enum<{
-    Upload: Binary
-    Existing: FixedSizeBinary<32>
+    Upload: Uint8Array
+    Existing: SizedHex<32>
   }>,
-  data: Binary,
-  salt: Binary | undefined,
+  data: Uint8Array,
+  salt: Uint8Array | undefined,
 ]
 export type DryRunInstantiateResult<AddrRes, Ev = any, Err = any> = {
   gas_consumed: Gas
@@ -87,7 +86,7 @@ export type DryRunInstantiateResult<AddrRes, Ev = any, Err = any> = {
     {
       result: {
         flags: number
-        data: Binary
+        data: Uint8Array
       }
     } & AddrRes,
     Err
@@ -106,8 +105,8 @@ export type InkSdkApis<Ev = any, Err = any> = ApisTypedef<{
       DryRunInstantiateResult<{ account_id: SS58String }, Ev, Err>
     >
     get_storage: RuntimeDescriptor<
-      [address: SS58String, key: Binary],
-      ResultPayload<Binary | undefined, StorageError>
+      [address: SS58String, key: Uint8Array],
+      ResultPayload<Uint8Array | undefined, StorageError>
     >
   }
 }>
@@ -130,7 +129,7 @@ export type InkSdkPallets = PalletsTypedef<
       ContractInfoOf: StorageDescriptor<
         [Key: SS58String],
         {
-          code_hash: FixedSizeBinary<32>
+          code_hash: SizedHex<32>
         },
         true,
         never
@@ -144,23 +143,23 @@ export type InkSdkPallets = PalletsTypedef<
         value: bigint
         gas_limit: Gas
         storage_deposit_limit: bigint | undefined
-        data: Binary
+        data: Uint8Array
       }>
       instantiate: TxDescriptor<{
         value: bigint
         gas_limit: Gas
         storage_deposit_limit: bigint | undefined
-        code_hash: FixedSizeBinary<32>
-        data: Binary
-        salt: Binary
+        code_hash: SizedHex<32>
+        data: Uint8Array
+        salt: Uint8Array
       }>
       instantiate_with_code: TxDescriptor<{
         value: bigint
         gas_limit: Gas
         storage_deposit_limit: bigint | undefined
-        code: Binary
-        data: Binary
-        salt: Binary
+        code: Uint8Array
+        data: Uint8Array
+        salt: Uint8Array
       }>
     }
   },
@@ -179,7 +178,7 @@ export type GenericInkDescriptors = InkDescriptors<
   Event
 >
 
-export type ReviveAddress = FixedSizeBinary<20>
+export type ReviveAddress = SizedHex<20>
 export type ReviveStorageError = Enum<{
   DoesntExist: undefined
   KeyDecodingFailed: undefined
@@ -187,30 +186,30 @@ export type ReviveStorageError = Enum<{
 
 export type U256 = FixedSizeArray<4, bigint>
 export type GenericTransaction = {
-  blob_versioned_hashes: Array<FixedSizeBinary<32>>
+  blob_versioned_hashes: Array<SizedHex<32>>
   // Upcoming parameter, pop doesn't have it
   authorization_list?: Array<unknown>
-  blobs: Array<Binary>
-  from?: FixedSizeBinary<20> | undefined
+  blobs: Array<Uint8Array>
+  from?: SizedHex<20> | undefined
   input: {
-    input?: Binary | undefined
-    data?: Binary | undefined
+    input?: Uint8Array | undefined
+    data?: Uint8Array | undefined
   }
-  to?: FixedSizeBinary<20> | undefined
+  to?: SizedHex<20> | undefined
   value?: U256 | undefined
 }
 
 export type TraceCallResult = {
-  from: FixedSizeBinary<20>
-  to: FixedSizeBinary<20>
-  output: Binary
+  from: SizedHex<20>
+  to: SizedHex<20>
+  output: Uint8Array
   error?: string
   revert_reason?: string
   calls: Array<TraceCallResult>
   logs: Array<{
-    address: FixedSizeBinary<20>
-    topics: Array<FixedSizeBinary<32>>
-    data: Binary
+    address: SizedHex<20>
+    topics: Array<SizedHex<32>>
+    data: Uint8Array
     position: number
   }>
   value?: U256 | undefined
@@ -218,12 +217,12 @@ export type TraceCallResult = {
 
 type ContractState = Array<
   [
-    FixedSizeBinary<20>,
+    SizedHex<20>,
     {
       balance?: U256 | undefined
       nonce?: number | undefined
-      code?: Binary | undefined
-      storage: Array<[Binary, Binary | undefined]>
+      code?: Uint8Array | undefined
+      storage: Array<[Uint8Array, Uint8Array | undefined]>
     },
   ]
 >
@@ -239,12 +238,12 @@ export type ReviveSdkApis<Ev = any, Err = any> = ApisTypedef<{
       DryRunInstantiateResult<{ addr: ReviveAddress }, Ev, Err>
     >
     get_storage: RuntimeDescriptor<
-      [address: ReviveAddress, key: FixedSizeBinary<32>],
-      ResultPayload<Binary | undefined, ReviveStorageError>
+      [address: ReviveAddress, key: SizedHex<32>],
+      ResultPayload<Uint8Array | undefined, ReviveStorageError>
     >
     get_storage_var_key?: RuntimeDescriptor<
-      [address: ReviveAddress, key: Binary],
-      ResultPayload<Binary | undefined, ReviveStorageError>
+      [address: ReviveAddress, key: Uint8Array],
+      ResultPayload<Uint8Array | undefined, ReviveStorageError>
     >
     trace_call: RuntimeDescriptor<
       [
@@ -280,12 +279,12 @@ export type ReviveSdkApis<Ev = any, Err = any> = ApisTypedef<{
         // pop
         | TraceCallResult,
         Enum<{
-          Data: Binary
+          Data: Uint8Array
           Message: string
         }>
       >
     >
-    balance: RuntimeDescriptor<[address: FixedSizeBinary<20>], U256>
+    balance: RuntimeDescriptor<[address: SizedHex<20>], U256>
   }
 }>
 export type ReviveSdkPallets<TStorage> = PalletsTypedef<
@@ -302,13 +301,13 @@ export type ReviveSdkPallets<TStorage> = PalletsTypedef<
     }
     Revive: {
       PristineCode: StorageDescriptor<
-        [Key: FixedSizeBinary<32>],
-        Binary,
+        [Key: SizedHex<32>],
+        Uint8Array,
         true,
         never
       >
       OriginalAccount: StorageDescriptor<
-        [Key: FixedSizeBinary<20>],
+        [Key: SizedHex<20>],
         SS58String,
         true,
         never
@@ -322,23 +321,23 @@ export type ReviveSdkPallets<TStorage> = PalletsTypedef<
         value: bigint
         gas_limit: Gas
         storage_deposit_limit: bigint
-        data: Binary
+        data: Uint8Array
       }>
       instantiate: TxDescriptor<{
         value: bigint
         gas_limit: Gas
         storage_deposit_limit: bigint
-        code_hash: FixedSizeBinary<32>
-        data: Binary
-        salt: FixedSizeBinary<32> | undefined
+        code_hash: SizedHex<32>
+        data: Uint8Array
+        salt: SizedHex<32> | undefined
       }>
       instantiate_with_code: TxDescriptor<{
         value: bigint
         gas_limit: Gas
         storage_deposit_limit: bigint
-        code: Binary
-        data: Binary
-        salt: FixedSizeBinary<32> | undefined
+        code: Uint8Array
+        data: Uint8Array
+        salt: SizedHex<32> | undefined
       }>
     }
   },
@@ -357,7 +356,7 @@ type OldStorage = {
   ContractInfoOf: StorageDescriptor<
     [Key: ReviveAddress],
     {
-      code_hash: FixedSizeBinary<32>
+      code_hash: SizedHex<32>
     },
     true,
     never
@@ -366,11 +365,11 @@ type OldStorage = {
 type NewStorage = {
   // New interface
   AccountInfoOf: StorageDescriptor<
-    [Key: FixedSizeBinary<20>],
+    [Key: SizedHex<20>],
     {
       account_type: Enum<{
         Contract: {
-          code_hash: FixedSizeBinary<32>
+          code_hash: SizedHex<32>
         }
         EOA: undefined
       }>

@@ -1,14 +1,14 @@
 import { Binary } from "polkadot-api"
 import { PreimagesBounded } from "./referenda/descriptors"
 
-const preimageCache = new Map<string, Promise<Binary>>()
+const preimageCache = new Map<string, Promise<Uint8Array>>()
 
 export const getPreimageResolver = (
   getPreimageValues: (
-    keys: [[Binary, number]][],
-  ) => Promise<(Binary | undefined)[]>,
+    keys: [[Uint8Array, number]][],
+  ) => Promise<(Uint8Array | undefined)[]>,
 ) => {
-  const batched = batch((preimages: [Binary, number][]) =>
+  const batched = batch((preimages: [Uint8Array, number][]) =>
     getPreimageValues(preimages.map((v) => [v])),
   )
 
@@ -17,15 +17,16 @@ export const getPreimageResolver = (
       throw new Error("Legacy proposals can't be resolved")
     if (proposal.type === "Inline") return proposal.value
 
-    const cached = preimageCache.get(proposal.value.hash.asHex())
+    const hashHex = Binary.toHex(proposal.value.hash)
+    const cached = preimageCache.get(hashHex)
     if (cached) return cached
     const promise = (async () => {
       const result = await batched([proposal.value.hash, proposal.value.len])
       if (!result)
-        throw new Error(`Preimage ${proposal.value.hash.asHex()} not found`)
+        throw new Error(`Preimage ${hashHex} not found`)
       return result
     })()
-    preimageCache.set(proposal.value.hash.asHex(), promise)
+    preimageCache.set(hashHex, promise)
     return promise
   }
 }

@@ -1,10 +1,11 @@
+import { Binary, SizedHex } from "@polkadot-api/substrate-bindings"
 import {
   flattenResult,
   FlattenValues,
   mapResult,
   wrapAsyncTx,
 } from "@polkadot-api/common-sdk-utils"
-import { Binary, Enum, FixedSizeBinary } from "polkadot-api"
+import { Enum, SS58String } from "polkadot-api"
 import type {
   GenericInkDescriptors,
   InkSdkTypedApi,
@@ -25,15 +26,15 @@ export function getDeployer<
   provider: ContractsProvider<Addr, StorageErr>,
   encodingProvider: EncodingProvider,
   code: Enum<{
-    Upload: Binary
-    Existing: Promise<FixedSizeBinary<32>>
+    Upload: Uint8Array
+    Existing: Promise<SizedHex<32>>
   }>,
   mapAddr: (v: Addr) => PublicAddr,
 ): Deployer<T, D, PublicAddr> {
   const loadedCode = async (): Promise<
     Enum<{
-      Upload: Binary
-      Existing: FixedSizeBinary<32>
+      Upload: Uint8Array
+      Existing: SizedHex<32>
     }>
   > =>
     code.type === "Upload"

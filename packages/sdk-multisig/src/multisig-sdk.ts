@@ -75,11 +75,12 @@ export const createMultisigSdk: CreateMultisigSdk = (client, addrType) => {
         })
       }
 
-      const callHash = Blake2256(callData.asBytes())
+      const callHash = Blake2256(callData)
+      const callHashHex = Binary.toHex(callHash)
       const [multisigInfo, weightInfo] = await Promise.all([
         activeApi.query.Multisig.Multisigs.getValue(
           toAddress(multisigId),
-          Binary.fromBytes(callHash),
+          callHashHex,
         ),
         tx.getPaymentInfo(signatoryId),
       ])
@@ -108,7 +109,7 @@ export const createMultisigSdk: CreateMultisigSdk = (client, addrType) => {
         method === "approve_as_multi"
           ? activeApi.tx.Multisig.approve_as_multi({
               ...commonPayload,
-              call_hash: Binary.fromBytes(callHash),
+              call_hash: callHashHex,
             })
           : activeApi.tx.Multisig.as_multi({
               ...commonPayload,
@@ -155,7 +156,7 @@ export const createMultisigSdk: CreateMultisigSdk = (client, addrType) => {
           atBlockNumber,
           hasher,
         ) {
-          const tx = await activeApi.txFromCallData(Binary.fromBytes(callData))
+          const tx = await activeApi.txFromCallData(callData)
           const wrappedTx = getMultisigTx(
             multisig,
             toAddress(signerId),
@@ -164,7 +165,7 @@ export const createMultisigSdk: CreateMultisigSdk = (client, addrType) => {
           )
 
           return signer.signTx(
-            (await wrappedTx.getEncodedData()).asBytes(),
+            await wrappedTx.getEncodedData(),
             signedExtensions,
             metadata,
             atBlockNumber,

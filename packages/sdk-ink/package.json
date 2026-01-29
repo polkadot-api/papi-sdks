@@ -43,8 +43,9 @@
   "dependencies": {
     "@ethereumjs/rlp": "^10.1.0",
     "@polkadot-api/common-sdk-utils": "workspace:*",
-    "polkadot-api": "0.0.1-local.2.0.0",
+    "@polkadot-api/substrate-bindings": "0.0.1-local.2.0.0",
     "abitype": "^1.2.2",
+    "polkadot-api": "0.0.1-local.2.0.0",
     "viem": "^2.41.2"
   },
   "peerDependencies": {

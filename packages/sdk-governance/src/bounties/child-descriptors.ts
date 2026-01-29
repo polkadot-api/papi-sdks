@@ -1,7 +1,6 @@
 import { SdkDefinition } from "@polkadot-api/common-sdk-utils"
 import {
   ApisTypedef,
-  Binary,
   DescriptorEntry,
   Enum,
   FixedSizeArray,
@@ -51,7 +50,7 @@ export type ChildBountiesV0Storage = {
      */
     ChildBountyDescriptions: StorageDescriptor<
       [Key: number],
-      Binary,
+      Uint8Array,
       true,
       never
     >
@@ -74,7 +73,7 @@ export type ChildBountiesV1Storage = {
      */
     ChildBountyDescriptionsV1: StorageDescriptor<
       FixedSizeArray<2, number>,
-      Binary,
+      Uint8Array,
       true,
       never
     >
@@ -90,7 +89,7 @@ type ChildBountiesSdkPallets<
       add_child_bounty: TxDescriptor<{
         parent_bounty_id: number
         value: bigint
-        description: Binary
+        description: Uint8Array
       }>
       propose_curator: TxDescriptor<{
         parent_bounty_id: number

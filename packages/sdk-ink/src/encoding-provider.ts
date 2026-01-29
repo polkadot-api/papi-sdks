@@ -11,7 +11,7 @@ import {
   AbiParameter,
   AbiReceive,
 } from "abitype"
-import { Binary, FixedSizeBinary } from "polkadot-api"
+import { Binary, Enum } from "polkadot-api"
 import {
   Abi,
   decodeErrorResult,
@@ -24,33 +24,33 @@ import { GenericInkDescriptors } from "./descriptor-types"
 import { compactNumber } from "@polkadot-api/substrate-bindings"
 
 export interface EncodingProvider {
-  isCompatible(codeHash: FixedSizeBinary<32>): boolean
+  isCompatible(codeHash: SizedHex<32>): boolean
   message(message: string): {
     encode: (value: unknown) => Binary
-    decode: (value: Binary) => unknown
+    decode: (value: Uint8Array) => unknown
   }
   constructor(constructor: string): {
     encode: (value: unknown) => Binary
-    decode: (value: Binary) => unknown
+    decode: (value: Uint8Array) => unknown
   }
   filterEvents(
     address: string,
     events?: Array<
       | {
           event: GenericEvent
-          topics: Binary[]
+          topics: Uint8Array[]
         }
       | (GenericEvent & {
-          topics: Binary[]
+          topics: Uint8Array[]
         })
     >,
   ): GenericEvent[]
   storage(key: string): {
     encode: (value: unknown) => Binary
-    decode: (value: Binary) => unknown
+    decode: (value: Uint8Array) => unknown
   }
   storagePaths(): string[]
-  decodeError(data: Binary): unknown
+  decodeError(data: Uint8Array): unknown
 }
 
 export const inkEncoding = (
@@ -64,7 +64,7 @@ export const inkEncoding = (
 
   return {
     isCompatible(codeHash) {
-      return codeHash ? codeHash.asHex() === lookup.metadata.source.hash : false
+      return codeHash ? codeHash === lookup.metadata.source.hash : false
     },
     message(message) {
       const msg = inkClient.message(message)
@@ -101,14 +101,14 @@ export const inkEncoding = (
       // Meaning what we get over the wire is [payload_len,data]
       // And `data` is a Vec<u8>, hence [msg_len,...chars]. In this case, the msg_len is redundant.
       try {
-        const bytes = data.asBytes()
+        const bytes = data
         const length = compactNumber.dec(bytes)
         const compactLength = compactNumber.enc(length).length
         if (compactLength + length === bytes.length) {
-          return Binary.fromBytes(bytes.slice(compactLength)).asText()
+          return bytes.slice(compactLength).asText()
         }
       } catch {}
-      return data.asHex()
+      return data
     },
   }
 }
@@ -124,7 +124,7 @@ export const solEncoding = (
 
   // There are two objects that are different between papi and viem:
   // - function: { address: HexString, selector: HexString } <=> HexString
-  // - bytes: Binary <=> HexString
+  // - bytes: Uint8Array <=> HexString
   const valueToViem = (value: unknown, param: AbiParameter): unknown => {
     if (param.type === "function") {
       if (typeof value === "string" && value.startsWith("0x")) return value
@@ -166,7 +166,7 @@ export const solEncoding = (
           "Expected Binary in parameter " + (param.name ?? "(no name)"),
         )
       }
-      return value.asHex()
+      return value
     }
 
     return value
@@ -315,7 +315,7 @@ export const solEncoding = (
           const result = decodeFunctionResult({
             abi,
             functionName: message === "fallback" ? undefined : message,
-            data: value.asHex() as `0x${string}`,
+            data: value as `0x${string}`,
           })
           return viemToOutputs(result, "outputs" in msg ? msg.outputs : [])
         },
@@ -323,7 +323,7 @@ export const solEncoding = (
     },
     filterEvents(address, events = []) {
       const addrEq = (a: string | Binary) =>
-        (a instanceof Binary ? a.asHex() : a) === address
+        (a instanceof Binary ? a : a) === address
 
       const contractEvents = events
         .map((v) => ("event" in v ? v : { event: v, topics: v.topics }))
@@ -336,13 +336,13 @@ export const solEncoding = (
 
       return contractEvents
         .map((v): GenericEvent | null => {
-          const topics = v.topics.map((v) => v.asHex())
+          const topics = v.topics.map((v) => v)
 
           try {
             const evtLog = decodeEventLog({
               abi,
               topics: topics as any,
-              data: (v.event.value as any).value.data.asHex(),
+              data: (v.event.value as any).value.data,
             })
             return {
               type: evtLog.eventName!,
@@ -364,7 +364,7 @@ export const solEncoding = (
       try {
         const error = decodeErrorResult({
           abi,
-          data: data.asHex() as `0x${string}`,
+          data: data as `0x${string}`,
         })
         const abiItem = error.abiItem as AbiError
 
@@ -374,7 +374,7 @@ export const solEncoding = (
         }
       } catch (ex) {
         console.error(ex)
-        return data.asHex()
+        return data
       }
     },
   }

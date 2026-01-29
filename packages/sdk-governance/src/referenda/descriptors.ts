@@ -1,7 +1,6 @@
 import { SdkDefinition } from "@polkadot-api/common-sdk-utils"
 import {
   ApisTypedef,
-  Binary,
   ChainDefinition,
   Enum,
   FixedSizeArray,
@@ -46,11 +45,11 @@ export type PolkadotRuntimeOriginCaller =
 
 export type PreimagesBounded = Enum<{
   Legacy: {
-    hash: Binary
+    hash: Uint8Array
   }
-  Inline: Binary
+  Inline: Uint8Array
   Lookup: {
-    hash: Binary
+    hash: Uint8Array
     len: number
   }
 }>
@@ -127,8 +126,8 @@ type ReferendaSdkPallets<TOrigin> = PalletsTypedef<
   {
     Preimage: {
       PreimageFor: StorageDescriptor<
-        [Key: [Binary, number]],
-        Binary,
+        [Key: [Uint8Array, number]],
+        Uint8Array,
         true,
         never
       >
@@ -164,7 +163,7 @@ type ReferendaSdkPallets<TOrigin> = PalletsTypedef<
     }
     Preimage: {
       note_preimage: TxDescriptor<{
-        bytes: Binary
+        bytes: Uint8Array
       }>
     }
   },

@@ -42,8 +42,9 @@
   "license": "MIT",
   "dependencies": {
     "@polkadot-api/common-sdk-utils": "workspace:*",
-    "polkadot-api": "0.0.1-local.2.0.0",
+    "@polkadot-api/substrate-bindings": "0.0.1-local.2.0.0",
     "@react-rxjs/utils": "^0.9.7",
+    "polkadot-api": "0.0.1-local.2.0.0",
     "scale-ts": "^1.6.1"
   },
   "peerDependencies": {

@@ -39,21 +39,21 @@ export const createInkSdk = (
       provider,
       encodingProvider,
       Binary.fromHex(address),
-      (v) => v.asHex(),
+      (v) => v,
       getAccountId(address),
     )
   }
 
   const getDeployerSdk = <D extends GenericInkDescriptors>(
     contractDescriptors: D,
-    code: Binary,
+    code: Uint8Array,
   ): Deployer<CommonTypedApi, D, HexString> => {
     const encodingProvider = contractDescriptors.metadata
       ? inkEncoding(contractDescriptors)
       : solEncoding(contractDescriptors)
 
     return getDeployer(provider, encodingProvider, Enum("Upload", code), (v) =>
-      v.asHex(),
+      v,
     )
   }
 
@@ -92,15 +92,15 @@ export const createInkSdk = (
           .map(
             (v) =>
               (v.value as any).value as {
-                deployer: Binary
-                contract: Binary
+                deployer: Uint8Array
+                contract: Uint8Array
               },
           ) ?? []
 
       return instantiatedEvents.map((evt) => ({
-        address: evt.contract.asHex(),
+        address: evt.contract,
         contractEvents: encodingProvider.filterEvents(
-          evt.contract.asHex(),
+          evt.contract,
           events,
         ),
       }))

@@ -29,8 +29,8 @@ export const getStorageLimit = (
   }>,
 ) => (depositResponse.type === "Charge" ? depositResponse.value : 0n)
 
-export const ss58ToEthereum = (address: SS58String): Binary =>
-  Binary.fromBytes(Keccak256(AccountId().enc(address)).slice(12))
+export const ss58ToEthereum = (address: SS58String): Uint8Array =>
+  Keccak256(AccountId().enc(address)).slice(12)
 
 /**
  * @deprecated Use `createInkSdk(client).addressIsMapped(address)` instead.
@@ -74,9 +74,9 @@ export const getDeploymentAddressWithNonce = (
   nonce: number,
 ) => {
   const addr = parseReviveAddress(deployer)
-  const data = RLP.encode([addr.asBytes(), nonce])
+  const data = RLP.encode([addr, nonce])
   const bytes = Keccak256(data).slice(12)
-  return Binary.fromBytes(bytes)
+  return bytes
 }
 
 // Ported from https://github.com/paritytech/polkadot-sdk/blob/c5ae50f86b8b727428eb86d9b1027a8f56fee19d/substrate/frame/revive/src/address.rs#L242
@@ -90,16 +90,16 @@ export const getDeploymentAddressWithSalt = (
   const bytes = Keccak256(
     mergeUint8([
       new Uint8Array([0xff]),
-      addr.asBytes(),
-      saltBin.asBytes(),
-      Binary.fromHex(deploymentHash).asBytes(),
+      addr,
+      saltBin,
+      Binary.fromHex(deploymentHash),
     ]),
   ).slice(12)
 
-  return Binary.fromBytes(bytes)
+  return bytes
 }
 
 export const getDeploymentHash = (code: Binary, inputData: Binary): HexString =>
   Binary.fromBytes(
-    Keccak256(mergeUint8(code.asBytes(), inputData.asBytes())),
-  ).asHex()
+    Keccak256(mergeUint8(code, inputData)),
+  )

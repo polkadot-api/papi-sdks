@@ -1,10 +1,9 @@
 import { SdkDefinition } from "@polkadot-api/common-sdk-utils"
+import { SizedHex } from "@polkadot-api/substrate-bindings"
 import {
   ApisTypedef,
-  Binary,
   Enum,
   FixedSizeArray,
-  FixedSizeBinary,
   PalletsTypedef,
   PlainDescriptor,
   SS58String,
@@ -47,8 +46,8 @@ type BountiesSdkPallets<TOrigin> = PalletsTypedef<
   {
     Preimage: {
       PreimageFor: StorageDescriptor<
-        [Key: [Binary, number]],
-        Binary,
+        [Key: [Uint8Array, number]],
+        Uint8Array,
         true,
         never
       >
@@ -70,7 +69,7 @@ type BountiesSdkPallets<TOrigin> = PalletsTypedef<
       /**
        * The description of each bounty.
        */
-      BountyDescriptions: StorageDescriptor<[Key: number], Binary, true, never>
+      BountyDescriptions: StorageDescriptor<[Key: number], Uint8Array, true, never>
     }
     Scheduler: {
       /**
@@ -81,7 +80,7 @@ type BountiesSdkPallets<TOrigin> = PalletsTypedef<
         [Key: number],
         Array<
           | {
-              maybe_id?: FixedSizeBinary<32> | undefined
+              maybe_id?: SizedHex<32> | undefined
               priority: number
               call: PreimagesBounded
               maybe_periodic?: FixedSizeArray<2, number> | undefined
@@ -122,7 +121,7 @@ type BountiesSdkPallets<TOrigin> = PalletsTypedef<
       }>
       extend_bounty_expiry: TxDescriptor<{
         bounty_id: number
-        remark: Binary
+        remark: Uint8Array
       }>
     }
   },
@@ -151,7 +150,7 @@ export type BountiesSdkTypedApi<TOrigin = unknown> = TypedApi<
 export type MultiAddress = Enum<{
   Id: SS58String
   Index: undefined
-  Raw: Binary
-  Address32: FixedSizeBinary<32>
-  Address20: FixedSizeBinary<20>
+  Raw: Uint8Array
+  Address32: SizedHex<32>
+  Address20: SizedHex<20>
 }>

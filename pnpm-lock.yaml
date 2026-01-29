@@ -200,6 +200,9 @@ importers:
       '@polkadot-api/common-sdk-utils':
         specifier: workspace:*
         version: link:../common-utils
+      '@polkadot-api/substrate-bindings':
+        specifier: 0.0.1-local.2.0.0
+        version: 0.0.1-local.2.0.0
       '@react-rxjs/utils':
         specifier: ^0.9.7
         version: 0.9.7(@react-rxjs/core@0.10.7(react@19.0.0)(rxjs@7.8.2))(react@19.0.0)(rxjs@7.8.2)
@@ -222,6 +225,9 @@ importers:
       '@polkadot-api/common-sdk-utils':
         specifier: workspace:*
         version: link:../common-utils
+      '@polkadot-api/substrate-bindings':
+        specifier: 0.0.1-local.2.0.0
+        version: 0.0.1-local.2.0.0
       abitype:
         specifier: ^1.2.2
         version: 1.2.2(typescript@5.9.3)

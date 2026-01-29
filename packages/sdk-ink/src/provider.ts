@@ -5,11 +5,10 @@ import {
   wrapAsyncTx,
 } from "@polkadot-api/common-sdk-utils"
 import { GenericEvent } from "@polkadot-api/ink-contracts"
+import { Binary, SizedHex } from "@polkadot-api/substrate-bindings"
 import {
-  Binary,
   CompatibilityLevel,
   Enum,
-  FixedSizeBinary,
   ResultPayload,
   SS58String,
   Transaction,
@@ -53,40 +52,40 @@ export interface ContractsProvider<Addr, StorageErr> {
     origin: SS58String,
     value: bigint,
     code: Enum<{
-      Upload: Binary
-      Existing: FixedSizeBinary<32>
+      Upload: Uint8Array
+      Existing: SizedHex<32>
     }>,
-    data: Binary,
-    salt?: Binary,
+    data: Uint8Array,
+    salt?: Uint8Array,
     nonce?: number,
   ): Promise<Addr | null>
   getStorage(
     addr: Addr,
-    key: Binary,
+    key: Uint8Array,
   ): Promise<ResultPayload<Binary | undefined, StorageErr>>
-  getCodeHash(addr: Addr): Promise<FixedSizeBinary<32> | undefined>
+  getCodeHash(addr: Addr): Promise<SizedHex<32> | undefined>
   txCall(payload: {
     dest: Addr
     value: bigint
     gas_limit: Gas
     storage_deposit_limit?: bigint
-    data: Binary
+    data: Uint8Array
   }): AsyncTransaction
   txInstantiate(payload: {
     value: bigint
     gas_limit: Gas
     storage_deposit_limit?: bigint
-    code_hash: FixedSizeBinary<32>
-    data: Binary
-    salt?: Binary
+    code_hash: SizedHex<32>
+    data: Uint8Array
+    salt?: Uint8Array
   }): AsyncTransaction
   txInstantiateWithCode(payload: {
     value: bigint
     gas_limit: Gas
     storage_deposit_limit?: bigint
-    code: Binary
-    data: Binary
-    salt?: Binary
+    code: Uint8Array
+    data: Uint8Array
+    salt?: Uint8Array
   }): AsyncTransaction
 }
 
@@ -102,11 +101,11 @@ export const contractsProvider = (
     gas_limit: Gas | undefined,
     storage_deposit_limit: bigint | undefined,
     code: Enum<{
-      Upload: Binary
-      Existing: FixedSizeBinary<32>
+      Upload: Uint8Array
+      Existing: SizedHex<32>
     }>,
-    data: Binary,
-    salt: Binary | undefined,
+    data: Uint8Array,
+    salt: Uint8Array | undefined,
   ) => {
     const response = await typedApi.apis.ContractsApi.instantiate(
       origin,
@@ -122,7 +121,7 @@ export const contractsProvider = (
       {
         result: {
           flags: number
-          data: Binary
+          data: Uint8Array
         }
       } & {
         account_id: SS58String
@@ -202,12 +201,12 @@ const logToEvent = ({
   topics,
   data,
 }: {
-  address: FixedSizeBinary<20>
-  topics: Array<FixedSizeBinary<32>>
-  data: Binary
+  address: SizedHex<20>
+  topics: Array<SizedHex<32>>
+  data: Uint8Array
 }): {
   event: GenericEvent
-  topics: Binary[]
+  topics: Uint8Array[]
 } => ({
   topics,
   event: {
@@ -225,7 +224,7 @@ const getEventsFromTrace = (
   trace: TraceCallResult,
 ): Array<{
   event: GenericEvent
-  topics: Binary[]
+  topics: Uint8Array[]
 }> => [
   ...trace.logs.map(logToEvent),
   ...trace.calls.flatMap(getEventsFromTrace),
@@ -297,7 +296,7 @@ export const reviveProvider = (
       value: bigint,
       gas_limit: Gas | undefined,
       storage_deposit_limit: bigint | undefined,
-      input: Binary,
+      input: Uint8Array,
     ) =>
       Promise.all([
         allApis.passet.apis.ReviveApi.call
@@ -361,11 +360,11 @@ export const reviveProvider = (
       gas_limit: Gas | undefined,
       storage_deposit_limit: bigint | undefined,
       code: Enum<{
-        Upload: Binary
-        Existing: FixedSizeBinary<32>
+        Upload: Uint8Array
+        Existing: SizedHex<32>
       }>,
-      data: Binary,
-      salt: Binary | undefined,
+      data: Uint8Array,
+      salt: Uint8Array | undefined,
     ) =>
       Promise.all([
         allApis.passet.apis.ReviveApi.instantiate
@@ -392,8 +391,8 @@ export const reviveProvider = (
           traceCall({
             from: ss58ToEthereum(origin),
             input: {
-              input: Binary.fromBytes(
-                mergeUint8([code.value.asBytes(), data.asBytes()]),
+              input: Uint8Array.fromBytes(
+                mergeUint8([code.value, data]),
               ),
             },
             value: valueToU256(value, nativeToEth),

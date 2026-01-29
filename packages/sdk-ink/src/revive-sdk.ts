@@ -47,12 +47,12 @@ export const createReviveSdk = <
         provider,
         encodingProvider,
         Binary.fromHex(address),
-        (v) => v.asHex(),
+        (v) => v,
         getAccountId(address),
       ),
     getDeployer: (code) =>
       getDeployer(provider, encodingProvider, Enum("Upload", code), (v) =>
-        v.asHex(),
+        v,
       ),
     readDeploymentEvents(events) {
       // Contract.Instantiated event not available yet in pallet-revive
@@ -90,7 +90,7 @@ export const createReviveSdk = <
 
 export const getAccountId = (address: HexString) => {
   const publicKey = mergeUint8([
-    Binary.fromHex(address).asBytes(),
+    Binary.fromHex(address),
     new Uint8Array(new Array(32 - 20).fill(0xee)),
   ])
 
