@@ -4,6 +4,7 @@ import {
   ChainDefinition,
   Enum,
   FixedSizeArray,
+  HexString,
   PalletsTypedef,
   PlainDescriptor,
   SS58String,
@@ -45,11 +46,11 @@ export type PolkadotRuntimeOriginCaller =
 
 export type PreimagesBounded = Enum<{
   Legacy: {
-    hash: Uint8Array
+    hash: HexString
   }
   Inline: Uint8Array
   Lookup: {
-    hash: Uint8Array
+    hash: HexString
     len: number
   }
 }>
@@ -126,7 +127,7 @@ type ReferendaSdkPallets<TOrigin> = PalletsTypedef<
   {
     Preimage: {
       PreimageFor: StorageDescriptor<
-        [Key: [Uint8Array, number]],
+        [Key: [HexString, number]],
         Uint8Array,
         true,
         never

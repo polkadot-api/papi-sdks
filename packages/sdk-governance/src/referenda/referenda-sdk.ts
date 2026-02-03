@@ -1,5 +1,5 @@
 import { partitionEntries } from "@/util/watchEntries"
-import { Blake2256 } from "@polkadot-api/substrate-bindings"
+import { Binary, Blake2256 } from "@polkadot-api/substrate-bindings"
 import { combineKeys, toKeySet } from "@react-rxjs/utils"
 import { TxEvent } from "polkadot-api"
 import { map } from "rxjs"
@@ -263,7 +263,7 @@ export function createReferendaSdk<TOrigin extends PolkadotRuntimeOriginCaller>(
           proposal: {
             type: "Lookup",
             value: {
-              hash: hash,
+              hash: Binary.toHex(hash),
               len: proposal.length,
             },
           },
@@ -284,7 +284,7 @@ export function createReferendaSdk<TOrigin extends PolkadotRuntimeOriginCaller>(
   const getSubmittedReferendum = (txEvent: TxEvent) => {
     if (!("events" in txEvent)) return null
     const event = typedApi.event.Referenda.Submitted.filter(txEvent.events)[0]
-    return event as any ?? null
+    return (event as any) ?? null
   }
 
   return {

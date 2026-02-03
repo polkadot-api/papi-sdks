@@ -1,7 +1,7 @@
 import { ksmAh, MultiAddress } from "@polkadot-api/descriptors"
 import { createClient } from "polkadot-api"
 import { connectInjectedExtension } from "polkadot-api/pjs-signer"
-import { getWsProvider } from "polkadot-api/ws-provider/web"
+import { getWsProvider } from "polkadot-api/ws"
 import { getRemoteProxySdk } from "@polkadot-api/sdk-remote-proxy"
 
 const relayClient = createClient(getWsProvider("wss://rpc.ibp.network/kusama"))

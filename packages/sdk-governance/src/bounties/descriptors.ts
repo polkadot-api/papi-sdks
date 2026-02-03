@@ -1,5 +1,5 @@
 import { SdkDefinition } from "@polkadot-api/common-sdk-utils"
-import { SizedHex } from "@polkadot-api/substrate-bindings"
+import { HexString, SizedHex } from "@polkadot-api/substrate-bindings"
 import {
   ApisTypedef,
   Enum,
@@ -46,7 +46,7 @@ type BountiesSdkPallets<TOrigin> = PalletsTypedef<
   {
     Preimage: {
       PreimageFor: StorageDescriptor<
-        [Key: [Uint8Array, number]],
+        [Key: [HexString, number]],
         Uint8Array,
         true,
         never
@@ -69,7 +69,12 @@ type BountiesSdkPallets<TOrigin> = PalletsTypedef<
       /**
        * The description of each bounty.
        */
-      BountyDescriptions: StorageDescriptor<[Key: number], Uint8Array, true, never>
+      BountyDescriptions: StorageDescriptor<
+        [Key: number],
+        Uint8Array,
+        true,
+        never
+      >
     }
     Scheduler: {
       /**
