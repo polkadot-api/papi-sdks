@@ -1,36 +1,25 @@
-import { Binary, SizedHex } from "@polkadot-api/substrate-bindings"
 import {
   flattenResult,
   FlattenValues,
   mapResult,
   wrapAsyncTx,
 } from "@polkadot-api/common-sdk-utils"
-import { Enum, SS58String } from "polkadot-api"
-import type {
-  GenericInkDescriptors,
-  InkSdkTypedApi,
-  ReviveSdkTypedApi,
-} from "./descriptor-types"
+import { SizedHex } from "@polkadot-api/substrate-bindings"
+import { Enum } from "polkadot-api"
+import type { GenericInkDescriptors } from "./descriptor-types"
 import { EncodingProvider } from "./encoding-provider"
 import { ContractsProvider } from "./provider"
-import type { CommonTypedApi, Deployer } from "./sdk-types"
+import type { DeployerSdk } from "./sdk-types"
 import { getSignedStorage, getStorageLimit } from "./util"
 
-export function getDeployer<
-  T extends InkSdkTypedApi | ReviveSdkTypedApi | CommonTypedApi,
-  Addr,
-  StorageErr,
-  D extends GenericInkDescriptors,
-  PublicAddr extends string,
->(
-  provider: ContractsProvider<Addr, StorageErr>,
+export function getDeployer<D extends GenericInkDescriptors>(
+  provider: ContractsProvider,
   encodingProvider: EncodingProvider,
   code: Enum<{
     Upload: Uint8Array
     Existing: Promise<SizedHex<32>>
   }>,
-  mapAddr: (v: Addr) => PublicAddr,
-): Deployer<T, D, PublicAddr> {
+): DeployerSdk<D> {
   const loadedCode = async (): Promise<
     Enum<{
       Upload: Uint8Array
@@ -44,7 +33,7 @@ export function getDeployer<
           value: await code.value,
         }
 
-  const deployer: Deployer<T, D, PublicAddr> = {
+  const deployer: DeployerSdk<D> = {
     async dryRun(constructorLabel, args) {
       const ctor = encodingProvider.constructor(constructorLabel)
       const value = args.value ?? 0n
@@ -69,12 +58,9 @@ export function getDeployer<
 
         return mapResult(flattenResult(decoded), {
           value: (value) => ({
-            address: mapAddr(address),
+            address,
             response: value,
-            events: encodingProvider.filterEvents(
-              mapAddr(address),
-              response.events,
-            ),
+            events: encodingProvider.filterEvents(address, response.events),
             gasRequired: response.gas_required,
             storageDeposit: getSignedStorage(response.storage_deposit),
             deploy() {
@@ -154,7 +140,7 @@ export function getDeployer<
         args.salt,
         args.nonce,
       )
-      return addr ? mapAddr(addr) : null
+      return addr
     },
   }
 

@@ -4,6 +4,11 @@ import {
   getInkLookup,
 } from "@polkadot-api/ink-contracts"
 import {
+  compactNumber,
+  HexString,
+  SizedHex,
+} from "@polkadot-api/substrate-bindings"
+import {
   AbiConstructor,
   AbiError,
   AbiFallback,
@@ -11,7 +16,7 @@ import {
   AbiParameter,
   AbiReceive,
 } from "abitype"
-import { Binary, Enum } from "polkadot-api"
+import { Binary } from "polkadot-api"
 import {
   Abi,
   decodeErrorResult,
@@ -21,32 +26,26 @@ import {
   encodeFunctionData,
 } from "viem"
 import { GenericInkDescriptors } from "./descriptor-types"
-import { compactNumber } from "@polkadot-api/substrate-bindings"
 
 export interface EncodingProvider {
   isCompatible(codeHash: SizedHex<32>): boolean
   message(message: string): {
-    encode: (value: unknown) => Binary
+    encode: (value: unknown) => Uint8Array
     decode: (value: Uint8Array) => unknown
   }
   constructor(constructor: string): {
-    encode: (value: unknown) => Binary
+    encode: (value: unknown) => Uint8Array
     decode: (value: Uint8Array) => unknown
   }
   filterEvents(
     address: string,
-    events?: Array<
-      | {
-          event: GenericEvent
-          topics: Uint8Array[]
-        }
-      | (GenericEvent & {
-          topics: Uint8Array[]
-        })
-    >,
+    events?: Array<{
+      event: GenericEvent
+      topics: HexString[]
+    }>,
   ): GenericEvent[]
   storage(key: string): {
-    encode: (value: unknown) => Binary
+    encode: (value: unknown) => Uint8Array
     decode: (value: Uint8Array) => unknown
   }
   storagePaths(): string[]
@@ -105,7 +104,7 @@ export const inkEncoding = (
         const length = compactNumber.dec(bytes)
         const compactLength = compactNumber.enc(length).length
         if (compactLength + length === bytes.length) {
-          return bytes.slice(compactLength).asText()
+          return Binary.toText(bytes.slice(compactLength))
         }
       } catch {}
       return data
@@ -315,24 +314,22 @@ export const solEncoding = (
           const result = decodeFunctionResult({
             abi,
             functionName: message === "fallback" ? undefined : message,
-            data: value as `0x${string}`,
+            data: Binary.toHex(value) as `0x${string}`,
           })
           return viemToOutputs(result, "outputs" in msg ? msg.outputs : [])
         },
       }
     },
     filterEvents(address, events = []) {
-      const addrEq = (a: string | Binary) =>
-        (a instanceof Binary ? a : a) === address
+      const addrEq = (a: string | Uint8Array) =>
+        (a instanceof Uint8Array ? Binary.toHex(a) : a) === address
 
-      const contractEvents = events
-        .map((v) => ("event" in v ? v : { event: v, topics: v.topics }))
-        .filter(
-          (v) =>
-            v.event.type === "Revive" &&
-            (v.event.value as any).type === "ContractEmitted" &&
-            addrEq((v.event.value as any).value.contract),
-        )
+      const contractEvents = events.filter(
+        (v) =>
+          v.event.type === "Revive" &&
+          (v.event.value as any).type === "ContractEmitted" &&
+          addrEq((v.event.value as any).value.contract),
+      )
 
       return contractEvents
         .map((v): GenericEvent | null => {
@@ -364,7 +361,7 @@ export const solEncoding = (
       try {
         const error = decodeErrorResult({
           abi,
-          data: data as `0x${string}`,
+          data: Binary.toHex(data) as `0x${string}`,
         })
         const abiItem = error.abiItem as AbiError
 

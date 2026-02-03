@@ -1,17 +1,23 @@
-import { Binary, Enum, HexString, PolkadotClient } from "polkadot-api"
+import {
+  AccountId,
+  Binary,
+  Enum,
+  HexString,
+  PolkadotClient,
+  SizedHex,
+} from "polkadot-api"
+import { mergeUint8 } from "polkadot-api/utils"
 import { pasAh, passet, wndAh } from "../.papi/descriptors/dist"
-import { GenericInkDescriptors, ReviveStorageError } from "./descriptor-types"
+import { GenericInkDescriptors } from "./descriptor-types"
 import { EncodingProvider, inkEncoding, solEncoding } from "./encoding-provider"
 import { getContract } from "./get-contract"
 import { getDeployer } from "./get-deployer"
 import { reviveProvider } from "./provider"
-import { getAccountId } from "./revive-sdk"
 import {
   AllTypedApis,
-  CommonTypedApi,
-  Contract,
+  ContractSdk,
   defaultOptions,
-  Deployer,
+  DeployerSdk,
   GetContract,
   InkSdk,
   InkSdkOptions,
@@ -34,12 +40,11 @@ export const createInkSdk = (
   const getContractSdk = <D extends GenericInkDescriptors>(
     encodingProvider: EncodingProvider,
     address: HexString,
-  ): Contract<CommonTypedApi, D, HexString, ReviveStorageError> => {
+  ): ContractSdk<D> => {
     return getContract(
       provider,
       encodingProvider,
-      Binary.fromHex(address),
-      (v) => v,
+      address,
       getAccountId(address),
     )
   }
@@ -47,14 +52,12 @@ export const createInkSdk = (
   const getDeployerSdk = <D extends GenericInkDescriptors>(
     contractDescriptors: D,
     code: Uint8Array,
-  ): Deployer<CommonTypedApi, D, HexString> => {
+  ): DeployerSdk<D> => {
     const encodingProvider = contractDescriptors.metadata
       ? inkEncoding(contractDescriptors)
       : solEncoding(contractDescriptors)
 
-    return getDeployer(provider, encodingProvider, Enum("Upload", code), (v) =>
-      v,
-    )
+    return getDeployer(provider, encodingProvider, Enum("Upload", code))
   }
 
   const curriedGetContract: GetContract = ((
@@ -86,24 +89,30 @@ export const createInkSdk = (
         events
           ?.filter(
             (evt) =>
-              evt.type === "Revive" &&
-              (evt.value as any).type === "Instantiated",
+              evt.event.type === "Revive" &&
+              (evt.event.value as any).type === "Instantiated",
           )
           .map(
             (v) =>
-              (v.value as any).value as {
-                deployer: Uint8Array
-                contract: Uint8Array
+              (v.event.value as any).value as {
+                deployer: SizedHex<20>
+                contract: SizedHex<20>
               },
           ) ?? []
 
       return instantiatedEvents.map((evt) => ({
         address: evt.contract,
-        contractEvents: encodingProvider.filterEvents(
-          evt.contract,
-          events,
-        ),
+        contractEvents: encodingProvider.filterEvents(evt.contract, events),
       }))
     },
   }
+}
+
+const getAccountId = (address: HexString) => {
+  const publicKey = mergeUint8([
+    Binary.fromHex(address),
+    new Uint8Array(new Array(32 - 20).fill(0xee)),
+  ])
+
+  return AccountId().dec(publicKey)
 }

@@ -54,7 +54,7 @@
     "rxjs": ">=7.8.0"
   },
   "devDependencies": {
-    "@polkadot-api/ink-contracts": "^0.4.4",
+    "@polkadot-api/ink-contracts": "0.0.1-local.2.0.0",
     "polkadot-api": "0.0.1-local.2.0.0",
     "rxjs": "^7.8.2"
   }

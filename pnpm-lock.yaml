@@ -236,8 +236,8 @@ importers:
         version: 2.41.2(typescript@5.9.3)
     devDependencies:
       '@polkadot-api/ink-contracts':
-        specifier: ^0.4.4
-        version: 0.4.4
+        specifier: 0.0.1-local.2.0.0
+        version: 0.0.1-local.2.0.0
       rxjs:
         specifier: ^7.8.2
         version: 7.8.2
@@ -556,9 +556,6 @@ packages:
 
   '@polkadot-api/ink-contracts@0.0.1-local.2.0.0':
     resolution: {integrity: sha512-lqegJaA5cce6Z32ZjvZx7isNEfEXKAusnRxQrclmO0TN8OANpVykuJ57FLg6V/R+3aChJFSEbTZWfQ5ZcSxugw==}
-
-  '@polkadot-api/ink-contracts@0.4.4':
-    resolution: {integrity: sha512-SFatwiLT/Kfx3mQGnlPlPjpMAPKnV+0Y38QoNS0TGs9mbUtZlvZ7eJRA0ZfeT5Q6d8gD6zJJiXTmk+ciRG/kRg==}
 
   '@polkadot-api/json-rpc-provider-proxy@0.0.1-local.2.0.0':
     resolution: {integrity: sha512-t/tm7gqKzrEFhIv8JCQDJGWME5qqDfTPS10875/783UvawYVT2QWsQkpgugqYpybaLqGbO/mHzxZjG8I9T/JAQ==}
@@ -1948,12 +1945,6 @@ snapshots:
       '@polkadot-api/metadata-builders': 0.0.1-local.2.0.0
       '@polkadot-api/substrate-bindings': 0.0.1-local.2.0.0
       '@polkadot-api/utils': 0.0.1-local.2.0.0
-
-  '@polkadot-api/ink-contracts@0.4.4':
-    dependencies:
-      '@polkadot-api/metadata-builders': 0.13.7
-      '@polkadot-api/substrate-bindings': 0.16.5
-      '@polkadot-api/utils': 0.2.0
 
   '@polkadot-api/json-rpc-provider-proxy@0.0.1-local.2.0.0': {}
 
