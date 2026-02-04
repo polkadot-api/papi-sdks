@@ -1,5 +1,6 @@
 import { HexString } from "@polkadot-api/substrate-bindings"
 import { fromHex } from "@polkadot-api/utils"
+import { SubmitResult } from "./types"
 
 export type RequestFn = <Reply = any, Params extends Array<any> = any[]>(
   method: string,
@@ -8,7 +9,7 @@ export type RequestFn = <Reply = any, Params extends Array<any> = any[]>(
 
 export const getApi = (req: RequestFn) => ({
   submit: (stmt: HexString) =>
-    req<void, [HexString]>("statement_submit", [stmt]),
+    req<SubmitResult | undefined, [HexString]>("statement_submit", [stmt]),
 
   dump: () => req<HexString[], []>("statement_dump", []),
 
