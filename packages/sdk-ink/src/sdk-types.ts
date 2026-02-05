@@ -2,32 +2,21 @@ import {
   AsyncTransaction,
   FlattenErrors,
   FlattenValues,
-  SdkDefinition,
 } from "@polkadot-api/common-sdk-utils"
 import {
   type GenericEvent,
   type InkStorageDescriptor,
 } from "@polkadot-api/ink-contracts"
 import {
-  Binary,
-  FixedSizeBinary,
+  Enum,
   HexString,
+  SizedHex,
   type ResultPayload,
   type SS58String,
   type TypedApi,
 } from "polkadot-api"
 import type { PasAh, Passet, WndAh } from "../.papi/descriptors/dist"
-import type {
-  Gas,
-  GenericInkDescriptors,
-  InkSdkApis,
-  InkSdkPallets,
-  InkSdkTypedApi,
-  ReviveSdkApis,
-  ReviveSdkPallets,
-  ReviveSdkTypedApi,
-  ReviveStorageError,
-} from "./descriptor-types"
+import type { GenericInkDescriptors } from "./descriptor-types"
 import type { SdkStorage } from "./get-storage"
 
 export type AllTypedApis = {
@@ -37,65 +26,29 @@ export type AllTypedApis = {
 }
 export type CommonTypedApi = AllTypedApis[keyof AllTypedApis]
 
-export type ReadDeployerEvents<D extends GenericInkDescriptors, Addr> = (
-  events?: Array<
-    GenericEvent & {
-      topics: FixedSizeBinary<number>[]
-    }
-  >,
+export type ReadDeployerEvents<D extends GenericInkDescriptors> = (
+  events?: Array<{
+    event: GenericEvent
+    topics: SizedHex<number>[]
+  }>,
 ) => Array<{
-  address: Addr
+  address: SizedHex<20>
   contractEvents: Array<D["__types"]["event"]>
 }>
 
-export interface InkV5Sdk<
-  T extends InkSdkTypedApi | ReviveSdkTypedApi,
-  D extends GenericInkDescriptors,
-  Addr,
-  StorageErr,
-> {
-  getContract(adddress: Addr): Contract<T, D, Addr, StorageErr>
-  getDeployer(code: Binary): Deployer<T, D, Addr>
-  readDeploymentEvents: ReadDeployerEvents<D, Addr>
-}
-
-/**
- * @deprecated Old interface, will be removed in a future version.
- */
-export interface ReviveSdk<
-  T extends ReviveSdkTypedApi,
-  D extends GenericInkDescriptors,
-  Addr,
-  StorageErr,
-> extends InkV5Sdk<T, D, Addr, StorageErr> {
-  addressIsMapped: (address: SS58String) => Promise<boolean>
-}
-
-export type ContractSdk<D extends GenericInkDescriptors> = Contract<
-  CommonTypedApi,
-  D,
-  HexString,
-  ReviveStorageError
->
-export type DeployerSdk<D extends GenericInkDescriptors> = Deployer<
-  CommonTypedApi,
-  D,
-  HexString
->
 export interface InkSdk {
   addressIsMapped: (address: SS58String) => Promise<boolean>
   getContract: GetContract
   getDeployer: <D extends GenericInkDescriptors>(
     contractDescriptors: D,
-    code: Binary,
+    code: Uint8Array,
   ) => DeployerSdk<D>
   readDeploymentEvents: <D extends GenericInkDescriptors>(
     contractDescriptors: D,
-    events?: Array<
-      GenericEvent & {
-        topics: FixedSizeBinary<number>[]
-      }
-    >,
+    events?: Array<{
+      event: GenericEvent
+      topics: SizedHex<number>[]
+    }>,
   ) => Array<{
     address: HexString
     contractEvents: Array<D["__types"]["event"]>
@@ -129,24 +82,28 @@ export const defaultOptions: InkSdkOptions = {
   atBest: false,
 }
 
-type DryRunDeployFn<
-  T extends InkSdkTypedApi | ReviveSdkTypedApi | CommonTypedApi,
-  Addr,
-  D extends GenericInkDescriptors,
-> = <L extends string & keyof D["__types"]["constructors"]>(
+export type Gas = {
+  ref_time: bigint
+  proof_size: bigint
+}
+
+type DryRunDeployFn<D extends GenericInkDescriptors> = <
+  L extends string & keyof D["__types"]["constructors"],
+>(
   constructor: L,
   args: DryRunDeployArgs<D["__types"]["constructors"][L]["message"]>,
 ) => Promise<
   ResultPayload<
     {
-      address: Addr
+      address: SizedHex<20>
       response: FlattenValues<D["__types"]["messages"][L]["response"]>
       events: D["__types"]["event"][]
       gasRequired: Gas
       storageDeposit: bigint
       deploy: () => AsyncTransaction<any, any, any, any>
     },
-    GetErr<T> | FlattenErrors<D["__types"]["messages"][L]["response"]>
+    | GetErr<CommonTypedApi>
+    | FlattenErrors<D["__types"]["messages"][L]["response"]>
   >
 >
 
@@ -157,7 +114,7 @@ type DeployFn<D extends GenericInkDescriptors> = <
   args: DeployArgs<D["__types"]["constructors"][L]["message"]>,
 ) => AsyncTransaction<any, any, any, any>
 
-type EstimateAddrFn<D extends GenericInkDescriptors, Addr> = <
+type EstimateAddrFn<D extends GenericInkDescriptors> = <
   L extends string & keyof D["__types"]["constructors"],
 >(
   constructor: L,
@@ -165,43 +122,52 @@ type EstimateAddrFn<D extends GenericInkDescriptors, Addr> = <
     origin: SS58String
     value?: bigint
     nonce?: number
-    salt?: FixedSizeBinary<32>
+    salt?: SizedHex<32>
   },
-) => Promise<Addr | null>
+) => Promise<SizedHex<20> | null>
 
-export interface Deployer<
-  T extends InkSdkTypedApi | ReviveSdkTypedApi | CommonTypedApi,
-  D extends GenericInkDescriptors,
-  Addr,
-> {
-  dryRun: DryRunDeployFn<T, Addr, D>
+export interface DeployerSdk<D extends GenericInkDescriptors> {
+  dryRun: DryRunDeployFn<D>
   deploy: DeployFn<D>
-  estimateAddress: EstimateAddrFn<D, Addr>
+  estimateAddress: EstimateAddrFn<D>
 }
 
 type GetErr<T> =
-  T extends TypedApi<SdkDefinition<InkSdkPallets, InkSdkApis<any, infer R>>>
-    ? R
-    : T extends TypedApi<
-          SdkDefinition<ReviveSdkPallets<any>, ReviveSdkApis<any, infer R>>
-        >
+  T extends TypedApi<infer D>
+    ? D["descriptors"]["apis"] extends {
+        ReviveApi: {
+          call: [
+            any,
+            {
+              result: ResultPayload<
+                {
+                  flags: number
+                  data: Uint8Array
+                },
+                infer R
+              >
+            },
+          ]
+        }
+      }
       ? R
       : any
+    : any
 
 export type StorageRootType<T extends InkStorageDescriptor> = "" extends keyof T
   ? T[""]["value"]
   : never
 
-export interface Contract<
-  T extends InkSdkTypedApi | ReviveSdkTypedApi | CommonTypedApi,
-  D extends GenericInkDescriptors,
-  Addr,
-  StorageErr,
-> {
+export type ReviveStorageError = Enum<{
+  DoesntExist: undefined
+  KeyDecodingFailed: undefined
+}>
+
+export interface ContractSdk<D extends GenericInkDescriptors> {
   accountId: SS58String
   getBalance(): Promise<bigint>
   isCompatible(): Promise<boolean>
-  getStorage(): SdkStorage<D["__types"]["storage"], StorageErr>
+  getStorage(): SdkStorage<D["__types"]["storage"]>
   query: <L extends string & keyof D["__types"]["messages"]>(
     message: L,
     args: QueryArgs<D["__types"]["messages"][L]["message"]>,
@@ -214,13 +180,13 @@ export interface Contract<
         storageDeposit: bigint
         send: () => AsyncTransaction<any, any, any, any>
       },
-      | GetErr<T>
+      | GetErr<CommonTypedApi>
       | FlattenErrors<D["__types"]["messages"][L]["response"]>
       | {
           type: "FlagReverted"
           value: {
             message: string
-            raw: Binary
+            raw: Uint8Array
             gasRequired: Gas
             storageDeposit: bigint
             send: () => AsyncTransaction<any, any, any, any>
@@ -232,18 +198,13 @@ export interface Contract<
     message: L,
     args: SendArgs<D["__types"]["messages"][L]["message"]>,
   ) => AsyncTransaction<any, any, any, any>
-  dryRunRedeploy: DryRunDeployFn<T, Addr, D>
+  dryRunRedeploy: DryRunDeployFn<D>
   redeploy: DeployFn<D>
   filterEvents: (
-    events?: Array<
-      | {
-          event: GenericEvent
-          topics: Binary[]
-        }
-      | (GenericEvent & {
-          topics: Binary[]
-        })
-    >,
+    events?: Array<{
+      event: GenericEvent
+      topics: HexString[]
+    }>,
   ) => Array<D["__types"]["event"]>
 }
 
@@ -281,7 +242,7 @@ type SendArgs<D> = Data<D> & {
 type DeployOptions = Partial<{
   gasLimit: Gas
   storageDepositLimit: bigint
-  salt: FixedSizeBinary<32>
+  salt: SizedHex<32>
 }>
 type DryRunDeployArgs<D> = Data<D> & {
   options?: DeployOptions

@@ -1,7 +1,7 @@
 import "./style.css"
-import { createClient } from "polkadot-api"
+import { Binary, createClient } from "polkadot-api"
 import { ksmAh, MultiAddress } from "@polkadot-api/descriptors"
-import { getWsProvider } from "polkadot-api/ws-provider/web"
+import { getWsProvider } from "polkadot-api/ws"
 import { getRemoteProxySdk } from "@polkadot-api/sdk-remote-proxy"
 
 const YOUR_ACCOUNT = "HS7p3efTSK35BzLKNSm26MY75jHMmSTkDwN4qxKJYiC8Vwi"
@@ -23,5 +23,5 @@ const proxiedTx = await sdk.getProxiedTx(PROXIED_ACCOUNT, tx)
 const callData = await proxiedTx.getEncodedData()
 
 console.log(`Send via PAPI console:
-https://dev.papi.how/extrinsics#networkId=kusama_asset_hub&endpoint=wss%3A%2F%2Fsys.ibp.network%2Fstatemine&data=${callData.asHex()}
+https://dev.papi.how/extrinsics#networkId=kusama_asset_hub&endpoint=wss%3A%2F%2Fsys.ibp.network%2Fstatemine&data=${Binary.toHex(callData)}
 `)

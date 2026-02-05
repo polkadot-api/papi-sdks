@@ -15,10 +15,10 @@ export const getBountyDescriptions$ = (
   getEntries: () => Promise<
     {
       keyArgs: [Key: number]
-      value: Binary
+      value: Uint8Array
     }[]
   >,
-  getValues: (keys: [number][]) => Promise<(Binary | undefined)[]>,
+  getValues: (keys: [number][]) => Promise<(Uint8Array | undefined)[]>,
   keyChanges$: Observable<KeyChanges<number>>,
 ) =>
   merge(
@@ -43,7 +43,7 @@ export const getBountyDescriptions$ = (
       (acc, v) => ({
         ...acc,
         ...Object.fromEntries(
-          v.map(({ keyArgs, value }) => [keyArgs[0], value.asText()]),
+          v.map(({ keyArgs, value }) => [keyArgs[0], Binary.toText(value)]),
         ),
       }),
       {} as Record<number, string>,

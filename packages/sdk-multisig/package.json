@@ -42,14 +42,14 @@
   "license": "MIT",
   "dependencies": {
     "@polkadot-api/common-sdk-utils": "workspace:*",
-    "@polkadot-api/substrate-bindings": "^0.16.5"
+    "@polkadot-api/substrate-bindings": "canary"
   },
   "peerDependencies": {
     "polkadot-api": ">=1.22.0",
     "rxjs": ">=7.8.0"
   },
   "devDependencies": {
-    "polkadot-api": "^1.23.1",
+    "polkadot-api": "canary",
     "rxjs": "^7.8.2"
   }
 }

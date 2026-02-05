@@ -1,16 +1,18 @@
 {
   "version": 0,
   "descriptorPath": ".papi/descriptors",
-  "options": { "noDescriptorsPackage": true },
+  "options": {
+    "noDescriptorsPackage": true
+  },
   "entries": {
     "ksm": {
-      "chain": "ksmcc3",
+      "chain": "kusama",
       "metadata": ".papi/metadata/ksm.scale",
       "genesis": "0xb0a8d493285c2df73290dfb7e61f870f17b41801197a149ca93654499ea3dafe",
       "codeHash": "0xf45689276dfdcf05b6defd26da68e3283a96190d789f7a311ff31f64b455b421"
     },
     "ksmAh": {
-      "chain": "ksmcc3_asset_hub",
+      "chain": "kusama_asset_hub",
       "metadata": ".papi/metadata/ksmAh.scale",
       "genesis": "0x48239ef607d7928874027a43a67689209727dfb3d3dc5e5b03a39bdc2eda771a",
       "codeHash": "0xe47150af4545236c2ec6915ad0dbc56a9aadf59e7a031e4d133d962d38ab0ab4"

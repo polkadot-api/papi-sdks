@@ -36,7 +36,7 @@ export const novasamaProvider =
       }
               `,
             variables: {
-              address: Binary.fromBytes(info.publicKey).asHex(),
+              address: Binary.toHex(info.publicKey),
             },
             operationName: "Multisig",
           }),

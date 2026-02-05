@@ -1,8 +1,7 @@
 import { contracts } from "@polkadot-api/descriptors"
 import { createInkSdk } from "@polkadot-api/sdk-ink"
 import { Binary, createClient } from "polkadot-api"
-import { withPolkadotSdkCompat } from "polkadot-api/polkadot-sdk-compat"
-import { getWsProvider } from "polkadot-api/ws-provider"
+import { getWsProvider } from "polkadot-api/ws"
 import { ADDRESS } from "./util/address"
 import { aliceSigner } from "./util/signer"
 import { trackTx } from "./util/trackTx"
@@ -10,12 +9,10 @@ import { trackTx } from "./util/trackTx"
 let CONTRACT_ADDRESS = ADDRESS.ballot
 
 const client = createClient(
-  withPolkadotSdkCompat(
-    getWsProvider([
-      "wss://testnet-passet-hub.polkadot.io",
-      "wss://passet-hub-paseo.ibp.network",
-    ]),
-  ),
+  getWsProvider([
+    "wss://testnet-passet-hub.polkadot.io",
+    "wss://passet-hub-paseo.ibp.network",
+  ]),
 )
 
 const inkSdk = createInkSdk(client)
@@ -24,7 +21,7 @@ console.log("Alice is mapped?", await inkSdk.addressIsMapped(ADDRESS.alice))
 
 const pvmFile = Bun.file("./contracts/ballot_sol/3_Ballot_sol_Ballot.polkavm")
 console.log("Loading pvm file")
-const pvmBytes = Binary.fromBytes(await pvmFile.bytes())
+const pvmBytes = await pvmFile.bytes()
 
 const deployer = inkSdk.getDeployer(contracts.ballot, pvmBytes)
 

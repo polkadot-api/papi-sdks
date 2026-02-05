@@ -120,11 +120,12 @@ export function createChildBountiesSdk(
     const getEntries = async (): Promise<
       {
         keyArgs: [Key: number]
-        value: Binary
+        value: Uint8Array
       }[]
     > => {
+      const staticApis = await v0Api.getStaticApis()
       if (
-        await v0Api.query.ChildBounties.ChildBountyDescriptions.isCompatible(
+        staticApis.compat.query.ChildBounties.ChildBountyDescriptions.isCompatible(
           CompatibilityLevel.Partial,
         )
       ) {
@@ -142,9 +143,10 @@ export function createChildBountiesSdk(
     }
     const getValues = async (
       keys: [number][],
-    ): Promise<(Binary | undefined)[]> => {
+    ): Promise<(Uint8Array | undefined)[]> => {
+      const staticApis = await v0Api.getStaticApis()
       if (
-        await v0Api.query.ChildBounties.ChildBountyDescriptions.isCompatible(
+        staticApis.compat.query.ChildBounties.ChildBountyDescriptions.isCompatible(
           CompatibilityLevel.Partial,
         )
       ) {
@@ -185,39 +187,44 @@ export function createChildBountiesSdk(
     }
   }
 
-  function getChildBounty(parentId: number, id: number) {
+  async function getChildBounty(parentId: number, id: number) {
     const v0Api = typedApi as ChildBountiesSdkTypedApi<ChildBountiesV0Storage>
     const v1Api = typedApi as ChildBountiesSdkTypedApi<ChildBountiesV1Storage>
 
+    const staticApis = await v1Api.getStaticApis()
     return Promise.all([
       typedApi.query.ChildBounties.ChildBounties.getValue(parentId, id),
-      v1Api.query.ChildBounties.ChildBountyDescriptionsV1.isCompatible(
-        CompatibilityLevel.Partial,
-      )
-        .then((isCompat) =>
-          isCompat
-            ? v1Api.query.ChildBounties.ChildBountyDescriptionsV1.getValue(
-                parentId,
-                id,
-              )
-            : v0Api.query.ChildBounties.ChildBountyDescriptions.getValue(id),
-        )
-        .then((r) => (r ? r.asText() : null)),
+      (async () => {
+        const isCompat =
+          staticApis.compat.query.ChildBounties.ChildBountyDescriptionsV1.isCompatible(
+            CompatibilityLevel.Partial,
+          )
+        const r = isCompat
+          ? await v1Api.query.ChildBounties.ChildBountyDescriptionsV1.getValue(
+              parentId,
+              id,
+            )
+          : await v0Api.query.ChildBounties.ChildBountyDescriptions.getValue(id)
+        return r ? Binary.toText(r) : null
+      })(),
     ]).then(([bounty, description]) =>
       bounty ? enhanceBounty(bounty, description, id) : null,
     )
   }
 
-  function getChildBounties(parentId: number) {
+  async function getChildBounties(parentId: number) {
     const v0Api = typedApi as ChildBountiesSdkTypedApi<ChildBountiesV0Storage>
     const v1Api = typedApi as ChildBountiesSdkTypedApi<ChildBountiesV1Storage>
 
+    const staticApis = await v1Api.getStaticApis()
     return Promise.all([
       typedApi.query.ChildBounties.ChildBounties.getEntries(parentId),
-      v1Api.query.ChildBounties.ChildBountyDescriptionsV1.isCompatible(
-        CompatibilityLevel.Partial,
-      ).then((isCompat) =>
-        isCompat
+      (async () => {
+        const isCompat =
+          staticApis.compat.query.ChildBounties.ChildBountyDescriptionsV1.isCompatible(
+            CompatibilityLevel.Partial,
+          )
+        return isCompat
           ? v1Api.query.ChildBounties.ChildBountyDescriptionsV1.getEntries(
               parentId,
             ).then((r) =>
@@ -226,11 +233,14 @@ export function createChildBountiesSdk(
                 value,
               })),
             )
-          : v0Api.query.ChildBounties.ChildBountyDescriptions.getEntries(),
-      ),
+          : v0Api.query.ChildBounties.ChildBountyDescriptions.getEntries()
+      })(),
     ]).then(([entries, descriptions]) => {
       const descriptionMap = Object.fromEntries(
-        descriptions.map(({ keyArgs, value }) => [keyArgs[0], value.asText()]),
+        descriptions.map(({ keyArgs, value }) => [
+          keyArgs[0],
+          Binary.toText(value),
+        ]),
       )
 
       return entries

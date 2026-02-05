@@ -11,10 +11,10 @@ const createId = (...parts: Array<Uint8Array>) => {
   return new Uint8Array(arr)
 }
 
-const bountyIdPrefix = Binary.fromText("modlpy/trsry\u0008bt").asBytes()
+const bountyIdPrefix = Binary.fromText("modlpy/trsry\u0008bt")
 export const getBountyAccount = (id: number) =>
   AccountId().dec(createId(bountyIdPrefix, u32.enc(id)))
 
-const childBountyIdPrefix = Binary.fromText("modlpy/trsry\u0008bc").asBytes()
+const childBountyIdPrefix = Binary.fromText("modlpy/trsry\u0008bc")
 export const getChildBountyAccount = (parentId: number, id: number) =>
   AccountId().dec(createId(childBountyIdPrefix, u32.enc(parentId), u32.enc(id)))
