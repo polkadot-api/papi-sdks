@@ -15,8 +15,8 @@ export const getStatementSigner = (
     const signature = await signFn(encoded.slice(compactLen))
     const result = statementCodec.dec(encoded)
     result.proof = Enum(type, {
-      signature: Binary.toHex(signature) as any,  // SizedHex<64> or SizedHex<65>
-      signer: Binary.toHex(publicKey) as any,  // SizedHex<32> or SizedHex<33>
+      signature: Binary.toHex(signature) as any, // SizedHex<64> or SizedHex<65>
+      signer: Binary.toHex(publicKey) as any, // SizedHex<32> or SizedHex<33>
     })
     return result as SignedStatement
   },

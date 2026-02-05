@@ -177,7 +177,11 @@ export function createBountiesSdk<TOrigin extends PolkadotRuntimeOriginCaller>(
       typedApi.query.Bounties.BountyDescriptions.getValue(id, { at }),
     ]).then(([bounty, description]) =>
       bounty
-        ? enhanceBounty(bounty, description ? Binary.toText(description) : null, id)
+        ? enhanceBounty(
+            bounty,
+            description ? Binary.toText(description) : null,
+            id,
+          )
         : null,
     )
   }
@@ -209,7 +213,10 @@ export function createBountiesSdk<TOrigin extends PolkadotRuntimeOriginCaller>(
       typedApi.query.Bounties.BountyDescriptions.getEntries(),
     ]).then(([entries, descriptions]) => {
       const descriptionMap = Object.fromEntries(
-        descriptions.map(({ keyArgs, value }) => [keyArgs[0], Binary.toText(value)]),
+        descriptions.map(({ keyArgs, value }) => [
+          keyArgs[0],
+          Binary.toText(value),
+        ]),
       )
 
       return entries

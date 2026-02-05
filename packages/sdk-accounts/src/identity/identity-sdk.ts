@@ -63,11 +63,11 @@ export function createIdentitySdk(typedApi: IdentitySdkTypedApi): IdentitySdk {
             value instanceof Uint8Array
               ? value
               : typeof value === "string"
-              ? value  // SizedHex - keep as hex string
-              : (() => {
-                  const data = readIdentityData(value)
-                  return data ? Binary.toText(data) : null
-                })(),
+                ? value // SizedHex - keep as hex string
+                : (() => {
+                    const data = readIdentityData(value)
+                    return data ? Binary.toText(data) : null
+                  })(),
           ]),
         )
         const judgements: Identity["judgements"] = identity.judgements.map(
@@ -110,8 +110,7 @@ const readIdentityData = (identityData?: IdentityData): Uint8Array | null => {
     identityData.type === "Raw0"
   )
     return null
-  if (identityData.type === "Raw1")
-    return new Uint8Array([identityData.value])
+  if (identityData.type === "Raw1") return new Uint8Array([identityData.value])
   // For Raw2-Raw32 and hash types, value is now SizedHex<N> (hex string)
   return Binary.fromHex(identityData.value)
 }

@@ -104,7 +104,9 @@ const getNomination$ = (
     maxBond$,
     api.query.Staking.MinNominatorBond.getValue(),
     api.query.Staking.MinimumActiveStake.getValue(),
-    api.query.Staking.Nominators.watchValue(addr).pipe(map(({ value }) => value)),
+    api.query.Staking.Nominators.watchValue(addr).pipe(
+      map(({ value }) => value),
+    ),
     api.query.Staking.Payee.watchValue(addr).pipe(map(({ value }) => value)),
   ]).pipe(
     map(
@@ -145,7 +147,9 @@ const getNomination$ = (
 
 const getNominationPool$ = (api: TypedApi<Dot>, addr: SS58String) =>
   combineLatest([
-    api.query.NominationPools.PoolMembers.watchValue(addr).pipe(map(({ value }) => value)),
+    api.query.NominationPools.PoolMembers.watchValue(addr).pipe(
+      map(({ value }) => value),
+    ),
     api.query.System.Account.watchValue(addr).pipe(
       map(({ value }) => value),
       skip(1),

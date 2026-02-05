@@ -27,9 +27,7 @@ export const scheduledFinder = <TOrigin>(
     const resolvedCalls = await Promise.all(
       scheduled.map(({ height, call }) =>
         resolvePreimage(call)
-          .then(
-            (callData) => staticApis.decodeCallData(callData),
-          )
+          .then((callData) => staticApis.decodeCallData(callData))
           .then((decodedCall) => ({ height, call: decodedCall }))
           .catch((ex) => {
             console.error(ex)

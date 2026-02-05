@@ -47,16 +47,9 @@ export const createStatementSdk = (req: RequestFn) => {
       dest: SizedHex<32> | null
     }> = {}): Promise<Statement[]> => {
       if (dest === null)
-        return (await api.broadcasts(topics ?? [])).map(
-          statementCodec.dec,
-        )
+        return (await api.broadcasts(topics ?? [])).map(statementCodec.dec)
       if (topics && dest)
-        return (
-          await api.posted(
-            topics,
-            dest,
-          )
-        ).map(statementCodec.dec)
+        return (await api.posted(topics, dest)).map(statementCodec.dec)
       return (await api.dump())
         .map(statementCodec.dec)
         .filter(filterDecKey(dest))

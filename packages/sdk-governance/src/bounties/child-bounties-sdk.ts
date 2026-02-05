@@ -195,9 +195,10 @@ export function createChildBountiesSdk(
     return Promise.all([
       typedApi.query.ChildBounties.ChildBounties.getValue(parentId, id),
       (async () => {
-        const isCompat = staticApis.compat.query.ChildBounties.ChildBountyDescriptionsV1.isCompatible(
-          CompatibilityLevel.Partial,
-        )
+        const isCompat =
+          staticApis.compat.query.ChildBounties.ChildBountyDescriptionsV1.isCompatible(
+            CompatibilityLevel.Partial,
+          )
         const r = isCompat
           ? await v1Api.query.ChildBounties.ChildBountyDescriptionsV1.getValue(
               parentId,
@@ -219,9 +220,10 @@ export function createChildBountiesSdk(
     return Promise.all([
       typedApi.query.ChildBounties.ChildBounties.getEntries(parentId),
       (async () => {
-        const isCompat = staticApis.compat.query.ChildBounties.ChildBountyDescriptionsV1.isCompatible(
-          CompatibilityLevel.Partial,
-        )
+        const isCompat =
+          staticApis.compat.query.ChildBounties.ChildBountyDescriptionsV1.isCompatible(
+            CompatibilityLevel.Partial,
+          )
         return isCompat
           ? v1Api.query.ChildBounties.ChildBountyDescriptionsV1.getEntries(
               parentId,
@@ -235,7 +237,10 @@ export function createChildBountiesSdk(
       })(),
     ]).then(([entries, descriptions]) => {
       const descriptionMap = Object.fromEntries(
-        descriptions.map(({ keyArgs, value }) => [keyArgs[0], Binary.toText(value)]),
+        descriptions.map(({ keyArgs, value }) => [
+          keyArgs[0],
+          Binary.toText(value),
+        ]),
       )
 
       return entries

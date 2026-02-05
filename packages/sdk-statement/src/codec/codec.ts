@@ -86,12 +86,18 @@ export const statementCodec = enhanceCodec<
             )
           stmt[k]!.forEach((v, i) => {
             // Convert SizedHex (string) to Uint8Array for encoding
-            statement.push(Enum(`topic${i + 1}` as `topic${1 | 2 | 3 | 4}`, Binary.fromHex(v)))
+            statement.push(
+              Enum(
+                `topic${i + 1}` as `topic${1 | 2 | 3 | 4}`,
+                Binary.fromHex(v),
+              ),
+            )
           })
         } else {
           // Convert SizedHex fields to Uint8Array
           const value = stmt[k]!
-          const convertedValue = typeof value === "string" ? Binary.fromHex(value) : value
+          const convertedValue =
+            typeof value === "string" ? Binary.fromHex(value) : value
           statement.push(Enum(k, convertedValue as any))
         }
       })
@@ -120,7 +126,9 @@ export const statementCodec = enhanceCodec<
       } else {
         statement.topics ??= []
         // Convert Uint8Array to SizedHex (hex string)
-        statement.topics?.push(Binary.toHex(v.value as Uint8Array) as SizedHex<32>)
+        statement.topics?.push(
+          Binary.toHex(v.value as Uint8Array) as SizedHex<32>,
+        )
       }
     })
     return statement
