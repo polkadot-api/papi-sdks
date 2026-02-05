@@ -42,8 +42,8 @@
   "license": "MIT",
   "dependencies": {
     "@polkadot-api/common-sdk-utils": "workspace:*",
-    "@polkadot-api/substrate-bindings": "0.0.1-local.2.0.0",
-    "polkadot-api": "0.0.1-local.2.0.0",
+    "@polkadot-api/substrate-bindings": "canary",
+    "polkadot-api": "canary",
     "@react-rxjs/utils": "^0.9.7"
   },
   "peerDependencies": {
@@ -51,7 +51,7 @@
     "rxjs": ">=7.8.0"
   },
   "devDependencies": {
-    "polkadot-api": "0.0.1-local.2.0.0",
+    "polkadot-api": "canary",
     "rxjs": "^7.8.2"
   }
 }

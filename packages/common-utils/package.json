@@ -45,7 +45,7 @@
     "rxjs": ">=7.8.1"
   },
   "devDependencies": {
-    "polkadot-api": "0.0.1-local.2.0.0",
+    "polkadot-api": "canary",
     "rxjs": "^7.8.2"
   }
 }

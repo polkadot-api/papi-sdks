@@ -5,9 +5,9 @@
   "private": true,
   "dependencies": {
     "@polkadot-api/sdk-statement": "workspace:*",
-    "polkadot-api": "0.0.1-local.2.0.0",
-    "@polkadot-api/substrate-client": "0.0.1-local.2.0.0",
-    "@polkadot-api/substrate-bindings": "0.0.1-local.2.0.0",
+    "polkadot-api": "canary",
+    "@polkadot-api/substrate-client": "canary",
+    "@polkadot-api/substrate-bindings": "canary",
     "@scure/sr25519": "^1.0.0"
   },
   "devDependencies": {
