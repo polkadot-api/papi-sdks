@@ -41,21 +41,21 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@ethereumjs/rlp": "^10.1.0",
+    "@ethereumjs/rlp": "^10.1.1",
     "@polkadot-api/common-sdk-utils": "workspace:*",
-    "@polkadot-api/substrate-bindings": "canary",
+    "@polkadot-api/substrate-bindings": "^0.18.0",
     "abitype": "^1.2.3",
-    "polkadot-api": "canary",
-    "viem": "^2.41.2"
+    "polkadot-api": "^2.0.0-rc.0",
+    "viem": "^2.46.1"
   },
   "peerDependencies": {
-    "@polkadot-api/ink-contracts": ">=0.4.0",
-    "polkadot-api": ">=1.22.0",
+    "@polkadot-api/ink-contracts": ">=0.5.0",
+    "polkadot-api": ">=2.0.0-rc.0",
     "rxjs": ">=7.8.0"
   },
   "devDependencies": {
-    "@polkadot-api/ink-contracts": "canary",
-    "polkadot-api": "canary",
+    "@polkadot-api/ink-contracts": "^0.5.0",
+    "polkadot-api": "^2.0.0-rc.0",
     "rxjs": "^7.8.2"
   }
 }
