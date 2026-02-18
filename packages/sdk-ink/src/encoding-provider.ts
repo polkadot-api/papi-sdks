@@ -69,7 +69,7 @@ export const inkEncoding = (
       const msg = inkClient.message(message)
 
       return {
-        encode: (value) => msg.encode(value as any),
+        encode: (value) => msg.encode(value),
         decode: (data) => msg.decode({ data }),
       }
     },
@@ -77,7 +77,7 @@ export const inkEncoding = (
       const msg = inkClient.constructor(constructor)
 
       return {
-        encode: (value) => msg.encode(value as any),
+        encode: (value) => msg.encode(value),
         decode: (data) => msg.decode({ data }),
       }
     },
@@ -88,7 +88,7 @@ export const inkEncoding = (
       const storage = inkClient.storage(key)
 
       return {
-        encode: (value) => storage.encode(value as any),
+        encode: (value) => storage.encode(value),
         decode: (data) => storage.decode(data),
       }
     },

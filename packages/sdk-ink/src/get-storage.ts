@@ -23,10 +23,7 @@ export function getStorage<D extends GenericInkDescriptors>(
     key: unknown,
   ): Promise<ResultPayload<unknown, ReviveStorageError>> => {
     const storage = encodingProvider.storage(label)
-    const result = await provider.getStorage(
-      address,
-      storage.encode(key as any),
-    )
+    const result = await provider.getStorage(address, storage.encode(key))
 
     if (result.success) {
       return {

@@ -198,7 +198,7 @@ export function createBountiesSdk<TOrigin extends PolkadotRuntimeOriginCaller>(
     if (!proposedBountyEvt) {
       return null
     }
-    const id = (proposedBountyEvt as any).index
+    const id = proposedBountyEvt.payload.index
     const at = txEvent.type === "finalized" ? undefined : txEvent.block.hash
 
     const bounty = await getBounty(id, at)

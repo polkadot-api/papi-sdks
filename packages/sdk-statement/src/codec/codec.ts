@@ -1,16 +1,17 @@
 import {
+  Bytes,
   CodecType,
   enhanceCodec,
   Enum,
+  HexString,
+  SizedBytes,
   SizedHex,
   Struct,
   u32,
   u64,
   Variant,
   Vector,
-  Bytes,
 } from "@polkadot-api/substrate-bindings"
-import { Binary } from "polkadot-api"
 
 export type Proof = Enum<{
   sr25519: { signature: SizedHex<64>; signer: SizedHex<32> }
@@ -48,14 +49,14 @@ const sortIdxs = {
 export type UnsignedStatement = Omit<Statement, "proof">
 export type SignedStatement = UnsignedStatement & { proof: Proof }
 
-const bin32 = Bytes(32)
-const bin64 = Bytes(64)
+const bin32 = SizedBytes(32)
+const bin64 = SizedBytes(64)
 
 const field = Variant({
   proof: Variant({
     sr25519: Struct({ signature: bin64, signer: bin32 }),
     ed25519: Struct({ signature: bin64, signer: bin32 }),
-    ecdsa: Struct({ signature: Bytes(65), signer: Bytes(33) }),
+    ecdsa: Struct({ signature: SizedBytes(65), signer: SizedBytes(33) }),
     onChain: Struct({ who: bin32, blockHash: bin32, event: u64 }),
   }),
   decryptionKey: bin32,
@@ -85,20 +86,10 @@ export const statementCodec = enhanceCodec<
               `Max topics length is 4. Received ${stmt[k]?.length}`,
             )
           stmt[k]!.forEach((v, i) => {
-            // Convert SizedHex (string) to Uint8Array for encoding
-            statement.push(
-              Enum(
-                `topic${i + 1}` as `topic${1 | 2 | 3 | 4}`,
-                Binary.fromHex(v),
-              ),
-            )
+            statement.push(Enum(`topic${i + 1}` as `topic${1 | 2 | 3 | 4}`, v))
           })
         } else {
-          // Convert SizedHex fields to Uint8Array
-          const value = stmt[k]!
-          const convertedValue =
-            typeof value === "string" ? Binary.fromHex(value) : value
-          statement.push(Enum(k, convertedValue as any))
+          statement.push(Enum(k, stmt[k]!))
         }
       })
     return statement
@@ -114,21 +105,12 @@ export const statementCodec = enhanceCodec<
       maxIdx = idx
 
       if (!v.type.startsWith("topic")) {
-        // Convert Uint8Array back to SizedHex (string) for supported fields
-        const value = v.value
-        if (v.type === "decryptionKey" || v.type === "channel") {
-          ;(statement as any)[v.type] = Binary.toHex(value as Uint8Array)
-        } else {
-          ;(statement as any)[v.type] = value
-        }
+        ;(statement as any)[v.type] = v.value
       } else if (v.type !== `topic${++maxTopicChecked}`) {
         throw new Error(`Unexpected ${v.type}`)
       } else {
         statement.topics ??= []
-        // Convert Uint8Array to SizedHex (hex string)
-        statement.topics?.push(
-          Binary.toHex(v.value as Uint8Array) as SizedHex<32>,
-        )
+        statement.topics?.push(v.value as HexString)
       }
     })
     return statement

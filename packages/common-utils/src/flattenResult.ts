@@ -48,7 +48,7 @@ export type FlattenErrors<T> =
 export const flattenResult = <T>(v: T): FlattenResult<T> =>
   isResult(v)
     ? v.success
-      ? (flattenResult as any)(v.value)
+      ? flattenResult(v.value)
       : ({ success: false, value: v.value } as FlattenResult<T>)
     : ({ success: true, value: v } as FlattenResult<T>)
 export type FlattenResult<T> = T extends Result

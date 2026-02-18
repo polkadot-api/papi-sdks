@@ -284,7 +284,7 @@ export function createReferendaSdk<TOrigin extends PolkadotRuntimeOriginCaller>(
   const getSubmittedReferendum = (txEvent: TxEvent) => {
     if (!("events" in txEvent)) return null
     const event = typedApi.event.Referenda.Submitted.filter(txEvent.events)[0]
-    return (event as any) ?? null
+    return event?.payload ?? null
   }
 
   return {
