@@ -12,7 +12,7 @@ export type AsyncTransaction<
 > & {
   decodedCall: Promise<Transaction<Arg, Pallet, Name, Asset>["decodedCall"]>
   getEncodedData: () => Promise<Uint8Array>
-  getBareTx: () => Promise<Uint8Array | HexString>
+  getBareTx: () => Promise<Uint8Array>
   waited: Promise<Transaction<Arg, Pallet, Name, Asset>>
 }
 
