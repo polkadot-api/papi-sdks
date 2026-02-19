@@ -1,5 +1,9 @@
 import { RLP } from "@ethereumjs/rlp"
-import { ethAccount, Keccak256, SizedHex } from "@polkadot-api/substrate-bindings"
+import {
+  ethAccount,
+  Keccak256,
+  SizedHex,
+} from "@polkadot-api/substrate-bindings"
 import {
   AccountId,
   Binary,
@@ -29,7 +33,7 @@ export const getStorageLimit = (
 ) => (depositResponse.type === "Charge" ? depositResponse.value : 0n)
 
 export const ss58ToEthereum = (address: SS58String): SizedHex<20> =>
-  ethAccount.dec((Keccak256(AccountId().enc(address)).slice(12)))
+  ethAccount.dec(Keccak256(AccountId().enc(address)).slice(12))
 
 export const reviveAddressIsMapped = (
   typedApi: CommonTypedApi,

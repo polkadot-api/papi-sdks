@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+### Changed
+
+- BREAKING!: Update to PAPI v2
+- Changed all `FixedSizeBinary` interfaces to `SizedHex`
+
 ## 0.3.0 - 2025-12-16
 
 ### Added
