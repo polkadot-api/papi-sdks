@@ -44,15 +44,15 @@
     "@polkadot-api/common-sdk-utils": "workspace:*",
     "@polkadot-api/substrate-bindings": "^0.19.0",
     "@react-rxjs/utils": "^0.9.7",
-    "polkadot-api": "^2.0.0-rc.0",
+    "polkadot-api": "^2.0.0-rc.2",
     "scale-ts": "^1.6.1"
   },
   "peerDependencies": {
-    "polkadot-api": ">=2.0.0-rc.0",
+    "polkadot-api": ">=2.0.0-rc.2",
     "rxjs": ">=7.8.0"
   },
   "devDependencies": {
-    "polkadot-api": "^2.0.0-rc.0",
+    "polkadot-api": "^2.0.0-rc.2",
     "rxjs": "^7.8.2"
   }
 }

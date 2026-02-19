@@ -1,4 +1,4 @@
-import type { HexString, Transaction } from "polkadot-api"
+import type { Transaction } from "polkadot-api"
 import { from, switchMap } from "rxjs"
 
 export type AsyncTransaction<
