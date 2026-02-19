@@ -7,7 +7,7 @@
     "@polkadot-api/sdk-statement": "workspace:*",
     "polkadot-api": "^2.0.0-rc.0",
     "@polkadot-api/substrate-client": "canary",
-    "@polkadot-api/substrate-bindings": "^0.18.0",
+    "@polkadot-api/substrate-bindings": "^0.19.0",
     "@scure/sr25519": "^1.0.0"
   },
   "devDependencies": {
