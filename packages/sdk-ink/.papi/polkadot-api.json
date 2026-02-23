@@ -12,7 +12,7 @@
       "codeHash": "0xac70e823f8800dd6bfa9eacfd0b52a6b6a7426bb97682fa7f8c5b077051bb4fa"
     },
     "passet": {
-      "wsUrl": "wss://testnet-passet-hub.polkadot.io",
+      "wsUrl": "wss://passet-hub-paseo.ibp.network",
       "metadata": ".papi/metadata/passet.scale",
       "genesis": "0xfd974cf9eaf028f5e44b9fdd1949ab039c6cf9cc54449b0b60d71b042e79aeb6",
       "codeHash": "0xedc99e025ff3d49960fb34d8005e91f555638f4e7f997b602507946876c12f50"
