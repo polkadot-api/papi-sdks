@@ -1,18 +1,16 @@
-import { dot } from "@polkadot-api/descriptors"
+import { dotAh } from "@polkadot-api/descriptors"
 import { createStakingSdk } from "@polkadot-api/sdk-staking"
 import { createClient } from "polkadot-api"
-import { withPolkadotSdkCompat } from "polkadot-api/polkadot-sdk-compat"
-import { getWsProvider } from "polkadot-api/ws-provider/web"
+import { getWsProvider } from "polkadot-api/ws"
 
 const TARGET = "13UVJyLnbVp8c4FQeiGRMVBP7xph2wHCuf2RzvyxJomXJ7RL"
 
 const client = createClient(
-  withPolkadotSdkCompat(getWsProvider("wss://rpc.ibp.network/polkadot")),
+  getWsProvider("wss://rpc-asset-hub-polkadot.luckyfriday.io"),
 )
-const api = client.getTypedApi(dot)
-// console.log(await api.query.System.ParentHash.getValue())
+const api = client.getTypedApi(dotAh)
 
-const sdk = createStakingSdk(api)
+const sdk = createStakingSdk(client)
 // const info = await api.query.Staking.Bonded.getEntries()
 // console.log(info.filter(({ keyArgs: [stash], value }) => stash !== value))
 
@@ -30,11 +28,9 @@ console.log(
 const nominatorRewards = await sdk.getNominatorRewards(TARGET, previousEra)
 console.log("nominator rewards", nominatorRewards)
 
-const [blockTime, epochDuration, sessionsPerEra] = await Promise.all([
-  api.constants.Babe.ExpectedBlockTime(),
-  api.constants.Babe.EpochDuration(),
-  api.constants.Staking.SessionsPerEra(),
-])
+const blockTime = 6000n
+const epochDuration = 2400n
+const sessionsPerEra = await api.constants.Staking.SessionsPerEra()
 const eraDurationInMs = BigInt(sessionsPerEra) * epochDuration * blockTime
 const erasInAYear = (365.25 * 24 * 60 * 60 * 1000) / Number(eraDurationInMs)
 

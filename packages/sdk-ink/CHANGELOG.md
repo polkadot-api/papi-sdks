@@ -2,6 +2,18 @@
 
 ## Unreleased
 
+### Changed
+
+- BREAKING!: Update to PAPI v2
+- Changed every instance of `Binary` to `Uint8Array`
+- Ethereum-like addresses are now consistently `SizedHex<20>`.
+- Changed event interfaces to match PAPI v2 `{ event, topics }`
+
+### Removed
+
+- `createReviveSdk`: This SDK was using a deprecated overload. The main `createInkSdk` still uses revive.
+- `createInkV5Sdk`: This SDK was using the old Contracts pallet with ink@v5 and has been deprecated for a while.
+
 ## 0.6.2 2025-12-13
 
 ### Fixed

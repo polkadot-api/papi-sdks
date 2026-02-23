@@ -3,47 +3,35 @@ import {
   mapResult,
   wrapAsyncTx,
 } from "@polkadot-api/common-sdk-utils"
-import { Enum, SS58String } from "polkadot-api"
-import type {
-  GenericInkDescriptors,
-  InkSdkTypedApi,
-  ReviveSdkTypedApi,
-} from "./descriptor-types"
+import { Enum, SizedHex, SS58String } from "polkadot-api"
+import type { GenericInkDescriptors } from "./descriptor-types"
 import { EncodingProvider } from "./encoding-provider"
 import { getDeployer } from "./get-deployer"
 import { getStorage } from "./get-storage"
 import { ContractsProvider } from "./provider"
-import type { CommonTypedApi, Contract } from "./sdk-types"
+import type { ContractSdk } from "./sdk-types"
 import { getSignedStorage, getStorageLimit } from "./util"
 
-export function getContract<
-  T extends InkSdkTypedApi | ReviveSdkTypedApi | CommonTypedApi,
-  Addr,
-  StorageErr,
-  D extends GenericInkDescriptors,
-  PublicAddr extends string,
->(
-  provider: ContractsProvider<Addr, StorageErr>,
+export function getContract<D extends GenericInkDescriptors>(
+  provider: ContractsProvider,
   encodingProvider: EncodingProvider,
-  address: Addr,
-  mapAddr: (v: Addr) => PublicAddr,
+  address: SizedHex<20>,
   accountId: SS58String,
-): Contract<T, D, PublicAddr, StorageErr> {
+): ContractSdk<D> {
   const codeHash = provider.getCodeHash(address).then((r) => {
     if (!r) {
-      throw new Error(`Contract ${mapAddr(address)} not found`)
+      throw new Error(`Contract ${address} not found`)
     }
     return r
   })
 
-  const deployer = getDeployer<T, Addr, StorageErr, D, PublicAddr>(
+  const deployer = getDeployer<D>(
     provider,
     encodingProvider,
     Enum("Existing", codeHash),
-    mapAddr,
   )
 
-  const contractApi: Contract<T, D, PublicAddr, StorageErr> = {
+  const contractApi: ContractSdk<D> = {
     accountId,
     getBalance: () => provider.getBalance(address),
     async isCompatible() {
@@ -71,10 +59,7 @@ export function getContract<
       )
       if (response.result.success) {
         const availableData = {
-          events: encodingProvider.filterEvents(
-            mapAddr(address),
-            response.events,
-          ),
+          events: encodingProvider.filterEvents(address, response.events),
           gasRequired: response.gas_required,
           storageDeposit: getSignedStorage(response.storage_deposit),
           send: () => {
@@ -157,7 +142,7 @@ export function getContract<
     dryRunRedeploy: deployer.dryRun,
     redeploy: deployer.deploy,
     filterEvents(events) {
-      return encodingProvider.filterEvents(mapAddr(address), events)
+      return encodingProvider.filterEvents(address, events)
     },
   }
 

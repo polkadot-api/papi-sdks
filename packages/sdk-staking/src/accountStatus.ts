@@ -35,7 +35,7 @@ const getBalance$ = (
   addr: SS58String,
 ): Observable<AccountStatus["balance"]> =>
   combineLatest([
-    api.query.System.Account.watchValue(addr),
+    api.query.System.Account.watchValue(addr).pipe(map(({ value }) => value)),
     api.constants.Balances.ExistentialDeposit(),
   ]).pipe(
     map(([{ data }, existentialDeposit]) => {
@@ -72,6 +72,7 @@ const getNomination$ = (
   balance$: Observable<AccountStatus["balance"]>,
 ) => {
   const bonded$ = api.query.Staking.Bonded.watchValue(addr).pipe(
+    map(({ value }) => value),
     // Keep watching until we have a controller account.
     // We have to find a compromise on active storage subscriptions vs reactivity
     // For "Is nominating" we can just watch ledger, with the pre-condition that
@@ -80,6 +81,7 @@ const getNomination$ = (
     switchMap((controller) => {
       if (!controller) return [null]
       return api.query.Staking.Ledger.watchValue(controller).pipe(
+        map(({ value }) => value),
         map((ledger) => ({ controller, ledger })),
       )
     }),
@@ -102,8 +104,10 @@ const getNomination$ = (
     maxBond$,
     api.query.Staking.MinNominatorBond.getValue(),
     api.query.Staking.MinimumActiveStake.getValue(),
-    api.query.Staking.Nominators.watchValue(addr),
-    api.query.Staking.Payee.watchValue(addr),
+    api.query.Staking.Nominators.watchValue(addr).pipe(
+      map(({ value }) => value),
+    ),
+    api.query.Staking.Payee.watchValue(addr).pipe(map(({ value }) => value)),
   ]).pipe(
     map(
       ([
@@ -143,8 +147,11 @@ const getNomination$ = (
 
 const getNominationPool$ = (api: TypedApi<Dot>, addr: SS58String) =>
   combineLatest([
-    api.query.NominationPools.PoolMembers.watchValue(addr),
+    api.query.NominationPools.PoolMembers.watchValue(addr).pipe(
+      map(({ value }) => value),
+    ),
     api.query.System.Account.watchValue(addr).pipe(
+      map(({ value }) => value),
       skip(1),
       startWith(null),
       switchMap(() => api.apis.NominationPoolsApi.pending_rewards(addr)),

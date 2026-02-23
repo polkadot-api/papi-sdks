@@ -1,9 +1,8 @@
 import { SdkDefinition } from "@polkadot-api/common-sdk-utils"
 import {
   ApisTypedef,
-  Binary,
   Enum,
-  FixedSizeBinary,
+  SizedHex,
   PalletsTypedef,
   SS58String,
   StorageDescriptor,
@@ -24,41 +23,41 @@ export type IdentityData = Enum<{
   None: undefined
   Raw0: undefined
   Raw1: number
-  Raw2: FixedSizeBinary<2>
-  Raw3: FixedSizeBinary<3>
-  Raw4: FixedSizeBinary<4>
-  Raw5: FixedSizeBinary<5>
-  Raw6: FixedSizeBinary<6>
-  Raw7: FixedSizeBinary<7>
-  Raw8: FixedSizeBinary<8>
-  Raw9: FixedSizeBinary<9>
-  Raw10: FixedSizeBinary<10>
-  Raw11: FixedSizeBinary<11>
-  Raw12: FixedSizeBinary<12>
-  Raw13: FixedSizeBinary<13>
-  Raw14: FixedSizeBinary<14>
-  Raw15: FixedSizeBinary<15>
-  Raw16: FixedSizeBinary<16>
-  Raw17: FixedSizeBinary<17>
-  Raw18: FixedSizeBinary<18>
-  Raw19: FixedSizeBinary<19>
-  Raw20: FixedSizeBinary<20>
-  Raw21: FixedSizeBinary<21>
-  Raw22: FixedSizeBinary<22>
-  Raw23: FixedSizeBinary<23>
-  Raw24: FixedSizeBinary<24>
-  Raw25: FixedSizeBinary<25>
-  Raw26: FixedSizeBinary<26>
-  Raw27: FixedSizeBinary<27>
-  Raw28: FixedSizeBinary<28>
-  Raw29: FixedSizeBinary<29>
-  Raw30: FixedSizeBinary<30>
-  Raw31: FixedSizeBinary<31>
-  Raw32: FixedSizeBinary<32>
-  BlakeTwo256: FixedSizeBinary<32>
-  Sha256: FixedSizeBinary<32>
-  Keccak256: FixedSizeBinary<32>
-  ShaThree256: FixedSizeBinary<32>
+  Raw2: SizedHex<2>
+  Raw3: SizedHex<3>
+  Raw4: SizedHex<4>
+  Raw5: SizedHex<5>
+  Raw6: SizedHex<6>
+  Raw7: SizedHex<7>
+  Raw8: SizedHex<8>
+  Raw9: SizedHex<9>
+  Raw10: SizedHex<10>
+  Raw11: SizedHex<11>
+  Raw12: SizedHex<12>
+  Raw13: SizedHex<13>
+  Raw14: SizedHex<14>
+  Raw15: SizedHex<15>
+  Raw16: SizedHex<16>
+  Raw17: SizedHex<17>
+  Raw18: SizedHex<18>
+  Raw19: SizedHex<19>
+  Raw20: SizedHex<20>
+  Raw21: SizedHex<21>
+  Raw22: SizedHex<22>
+  Raw23: SizedHex<23>
+  Raw24: SizedHex<24>
+  Raw25: SizedHex<25>
+  Raw26: SizedHex<26>
+  Raw27: SizedHex<27>
+  Raw28: SizedHex<28>
+  Raw29: SizedHex<29>
+  Raw30: SizedHex<30>
+  Raw31: SizedHex<31>
+  Raw32: SizedHex<32>
+  BlakeTwo256: SizedHex<32>
+  Sha256: SizedHex<32>
+  Keccak256: SizedHex<32>
+  ShaThree256: SizedHex<32>
 }>
 
 export type IdentityInfo = {
@@ -67,7 +66,7 @@ export type IdentityInfo = {
   web: IdentityData
   matrix: IdentityData
   email: IdentityData
-  pgp_fingerprint?: FixedSizeBinary<20> | undefined
+  pgp_fingerprint?: SizedHex<20> | undefined
   image: IdentityData
   twitter: IdentityData
   github: IdentityData
@@ -80,7 +79,7 @@ export type OldIdentityValue = [
     deposit: bigint
     info: IdentityInfo
   },
-  Binary | undefined,
+  Uint8Array | undefined,
 ]
 export type IdentityValue = {
   judgements: Array<[number, IdentityJudgement]>

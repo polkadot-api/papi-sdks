@@ -1,200 +1,78 @@
-import {
-  AsyncTransaction,
-  mapResult,
-  Result,
-  wrapAsyncTx,
-} from "@polkadot-api/common-sdk-utils"
+import { AsyncTransaction, wrapAsyncTx } from "@polkadot-api/common-sdk-utils"
 import { GenericEvent } from "@polkadot-api/ink-contracts"
+import { SizedHex } from "@polkadot-api/substrate-bindings"
 import {
-  Binary,
   CompatibilityLevel,
   Enum,
-  FixedSizeBinary,
   ResultPayload,
   SS58String,
   Transaction,
   TypedApi,
 } from "polkadot-api"
 import { mergeUint8 } from "polkadot-api/utils"
+
+import { Passet } from "../.papi/descriptors/dist"
 import {
-  DryRunCallParams,
-  DryRunCallResult,
-  DryRunInstantiateParams,
-  DryRunInstantiateResult,
+  AllTypedApis,
+  CommonTypedApi,
   Gas,
-  GenericTransaction,
-  InkSdkTypedApi,
-  NewReviveSdkTypedApi,
-  OldReviveSdkTypedApi,
-  ReviveAddress,
-  ReviveSdkTypedApi,
   ReviveStorageError,
-  StorageError,
-  TraceCallResult,
-} from "./descriptor-types"
+} from "./sdk-types"
 import {
   getDeploymentAddressWithNonce,
   getDeploymentAddressWithSalt,
   getDeploymentHash,
   ss58ToEthereum,
+  U256,
   u256ToValue,
   valueToU256,
 } from "./util"
-import { AllTypedApis, CommonTypedApi } from "./sdk-types"
-import { Passet } from "../.papi/descriptors/dist"
 
-export interface ContractsProvider<Addr, StorageErr> {
-  getBalance(addr: Addr): Promise<bigint>
-  dryRunCall(...args: DryRunCallParams<Addr>): Promise<DryRunCallResult>
+export interface ContractsProvider {
+  getBalance(addr: SizedHex<20>): Promise<bigint>
+  dryRunCall(...args: DryRunCallParams): Promise<DryRunCallResult>
   dryRunInstantiate(
     ...args: DryRunInstantiateParams
-  ): Promise<DryRunInstantiateResult<{ addr: Addr }>>
+  ): Promise<DryRunInstantiateResult>
   getEstimatedAddress(
     origin: SS58String,
     value: bigint,
     code: Enum<{
-      Upload: Binary
-      Existing: FixedSizeBinary<32>
+      Upload: Uint8Array
+      Existing: SizedHex<32>
     }>,
-    data: Binary,
-    salt?: Binary,
+    data: Uint8Array,
+    salt?: SizedHex<32>,
     nonce?: number,
-  ): Promise<Addr | null>
+  ): Promise<SizedHex<20> | null>
   getStorage(
-    addr: Addr,
-    key: Binary,
-  ): Promise<ResultPayload<Binary | undefined, StorageErr>>
-  getCodeHash(addr: Addr): Promise<FixedSizeBinary<32> | undefined>
+    addr: SizedHex<20>,
+    key: SizedHex<32> | Uint8Array,
+  ): Promise<ResultPayload<Uint8Array | undefined, ReviveStorageError>>
+  getCodeHash(addr: SizedHex<20>): Promise<SizedHex<32> | undefined>
   txCall(payload: {
-    dest: Addr
+    dest: SizedHex<20>
     value: bigint
     gas_limit: Gas
     storage_deposit_limit?: bigint
-    data: Binary
+    data: Uint8Array
   }): AsyncTransaction
   txInstantiate(payload: {
     value: bigint
     gas_limit: Gas
     storage_deposit_limit?: bigint
-    code_hash: FixedSizeBinary<32>
-    data: Binary
-    salt?: Binary
+    code_hash: SizedHex<32>
+    data: Uint8Array
+    salt?: SizedHex<32>
   }): AsyncTransaction
   txInstantiateWithCode(payload: {
     value: bigint
     gas_limit: Gas
     storage_deposit_limit?: bigint
-    code: Binary
-    data: Binary
-    salt?: Binary
+    code: Uint8Array
+    data: Uint8Array
+    salt?: SizedHex<32>
   }): AsyncTransaction
-}
-
-const defaultSalt = Binary.fromText("")
-export const contractsProvider = (
-  typedApi: InkSdkTypedApi,
-  atBest?: boolean,
-): ContractsProvider<SS58String, StorageError> => {
-  const callOptions = atBest ? { at: "best" } : {}
-  const dryRunInstantiate = async (
-    origin: SS58String,
-    value: bigint,
-    gas_limit: Gas | undefined,
-    storage_deposit_limit: bigint | undefined,
-    code: Enum<{
-      Upload: Binary
-      Existing: FixedSizeBinary<32>
-    }>,
-    data: Binary,
-    salt: Binary | undefined,
-  ) => {
-    const response = await typedApi.apis.ContractsApi.instantiate(
-      origin,
-      value,
-      gas_limit,
-      storage_deposit_limit,
-      code,
-      data,
-      salt ?? defaultSalt,
-      callOptions,
-    )
-    const result: Result<
-      {
-        result: {
-          flags: number
-          data: Binary
-        }
-      } & {
-        account_id: SS58String
-      }
-    > = response.result
-    return {
-      ...response,
-      result: mapResult(result, {
-        value: ({ account_id, result }) => ({
-          result,
-          addr: account_id,
-        }),
-      }),
-    }
-  }
-
-  return {
-    async getBalance(addr) {
-      const account = await typedApi.query.System.Account.getValue(addr)
-      return account.data.free
-    },
-    dryRunCall: (...args) =>
-      typedApi.apis.ContractsApi.call(...args, callOptions),
-    dryRunInstantiate,
-    getEstimatedAddress: async (origin, value, code, data, salt) => {
-      const result = await dryRunInstantiate(
-        origin,
-        value,
-        undefined,
-        undefined,
-        code,
-        data,
-        salt,
-      )
-      return result.result.success ? result.result.value.addr : null
-    },
-    getStorage: (...args) =>
-      typedApi.apis.ContractsApi.get_storage(...args, callOptions),
-    getCodeHash: (addr) =>
-      typedApi.query.Contracts.ContractInfoOf.getValue(addr, callOptions).then(
-        (r) => r?.code_hash,
-      ),
-    txCall: ({ data, dest, gas_limit, value, storage_deposit_limit }) =>
-      wrapAsyncTx(async () =>
-        typedApi.tx.Contracts.call({
-          data,
-          dest: {
-            type: "Id",
-            value: dest,
-          },
-          gas_limit,
-          storage_deposit_limit,
-          value,
-        }),
-      ),
-    txInstantiate: (payload) =>
-      wrapAsyncTx(async () =>
-        typedApi.tx.Contracts.instantiate({
-          storage_deposit_limit: undefined,
-          ...payload,
-          salt: payload.salt ?? defaultSalt,
-        }),
-      ),
-    txInstantiateWithCode: (payload) =>
-      wrapAsyncTx(async () =>
-        typedApi.tx.Contracts.instantiate_with_code({
-          storage_deposit_limit: undefined,
-          ...payload,
-          salt: payload.salt ?? defaultSalt,
-        }),
-      ),
-  }
 }
 
 const logToEvent = ({
@@ -202,12 +80,12 @@ const logToEvent = ({
   topics,
   data,
 }: {
-  address: FixedSizeBinary<20>
-  topics: Array<FixedSizeBinary<32>>
-  data: Binary
+  address: SizedHex<20>
+  topics: Array<SizedHex<32>>
+  data: Uint8Array
 }): {
   event: GenericEvent
-  topics: Binary[]
+  topics: Array<SizedHex<32>>
 } => ({
   topics,
   event: {
@@ -225,7 +103,7 @@ const getEventsFromTrace = (
   trace: TraceCallResult,
 ): Array<{
   event: GenericEvent
-  topics: Binary[]
+  topics: SizedHex<32>[]
 }> => [
   ...trace.logs.map(logToEvent),
   ...trace.calls.flatMap(getEventsFromTrace),
@@ -234,8 +112,8 @@ const getEventsFromTrace = (
 export const reviveProvider = (
   allApis: AllTypedApis,
   atBest: boolean,
-): ContractsProvider<ReviveAddress, ReviveStorageError> => {
-  const typedApi = allApis.passet as CommonTypedApi | ReviveSdkTypedApi
+): ContractsProvider => {
+  const typedApi = allApis.passet as CommonTypedApi
 
   const callOptions = atBest ? { at: "best" } : {}
   const traceCall = async ({
@@ -244,10 +122,11 @@ export const reviveProvider = (
     input,
     value,
   }: Pick<GenericTransaction, "from" | "to" | "input" | "value">) => {
-    const isPasset =
-      await allApis.passet.apis.ReviveApi.trace_call.isCompatible(
-        CompatibilityLevel.BackwardsCompatible,
-      )
+    const isPasset = (
+      await allApis.passet.getStaticApis()
+    ).compat.apis.ReviveApi.trace_call.isCompatible(
+      CompatibilityLevel.BackwardsCompatible,
+    )
     const api = isPasset ? allApis.passet : allApis.pasAh
     return api.apis.ReviveApi.trace_call(
       {
@@ -293,21 +172,21 @@ export const reviveProvider = (
     },
     dryRunCall: (
       origin: SS58String,
-      dest: ReviveAddress,
+      dest: SizedHex<20>,
       value: bigint,
       gas_limit: Gas | undefined,
       storage_deposit_limit: bigint | undefined,
-      input: Binary,
+      input: Uint8Array,
     ) =>
       Promise.all([
-        allApis.passet.apis.ReviveApi.call
-          .isCompatible(CompatibilityLevel.Partial)
-          .then(
-            (isPasset) =>
-              (isPasset ? allApis.passet : allApis.pasAh) as
-                | CommonTypedApi
-                | ReviveSdkTypedApi,
+        allApis.passet
+          .getStaticApis()
+          .then((s) =>
+            s.compat.apis.ReviveApi.call.isCompatible(
+              CompatibilityLevel.Partial,
+            ),
           )
+          .then((isPasset) => (isPasset ? allApis.passet : allApis.pasAh))
           .then(async (api) =>
             api.apis.ReviveApi.call(
               origin,
@@ -328,7 +207,12 @@ export const reviveProvider = (
         }),
       ]).then(([call, trace]) => {
         const events = (() => {
-          if ("events" in call && call.events) return call.events
+          // TODO verify cast
+          if ("events" in call && call.events)
+            return call.events as Array<{
+              event: GenericEvent
+              topics: SizedHex<32>[]
+            }>
           if (!trace.success) return undefined
 
           if ("type" in trace.value) {
@@ -361,21 +245,21 @@ export const reviveProvider = (
       gas_limit: Gas | undefined,
       storage_deposit_limit: bigint | undefined,
       code: Enum<{
-        Upload: Binary
-        Existing: FixedSizeBinary<32>
+        Upload: Uint8Array
+        Existing: SizedHex<32>
       }>,
-      data: Binary,
-      salt: Binary | undefined,
+      data: Uint8Array,
+      salt: SizedHex<32> | undefined,
     ) =>
       Promise.all([
-        allApis.passet.apis.ReviveApi.instantiate
-          .isCompatible(CompatibilityLevel.Partial)
-          .then(
-            (isPasset) =>
-              (isPasset ? allApis.passet : allApis.pasAh) as
-                | CommonTypedApi
-                | ReviveSdkTypedApi,
+        allApis.passet
+          .getStaticApis()
+          .then((s) =>
+            s.compat.apis.ReviveApi.instantiate.isCompatible(
+              CompatibilityLevel.Partial,
+            ),
           )
+          .then((isPasset) => (isPasset ? allApis.passet : allApis.pasAh))
           .then(async (api) =>
             api.apis.ReviveApi.instantiate(
               origin,
@@ -392,16 +276,20 @@ export const reviveProvider = (
           traceCall({
             from: ss58ToEthereum(origin),
             input: {
-              input: Binary.fromBytes(
-                mergeUint8([code.value.asBytes(), data.asBytes()]),
-              ),
+              // TODO fetch code
+              input: mergeUint8([code.value as Uint8Array, data]),
             },
             value: valueToU256(value, nativeToEth),
           }),
         ),
       ]).then(([call, trace]) => {
         const events = (() => {
-          if ("events" in call && call.events) return call.events
+          // TODO verify cast
+          if ("events" in call && call.events)
+            return call.events as Array<{
+              event: GenericEvent
+              topics: SizedHex<32>[]
+            }>
           if (!trace.success) return undefined
 
           if ("type" in trace.value) {
@@ -459,15 +347,10 @@ export const reviveProvider = (
               .nonce
       return getDeploymentAddressWithNonce(origin, nonce)
     },
-    getStorage: async (...args) => {
-      // the optional part makes it awkward to work with…
-      const var_key_call = typedApi.apis.ReviveApi
-        .get_storage_var_key as CommonTypedApi["apis"]["ReviveApi"]["get_storage_var_key"]
-      const call = (await var_key_call.isCompatible(CompatibilityLevel.Partial))
-        ? var_key_call
-        : typedApi.apis.ReviveApi.get_storage
-
-      const res = await call(...args, callOptions)
+    getStorage: async (addr, key) => {
+      const res = await (typeof key === "string"
+        ? typedApi.apis.ReviveApi.get_storage(addr, key)
+        : typedApi.apis.ReviveApi.get_storage_var_key(addr, key))
       if (res.success) return res
       return {
         success: false as const,
@@ -475,28 +358,14 @@ export const reviveProvider = (
       }
     },
     getCodeHash: async (addr) => {
-      const newApi = typedApi as NewReviveSdkTypedApi
-      if (
-        await newApi.query.Revive.AccountInfoOf.isCompatible(
-          CompatibilityLevel.Partial,
-        )
-      ) {
-        const result = await newApi.query.Revive.AccountInfoOf.getValue(
-          addr,
-          callOptions,
-        )
-        if (result?.account_type.type !== "Contract") {
-          return undefined
-        }
-        return result.account_type.value.code_hash
-      }
-
-      const oldApi = typedApi as OldReviveSdkTypedApi
-      const result = await oldApi.query.Revive.ContractInfoOf.getValue(
+      const result = await typedApi.query.Revive.AccountInfoOf.getValue(
         addr,
         callOptions,
       )
-      return result?.code_hash
+      if (result?.account_type.type !== "Contract") {
+        return undefined
+      }
+      return result.account_type.value.code_hash
     },
     txCall: (payload) => {
       const { storage_deposit_limit } = payload
@@ -506,9 +375,9 @@ export const reviveProvider = (
 
       return wrapAsyncTx(async (): Promise<Transaction> => {
         if (
-          await allApis.passet.tx.Revive.call.isCompatible(
-            CompatibilityLevel.Partial,
-          )
+          (
+            await allApis.passet.getStaticApis()
+          ).compat.tx.Revive.call.isCompatible(CompatibilityLevel.Partial)
         ) {
           return allApis.passet.tx.Revive.call({
             storage_deposit_limit,
@@ -518,10 +387,7 @@ export const reviveProvider = (
         }
 
         return (
-          allApis.pasAh as Exclude<
-            CommonTypedApi | ReviveSdkTypedApi,
-            TypedApi<Passet>
-          >
+          allApis.pasAh as Exclude<CommonTypedApi, TypedApi<Passet>>
         ).tx.Revive.call({
           storage_deposit_limit,
           ...payload,
@@ -536,7 +402,9 @@ export const reviveProvider = (
 
       return wrapAsyncTx(async () => {
         if (
-          await allApis.passet.tx.Revive.instantiate.isCompatible(
+          (
+            await allApis.passet.getStaticApis()
+          ).compat.tx.Revive.instantiate.isCompatible(
             CompatibilityLevel.Partial,
           )
         ) {
@@ -549,10 +417,7 @@ export const reviveProvider = (
         }
 
         return (
-          typedApi as Exclude<
-            CommonTypedApi | ReviveSdkTypedApi,
-            TypedApi<Passet>
-          >
+          typedApi as Exclude<CommonTypedApi, TypedApi<Passet>>
         ).tx.Revive.instantiate({
           storage_deposit_limit,
           salt,
@@ -568,7 +433,9 @@ export const reviveProvider = (
 
       return wrapAsyncTx(async () => {
         if (
-          await allApis.passet.tx.Revive.instantiate.isCompatible(
+          (
+            await allApis.passet.getStaticApis()
+          ).compat.tx.Revive.instantiate.isCompatible(
             CompatibilityLevel.Partial,
           )
         ) {
@@ -581,10 +448,7 @@ export const reviveProvider = (
         }
 
         return (
-          allApis.pasAh as Exclude<
-            CommonTypedApi | ReviveSdkTypedApi,
-            TypedApi<Passet>
-          >
+          allApis.pasAh as Exclude<CommonTypedApi, TypedApi<Passet>>
         ).tx.Revive.instantiate_with_code({
           storage_deposit_limit,
           salt,
@@ -593,4 +457,90 @@ export const reviveProvider = (
       })
     },
   }
+}
+
+type GenericTransaction = {
+  blob_versioned_hashes: Array<SizedHex<32>>
+  // Upcoming parameter, pop doesn't have it
+  authorization_list?: Array<unknown>
+  blobs: Array<Uint8Array>
+  from?: SizedHex<20> | undefined
+  input: {
+    input?: Uint8Array | undefined
+    data?: Uint8Array | undefined
+  }
+  to?: SizedHex<20> | undefined
+  value?: U256 | undefined
+}
+
+type TraceCallResult = {
+  from: SizedHex<20>
+  to: SizedHex<20>
+  output: Uint8Array
+  error?: string
+  revert_reason?: string
+  calls: Array<TraceCallResult>
+  logs: Array<{
+    address: SizedHex<20>
+    topics: Array<SizedHex<32>>
+    data: Uint8Array
+    position: number
+  }>
+  value?: U256 | undefined
+}
+
+type DryRunCallParams = [
+  origin: SS58String,
+  dest: SizedHex<20>,
+  value: bigint,
+  gas_limit: Gas | undefined,
+  storage_deposit_limit: bigint | undefined,
+  input_data: Uint8Array,
+]
+type DryRunCallResult<Ev = any, Err = any> = {
+  gas_consumed: Gas
+  gas_required: Gas
+  storage_deposit: Enum<{
+    Refund: bigint
+    Charge: bigint
+  }>
+  result: ResultPayload<
+    {
+      flags: number
+      data: Uint8Array
+    },
+    Err
+  >
+  events?: Array<Ev>
+}
+type DryRunInstantiateParams = [
+  origin: SS58String,
+  value: bigint,
+  gas_limit: Gas | undefined,
+  storage_deposit_limit: bigint | undefined,
+  code: Enum<{
+    Upload: Uint8Array
+    Existing: SizedHex<32>
+  }>,
+  data: Uint8Array,
+  salt: SizedHex<32> | undefined,
+]
+type DryRunInstantiateResult<Ev = any, Err = any> = {
+  gas_consumed: Gas
+  gas_required: Gas
+  storage_deposit: Enum<{
+    Refund: bigint
+    Charge: bigint
+  }>
+  result: ResultPayload<
+    {
+      result: {
+        flags: number
+        data: Uint8Array
+      }
+      addr: SizedHex<20>
+    },
+    Err
+  >
+  events?: Array<Ev>
 }

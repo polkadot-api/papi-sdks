@@ -1,30 +1,29 @@
 import type { InkStorageDescriptor } from "@polkadot-api/ink-contracts"
-import type { ResultPayload } from "polkadot-api"
-import type { GenericInkDescriptors, StorageError } from "./descriptor-types"
+import type { Enum, ResultPayload, SizedHex } from "polkadot-api"
+import type { GenericInkDescriptors } from "./descriptor-types"
 import { EncodingProvider } from "./encoding-provider"
 import { ContractsProvider } from "./provider"
+import { ReviveStorageError } from "./sdk-types"
 
-export type SdkStorage<
-  S extends InkStorageDescriptor,
-  StorageErr,
-> = NestedStorage<S, StorageErr> & RootStorage<S, StorageErr>
+export type SdkStorage<S extends InkStorageDescriptor> = NestedStorage<
+  S,
+  ReviveStorageError
+> &
+  RootStorage<S, ReviveStorageError>
 
-export function getStorage<Addr, StorageErr, D extends GenericInkDescriptors>(
-  provider: ContractsProvider<Addr, StorageErr>,
+export function getStorage<D extends GenericInkDescriptors>(
+  provider: ContractsProvider,
   encodingProvider: EncodingProvider,
-  address: Addr,
-): SdkStorage<D["__types"]["storage"], StorageErr> {
+  address: SizedHex<20>,
+): SdkStorage<D["__types"]["storage"]> {
   type S = D["__types"]["storage"]
 
   const getStorage = async (
     label: string,
     key: unknown,
-  ): Promise<ResultPayload<unknown, StorageErr>> => {
+  ): Promise<ResultPayload<unknown, ReviveStorageError>> => {
     const storage = encodingProvider.storage(label)
-    const result = await provider.getStorage(
-      address,
-      storage.encode(key as any),
-    )
+    const result = await provider.getStorage(address, storage.encode(key))
 
     if (result.success) {
       return {
@@ -42,15 +41,15 @@ export function getStorage<Addr, StorageErr, D extends GenericInkDescriptors>(
     async getNested<L extends string & Exclude<keyof S, "">>(
       label: L,
       ...args: S[L]["key"] extends undefined ? [] : [key: S[L]["key"]]
-    ): Promise<ResultPayload<S[L]["value"], StorageErr>> {
+    ): Promise<ResultPayload<S[L]["value"], ReviveStorageError>> {
       return getStorage(label, args[0])
     },
     async getRoot(): Promise<
-      ResultPayload<S[""]["value"] & UnNest<Omit<S, "">>, StorageErr>
+      ResultPayload<S[""]["value"] & UnNest<Omit<S, "">>, ReviveStorageError>
     > {
       const root = (await getStorage("", undefined)) as ResultPayload<
         S[""]["value"],
-        StorageErr
+        ReviveStorageError
       >
       if (!root.success) {
         return root
@@ -124,6 +123,12 @@ type BuildNested<K extends string, V> = K extends `${infer P}.${infer Rest}`
     : {
         [Key in K]: V
       }
+
+type StorageError = Enum<{
+  DoesntExist: undefined
+  KeyDecodingFailed: undefined
+  MigrationInProgress: undefined
+}>
 
 type UnNest<S extends InkStorageDescriptor> = UnionToIntersection<
   {

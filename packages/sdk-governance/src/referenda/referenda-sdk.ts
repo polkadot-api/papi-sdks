@@ -1,7 +1,7 @@
 import { partitionEntries } from "@/util/watchEntries"
-import { Blake2256 } from "@polkadot-api/substrate-bindings"
+import { Binary, Blake2256 } from "@polkadot-api/substrate-bindings"
 import { combineKeys, toKeySet } from "@react-rxjs/utils"
-import { Binary, TxEvent } from "polkadot-api"
+import { TxEvent } from "polkadot-api"
 import { map } from "rxjs"
 import { getPreimageResolver } from "../preimages"
 import { originToTrack, polkadotSpenderOrigin } from "./chainConfig"
@@ -92,9 +92,9 @@ export function createReferendaSdk<TOrigin extends PolkadotRuntimeOriginCaller>(
         resolve: resolveProposal,
         decodedCall: async () => {
           const proposal = await resolveProposal()
-          const token = await typedApi.compatibilityToken
+          const staticApis = await typedApi.getStaticApis()
 
-          return typedApi.txFromCallData(proposal, token).decodedCall
+          return staticApis.decodeCallData(proposal)
         },
       },
       async getDetails(subscanApiKey: string) {
@@ -238,7 +238,7 @@ export function createReferendaSdk<TOrigin extends PolkadotRuntimeOriginCaller>(
       value: 0,
     }
 
-    if (proposal.asBytes().length <= MAX_INLINE_SIZE) {
+    if (proposal.length <= MAX_INLINE_SIZE) {
       return typedApi.tx.Referenda.submit({
         enactment_moment,
         proposal: {
@@ -249,7 +249,7 @@ export function createReferendaSdk<TOrigin extends PolkadotRuntimeOriginCaller>(
       })
     }
 
-    const hash = Blake2256(proposal.asBytes())
+    const hash = Blake2256(proposal)
 
     return typedApi.tx.Utility.batch_all({
       calls: [
@@ -263,8 +263,8 @@ export function createReferendaSdk<TOrigin extends PolkadotRuntimeOriginCaller>(
           proposal: {
             type: "Lookup",
             value: {
-              hash: Binary.fromBytes(hash),
-              len: proposal.asBytes().length,
+              hash: Binary.toHex(hash),
+              len: proposal.length,
             },
           },
           proposal_origin: origin,
@@ -281,10 +281,11 @@ export function createReferendaSdk<TOrigin extends PolkadotRuntimeOriginCaller>(
     return createReferenda(spenderTrack.origin, callData)
   }
 
-  const getSubmittedReferendum = (txEvent: TxEvent) =>
-    "events" in txEvent
-      ? (typedApi.event.Referenda.Submitted.filter(txEvent.events)[0] ?? null)
-      : null
+  const getSubmittedReferendum = (txEvent: TxEvent) => {
+    if (!("events" in txEvent)) return null
+    const event = typedApi.event.Referenda.Submitted.filter(txEvent.events)[0]
+    return event?.payload ?? null
+  }
 
   return {
     watch: {

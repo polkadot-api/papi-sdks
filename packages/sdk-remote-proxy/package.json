@@ -34,22 +34,22 @@
     "dist"
   ],
   "scripts": {
-    "build": "rm -rf src/descriptors && papi generate --whitelist .papi/whitelist.ts && cp -r .papi/descriptors/dist src/descriptors && rm src/descriptors/index.js && mv src/descriptors/index.mjs src/descriptors/index.js && rollup -c ../../rollup.config.js",
+    "build": "rm -rf src/descriptors && papi generate && cp -r .papi/descriptors/dist src/descriptors && rm src/descriptors/index.js && mv src/descriptors/index.mjs src/descriptors/index.js && rollup -c ../../rollup.config.js",
     "lint": "prettier --check README.md \"src/**/*.{js,jsx,ts,tsx,json,md}\"",
     "format": "prettier --write README.md \"src/**/*.{js,jsx,ts,tsx,json,md}\"",
     "prepack": "pnpm run build"
   },
   "license": "MIT",
   "dependencies": {
-    "@polkadot-api/meta-signers": "^0.1.17",
-    "@polkadot-api/substrate-bindings": "^0.16.5"
+    "@polkadot-api/meta-signers": "^0.1.21",
+    "@polkadot-api/substrate-bindings": "^0.18.0"
   },
   "peerDependencies": {
-    "polkadot-api": ">=1.22.0",
+    "polkadot-api": ">=2.0.0-rc.2",
     "rxjs": ">=7.8.0"
   },
   "devDependencies": {
-    "polkadot-api": "^1.23.1",
+    "polkadot-api": "^2.0.0-rc.2",
     "rxjs": "^7.8.2"
   }
 }

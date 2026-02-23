@@ -225,7 +225,9 @@ export function createConvictionVotingSdk(
     typedApi.constants.ConvictionVoting.VoteLockingPeriod()
   const votingTrack$ = (account: SS58String, track: number) =>
     combineLatest([
-      typedApi.query.ConvictionVoting.VotingFor.watchValue(account, track),
+      typedApi.query.ConvictionVoting.VotingFor.watchValue(account, track).pipe(
+        map(({ value }) => value),
+      ),
       voteLockingPeriod$,
     ]).pipe(
       map(([v, lockPeriod]) =>

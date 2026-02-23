@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+### Changed
+
+- BREAKING!: Update to PAPI v2
+
+- **referenda**:
+  - `OngoingReferendum.proposal.resolve` returns a `Promise<Uint8Array>` instead of `Promise<Binary>`
+  - `OngoingReferendum.proposal.decodedCall` returns a `Promise<{ pallet, name, input }>` instead of a deeply-nested object.
+
 ## 0.4.0 2025-11-28
 
 ### Fixed

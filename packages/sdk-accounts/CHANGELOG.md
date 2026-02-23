@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+### Changed
+
+- BREAKING!: Update to PAPI v2
+- `IdentityInfo.pgp_fingerprint` is now a `SizedHex<20>` instead of a `FixedSizeBinary<20>`
+
 ## 0.6.0 2025-11-28
 
 ### Fixed

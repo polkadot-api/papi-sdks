@@ -1,6 +1,5 @@
 import { AsyncTransaction } from "@polkadot-api/common-sdk-utils"
 import {
-  Binary,
   HexString,
   PolkadotClient,
   PolkadotSigner,
@@ -31,7 +30,7 @@ export interface MultisigSdk<Addr> {
   getMultisigTx(
     multisig: MultisigAccount<Addr>,
     signatory: Addr,
-    txOrCallData: Transaction<any, any, any, any> | Binary,
+    txOrCallData: Transaction<any, any, any, any> | Uint8Array,
     options?: MultisigTxOptions<Addr>,
   ): AsyncTransaction<any, any, any, any>
   getMultisigSigner(

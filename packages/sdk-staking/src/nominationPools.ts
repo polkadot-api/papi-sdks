@@ -52,7 +52,7 @@ export const unbondNominationPoolFn =
 const getNominationPoolAddress = (id: number, format: number) =>
   AccountId(format).dec(
     mergeUint8([
-      Binary.fromText("modlpy/nopls").asBytes(),
+      Binary.fromText("modlpy/nopls"),
       new Uint8Array([0]),
       u32.enc(id),
       new Uint8Array(new Array(32).fill(0)),
@@ -65,7 +65,7 @@ const mapPool = (
   nominations: DotQueries["Staking"]["Nominators"]["Value"] | undefined,
   address: SS58String,
   bond: bigint,
-  name?: Binary,
+  name?: Uint8Array,
 ): NominationPool => {
   const [currentCommission, commissionAddr] = pool.commission.current ?? [
     0,
@@ -74,7 +74,7 @@ const mapPool = (
 
   return {
     id,
-    name: name?.asText() ?? "",
+    name: name ? Binary.toText(name) : "",
     addresses: {
       ...pool?.roles,
       commission: commissionAddr,
@@ -109,7 +109,9 @@ export const getNominationPool$Fn =
   ): StakingSdk["getNominationPool$"] =>
   (id) =>
     combineLatest({
-      pool: api.query.NominationPools.BondedPools.watchValue(id),
+      pool: api.query.NominationPools.BondedPools.watchValue(id).pipe(
+        map(({ value }) => value),
+      ),
       name: api.query.NominationPools.Metadata.getValue(id),
     }).pipe(
       withLatestFrom(api.constants.System.SS58Prefix()),
@@ -171,7 +173,7 @@ export const getNominationPoolsFn =
     )
     const names$ = defer(api.query.NominationPools.Metadata.getEntries).pipe(
       map((values) =>
-        values.reduce((acc: Record<number, Binary>, v) => {
+        values.reduce((acc: Record<number, Uint8Array>, v) => {
           acc[v.keyArgs[0]] = v.value
           return acc
         }, {}),

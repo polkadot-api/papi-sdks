@@ -1,4 +1,4 @@
-import { Binary, Transaction, TxEvent } from "polkadot-api"
+import { Transaction, TxEvent } from "polkadot-api"
 import { Origin } from "./chainConfig"
 import {
   PreimagesBounded,
@@ -28,13 +28,11 @@ export type OngoingReferendum<
   id: number
   proposal: {
     rawValue: PreimagesBounded
-    resolve: () => Promise<Binary>
+    resolve: () => Promise<Uint8Array>
     decodedCall: () => Promise<{
-      type: string
-      value: {
-        type: string
-        value: any
-      }
+      pallet: string
+      name: string
+      input: any
     }>
   }
   getDetails: (apiKey: string) => Promise<ReferendumDetails>
@@ -107,13 +105,13 @@ export interface ReferendaSdk<
 
   createReferenda(
     origin: TEnums["origin"],
-    proposal: Binary,
+    proposal: Uint8Array,
     options?: Partial<{
       enactment: TraitsScheduleDispatchTime
     }>,
   ): Transaction<any, string, string, unknown>
   createSpenderReferenda(
-    callData: Binary,
+    callData: Uint8Array,
     value: bigint,
   ): Transaction<any, string, string, unknown>
   getSubmittedReferendum(txEvent: TxEvent): {

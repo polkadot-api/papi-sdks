@@ -12,7 +12,7 @@ export const scheduledFinder = <TOrigin>(
 
   const getScheduledCalls = memo(async () => {
     const agenda = await typedApi.query.Scheduler.Agenda.getEntries()
-    const token = await typedApi.compatibilityToken
+    const staticApis = await typedApi.getStaticApis()
 
     const scheduled = agenda.flatMap(
       ({ keyArgs: [height], value: values }) =>
@@ -27,9 +27,7 @@ export const scheduledFinder = <TOrigin>(
     const resolvedCalls = await Promise.all(
       scheduled.map(({ height, call }) =>
         resolvePreimage(call)
-          .then(
-            (callData) => typedApi.txFromCallData(callData, token).decodedCall,
-          )
+          .then((callData) => staticApis.decodeCallData(callData))
           .then((decodedCall) => ({ height, call: decodedCall }))
           .catch((ex) => {
             console.error(ex)

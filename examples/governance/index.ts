@@ -1,16 +1,15 @@
-import { dot, pas } from "@polkadot-api/descriptors"
+import { dotAh } from "@polkadot-api/descriptors"
 import {
   createBountiesSdk,
   createChildBountiesSdk,
 } from "@polkadot-api/sdk-governance"
 import { createClient } from "polkadot-api"
-import { withPolkadotSdkCompat } from "polkadot-api/polkadot-sdk-compat"
-import { getWsProvider } from "polkadot-api/ws-provider/web"
+import { getWsProvider } from "polkadot-api/ws"
 
 const client = createClient(
-  withPolkadotSdkCompat(getWsProvider("wss://paseo-rpc.dwellir.com")),
+  getWsProvider("wss://rpc-asset-hub-polkadot.luckyfriday.io"),
 )
-const typedApi = client.getTypedApi(pas)
+const typedApi = client.getTypedApi(dotAh)
 
 const bountiesSdk = createBountiesSdk(typedApi)
 console.log("Loading bounties...")
