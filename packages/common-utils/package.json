@@ -1,6 +1,6 @@
 {
   "name": "@polkadot-api/common-sdk-utils",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "sideEffects": false,
   "author": "Victor Oliva (https://github.com/voliva)",
   "repository": {

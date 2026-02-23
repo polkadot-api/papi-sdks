@@ -1,6 +1,6 @@
 {
   "name": "@polkadot-api/sdk-ink",
-  "version": "0.6.2",
+  "version": "0.7.0",
   "sideEffects": false,
   "author": "Victor Oliva (https://github.com/voliva)",
   "repository": {

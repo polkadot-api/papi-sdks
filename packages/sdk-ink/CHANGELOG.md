@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 0.7.0 2026-02-23
+
 ### Changed
 
 - BREAKING!: Update to PAPI v2
@@ -24,7 +26,7 @@
 
 ### Fixed
 
-- Support chains with renamed `gas_limit` to `weight_limit` 
+- Support chains with renamed `gas_limit` to `weight_limit`
 
 ## 0.6.0 2025-11-28
 
