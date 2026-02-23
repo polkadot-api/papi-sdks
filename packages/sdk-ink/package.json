@@ -36,8 +36,7 @@
   "scripts": {
     "build": "papi generate && ([ -f .papi/descriptors/dist/index.mjs ] && mv .papi/descriptors/dist/index.mjs .papi/descriptors/dist/index.js || [ 0 ]) && tsc --noEmit && rollup -c ../../rollup.config.js",
     "lint": "prettier --check README.md \"src/**/*.{js,jsx,ts,tsx,json,md}\"",
-    "format": "prettier --write README.md \"src/**/*.{js,jsx,ts,tsx,json,md}\"",
-    "prepack": "pnpm run build"
+    "format": "prettier --write README.md \"src/**/*.{js,jsx,ts,tsx,json,md}\""
   },
   "license": "MIT",
   "dependencies": {
