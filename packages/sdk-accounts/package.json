@@ -44,7 +44,7 @@
     "@polkadot-api/common-sdk-utils": "workspace:*",
     "@polkadot-api/substrate-bindings": "^0.19.0",
     "@react-rxjs/utils": "^0.9.7",
-    "polkadot-api": "^2.0.0-rc.0"
+    "polkadot-api": "^2.0.0-rc.2"
   },
   "peerDependencies": {
     "polkadot-api": ">=2.0.0-rc.2",
