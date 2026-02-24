@@ -13,22 +13,22 @@ importers:
         version: 11.0.2(prettier@3.8.1)
       '@rollup/plugin-alias':
         specifier: ^6.0.0
-        version: 6.0.0(rollup@4.57.1)
+        version: 6.0.0(rollup@4.59.0)
       '@rollup/plugin-node-resolve':
         specifier: ^16.0.3
-        version: 16.0.3(rollup@4.57.1)
+        version: 16.0.3(rollup@4.59.0)
       prettier:
         specifier: ^3.8.1
         version: 3.8.1
       rollup:
-        specifier: ^4.57.1
-        version: 4.57.1
+        specifier: ^4.59.0
+        version: 4.59.0
       rollup-plugin-dts:
         specifier: ^6.3.0
-        version: 6.3.0(rollup@4.57.1)(typescript@5.9.3)
+        version: 6.3.0(rollup@4.59.0)(typescript@5.9.3)
       rollup-plugin-esbuild:
         specifier: ^6.2.1
-        version: 6.2.1(esbuild@0.27.3)(rollup@4.57.1)
+        version: 6.2.1(esbuild@0.27.3)(rollup@4.59.0)
       typescript:
         specifier: ^5.9.3
         version: 5.9.3
@@ -105,7 +105,7 @@ importers:
         version: 7.8.2
     devDependencies:
       '@types/node':
-        specifier: ^25.2.3
+        specifier: ^25.3.0
         version: 25.3.0
       ts-node:
         specifier: ^10.9.2
@@ -148,8 +148,8 @@ importers:
         specifier: ^0.19.0
         version: 0.19.0
       '@polkadot-api/substrate-client':
-        specifier: canary
-        version: 0.6.1-canary.6903a4b
+        specifier: ^0.6.0
+        version: 0.6.0
       '@scure/sr25519':
         specifier: ^1.0.0
         version: 1.0.0
@@ -185,7 +185,7 @@ importers:
         specifier: ^0.9.7
         version: 0.9.7(@react-rxjs/core@0.10.7(react@19.0.0)(rxjs@7.8.2))(react@19.0.0)(rxjs@7.8.2)
       polkadot-api:
-        specifier: ^2.0.0-rc.0
+        specifier: ^2.0.0-rc.2
         version: 2.0.0-rc.2(postcss@8.5.6)(rxjs@7.8.2)
     devDependencies:
       rxjs:
@@ -236,7 +236,7 @@ importers:
         version: 2.46.2(typescript@5.9.3)
     devDependencies:
       '@polkadot-api/ink-contracts':
-        specifier: ^0.5.0
+        specifier: ^0.5.1
         version: 0.5.1
       rxjs:
         specifier: ^7.8.2
@@ -248,8 +248,8 @@ importers:
         specifier: workspace:*
         version: link:../common-utils
       '@polkadot-api/substrate-bindings':
-        specifier: ^0.18.0
-        version: 0.18.0
+        specifier: ^0.19.0
+        version: 0.19.0
     devDependencies:
       polkadot-api:
         specifier: ^2.0.0-rc.2
@@ -264,8 +264,8 @@ importers:
         specifier: ^0.1.21
         version: 0.1.21
       '@polkadot-api/substrate-bindings':
-        specifier: ^0.18.0
-        version: 0.18.0
+        specifier: ^0.19.0
+        version: 0.19.0
     devDependencies:
       polkadot-api:
         specifier: ^2.0.0-rc.2
@@ -280,8 +280,8 @@ importers:
         specifier: workspace:*
         version: link:../common-utils
       '@polkadot-api/substrate-bindings':
-        specifier: ^0.18.0
-        version: 0.18.0
+        specifier: ^0.19.0
+        version: 0.19.0
     devDependencies:
       polkadot-api:
         specifier: ^2.0.0-rc.2
@@ -299,8 +299,8 @@ importers:
         specifier: ^0.3.0
         version: 0.3.0
       polkadot-api:
-        specifier: canary
-        version: 2.0.1-canary.6903a4b(postcss@8.5.6)(rxjs@7.8.2)
+        specifier: ^2.0.0-rc.2
+        version: 2.0.0-rc.2(postcss@8.5.6)(rxjs@7.8.2)
 
 packages:
 
@@ -687,15 +687,8 @@ packages:
     resolution: {integrity: sha512-f6EXO8MQgNPu4mt4iWMyUrNqJmY92tUbJOL1In20QWkQF8wuB1rOD7T35g0PAvWu4cr1n4JcomUNuWWMURFe9Q==}
     hasBin: true
 
-  '@polkadot-api/cli@0.19.2-canary.6903a4b':
-    resolution: {integrity: sha512-owLKP/OFILo+p+ero8DR7RsMQno9ebiS6TDcDhyym0RAuLJ85C9xP89zmlqmjAoukgUJxZcqlUsND8p5O/PjYQ==}
-    hasBin: true
-
   '@polkadot-api/codegen@0.22.1':
     resolution: {integrity: sha512-UxqSAT6PX3PJ5JZFJPfzJ5AAv2pfLMOCR2OFx5F5RaCVLZsrhTDnvFehIpJGhwrFYsS+kWZDfkPVrR5rf1cdZg==}
-
-  '@polkadot-api/codegen@0.22.2-canary.6903a4b':
-    resolution: {integrity: sha512-4NEkrKrqcgebgmg+0k5aOl682+OZcf3WpsDaElVIBiIb4c0kKUaY8+coYGYZr5Sajyhl5mSwVz8b3ovhJtiYyw==}
 
   '@polkadot-api/descriptors@file:examples/governance/.papi/descriptors':
     resolution: {directory: examples/governance/.papi/descriptors, type: directory}
@@ -710,7 +703,7 @@ packages:
   '@polkadot-api/descriptors@file:examples/remote-proxy/.papi/descriptors':
     resolution: {directory: examples/remote-proxy/.papi/descriptors, type: directory}
     peerDependencies:
-      polkadot-api: '>=2.0.0-rc.2'
+      polkadot-api: '>=2.0.0-rc.1'
 
   '@polkadot-api/descriptors@file:examples/staking/.papi/descriptors':
     resolution: {directory: examples/staking/.papi/descriptors, type: directory}
@@ -720,38 +713,20 @@ packages:
   '@polkadot-api/ink-contracts@0.5.1':
     resolution: {integrity: sha512-Wa0HAWLaB9v3N1WnTnTu2vdVxOoDZ4vwICkATGr+et6psa0y+wdHxIIEqfARx3xWPxXDnIrOD+e44Eh7JjJz8w==}
 
-  '@polkadot-api/ink-contracts@0.5.2-canary.6903a4b':
-    resolution: {integrity: sha512-cywQtfJuSS06ujw3SQ4ib9VUwFdUsxXerHaCMwSnBa0fkgc4jeQ24/RPW+lNOkyiOWTUjb/ZMpLIF62q2y8RrA==}
-
   '@polkadot-api/json-rpc-provider-proxy@0.3.0':
     resolution: {integrity: sha512-7UIOobBgJ5nYyhKY0gTdOYoaMfHPjNGlOqqyqgwK+VdUxa5funU+UVpiPIYVy5rEPGk+pdrOWkdwuX8fSGvApw==}
-
-  '@polkadot-api/json-rpc-provider-proxy@0.3.1-canary.6903a4b':
-    resolution: {integrity: sha512-5zFj9AmlD6Bc08yrkhjAUFjdco9BJh98Iz1ukosNXohmWcZ05xzP5vDHgteJpJ2mnS+J7urYreDGJs5kRk25Aw==}
 
   '@polkadot-api/json-rpc-provider@0.1.0':
     resolution: {integrity: sha512-yUMGsc/Rh7u40V2kuOBCXuB5UZgEnzY1dlhyDI5An8Y6D8GkRCQPwJSfh4IA6LItVFmrCAVTZ/ZJLMdZFBnqCw==}
 
-  '@polkadot-api/json-rpc-provider@0.1.1-canary.6903a4b':
-    resolution: {integrity: sha512-93zGgZAhMymqpQ5g2xDJo6eaJHmD3Sn+9ALXQ/0m0rt/8TWyteAM696udziWEQcZaxMsxUGVUHSG5xe5U890Qg==}
-
   '@polkadot-api/known-chains@0.10.0':
     resolution: {integrity: sha512-uEnz0lvST7pTSPlm7Po1/hBcX3/Wezq4ovcB4/t1vsa4t+wLRtWy45T4lnKDO5DnhYHe0Lw28DEfcIBzQ1+Jtw==}
-
-  '@polkadot-api/known-chains@0.10.1-canary.6903a4b':
-    resolution: {integrity: sha512-HMAcYQUYIP7ivwo5jX3K27VVANGojAjeUmdNfbaSqp7vIrhj0bWj+BgL6y34fK/hKKTGBhUtM8vqlZj+OoA+QQ==}
 
   '@polkadot-api/logs-provider@0.1.0':
     resolution: {integrity: sha512-QLRMx4QPctgo+hGDJx1Kn0nNed+EVg7bhH+crzkeAl0k1a4xSExfyPHREtjQ25lIqgHhQJsQbQ6pfaFzgxJA0g==}
 
-  '@polkadot-api/logs-provider@0.1.1-canary.6903a4b':
-    resolution: {integrity: sha512-EMAkCrfxlH15O5B8HnMi1Rh0pHS0OZBfk7q/VEfTvu1f/LiyYLNSfUa8HVgicQdOiUVImafs+R4B8NkmTyw/4A==}
-
   '@polkadot-api/merkleize-metadata@1.1.31':
     resolution: {integrity: sha512-bMvWuXr/9vLs+CKTYIwf82KAsfZYS/JSFKRAueDnbOUxUylxFMfWpoz5m1/vVmovs/vIPSZxFgSm0AmGVi222w==}
-
-  '@polkadot-api/merkleize-metadata@1.1.32-canary.6903a4b':
-    resolution: {integrity: sha512-cT7vjrqOFHBsvtqMIJPRH5pDSsuvYoYDYBzPx7RibcyjXhzj2B7p/DQ29Yks1ONMzVxwIRJHuh0wZdYrPaebzQ==}
 
   '@polkadot-api/meta-signers@0.1.21':
     resolution: {integrity: sha512-wVWpyT665svAYeCxn54ZhKCWMeNHH4QVwkTP/jLive5QPUEvFFGXxF6glVyX8CsBrnEmkO1ii/9BggX3Zk/m9g==}
@@ -759,91 +734,45 @@ packages:
   '@polkadot-api/metadata-builders@0.13.11':
     resolution: {integrity: sha512-oqSJkRIWYq2C1QfIX8ywO+S2GoI3MxxRfxpwvPF1FGmiDWbH2lMiAMZNnpglIesm1F/cdn5CgcEz7M/GDThvzQ==}
 
-  '@polkadot-api/metadata-builders@0.13.12-canary.6903a4b':
-    resolution: {integrity: sha512-OoWtjtz2fvxCu4zPeEck3J/aE0FWZZPR1SKhcV6h0DmQ+hX5wc+1znTSURsSMIF31KTND0icTeI5tV6rp/u+Gg==}
-
   '@polkadot-api/metadata-compatibility@0.5.1':
     resolution: {integrity: sha512-NLzXAGdXE+5OHGX/JI+IMzmwtw+w572wfyeZdL1MW52/NQ+7JwA+969QG1/zrju2xB9VDDfCWaPewwcYolxJLQ==}
-
-  '@polkadot-api/metadata-compatibility@0.5.2-canary.6903a4b':
-    resolution: {integrity: sha512-NAZc+5o8pc3R0MbhCXulmQ0x9Oa8kmYppeP3K1bqF2DkjGF2g25LLVRd+IDXpGY2HxaW971/yxNTHLePYXs6kw==}
 
   '@polkadot-api/observable-client@0.18.1':
     resolution: {integrity: sha512-6FM+T08qAw8UsVskcSbCHC7LkGAc5EOiwRPA2A3Yr5MfDPp/aIuFrrCwwjWPtBO6CTDAnM9Z+gOA2osecxbiDw==}
     peerDependencies:
       rxjs: '>=7.8.0'
 
-  '@polkadot-api/observable-client@0.18.2-canary.6903a4b':
-    resolution: {integrity: sha512-fkYXrH2dHAbF2v/jQEgUvwUPrFDvI0G5l8MwQYeJwMYRjfmqArpkBg/Z041J7miR3EUTXSD9uZFACUWTkZLEZQ==}
-    peerDependencies:
-      rxjs: '>=7.8.0'
-
   '@polkadot-api/pjs-signer@0.6.21':
     resolution: {integrity: sha512-CLgi40OpVz3feDWnITgcQWq2baRZH9yj3VLtga0FVeqaFRxz/Jk5vxJ9LYX2COm0p2KM3OBTU+WlJEW8U7YyUw==}
-
-  '@polkadot-api/pjs-signer@0.6.22-canary.6903a4b':
-    resolution: {integrity: sha512-2nTqj3SKaWNJcDPzxkXN9tSaPMADzFZ4r1TkJkc+DN2geKGm+UP6fSn2tjULIYmYjP/nejZIL4XDHNTLA8uVqw==}
 
   '@polkadot-api/polkadot-signer@0.1.6':
     resolution: {integrity: sha512-X7ghAa4r7doETtjAPTb50IpfGtrBmy3BJM5WCfNKa1saK04VFY9w+vDn+hwEcM4p0PcDHt66Ts74hzvHq54d9A==}
 
-  '@polkadot-api/polkadot-signer@0.1.7-canary.6903a4b':
-    resolution: {integrity: sha512-x4xn7D+VGF1UDTtnWSX2qhKt85nluIeAO2x1b4y7DaY0r5jUweEd6CUzmmwkgrAu9X2Cv/5PwHG6bNmNYtz4xA==}
-
   '@polkadot-api/raw-client@0.2.0':
     resolution: {integrity: sha512-qHR5XUcTI1/a8+vYZ81KqjzKvcpEaRyHxcbrPAS2mzdiDqYcZjdCsm3v9ESvMxRI6tOjVV7MeQSp8BAB+NDdTA==}
-
-  '@polkadot-api/raw-client@0.2.1-canary.6903a4b':
-    resolution: {integrity: sha512-I/LVFDlTh1dLcQqn5qjt30YeGtvMtH9f0JTvn7zyi80c+t0gAFnIaCpJPSHHBTew1T7mr3VUQIgr03FbMKhBWQ==}
 
   '@polkadot-api/signer@0.2.15':
     resolution: {integrity: sha512-R3NwtXpe0rWG5Uk/xVUH+njc0RRiXOB655yA3OCt1VuPi6RubfRkluGUKoN1REy1XjWDKLpMktU2uQJzUsmeXQ==}
 
-  '@polkadot-api/signer@0.2.16-canary.6903a4b':
-    resolution: {integrity: sha512-DifMkRIbXCBVYHITxwGKeWFg7H89VUu99a9yNvAAJNhBOt/ZKlzlawWkGIL+Y+Yydnyn1M9XQK7n1+incE/vtw==}
-
   '@polkadot-api/signers-common@0.1.22':
     resolution: {integrity: sha512-jcKEblFJ22GoPbOjSANeAZqYlGN3j3SrcbOdTRpLV9O9wuGWtQNQp7kPbxkuOLxbTsK7OMG6/CyOaab2ZC+kGw==}
-
-  '@polkadot-api/signers-common@0.1.23-canary.6903a4b':
-    resolution: {integrity: sha512-bOWpsHDH7vMuuRJRqFK5bfHJe/MFmyuuGMoRS/sAgL/bSfiuVmRTG3sQu83PLF5hIt0Xm3Zq4zSWNySg5jI4nA==}
 
   '@polkadot-api/sm-provider@0.2.0':
     resolution: {integrity: sha512-U6cWUHi2gzBWLknq8PQBtFxxAtaPJtvEJRzRZ5/ABFce861LLpq/8lRmQi85OwfqcscyIM9joe39l0ftalGKdw==}
     peerDependencies:
       '@polkadot-api/smoldot': '>=0.3'
 
-  '@polkadot-api/sm-provider@0.2.1-canary.6903a4b':
-    resolution: {integrity: sha512-Hvt9ALHNg6yZndMrggO7Zn52qb7HMzekKirWqNsy5W30tNXXy1zPJEHuJf2ood2pOjBBPB1f/WwvAysNbPeoiw==}
-    peerDependencies:
-      '@polkadot-api/smoldot': '>=0.3'
-
   '@polkadot-api/smoldot@0.3.15':
     resolution: {integrity: sha512-YyV+ytP8FcmKEgLRV7uXepJ5Y6md/7u2F8HKxmkWytmnGXO1z+umg2pHbOxLGifD9V2NhkPY+awpzErtVIzqAA==}
-
-  '@polkadot-api/smoldot@0.3.16-canary.6903a4b':
-    resolution: {integrity: sha512-wxX8rXKKJ8XGKXngMn+g4r/fOFRNS5Fk2ocDGLhc3FKw2XUggtiKMOEYbb+wgsM08LDAkjNdriFac43Zq1kdDg==}
-
-  '@polkadot-api/substrate-bindings@0.18.0':
-    resolution: {integrity: sha512-AIjmKBE6HQ51nWiwVxZBcpurEcrpQBHF5k8MKrnP5BoeU1AoPXHco7FE0ozmanjTiaIlGZmeFtXH0YNoYid5tA==}
 
   '@polkadot-api/substrate-bindings@0.19.0':
     resolution: {integrity: sha512-IAQx1x+j4LehW3U/S2RQ+dyphFs8J2vj3drpzQeirJ1Z/drVylv/U+JGniiOqRCtEcVkIcVXfiCNR3oNTemmGA==}
 
-  '@polkadot-api/substrate-bindings@0.19.1-canary.6903a4b':
-    resolution: {integrity: sha512-AbLoKapFuf0hLGBnGb91otOLrkxul72gSktlcvfysLxKrqWhh9WABilLLvwekmv4fRS4Xm35HqhXDgHa0C1EBA==}
-
   '@polkadot-api/substrate-client@0.6.0':
     resolution: {integrity: sha512-oGWYgiJxGoBb7d+FmWSoBq6NJA0F0EzuBi3zNKmH7PK6EExG9r4qbuZCUIw0y6msOoZmsWOcHZFYgdTI5FdCvA==}
 
-  '@polkadot-api/substrate-client@0.6.1-canary.6903a4b':
-    resolution: {integrity: sha512-7OLYYu9hS3AiipD6dSNwgUhgqFSL5IYE1TARLAO2SiGmQd5zwDXLKbfF2NkfNWItZcBUkaDs3y8XDM9k+FRzhg==}
-
   '@polkadot-api/utils@0.3.0':
     resolution: {integrity: sha512-rTMURmpv8bU8DRP/h2qLDQd3aENEH8hCokPcvmWdcgpbY9G2nSRKTv6HyOHYrkgsnoGMAYRdkyhFvFwHaum+Rg==}
-
-  '@polkadot-api/utils@0.3.1-canary.6903a4b':
-    resolution: {integrity: sha512-KlDqeO4NI2YwCPdff4i9irbulf2ZKwLLuM2ewrXLqboB/8cR1lFB0FXWIzh9tgq0VS1aS64GyaaIu/Q/fo2zTw==}
 
   '@polkadot-api/wasm-executor@0.2.3':
     resolution: {integrity: sha512-B2h1o+Qlo9idpASaHvMSoViB2I5ko5OAfwfhYF8LQDkTADK0B+SeStzNj1Qn+FG34wqTuv7HzBCdjaUgzYINJQ==}
@@ -853,18 +782,8 @@ packages:
     peerDependencies:
       rxjs: '>=7.8.0'
 
-  '@polkadot-api/ws-middleware@0.2.2-canary.6903a4b':
-    resolution: {integrity: sha512-jim/pvPFAW8dn6MDYGgPYWlr8DXnNBEnnMoTWKmqGDz8G3AxuqfgVImc0AArLWyQpF351lzDdWDJIxwTHL53pg==}
-    peerDependencies:
-      rxjs: '>=7.8.0'
-
   '@polkadot-api/ws-provider@0.8.0':
     resolution: {integrity: sha512-rxxWVuvugencmVGEJxEfx1mopi9ZWcBvavd9EP7mgd9puyT4LW3LUPJnxGSV3V9OUPYlFssG2FDb1OUo8DYnww==}
-    peerDependencies:
-      rxjs: '>=7.8.0'
-
-  '@polkadot-api/ws-provider@0.8.1-canary.6903a4b':
-    resolution: {integrity: sha512-rq7bQAEgDilVOc3F4R8UgS2N5DlnhpC/uoJrHYJNxNMtrSmVUvGqjmI96kB1yTdeivIecIcyjEOCVmsOT57NhQ==}
     peerDependencies:
       rxjs: '>=7.8.0'
 
@@ -914,128 +833,141 @@ packages:
       rollup:
         optional: true
 
-  '@rollup/rollup-android-arm-eabi@4.57.1':
-    resolution: {integrity: sha512-A6ehUVSiSaaliTxai040ZpZ2zTevHYbvu/lDoeAteHI8QnaosIzm4qwtezfRg1jOYaUmnzLX1AOD6Z+UJjtifg==}
+  '@rollup/rollup-android-arm-eabi@4.59.0':
+    resolution: {integrity: sha512-upnNBkA6ZH2VKGcBj9Fyl9IGNPULcjXRlg0LLeaioQWueH30p6IXtJEbKAgvyv+mJaMxSm1l6xwDXYjpEMiLMg==}
     cpu: [arm]
     os: [android]
 
-  '@rollup/rollup-android-arm64@4.57.1':
-    resolution: {integrity: sha512-dQaAddCY9YgkFHZcFNS/606Exo8vcLHwArFZ7vxXq4rigo2bb494/xKMMwRRQW6ug7Js6yXmBZhSBRuBvCCQ3w==}
+  '@rollup/rollup-android-arm64@4.59.0':
+    resolution: {integrity: sha512-hZ+Zxj3SySm4A/DylsDKZAeVg0mvi++0PYVceVyX7hemkw7OreKdCvW2oQ3T1FMZvCaQXqOTHb8qmBShoqk69Q==}
     cpu: [arm64]
     os: [android]
 
-  '@rollup/rollup-darwin-arm64@4.57.1':
-    resolution: {integrity: sha512-crNPrwJOrRxagUYeMn/DZwqN88SDmwaJ8Cvi/TN1HnWBU7GwknckyosC2gd0IqYRsHDEnXf328o9/HC6OkPgOg==}
+  '@rollup/rollup-darwin-arm64@4.59.0':
+    resolution: {integrity: sha512-W2Psnbh1J8ZJw0xKAd8zdNgF9HRLkdWwwdWqubSVk0pUuQkoHnv7rx4GiF9rT4t5DIZGAsConRE3AxCdJ4m8rg==}
     cpu: [arm64]
     os: [darwin]
 
-  '@rollup/rollup-darwin-x64@4.57.1':
-    resolution: {integrity: sha512-Ji8g8ChVbKrhFtig5QBV7iMaJrGtpHelkB3lsaKzadFBe58gmjfGXAOfI5FV0lYMH8wiqsxKQ1C9B0YTRXVy4w==}
+  '@rollup/rollup-darwin-x64@4.59.0':
+    resolution: {integrity: sha512-ZW2KkwlS4lwTv7ZVsYDiARfFCnSGhzYPdiOU4IM2fDbL+QGlyAbjgSFuqNRbSthybLbIJ915UtZBtmuLrQAT/w==}
     cpu: [x64]
     os: [darwin]
 
-  '@rollup/rollup-freebsd-arm64@4.57.1':
-    resolution: {integrity: sha512-R+/WwhsjmwodAcz65guCGFRkMb4gKWTcIeLy60JJQbXrJ97BOXHxnkPFrP+YwFlaS0m+uWJTstrUA9o+UchFug==}
+  '@rollup/rollup-freebsd-arm64@4.59.0':
+    resolution: {integrity: sha512-EsKaJ5ytAu9jI3lonzn3BgG8iRBjV4LxZexygcQbpiU0wU0ATxhNVEpXKfUa0pS05gTcSDMKpn3Sx+QB9RlTTA==}
     cpu: [arm64]
     os: [freebsd]
 
-  '@rollup/rollup-freebsd-x64@4.57.1':
-    resolution: {integrity: sha512-IEQTCHeiTOnAUC3IDQdzRAGj3jOAYNr9kBguI7MQAAZK3caezRrg0GxAb6Hchg4lxdZEI5Oq3iov/w/hnFWY9Q==}
+  '@rollup/rollup-freebsd-x64@4.59.0':
+    resolution: {integrity: sha512-d3DuZi2KzTMjImrxoHIAODUZYoUUMsuUiY4SRRcJy6NJoZ6iIqWnJu9IScV9jXysyGMVuW+KNzZvBLOcpdl3Vg==}
     cpu: [x64]
     os: [freebsd]
 
-  '@rollup/rollup-linux-arm-gnueabihf@4.57.1':
-    resolution: {integrity: sha512-F8sWbhZ7tyuEfsmOxwc2giKDQzN3+kuBLPwwZGyVkLlKGdV1nvnNwYD0fKQ8+XS6hp9nY7B+ZeK01EBUE7aHaw==}
+  '@rollup/rollup-linux-arm-gnueabihf@4.59.0':
+    resolution: {integrity: sha512-t4ONHboXi/3E0rT6OZl1pKbl2Vgxf9vJfWgmUoCEVQVxhW6Cw/c8I6hbbu7DAvgp82RKiH7TpLwxnJeKv2pbsw==}
     cpu: [arm]
     os: [linux]
+    libc: [glibc]
 
-  '@rollup/rollup-linux-arm-musleabihf@4.57.1':
-    resolution: {integrity: sha512-rGfNUfn0GIeXtBP1wL5MnzSj98+PZe/AXaGBCRmT0ts80lU5CATYGxXukeTX39XBKsxzFpEeK+Mrp9faXOlmrw==}
+  '@rollup/rollup-linux-arm-musleabihf@4.59.0':
+    resolution: {integrity: sha512-CikFT7aYPA2ufMD086cVORBYGHffBo4K8MQ4uPS/ZnY54GKj36i196u8U+aDVT2LX4eSMbyHtyOh7D7Zvk2VvA==}
     cpu: [arm]
     os: [linux]
+    libc: [musl]
 
-  '@rollup/rollup-linux-arm64-gnu@4.57.1':
-    resolution: {integrity: sha512-MMtej3YHWeg/0klK2Qodf3yrNzz6CGjo2UntLvk2RSPlhzgLvYEB3frRvbEF2wRKh1Z2fDIg9KRPe1fawv7C+g==}
+  '@rollup/rollup-linux-arm64-gnu@4.59.0':
+    resolution: {integrity: sha512-jYgUGk5aLd1nUb1CtQ8E+t5JhLc9x5WdBKew9ZgAXg7DBk0ZHErLHdXM24rfX+bKrFe+Xp5YuJo54I5HFjGDAA==}
     cpu: [arm64]
     os: [linux]
+    libc: [glibc]
 
-  '@rollup/rollup-linux-arm64-musl@4.57.1':
-    resolution: {integrity: sha512-1a/qhaaOXhqXGpMFMET9VqwZakkljWHLmZOX48R0I/YLbhdxr1m4gtG1Hq7++VhVUmf+L3sTAf9op4JlhQ5u1Q==}
+  '@rollup/rollup-linux-arm64-musl@4.59.0':
+    resolution: {integrity: sha512-peZRVEdnFWZ5Bh2KeumKG9ty7aCXzzEsHShOZEFiCQlDEepP1dpUl/SrUNXNg13UmZl+gzVDPsiCwnV1uI0RUA==}
     cpu: [arm64]
     os: [linux]
+    libc: [musl]
 
-  '@rollup/rollup-linux-loong64-gnu@4.57.1':
-    resolution: {integrity: sha512-QWO6RQTZ/cqYtJMtxhkRkidoNGXc7ERPbZN7dVW5SdURuLeVU7lwKMpo18XdcmpWYd0qsP1bwKPf7DNSUinhvA==}
+  '@rollup/rollup-linux-loong64-gnu@4.59.0':
+    resolution: {integrity: sha512-gbUSW/97f7+r4gHy3Jlup8zDG190AuodsWnNiXErp9mT90iCy9NKKU0Xwx5k8VlRAIV2uU9CsMnEFg/xXaOfXg==}
     cpu: [loong64]
     os: [linux]
+    libc: [glibc]
 
-  '@rollup/rollup-linux-loong64-musl@4.57.1':
-    resolution: {integrity: sha512-xpObYIf+8gprgWaPP32xiN5RVTi/s5FCR+XMXSKmhfoJjrpRAjCuuqQXyxUa/eJTdAE6eJ+KDKaoEqjZQxh3Gw==}
+  '@rollup/rollup-linux-loong64-musl@4.59.0':
+    resolution: {integrity: sha512-yTRONe79E+o0FWFijasoTjtzG9EBedFXJMl888NBEDCDV9I2wGbFFfJQQe63OijbFCUZqxpHz1GzpbtSFikJ4Q==}
     cpu: [loong64]
     os: [linux]
+    libc: [musl]
 
-  '@rollup/rollup-linux-ppc64-gnu@4.57.1':
-    resolution: {integrity: sha512-4BrCgrpZo4hvzMDKRqEaW1zeecScDCR+2nZ86ATLhAoJ5FQ+lbHVD3ttKe74/c7tNT9c6F2viwB3ufwp01Oh2w==}
+  '@rollup/rollup-linux-ppc64-gnu@4.59.0':
+    resolution: {integrity: sha512-sw1o3tfyk12k3OEpRddF68a1unZ5VCN7zoTNtSn2KndUE+ea3m3ROOKRCZxEpmT9nsGnogpFP9x6mnLTCaoLkA==}
     cpu: [ppc64]
     os: [linux]
+    libc: [glibc]
 
-  '@rollup/rollup-linux-ppc64-musl@4.57.1':
-    resolution: {integrity: sha512-NOlUuzesGauESAyEYFSe3QTUguL+lvrN1HtwEEsU2rOwdUDeTMJdO5dUYl/2hKf9jWydJrO9OL/XSSf65R5+Xw==}
+  '@rollup/rollup-linux-ppc64-musl@4.59.0':
+    resolution: {integrity: sha512-+2kLtQ4xT3AiIxkzFVFXfsmlZiG5FXYW7ZyIIvGA7Bdeuh9Z0aN4hVyXS/G1E9bTP/vqszNIN/pUKCk/BTHsKA==}
     cpu: [ppc64]
     os: [linux]
+    libc: [musl]
 
-  '@rollup/rollup-linux-riscv64-gnu@4.57.1':
-    resolution: {integrity: sha512-ptA88htVp0AwUUqhVghwDIKlvJMD/fmL/wrQj99PRHFRAG6Z5nbWoWG4o81Nt9FT+IuqUQi+L31ZKAFeJ5Is+A==}
+  '@rollup/rollup-linux-riscv64-gnu@4.59.0':
+    resolution: {integrity: sha512-NDYMpsXYJJaj+I7UdwIuHHNxXZ/b/N2hR15NyH3m2qAtb/hHPA4g4SuuvrdxetTdndfj9b1WOmy73kcPRoERUg==}
     cpu: [riscv64]
     os: [linux]
+    libc: [glibc]
 
-  '@rollup/rollup-linux-riscv64-musl@4.57.1':
-    resolution: {integrity: sha512-S51t7aMMTNdmAMPpBg7OOsTdn4tySRQvklmL3RpDRyknk87+Sp3xaumlatU+ppQ+5raY7sSTcC2beGgvhENfuw==}
+  '@rollup/rollup-linux-riscv64-musl@4.59.0':
+    resolution: {integrity: sha512-nLckB8WOqHIf1bhymk+oHxvM9D3tyPndZH8i8+35p/1YiVoVswPid2yLzgX7ZJP0KQvnkhM4H6QZ5m0LzbyIAg==}
     cpu: [riscv64]
     os: [linux]
+    libc: [musl]
 
-  '@rollup/rollup-linux-s390x-gnu@4.57.1':
-    resolution: {integrity: sha512-Bl00OFnVFkL82FHbEqy3k5CUCKH6OEJL54KCyx2oqsmZnFTR8IoNqBF+mjQVcRCT5sB6yOvK8A37LNm/kPJiZg==}
+  '@rollup/rollup-linux-s390x-gnu@4.59.0':
+    resolution: {integrity: sha512-oF87Ie3uAIvORFBpwnCvUzdeYUqi2wY6jRFWJAy1qus/udHFYIkplYRW+wo+GRUP4sKzYdmE1Y3+rY5Gc4ZO+w==}
     cpu: [s390x]
     os: [linux]
+    libc: [glibc]
 
-  '@rollup/rollup-linux-x64-gnu@4.57.1':
-    resolution: {integrity: sha512-ABca4ceT4N+Tv/GtotnWAeXZUZuM/9AQyCyKYyKnpk4yoA7QIAuBt6Hkgpw8kActYlew2mvckXkvx0FfoInnLg==}
+  '@rollup/rollup-linux-x64-gnu@4.59.0':
+    resolution: {integrity: sha512-3AHmtQq/ppNuUspKAlvA8HtLybkDflkMuLK4DPo77DfthRb71V84/c4MlWJXixZz4uruIH4uaa07IqoAkG64fg==}
     cpu: [x64]
     os: [linux]
+    libc: [glibc]
 
-  '@rollup/rollup-linux-x64-musl@4.57.1':
-    resolution: {integrity: sha512-HFps0JeGtuOR2convgRRkHCekD7j+gdAuXM+/i6kGzQtFhlCtQkpwtNzkNj6QhCDp7DRJ7+qC/1Vg2jt5iSOFw==}
+  '@rollup/rollup-linux-x64-musl@4.59.0':
+    resolution: {integrity: sha512-2UdiwS/9cTAx7qIUZB/fWtToJwvt0Vbo0zmnYt7ED35KPg13Q0ym1g442THLC7VyI6JfYTP4PiSOWyoMdV2/xg==}
     cpu: [x64]
     os: [linux]
+    libc: [musl]
 
-  '@rollup/rollup-openbsd-x64@4.57.1':
-    resolution: {integrity: sha512-H+hXEv9gdVQuDTgnqD+SQffoWoc0Of59AStSzTEj/feWTBAnSfSD3+Dql1ZruJQxmykT/JVY0dE8Ka7z0DH1hw==}
+  '@rollup/rollup-openbsd-x64@4.59.0':
+    resolution: {integrity: sha512-M3bLRAVk6GOwFlPTIxVBSYKUaqfLrn8l0psKinkCFxl4lQvOSz8ZrKDz2gxcBwHFpci0B6rttydI4IpS4IS/jQ==}
     cpu: [x64]
     os: [openbsd]
 
-  '@rollup/rollup-openharmony-arm64@4.57.1':
-    resolution: {integrity: sha512-4wYoDpNg6o/oPximyc/NG+mYUejZrCU2q+2w6YZqrAs2UcNUChIZXjtafAiiZSUc7On8v5NyNj34Kzj/Ltk6dQ==}
+  '@rollup/rollup-openharmony-arm64@4.59.0':
+    resolution: {integrity: sha512-tt9KBJqaqp5i5HUZzoafHZX8b5Q2Fe7UjYERADll83O4fGqJ49O1FsL6LpdzVFQcpwvnyd0i+K/VSwu/o/nWlA==}
     cpu: [arm64]
     os: [openharmony]
 
-  '@rollup/rollup-win32-arm64-msvc@4.57.1':
-    resolution: {integrity: sha512-O54mtsV/6LW3P8qdTcamQmuC990HDfR71lo44oZMZlXU4tzLrbvTii87Ni9opq60ds0YzuAlEr/GNwuNluZyMQ==}
+  '@rollup/rollup-win32-arm64-msvc@4.59.0':
+    resolution: {integrity: sha512-V5B6mG7OrGTwnxaNUzZTDTjDS7F75PO1ae6MJYdiMu60sq0CqN5CVeVsbhPxalupvTX8gXVSU9gq+Rx1/hvu6A==}
     cpu: [arm64]
     os: [win32]
 
-  '@rollup/rollup-win32-ia32-msvc@4.57.1':
-    resolution: {integrity: sha512-P3dLS+IerxCT/7D2q2FYcRdWRl22dNbrbBEtxdWhXrfIMPP9lQhb5h4Du04mdl5Woq05jVCDPCMF7Ub0NAjIew==}
+  '@rollup/rollup-win32-ia32-msvc@4.59.0':
+    resolution: {integrity: sha512-UKFMHPuM9R0iBegwzKF4y0C4J9u8C6MEJgFuXTBerMk7EJ92GFVFYBfOZaSGLu6COf7FxpQNqhNS4c4icUPqxA==}
     cpu: [ia32]
     os: [win32]
 
-  '@rollup/rollup-win32-x64-gnu@4.57.1':
-    resolution: {integrity: sha512-VMBH2eOOaKGtIJYleXsi2B8CPVADrh+TyNxJ4mWPnKfLB/DBUmzW+5m1xUrcwWoMfSLagIRpjUFeW5CO5hyciQ==}
+  '@rollup/rollup-win32-x64-gnu@4.59.0':
+    resolution: {integrity: sha512-laBkYlSS1n2L8fSo1thDNGrCTQMmxjYY5G0WFWjFFYZkKPjsMBsgJfGf4TLxXrF6RyhI60L8TMOjBMvXiTcxeA==}
     cpu: [x64]
     os: [win32]
 
-  '@rollup/rollup-win32-x64-msvc@4.57.1':
-    resolution: {integrity: sha512-mxRFDdHIWRxg3UfIIAwCm6NzvxG0jDX/wBN6KsQFTvKFqqg9vTrWUE68qEjHt19A5wwx5X5aUi2zuZT7YR0jrA==}
+  '@rollup/rollup-win32-x64-msvc@4.59.0':
+    resolution: {integrity: sha512-2HRCml6OztYXyJXAvdDXPKcawukWY2GpR5/nxKp4iBgiO3wcoEGkAaqctIbZcNB6KlUQBIqt8VYkNSj2397EfA==}
     cpu: [x64]
     os: [win32]
 
@@ -1146,12 +1078,12 @@ packages:
       zod:
         optional: true
 
-  acorn-walk@8.3.4:
-    resolution: {integrity: sha512-ueEepnujpqee2o5aIYnvHU6C0A42MNdsIDeqy5BydrkuC5R1ZuUFnm27EeFJGoEHJQgn3uleRvmTXaJgfXbt4g==}
+  acorn-walk@8.3.5:
+    resolution: {integrity: sha512-HEHNfbars9v4pgpW6SO1KSPkfoS0xVOM/9UzkJltjlsHZmJasxg8aXkuZa7SMf8vKGIBhpUsPluQSqhJFCqebw==}
     engines: {node: '>=0.4.0'}
 
-  acorn@8.15.0:
-    resolution: {integrity: sha512-NZyJarBfL7nWwIq+FDL6Zp/yHEhePMNnnJ0y3qfieCrmNvYct8uvtiV41UvlSe6apAfk0fY1FbWx+NwfmpvtTg==}
+  acorn@8.16.0:
+    resolution: {integrity: sha512-UVJyE9MttOsBQIDKw1skb9nAwQuR5wuGD3+82K6JgJlm/Y+KI92oNsMNGZCYdDsVtRHSak0pcV5Dno5+4jh9sw==}
     engines: {node: '>=0.4.0'}
     hasBin: true
 
@@ -1249,8 +1181,8 @@ packages:
     resolution: {integrity: sha512-y+8xyqdGLL+6sh0tVeHcfP/QDd8gUgbasolJJpY7NgeQGSZ739bDtSiaiDgtoicy+mtYB81dKLxO9xRhCyIB3A==}
     engines: {node: '>=12.20'}
 
-  diff@4.0.2:
-    resolution: {integrity: sha512-58lmxKSA4BNyLz+HHMUzlOEpg09FV+ev6ZMe3vJihgdxzgcwZ8VoEEPmALCZG9LmqfVoNMMKpttIYTVG6uDY7A==}
+  diff@4.0.4:
+    resolution: {integrity: sha512-X07nttJQkwkfKfvTPG/KSnE2OMdcUCao6+eXF3wmnIQRn2aPAHH3VxDbDOdegkd6JbPsXqShpvEOHfAT+nCNwQ==}
     engines: {node: '>=0.3.1'}
 
   es-module-lexer@1.7.0:
@@ -1310,16 +1242,16 @@ packages:
   function-bind@1.1.2:
     resolution: {integrity: sha512-7XHNxH7qX9xG5mIwxkhumTox/MIRNcOgDrxWsMt2pAr23WHp6MrRlN7FBSFpCpr+oVO0F744iUgR82nJMfG2SA==}
 
-  get-east-asian-width@1.4.0:
-    resolution: {integrity: sha512-QZjmEOC+IT1uk6Rx0sX22V6uHWVwbdbxf1faPqJ1QhLdGgsRGCZoyaQBm/piRdJy/D2um6hM1UP7ZEeQ4EkP+Q==}
+  get-east-asian-width@1.5.0:
+    resolution: {integrity: sha512-CQ+bEO+Tva/qlmw24dCejulK5pMzVnUOFOijVogd3KQs07HnRIgp8TGipvCCRT06xeYEbpbgwaCxglFyiuIcmA==}
     engines: {node: '>=18'}
 
   get-stream@9.0.1:
     resolution: {integrity: sha512-kVCxPF3vQM/N0B1PmoqVUqgHP+EeVjmZSQn+1oCRPxd2P21P2F19lIgbR3HBosbB1PUhOAoctJnfEn2GbN2eZA==}
     engines: {node: '>=18'}
 
-  get-tsconfig@4.13.0:
-    resolution: {integrity: sha512-1VKTZJCwBrvbd+Wn3AOgQP/2Av+TfTCOlE4AcRJE72W1ksZXbAx8PPBR9RzgTeSPzlPMHrbANMH3LbltH73wxQ==}
+  get-tsconfig@4.13.6:
+    resolution: {integrity: sha512-shZT/QMiSHc/YBLxxOkMtgSid5HFoauqCE3/exfsEcwg1WkeqjG+V40yBbBrsD+jW2HDXcs28xOfcbm2jI8Ddw==}
 
   globrex@0.1.2:
     resolution: {integrity: sha512-uHJgbwAMwNFf5mLst7IWLNg14x1CkeqglJb/K3doi4dw6q2IvAAmM/Y81kevy83wP+Sst+nutFTYOGg3d1lsxg==}
@@ -1407,8 +1339,8 @@ packages:
   lru-cache@10.4.3:
     resolution: {integrity: sha512-JNAzZcXrCt42VGLuYz0zfAzDfAvJWW6AfYlDBQyDV5DClI2m5sAmK+OIO7s59XfsRsWHp02jAJrRadPRGTt6SQ==}
 
-  lru-cache@11.2.5:
-    resolution: {integrity: sha512-vFrFJkWtJvJnD5hg+hJvVE8Lh/TcMzKnTgCWmtBipwI5yLX/iX+5UB2tfuyODF5E7k9xEzMdYgGqaSb1c0c5Yw==}
+  lru-cache@11.2.6:
+    resolution: {integrity: sha512-ESL2CrkS/2wTPfuend7Zhkzo2u0daGJ/A2VucJOgQ/C48S/zB8MMeMHSGKYpXhIjbPxfuezITkaBH1wqv00DDQ==}
     engines: {node: 20 || >=22}
 
   magic-string@0.30.21:
@@ -1512,12 +1444,6 @@ packages:
     peerDependencies:
       rxjs: '>=7.8.0'
 
-  polkadot-api@2.0.1-canary.6903a4b:
-    resolution: {integrity: sha512-Z2ZdQD06LNr9aM5otqYyaoBwqDlNcoMtnQrUbwOzJsn4/ilEVIiIiaNYEvi4FMGoxkAldGQa9xaYTgKWQ+01DQ==}
-    hasBin: true
-    peerDependencies:
-      rxjs: '>=7.8.0'
-
   postcss-load-config@6.0.1:
     resolution: {integrity: sha512-oPtTM4oerL+UXmx+93ytZVN82RrlY/wPUV8IeDxFrzIjXOLF1pN+EmKPLbubvKHT2HC20xXsCAH2Z+CKV6Oz/g==}
     engines: {node: '>= 18'}
@@ -1602,8 +1528,8 @@ packages:
       esbuild: '>=0.18.0'
       rollup: ^1.20.0 || ^2.0.0 || ^3.0.0 || ^4.0.0
 
-  rollup@4.57.1:
-    resolution: {integrity: sha512-oQL6lgK3e2QZeQ7gcgIkS2YZPg5slw37hYufJ3edKlfQSGGm8ICoxswK15ntSzF/a8+h7ekRy7k7oWc3BQ7y8A==}
+  rollup@4.59.0:
+    resolution: {integrity: sha512-2oMpl67a3zCH9H79LeMcbDhXW/UmWG/y2zuqnF2jQq5uq9TbM9TVyXvA4+t+ne2IIkBdrLpAaRQAvo7YI/Yyeg==}
     engines: {node: '>=18.0.0', npm: '>=8.0.0'}
     hasBin: true
 
@@ -1613,8 +1539,8 @@ packages:
   scale-ts@1.6.1:
     resolution: {integrity: sha512-PBMc2AWc6wSEqJYBDPcyCLUj9/tMKnLX70jLOSndMtcUoLQucP/DM0vnQo1wJAYjTrQiq8iG9rD0q6wFzgjH7g==}
 
-  semver@7.7.3:
-    resolution: {integrity: sha512-SdsKMrI9TdgjdweUSR9MweHA4EJ8YxHn8DFaDisvhVlUOe4BF1tLD7GAj0lIqWVl+dPb/rExr0Btby5loQm20Q==}
+  semver@7.7.4:
+    resolution: {integrity: sha512-vFKC2IEtQnVhpT78h1Yp8wzwrf8CM+MzKMHGJZfBtzhZNycRFnXsHk6E5TxIkkMsgNS7mdX3AGB7x2QM2di4lA==}
     engines: {node: '>=10'}
     hasBin: true
 
@@ -1658,8 +1584,8 @@ packages:
   spdx-expression-parse@3.0.1:
     resolution: {integrity: sha512-cbqHunsQWnJNE6KhVSMsMeH5H/L9EpymbzqTQ3uLwNCLZ1Q481oWaofqH7nO6V07xlXwY6PhQdQ2IedWx/ZK4Q==}
 
-  spdx-license-ids@3.0.22:
-    resolution: {integrity: sha512-4PRT4nh1EImPbt2jASOKHX7PB7I+e4IWNLvkKFDxNhJlfjbYlleYQh285Z/3mPTHSAK/AvdMmw5BNNuYH8ShgQ==}
+  spdx-license-ids@3.0.23:
+    resolution: {integrity: sha512-CWLcCCH7VLu13TgOH+r8p1O/Znwhqv/dbb6lqWy67G+pT1kHmeD/+V36AVb/vq8QMIQwVShJ6Ssl5FPh0fuSdw==}
 
   stackback@0.0.2:
     resolution: {integrity: sha512-1XMJE5fQo1jGH6Y/7ebnwPOBEkIEnT4QF32d5R1+VXdXveM0IBMJt8zfaxX1P3QhVwrYe+576+jkANtSS2mBbw==}
@@ -1671,8 +1597,8 @@ packages:
     resolution: {integrity: sha512-reExS1kSGoElkextOcPkel4NE99S0BWxjUHQeDFnR8S993JxpPX7KU4MNmO19NXhlJp+8dmdCbKQVNgLJh2teA==}
     engines: {node: '>=18'}
 
-  string-width@8.1.1:
-    resolution: {integrity: sha512-KpqHIdDL9KwYk22wEOg/VIqYbrnLeSApsKT/bSj6Ez7pn3CftUiLAv2Lccpq1ALcpLV9UX1Ppn92npZWu2w/aw==}
+  string-width@8.2.0:
+    resolution: {integrity: sha512-6hJPQ8N0V0P3SNmP6h2J99RLuzrWz2gvT7VnK5tKvrNqJoyS9W4/Fb8mo31UiPvy00z7DQXkP2hnKBVav76thw==}
     engines: {node: '>=20'}
 
   strip-ansi@7.1.2:
@@ -2235,45 +2161,6 @@ snapshots:
       - utf-8-validate
       - yaml
 
-  '@polkadot-api/cli@0.19.2-canary.6903a4b(postcss@8.5.6)':
-    dependencies:
-      '@commander-js/extra-typings': 14.0.0(commander@14.0.3)
-      '@polkadot-api/codegen': 0.22.2-canary.6903a4b
-      '@polkadot-api/ink-contracts': 0.5.2-canary.6903a4b
-      '@polkadot-api/json-rpc-provider': 0.1.1-canary.6903a4b
-      '@polkadot-api/known-chains': 0.10.1-canary.6903a4b
-      '@polkadot-api/metadata-compatibility': 0.5.2-canary.6903a4b
-      '@polkadot-api/observable-client': 0.18.2-canary.6903a4b(rxjs@7.8.2)
-      '@polkadot-api/sm-provider': 0.2.1-canary.6903a4b(@polkadot-api/smoldot@0.3.16-canary.6903a4b)
-      '@polkadot-api/smoldot': 0.3.16-canary.6903a4b
-      '@polkadot-api/substrate-bindings': 0.19.1-canary.6903a4b
-      '@polkadot-api/substrate-client': 0.6.1-canary.6903a4b
-      '@polkadot-api/utils': 0.3.1-canary.6903a4b
-      '@polkadot-api/wasm-executor': 0.2.3
-      '@polkadot-api/ws-middleware': 0.2.2-canary.6903a4b(rxjs@7.8.2)
-      '@polkadot-api/ws-provider': 0.8.1-canary.6903a4b(rxjs@7.8.2)
-      '@types/node': 25.3.0
-      commander: 14.0.3
-      execa: 9.6.1
-      fs.promises.exists: 1.1.4
-      ora: 9.3.0
-      read-pkg: 10.1.0
-      rxjs: 7.8.2
-      tsc-prog: 2.3.0(typescript@5.9.3)
-      tsup: 8.5.0(postcss@8.5.6)(typescript@5.9.3)
-      typescript: 5.9.3
-      write-package: 7.2.0
-    transitivePeerDependencies:
-      - '@microsoft/api-extractor'
-      - '@swc/core'
-      - bufferutil
-      - jiti
-      - postcss
-      - supports-color
-      - tsx
-      - utf-8-validate
-      - yaml
-
   '@polkadot-api/codegen@0.22.1':
     dependencies:
       '@polkadot-api/ink-contracts': 0.5.1
@@ -2281,14 +2168,6 @@ snapshots:
       '@polkadot-api/metadata-compatibility': 0.5.1
       '@polkadot-api/substrate-bindings': 0.19.0
       '@polkadot-api/utils': 0.3.0
-
-  '@polkadot-api/codegen@0.22.2-canary.6903a4b':
-    dependencies:
-      '@polkadot-api/ink-contracts': 0.5.2-canary.6903a4b
-      '@polkadot-api/metadata-builders': 0.13.12-canary.6903a4b
-      '@polkadot-api/metadata-compatibility': 0.5.2-canary.6903a4b
-      '@polkadot-api/substrate-bindings': 0.19.1-canary.6903a4b
-      '@polkadot-api/utils': 0.3.1-canary.6903a4b
 
   '@polkadot-api/descriptors@file:examples/governance/.papi/descriptors(polkadot-api@2.0.0-rc.2(postcss@8.5.6)(rxjs@7.8.2))':
     dependencies:
@@ -2312,43 +2191,21 @@ snapshots:
       '@polkadot-api/substrate-bindings': 0.19.0
       '@polkadot-api/utils': 0.3.0
 
-  '@polkadot-api/ink-contracts@0.5.2-canary.6903a4b':
-    dependencies:
-      '@polkadot-api/metadata-builders': 0.13.12-canary.6903a4b
-      '@polkadot-api/substrate-bindings': 0.19.1-canary.6903a4b
-      '@polkadot-api/utils': 0.3.1-canary.6903a4b
-
   '@polkadot-api/json-rpc-provider-proxy@0.3.0': {}
-
-  '@polkadot-api/json-rpc-provider-proxy@0.3.1-canary.6903a4b': {}
 
   '@polkadot-api/json-rpc-provider@0.1.0': {}
 
-  '@polkadot-api/json-rpc-provider@0.1.1-canary.6903a4b': {}
-
   '@polkadot-api/known-chains@0.10.0': {}
-
-  '@polkadot-api/known-chains@0.10.1-canary.6903a4b': {}
 
   '@polkadot-api/logs-provider@0.1.0':
     dependencies:
       '@polkadot-api/json-rpc-provider': 0.1.0
-
-  '@polkadot-api/logs-provider@0.1.1-canary.6903a4b':
-    dependencies:
-      '@polkadot-api/json-rpc-provider': 0.1.1-canary.6903a4b
 
   '@polkadot-api/merkleize-metadata@1.1.31':
     dependencies:
       '@polkadot-api/metadata-builders': 0.13.11
       '@polkadot-api/substrate-bindings': 0.19.0
       '@polkadot-api/utils': 0.3.0
-
-  '@polkadot-api/merkleize-metadata@1.1.32-canary.6903a4b':
-    dependencies:
-      '@polkadot-api/metadata-builders': 0.13.12-canary.6903a4b
-      '@polkadot-api/substrate-bindings': 0.19.1-canary.6903a4b
-      '@polkadot-api/utils': 0.3.1-canary.6903a4b
 
   '@polkadot-api/meta-signers@0.1.21':
     dependencies:
@@ -2363,20 +2220,10 @@ snapshots:
       '@polkadot-api/substrate-bindings': 0.19.0
       '@polkadot-api/utils': 0.3.0
 
-  '@polkadot-api/metadata-builders@0.13.12-canary.6903a4b':
-    dependencies:
-      '@polkadot-api/substrate-bindings': 0.19.1-canary.6903a4b
-      '@polkadot-api/utils': 0.3.1-canary.6903a4b
-
   '@polkadot-api/metadata-compatibility@0.5.1':
     dependencies:
       '@polkadot-api/metadata-builders': 0.13.11
       '@polkadot-api/substrate-bindings': 0.19.0
-
-  '@polkadot-api/metadata-compatibility@0.5.2-canary.6903a4b':
-    dependencies:
-      '@polkadot-api/metadata-builders': 0.13.12-canary.6903a4b
-      '@polkadot-api/substrate-bindings': 0.19.1-canary.6903a4b
 
   '@polkadot-api/observable-client@0.18.1(rxjs@7.8.2)':
     dependencies:
@@ -2384,14 +2231,6 @@ snapshots:
       '@polkadot-api/substrate-bindings': 0.19.0
       '@polkadot-api/substrate-client': 0.6.0
       '@polkadot-api/utils': 0.3.0
-      rxjs: 7.8.2
-
-  '@polkadot-api/observable-client@0.18.2-canary.6903a4b(rxjs@7.8.2)':
-    dependencies:
-      '@polkadot-api/metadata-builders': 0.13.12-canary.6903a4b
-      '@polkadot-api/substrate-bindings': 0.19.1-canary.6903a4b
-      '@polkadot-api/substrate-client': 0.6.1-canary.6903a4b
-      '@polkadot-api/utils': 0.3.1-canary.6903a4b
       rxjs: 7.8.2
 
   '@polkadot-api/pjs-signer@0.6.21':
@@ -2402,25 +2241,11 @@ snapshots:
       '@polkadot-api/substrate-bindings': 0.19.0
       '@polkadot-api/utils': 0.3.0
 
-  '@polkadot-api/pjs-signer@0.6.22-canary.6903a4b':
-    dependencies:
-      '@polkadot-api/metadata-builders': 0.13.12-canary.6903a4b
-      '@polkadot-api/polkadot-signer': 0.1.7-canary.6903a4b
-      '@polkadot-api/signers-common': 0.1.23-canary.6903a4b
-      '@polkadot-api/substrate-bindings': 0.19.1-canary.6903a4b
-      '@polkadot-api/utils': 0.3.1-canary.6903a4b
-
   '@polkadot-api/polkadot-signer@0.1.6': {}
-
-  '@polkadot-api/polkadot-signer@0.1.7-canary.6903a4b': {}
 
   '@polkadot-api/raw-client@0.2.0':
     dependencies:
       '@polkadot-api/json-rpc-provider': 0.1.0
-
-  '@polkadot-api/raw-client@0.2.1-canary.6903a4b':
-    dependencies:
-      '@polkadot-api/json-rpc-provider': 0.1.1-canary.6903a4b
 
   '@polkadot-api/signer@0.2.15':
     dependencies:
@@ -2431,15 +2256,6 @@ snapshots:
       '@polkadot-api/substrate-bindings': 0.19.0
       '@polkadot-api/utils': 0.3.0
 
-  '@polkadot-api/signer@0.2.16-canary.6903a4b':
-    dependencies:
-      '@noble/hashes': 2.0.1
-      '@polkadot-api/merkleize-metadata': 1.1.32-canary.6903a4b
-      '@polkadot-api/polkadot-signer': 0.1.7-canary.6903a4b
-      '@polkadot-api/signers-common': 0.1.23-canary.6903a4b
-      '@polkadot-api/substrate-bindings': 0.19.1-canary.6903a4b
-      '@polkadot-api/utils': 0.3.1-canary.6903a4b
-
   '@polkadot-api/signers-common@0.1.22':
     dependencies:
       '@polkadot-api/metadata-builders': 0.13.11
@@ -2447,24 +2263,11 @@ snapshots:
       '@polkadot-api/substrate-bindings': 0.19.0
       '@polkadot-api/utils': 0.3.0
 
-  '@polkadot-api/signers-common@0.1.23-canary.6903a4b':
-    dependencies:
-      '@polkadot-api/metadata-builders': 0.13.12-canary.6903a4b
-      '@polkadot-api/polkadot-signer': 0.1.7-canary.6903a4b
-      '@polkadot-api/substrate-bindings': 0.19.1-canary.6903a4b
-      '@polkadot-api/utils': 0.3.1-canary.6903a4b
-
   '@polkadot-api/sm-provider@0.2.0(@polkadot-api/smoldot@0.3.15)':
     dependencies:
       '@polkadot-api/json-rpc-provider': 0.1.0
       '@polkadot-api/json-rpc-provider-proxy': 0.3.0
       '@polkadot-api/smoldot': 0.3.15
-
-  '@polkadot-api/sm-provider@0.2.1-canary.6903a4b(@polkadot-api/smoldot@0.3.16-canary.6903a4b)':
-    dependencies:
-      '@polkadot-api/json-rpc-provider': 0.1.1-canary.6903a4b
-      '@polkadot-api/json-rpc-provider-proxy': 0.3.1-canary.6903a4b
-      '@polkadot-api/smoldot': 0.3.16-canary.6903a4b
 
   '@polkadot-api/smoldot@0.3.15':
     dependencies:
@@ -2474,32 +2277,10 @@ snapshots:
       - bufferutil
       - utf-8-validate
 
-  '@polkadot-api/smoldot@0.3.16-canary.6903a4b':
-    dependencies:
-      '@types/node': 25.3.0
-      smoldot: 2.0.40
-    transitivePeerDependencies:
-      - bufferutil
-      - utf-8-validate
-
-  '@polkadot-api/substrate-bindings@0.18.0':
-    dependencies:
-      '@noble/hashes': 2.0.1
-      '@polkadot-api/utils': 0.3.0
-      '@scure/base': 2.0.0
-      scale-ts: 1.6.1
-
   '@polkadot-api/substrate-bindings@0.19.0':
     dependencies:
       '@noble/hashes': 2.0.1
       '@polkadot-api/utils': 0.3.0
-      '@scure/base': 2.0.0
-      scale-ts: 1.6.1
-
-  '@polkadot-api/substrate-bindings@0.19.1-canary.6903a4b':
-    dependencies:
-      '@noble/hashes': 2.0.1
-      '@polkadot-api/utils': 0.3.1-canary.6903a4b
       '@scure/base': 2.0.0
       scale-ts: 1.6.1
 
@@ -2509,15 +2290,7 @@ snapshots:
       '@polkadot-api/raw-client': 0.2.0
       '@polkadot-api/utils': 0.3.0
 
-  '@polkadot-api/substrate-client@0.6.1-canary.6903a4b':
-    dependencies:
-      '@polkadot-api/json-rpc-provider': 0.1.1-canary.6903a4b
-      '@polkadot-api/raw-client': 0.2.1-canary.6903a4b
-      '@polkadot-api/utils': 0.3.1-canary.6903a4b
-
   '@polkadot-api/utils@0.3.0': {}
-
-  '@polkadot-api/utils@0.3.1-canary.6903a4b': {}
 
   '@polkadot-api/wasm-executor@0.2.3': {}
 
@@ -2530,27 +2303,11 @@ snapshots:
       '@polkadot-api/utils': 0.3.0
       rxjs: 7.8.2
 
-  '@polkadot-api/ws-middleware@0.2.2-canary.6903a4b(rxjs@7.8.2)':
-    dependencies:
-      '@polkadot-api/json-rpc-provider': 0.1.1-canary.6903a4b
-      '@polkadot-api/json-rpc-provider-proxy': 0.3.1-canary.6903a4b
-      '@polkadot-api/raw-client': 0.2.1-canary.6903a4b
-      '@polkadot-api/substrate-bindings': 0.19.1-canary.6903a4b
-      '@polkadot-api/utils': 0.3.1-canary.6903a4b
-      rxjs: 7.8.2
-
   '@polkadot-api/ws-provider@0.8.0(rxjs@7.8.2)':
     dependencies:
       '@polkadot-api/json-rpc-provider': 0.1.0
       '@polkadot-api/json-rpc-provider-proxy': 0.3.0
       '@polkadot-api/utils': 0.3.0
-      rxjs: 7.8.2
-
-  '@polkadot-api/ws-provider@0.8.1-canary.6903a4b(rxjs@7.8.2)':
-    dependencies:
-      '@polkadot-api/json-rpc-provider': 0.1.1-canary.6903a4b
-      '@polkadot-api/json-rpc-provider-proxy': 0.3.1-canary.6903a4b
-      '@polkadot-api/utils': 0.3.1-canary.6903a4b
       rxjs: 7.8.2
 
   '@polkadot-labs/hdkd-helpers@0.0.27':
@@ -2578,101 +2335,101 @@ snapshots:
       react: 19.0.0
       rxjs: 7.8.2
 
-  '@rollup/plugin-alias@6.0.0(rollup@4.57.1)':
+  '@rollup/plugin-alias@6.0.0(rollup@4.59.0)':
     optionalDependencies:
-      rollup: 4.57.1
+      rollup: 4.59.0
 
-  '@rollup/plugin-node-resolve@16.0.3(rollup@4.57.1)':
+  '@rollup/plugin-node-resolve@16.0.3(rollup@4.59.0)':
     dependencies:
-      '@rollup/pluginutils': 5.3.0(rollup@4.57.1)
+      '@rollup/pluginutils': 5.3.0(rollup@4.59.0)
       '@types/resolve': 1.20.2
       deepmerge: 4.3.1
       is-module: 1.0.0
       resolve: 1.22.11
     optionalDependencies:
-      rollup: 4.57.1
+      rollup: 4.59.0
 
-  '@rollup/pluginutils@5.3.0(rollup@4.57.1)':
+  '@rollup/pluginutils@5.3.0(rollup@4.59.0)':
     dependencies:
       '@types/estree': 1.0.8
       estree-walker: 2.0.2
       picomatch: 4.0.3
     optionalDependencies:
-      rollup: 4.57.1
+      rollup: 4.59.0
 
-  '@rollup/rollup-android-arm-eabi@4.57.1':
+  '@rollup/rollup-android-arm-eabi@4.59.0':
     optional: true
 
-  '@rollup/rollup-android-arm64@4.57.1':
+  '@rollup/rollup-android-arm64@4.59.0':
     optional: true
 
-  '@rollup/rollup-darwin-arm64@4.57.1':
+  '@rollup/rollup-darwin-arm64@4.59.0':
     optional: true
 
-  '@rollup/rollup-darwin-x64@4.57.1':
+  '@rollup/rollup-darwin-x64@4.59.0':
     optional: true
 
-  '@rollup/rollup-freebsd-arm64@4.57.1':
+  '@rollup/rollup-freebsd-arm64@4.59.0':
     optional: true
 
-  '@rollup/rollup-freebsd-x64@4.57.1':
+  '@rollup/rollup-freebsd-x64@4.59.0':
     optional: true
 
-  '@rollup/rollup-linux-arm-gnueabihf@4.57.1':
+  '@rollup/rollup-linux-arm-gnueabihf@4.59.0':
     optional: true
 
-  '@rollup/rollup-linux-arm-musleabihf@4.57.1':
+  '@rollup/rollup-linux-arm-musleabihf@4.59.0':
     optional: true
 
-  '@rollup/rollup-linux-arm64-gnu@4.57.1':
+  '@rollup/rollup-linux-arm64-gnu@4.59.0':
     optional: true
 
-  '@rollup/rollup-linux-arm64-musl@4.57.1':
+  '@rollup/rollup-linux-arm64-musl@4.59.0':
     optional: true
 
-  '@rollup/rollup-linux-loong64-gnu@4.57.1':
+  '@rollup/rollup-linux-loong64-gnu@4.59.0':
     optional: true
 
-  '@rollup/rollup-linux-loong64-musl@4.57.1':
+  '@rollup/rollup-linux-loong64-musl@4.59.0':
     optional: true
 
-  '@rollup/rollup-linux-ppc64-gnu@4.57.1':
+  '@rollup/rollup-linux-ppc64-gnu@4.59.0':
     optional: true
 
-  '@rollup/rollup-linux-ppc64-musl@4.57.1':
+  '@rollup/rollup-linux-ppc64-musl@4.59.0':
     optional: true
 
-  '@rollup/rollup-linux-riscv64-gnu@4.57.1':
+  '@rollup/rollup-linux-riscv64-gnu@4.59.0':
     optional: true
 
-  '@rollup/rollup-linux-riscv64-musl@4.57.1':
+  '@rollup/rollup-linux-riscv64-musl@4.59.0':
     optional: true
 
-  '@rollup/rollup-linux-s390x-gnu@4.57.1':
+  '@rollup/rollup-linux-s390x-gnu@4.59.0':
     optional: true
 
-  '@rollup/rollup-linux-x64-gnu@4.57.1':
+  '@rollup/rollup-linux-x64-gnu@4.59.0':
     optional: true
 
-  '@rollup/rollup-linux-x64-musl@4.57.1':
+  '@rollup/rollup-linux-x64-musl@4.59.0':
     optional: true
 
-  '@rollup/rollup-openbsd-x64@4.57.1':
+  '@rollup/rollup-openbsd-x64@4.59.0':
     optional: true
 
-  '@rollup/rollup-openharmony-arm64@4.57.1':
+  '@rollup/rollup-openharmony-arm64@4.59.0':
     optional: true
 
-  '@rollup/rollup-win32-arm64-msvc@4.57.1':
+  '@rollup/rollup-win32-arm64-msvc@4.59.0':
     optional: true
 
-  '@rollup/rollup-win32-ia32-msvc@4.57.1':
+  '@rollup/rollup-win32-ia32-msvc@4.59.0':
     optional: true
 
-  '@rollup/rollup-win32-x64-gnu@4.57.1':
+  '@rollup/rollup-win32-x64-gnu@4.59.0':
     optional: true
 
-  '@rollup/rollup-win32-x64-msvc@4.57.1':
+  '@rollup/rollup-win32-x64-msvc@4.59.0':
     optional: true
 
   '@rx-state/core@0.1.4(rxjs@7.8.2)':
@@ -2781,11 +2538,11 @@ snapshots:
     optionalDependencies:
       typescript: 5.9.3
 
-  acorn-walk@8.3.4:
+  acorn-walk@8.3.5:
     dependencies:
-      acorn: 8.15.0
+      acorn: 8.16.0
 
-  acorn@8.15.0: {}
+  acorn@8.16.0: {}
 
   ansi-regex@6.2.2: {}
 
@@ -2848,7 +2605,7 @@ snapshots:
 
   detect-indent@7.0.2: {}
 
-  diff@4.0.2: {}
+  diff@4.0.4: {}
 
   es-module-lexer@1.7.0: {}
 
@@ -2947,7 +2704,7 @@ snapshots:
     dependencies:
       magic-string: 0.30.21
       mlly: 1.8.0
-      rollup: 4.57.1
+      rollup: 4.59.0
 
   fs.promises.exists@1.1.4: {}
 
@@ -2956,14 +2713,14 @@ snapshots:
 
   function-bind@1.1.2: {}
 
-  get-east-asian-width@1.4.0: {}
+  get-east-asian-width@1.5.0: {}
 
   get-stream@9.0.1:
     dependencies:
       '@sec-ant/readable-stream': 0.4.1
       is-stream: 4.0.1
 
-  get-tsconfig@4.13.0:
+  get-tsconfig@4.13.6:
     dependencies:
       resolve-pkg-maps: 1.0.0
 
@@ -2979,7 +2736,7 @@ snapshots:
 
   hosted-git-info@9.0.2:
     dependencies:
-      lru-cache: 11.2.5
+      lru-cache: 11.2.6
 
   human-signals@8.0.1: {}
 
@@ -3026,7 +2783,7 @@ snapshots:
 
   lru-cache@10.4.3: {}
 
-  lru-cache@11.2.5: {}
+  lru-cache@11.2.6: {}
 
   magic-string@0.30.21:
     dependencies:
@@ -3038,7 +2795,7 @@ snapshots:
 
   mlly@1.8.0:
     dependencies:
-      acorn: 8.15.0
+      acorn: 8.16.0
       pathe: 2.0.3
       pkg-types: 1.3.1
       ufo: 1.6.3
@@ -3056,13 +2813,13 @@ snapshots:
   normalize-package-data@6.0.2:
     dependencies:
       hosted-git-info: 7.0.2
-      semver: 7.7.3
+      semver: 7.7.4
       validate-npm-package-license: 3.0.4
 
   normalize-package-data@8.0.0:
     dependencies:
       hosted-git-info: 9.0.2
-      semver: 7.7.3
+      semver: 7.7.4
       validate-npm-package-license: 3.0.4
 
   npm-run-path@6.0.0:
@@ -3087,7 +2844,7 @@ snapshots:
       is-unicode-supported: 2.1.0
       log-symbols: 7.0.1
       stdin-discarder: 0.3.1
-      string-width: 8.1.1
+      string-width: 8.2.0
 
   ox@0.12.4(typescript@5.9.3):
     dependencies:
@@ -3165,39 +2922,6 @@ snapshots:
       - utf-8-validate
       - yaml
 
-  polkadot-api@2.0.1-canary.6903a4b(postcss@8.5.6)(rxjs@7.8.2):
-    dependencies:
-      '@polkadot-api/cli': 0.19.2-canary.6903a4b(postcss@8.5.6)
-      '@polkadot-api/ink-contracts': 0.5.2-canary.6903a4b
-      '@polkadot-api/json-rpc-provider': 0.1.1-canary.6903a4b
-      '@polkadot-api/known-chains': 0.10.1-canary.6903a4b
-      '@polkadot-api/logs-provider': 0.1.1-canary.6903a4b
-      '@polkadot-api/metadata-builders': 0.13.12-canary.6903a4b
-      '@polkadot-api/metadata-compatibility': 0.5.2-canary.6903a4b
-      '@polkadot-api/observable-client': 0.18.2-canary.6903a4b(rxjs@7.8.2)
-      '@polkadot-api/pjs-signer': 0.6.22-canary.6903a4b
-      '@polkadot-api/polkadot-signer': 0.1.7-canary.6903a4b
-      '@polkadot-api/signer': 0.2.16-canary.6903a4b
-      '@polkadot-api/sm-provider': 0.2.1-canary.6903a4b(@polkadot-api/smoldot@0.3.16-canary.6903a4b)
-      '@polkadot-api/smoldot': 0.3.16-canary.6903a4b
-      '@polkadot-api/substrate-bindings': 0.19.1-canary.6903a4b
-      '@polkadot-api/substrate-client': 0.6.1-canary.6903a4b
-      '@polkadot-api/utils': 0.3.1-canary.6903a4b
-      '@polkadot-api/ws-middleware': 0.2.2-canary.6903a4b(rxjs@7.8.2)
-      '@polkadot-api/ws-provider': 0.8.1-canary.6903a4b(rxjs@7.8.2)
-      '@rx-state/core': 0.1.4(rxjs@7.8.2)
-      rxjs: 7.8.2
-    transitivePeerDependencies:
-      - '@microsoft/api-extractor'
-      - '@swc/core'
-      - bufferutil
-      - jiti
-      - postcss
-      - supports-color
-      - tsx
-      - utf-8-validate
-      - yaml
-
   postcss-load-config@6.0.1(postcss@8.5.6):
     dependencies:
       lilconfig: 3.1.3
@@ -3255,54 +2979,54 @@ snapshots:
       onetime: 7.0.0
       signal-exit: 4.1.0
 
-  rollup-plugin-dts@6.3.0(rollup@4.57.1)(typescript@5.9.3):
+  rollup-plugin-dts@6.3.0(rollup@4.59.0)(typescript@5.9.3):
     dependencies:
       magic-string: 0.30.21
-      rollup: 4.57.1
+      rollup: 4.59.0
       typescript: 5.9.3
     optionalDependencies:
       '@babel/code-frame': 7.29.0
 
-  rollup-plugin-esbuild@6.2.1(esbuild@0.27.3)(rollup@4.57.1):
+  rollup-plugin-esbuild@6.2.1(esbuild@0.27.3)(rollup@4.59.0):
     dependencies:
       debug: 4.4.3
       es-module-lexer: 1.7.0
       esbuild: 0.27.3
-      get-tsconfig: 4.13.0
-      rollup: 4.57.1
+      get-tsconfig: 4.13.6
+      rollup: 4.59.0
       unplugin-utils: 0.2.5
     transitivePeerDependencies:
       - supports-color
 
-  rollup@4.57.1:
+  rollup@4.59.0:
     dependencies:
       '@types/estree': 1.0.8
     optionalDependencies:
-      '@rollup/rollup-android-arm-eabi': 4.57.1
-      '@rollup/rollup-android-arm64': 4.57.1
-      '@rollup/rollup-darwin-arm64': 4.57.1
-      '@rollup/rollup-darwin-x64': 4.57.1
-      '@rollup/rollup-freebsd-arm64': 4.57.1
-      '@rollup/rollup-freebsd-x64': 4.57.1
-      '@rollup/rollup-linux-arm-gnueabihf': 4.57.1
-      '@rollup/rollup-linux-arm-musleabihf': 4.57.1
-      '@rollup/rollup-linux-arm64-gnu': 4.57.1
-      '@rollup/rollup-linux-arm64-musl': 4.57.1
-      '@rollup/rollup-linux-loong64-gnu': 4.57.1
-      '@rollup/rollup-linux-loong64-musl': 4.57.1
-      '@rollup/rollup-linux-ppc64-gnu': 4.57.1
-      '@rollup/rollup-linux-ppc64-musl': 4.57.1
-      '@rollup/rollup-linux-riscv64-gnu': 4.57.1
-      '@rollup/rollup-linux-riscv64-musl': 4.57.1
-      '@rollup/rollup-linux-s390x-gnu': 4.57.1
-      '@rollup/rollup-linux-x64-gnu': 4.57.1
-      '@rollup/rollup-linux-x64-musl': 4.57.1
-      '@rollup/rollup-openbsd-x64': 4.57.1
-      '@rollup/rollup-openharmony-arm64': 4.57.1
-      '@rollup/rollup-win32-arm64-msvc': 4.57.1
-      '@rollup/rollup-win32-ia32-msvc': 4.57.1
-      '@rollup/rollup-win32-x64-gnu': 4.57.1
-      '@rollup/rollup-win32-x64-msvc': 4.57.1
+      '@rollup/rollup-android-arm-eabi': 4.59.0
+      '@rollup/rollup-android-arm64': 4.59.0
+      '@rollup/rollup-darwin-arm64': 4.59.0
+      '@rollup/rollup-darwin-x64': 4.59.0
+      '@rollup/rollup-freebsd-arm64': 4.59.0
+      '@rollup/rollup-freebsd-x64': 4.59.0
+      '@rollup/rollup-linux-arm-gnueabihf': 4.59.0
+      '@rollup/rollup-linux-arm-musleabihf': 4.59.0
+      '@rollup/rollup-linux-arm64-gnu': 4.59.0
+      '@rollup/rollup-linux-arm64-musl': 4.59.0
+      '@rollup/rollup-linux-loong64-gnu': 4.59.0
+      '@rollup/rollup-linux-loong64-musl': 4.59.0
+      '@rollup/rollup-linux-ppc64-gnu': 4.59.0
+      '@rollup/rollup-linux-ppc64-musl': 4.59.0
+      '@rollup/rollup-linux-riscv64-gnu': 4.59.0
+      '@rollup/rollup-linux-riscv64-musl': 4.59.0
+      '@rollup/rollup-linux-s390x-gnu': 4.59.0
+      '@rollup/rollup-linux-x64-gnu': 4.59.0
+      '@rollup/rollup-linux-x64-musl': 4.59.0
+      '@rollup/rollup-openbsd-x64': 4.59.0
+      '@rollup/rollup-openharmony-arm64': 4.59.0
+      '@rollup/rollup-win32-arm64-msvc': 4.59.0
+      '@rollup/rollup-win32-ia32-msvc': 4.59.0
+      '@rollup/rollup-win32-x64-gnu': 4.59.0
+      '@rollup/rollup-win32-x64-msvc': 4.59.0
       fsevents: 2.3.3
 
   rxjs@7.8.2:
@@ -3311,7 +3035,7 @@ snapshots:
 
   scale-ts@1.6.1: {}
 
-  semver@7.7.3: {}
+  semver@7.7.4: {}
 
   shebang-command@2.0.0:
     dependencies:
@@ -3343,16 +3067,16 @@ snapshots:
   spdx-correct@3.2.0:
     dependencies:
       spdx-expression-parse: 3.0.1
-      spdx-license-ids: 3.0.22
+      spdx-license-ids: 3.0.23
 
   spdx-exceptions@2.5.0: {}
 
   spdx-expression-parse@3.0.1:
     dependencies:
       spdx-exceptions: 2.5.0
-      spdx-license-ids: 3.0.22
+      spdx-license-ids: 3.0.23
 
-  spdx-license-ids@3.0.22: {}
+  spdx-license-ids@3.0.23: {}
 
   stackback@0.0.2: {}
 
@@ -3360,9 +3084,9 @@ snapshots:
 
   stdin-discarder@0.3.1: {}
 
-  string-width@8.1.1:
+  string-width@8.2.0:
     dependencies:
-      get-east-asian-width: 1.4.0
+      get-east-asian-width: 1.5.0
       strip-ansi: 7.1.2
 
   strip-ansi@7.1.2:
@@ -3422,11 +3146,11 @@ snapshots:
       '@tsconfig/node14': 1.0.3
       '@tsconfig/node16': 1.0.4
       '@types/node': 25.3.0
-      acorn: 8.15.0
-      acorn-walk: 8.3.4
+      acorn: 8.16.0
+      acorn-walk: 8.3.5
       arg: 4.1.3
       create-require: 1.1.1
-      diff: 4.0.2
+      diff: 4.0.4
       make-error: 1.3.6
       typescript: 5.9.3
       v8-compile-cache-lib: 3.0.1
@@ -3455,7 +3179,7 @@ snapshots:
       picocolors: 1.1.1
       postcss-load-config: 6.0.1(postcss@8.5.6)
       resolve-from: 5.0.0
-      rollup: 4.57.1
+      rollup: 4.59.0
       source-map: 0.8.0-beta.0
       sucrase: 3.35.1
       tinyexec: 0.3.2
@@ -3539,7 +3263,7 @@ snapshots:
       fdir: 6.5.0(picomatch@4.0.3)
       picomatch: 4.0.3
       postcss: 8.5.6
-      rollup: 4.57.1
+      rollup: 4.59.0
       tinyglobby: 0.2.15
     optionalDependencies:
       '@types/node': 25.3.0

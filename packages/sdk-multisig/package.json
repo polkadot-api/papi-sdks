@@ -1,6 +1,6 @@
 {
   "name": "@polkadot-api/sdk-multisig",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "sideEffects": false,
   "author": "Victor Oliva (https://github.com/voliva)",
   "repository": {
@@ -34,15 +34,14 @@
     "dist"
   ],
   "scripts": {
-    "build": "papi generate && mv .papi/descriptors/dist/index.mjs .papi/descriptors/dist/index.js && tsc --noEmit && rollup -c ../../rollup.config.js",
+    "build": "papi generate && ([ -f .papi/descriptors/dist/index.mjs ] && mv .papi/descriptors/dist/index.mjs .papi/descriptors/dist/index.js || true) && tsc --noEmit && rollup -c ../../rollup.config.js",
     "lint": "prettier --check README.md \"src/**/*.{js,jsx,ts,tsx,json,md}\"",
-    "format": "prettier --write README.md \"src/**/*.{js,jsx,ts,tsx,json,md}\"",
-    "prepack": "pnpm run build"
+    "format": "prettier --write README.md \"src/**/*.{js,jsx,ts,tsx,json,md}\""
   },
   "license": "MIT",
   "dependencies": {
     "@polkadot-api/common-sdk-utils": "workspace:*",
-    "@polkadot-api/substrate-bindings": "^0.18.0"
+    "@polkadot-api/substrate-bindings": "^0.19.0"
   },
   "peerDependencies": {
     "polkadot-api": ">=2.0.0-rc.2",

@@ -1,6 +1,6 @@
 {
   "name": "@polkadot-api/sdk-governance",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "sideEffects": false,
   "author": "Victor Oliva (https://github.com/voliva)",
   "repository": {
@@ -36,8 +36,7 @@
   "scripts": {
     "build": "tsc --noEmit && rollup -c ../../rollup.config.js",
     "lint": "prettier --check README.md \"src/**/*.{js,jsx,ts,tsx,json,md}\"",
-    "format": "prettier --write README.md \"src/**/*.{js,jsx,ts,tsx,json,md}\"",
-    "prepack": "pnpm run build"
+    "format": "prettier --write README.md \"src/**/*.{js,jsx,ts,tsx,json,md}\""
   },
   "license": "MIT",
   "dependencies": {

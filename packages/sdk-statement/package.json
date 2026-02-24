@@ -1,6 +1,6 @@
 {
   "name": "@polkadot-api/sdk-statement",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "sideEffects": false,
   "author": "Carlo Sala (https://github.com/carlosala)",
   "repository": {
@@ -37,13 +37,12 @@
     "build": "tsc --noEmit && rollup -c ../../rollup.config.js",
     "lint": "prettier --check README.md \"src/**/*.{js,jsx,ts,tsx,json,md}\"",
     "format": "prettier --write README.md \"src/**/*.{js,jsx,ts,tsx,json,md}\"",
-    "prepack": "pnpm run build",
     "test": "vitest"
   },
   "license": "MIT",
   "dependencies": {
     "@polkadot-api/substrate-bindings": "0.19.0",
     "@polkadot-api/utils": "^0.3.0",
-    "polkadot-api": "canary"
+    "polkadot-api": "^2.0.0-rc.2"
   }
 }

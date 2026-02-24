@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 0.5.0 2026-02-23
+
 ### Changed
 
 - BREAKING!: Update to PAPI v2
