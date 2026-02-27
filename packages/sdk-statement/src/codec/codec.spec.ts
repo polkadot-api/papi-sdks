@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 import { statementCodec } from "./codec"
-import { fromHex } from "@polkadot-api/utils"
+import { fromHex, toHex } from "@polkadot-api/utils"
 
 describe("statement codec", () => {
   it("encodes and decodes empty statement", () => {
@@ -13,15 +13,17 @@ describe("statement codec", () => {
 
   it("throws on repeated and/or unordered keys", () => {
     expect(() => {
-      // [{ priority: 1 }, { priority: 3 }]
-      statementCodec.dec(fromHex("0x0802010000000203000000"))
+      // [{ expiry: 1 }, { expiry: 3 }]
+      statementCodec.dec(
+        fromHex("0x0802010000000000000002030000000000000000"),
+      )
     }).toThrow("entries order")
 
     expect(() => {
       statementCodec.dec(
         fromHex(
-          // [{ channel: [0; 32] }, { priority: 1 }]
-          "0x080300000000000000000000000000000000000000000000000000000000000000000201000000",
+          // [{ channel: [0; 32] }, { expiry: 1 }]
+          "0x0803000000000000000000000000000000000000000000000000000000000000000002010000000000000000",
         ),
       )
     }).toThrow("entries order")
@@ -36,5 +38,19 @@ describe("statement codec", () => {
         ),
       )
     }).toThrow("Unexpected topic")
+  })
+
+  it("encodes and decodes statement with expiry", () => {
+    const stmt = { expiry: 12345678901234567890n }
+    const encoded = statementCodec.enc(stmt)
+    const decoded = statementCodec.dec(encoded)
+    expect(decoded.expiry).toBe(12345678901234567890n)
+  })
+
+  it("encodes expiry as u64 little-endian", () => {
+    const stmt = { expiry: 1n }
+    const encoded = statementCodec.enc(stmt)
+    // [compact length=1 (0x04)][variant=0x02][u64 LE = 01 00 00 00 00 00 00 00]
+    expect(toHex(encoded)).toBe("0x04020100000000000000")
   })
 })

@@ -7,7 +7,6 @@ import {
   SizedBytes,
   SizedHex,
   Struct,
-  u32,
   u64,
   Variant,
   Vector,
@@ -26,8 +25,9 @@ export type Proof = Enum<{
 
 export type Statement = Partial<{
   proof: Proof
+  /** @deprecated Experimental feature, may be removed/changed in future releases */
   decryptionKey: SizedHex<32>
-  priority: number
+  expiry: bigint
   channel: SizedHex<32>
   topics: Array<SizedHex<32>>
   data: Uint8Array
@@ -36,7 +36,7 @@ export type Statement = Partial<{
 const sortIdxs = {
   proof: 0,
   decryptionKey: 1,
-  priority: 2,
+  expiry: 2,
   channel: 3,
   topics: 4,
   topic1: 4,
@@ -60,7 +60,7 @@ const field = Variant({
     onChain: Struct({ who: bin32, blockHash: bin32, event: u64 }),
   }),
   decryptionKey: bin32,
-  priority: u32,
+  expiry: u64,
   channel: bin32,
   topic1: bin32,
   topic2: bin32,
