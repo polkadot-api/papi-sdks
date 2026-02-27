@@ -1,3 +1,5 @@
+import { HexString, SizedHex } from "@polkadot-api/substrate-bindings"
+
 type SubmitNew = {
   /**
    * Statement was accepted as new.
@@ -12,7 +14,7 @@ type SubmitKnown = {
 }
 type SubmitRejected = {
   /**
-   * Statement was rejected because the store is full or priority is too low.
+   * Statement was rejected because the store is full or expiry is too low.
    */
   status: "rejected"
 } & (
@@ -32,32 +34,32 @@ type SubmitRejected = {
     }
   | {
       /**
-       * Attempting to replace a channel message with lower or equal priority.
+       * Attempting to replace a channel message with lower or equal expiry.
        */
-      reason: "channelPriorityTooLow"
+      reason: "channelExpiryTooLow"
       /**
-       * The priority of the submitted statement.
+       * The expiry of the submitted statement.
        */
-      submitted_priority: number
+      submitted_expiry: bigint
       /**
-       * The minimum priority of the existing channel message.
+       * The minimum expiry of the existing channel message.
        */
-      min_priority: number
+      min_expiry: bigint
     }
   | {
       /**
-       * Account reached its statement limit and submitted priority is too low
+       * Account reached its statement limit and submitted expiry is too low
        * to evict existing.
        */
       reason: "accountFull"
       /**
-       * The priority of the submitted statement.
+       * The expiry of the submitted statement.
        */
-      submitted_priority: number
+      submitted_expiry: bigint
       /**
-       * The minimum priority of the existing statement.
+       * The minimum expiry of the existing statement.
        */
-      min_priority: number
+      min_expiry: bigint
     }
   | {
       /**
@@ -105,3 +107,76 @@ export type SubmitResult =
   | SubmitKnown
   | SubmitRejected
   | SubmitInvalid
+
+// ============================================================================
+// Subscription Types
+// ============================================================================
+
+/**
+ * Topic filter for statement subscriptions.
+ * Use 'any' to match all statements, or specify matchAll/matchAny arrays.
+ */
+export type TopicFilter =
+  | "any"
+  | { matchAll: Array<SizedHex<32>> }
+  | { matchAny: Array<SizedHex<32>> }
+
+/**
+ * StatementEvent returned by statement_subscribeStatement.
+ * Contains batched statements and optional remaining count for initial sync.
+ */
+export interface StatementEvent {
+  /** Array of SCALE-encoded statement hex strings */
+  statements: HexString[]
+  /** Optional count of remaining statements in the initial sync batch */
+  remaining?: number | null
+}
+
+/**
+ * Possible wrapped formats for StatementEvent (backwards compatibility).
+ */
+export interface WrappedStatementEvent {
+  NewStatements?: StatementEvent
+  newStatements?: StatementEvent
+  data?: StatementEvent
+}
+
+/**
+ * Callback for subscription events.
+ */
+export type SubscriptionCallback = (event: StatementEvent) => void
+
+/**
+ * Function to unsubscribe from a statement subscription.
+ */
+export type Unsubscribe = () => void
+
+/**
+ * Extract StatementEvent from various possible response formats.
+ */
+export function extractStatementEvent(data: unknown): StatementEvent | null {
+  if (!data || typeof data !== "object") return null
+
+  // Direct format: { statements: [...], remaining?: N }
+  if ("statements" in data && Array.isArray((data as StatementEvent).statements)) {
+    return data as StatementEvent
+  }
+
+  // Wrapped format: { NewStatements: { statements: [...] } }
+  const wrapped = data as WrappedStatementEvent
+  if (wrapped.NewStatements && Array.isArray(wrapped.NewStatements.statements)) {
+    return wrapped.NewStatements
+  }
+
+  // Alternative wrapped format: { newStatements: { statements: [...] } }
+  if (wrapped.newStatements && Array.isArray(wrapped.newStatements.statements)) {
+    return wrapped.newStatements
+  }
+
+  // Data wrapped format: { data: { statements: [...] } }
+  if (wrapped.data && Array.isArray(wrapped.data.statements)) {
+    return wrapped.data
+  }
+
+  return null
+}

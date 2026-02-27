@@ -6,10 +6,14 @@ export const stringToTopic = (str: string): SizedHex<32> => {
   return Binary.toHex(Blake2256(enc)) as SizedHex<32> // SizedHex is now SizedHex (string)
 }
 
-export const filterDecKey = (key?: SizedHex<32>) => {
-  if (!key) return () => true
-  const hexKey = key // Already a hex string (SizedHex)
-  return (v: Statement) => v.decryptionKey === hexKey
+/**
+ * Create a filter function for decryption key.
+ * @param key If undefined, returns all statements. If null, returns statements without decryptionKey.
+ */
+export const filterDecKey = (key?: SizedHex<32> | null) => {
+  if (key === undefined) return () => true
+  if (key === null) return (v: Statement) => v.decryptionKey === undefined
+  return (v: Statement) => v.decryptionKey === key
 }
 
 export const filterTopics = (topics?: Array<SizedHex<32>>) => {
