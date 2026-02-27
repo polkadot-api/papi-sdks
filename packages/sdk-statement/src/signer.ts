@@ -1,6 +1,6 @@
 import { compact, Enum } from "@polkadot-api/substrate-bindings"
 import { Binary } from "polkadot-api"
-import { SignedStatement, Statement, statementCodec } from "./codec"
+import { SignedStatement, Statement, UnsignedStatement, statementCodec } from "./codec"
 
 export const getStatementSigner = (
   publicKey: Uint8Array,
@@ -8,15 +8,17 @@ export const getStatementSigner = (
   signFn: (payload: Uint8Array) => Promise<Uint8Array> | Uint8Array,
 ) => ({
   publicKey,
-  sign: async (stmt: Statement): Promise<SignedStatement> => {
-    if (stmt.proof) throw new Error("Statement already signed")
+  sign: async (stmt: UnsignedStatement): Promise<SignedStatement> => {
+    if ((stmt as Statement).proof) throw new Error("Statement already signed")
+
     const encoded = statementCodec.enc(stmt)
     const compactLen = compact.enc(compact.dec(encoded)).length
     const signature = await signFn(encoded.slice(compactLen))
-    const result = statementCodec.dec(encoded)
+
+    const result = statementCodec.dec(encoded) as Statement
     result.proof = Enum(type, {
-      signature: Binary.toHex(signature) as any, // SizedHex<64> or SizedHex<65>
-      signer: Binary.toHex(publicKey) as any, // SizedHex<32> or SizedHex<33>
+      signature: Binary.toHex(signature) as any,
+      signer: Binary.toHex(publicKey) as any,
     })
     return result as SignedStatement
   },

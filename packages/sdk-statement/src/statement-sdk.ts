@@ -1,64 +1,51 @@
-import { SizedHex, HexString } from "@polkadot-api/substrate-bindings"
+import { SizedHex } from "@polkadot-api/substrate-bindings"
 import { Statement, statementCodec } from "./codec"
 import { toHex } from "@polkadot-api/utils"
-import { getApi, RequestFn } from "./api"
+import { getApi, getSubscriptionApi, RequestFn, SubscriptionRequestFn } from "./api"
 import { filterDecKey, filterTopics } from "./utils"
-import { SubmitResult } from "./types"
+import { SubmitResult, TopicFilter, Unsubscribe, StatementEvent } from "./types"
 
-/**
- * Create statement sdk.
- *
- * @param {RequestFn} req  Takes a req-res function, which accepts Statement RPC
- *                         calls. This can be `client._request` (from
- *                         `polkadot-api`)
- *                         client, `client.request` (from
- *                         `@polkadot-api/substrate-client`)
- *                         or any other crafted by the consumer.
- */
 export const createStatementSdk = (req: RequestFn) => {
   const api = getApi(req)
   return {
-    /**
-     * Submit a Statement to the store.
-     * It must be signed to be accepted.
-     */
     submit: (stmt: Statement): Promise<SubmitResult> =>
-      api
-        .submit(toHex(statementCodec.enc(stmt)))
-        // TODO: remove in due time
-        // prior to https://github.com/paritytech/polkadot-sdk/pull/10421
-        // everything that was not `"new"` yielded an error, and `"new"` returned undefined
-        // catching the errors is not an option since we can't feasibly know what is the actual error
-        .then((v) => v ?? { status: "new" }),
+      api.submit(toHex(statementCodec.enc(stmt))).then((v) => v ?? { status: "new" }),
 
-    /**
-     * Get statements from store.
-     * dest: `Binary` means to get all statements with that specific
-     * `decryptionKey` set.
-     * `null` means to get all statements with no `decryptionKey` set.
-     * `undefined` (or unset) means to get all statements disregarding
-     * `decryptionKey`.
-     */
     getStatements: async ({
       dest,
       topics,
     }: Partial<{
       topics: Array<SizedHex<32>>
       dest: SizedHex<32> | null
-    }> = {}): Promise<Statement[]> => {
-      if (dest === null)
-        return (await api.broadcasts(topics ?? [])).map(statementCodec.dec)
-      if (topics && dest)
-        return (await api.posted(topics, dest)).map(statementCodec.dec)
-      return (await api.dump())
-        .map(statementCodec.dec)
+    }> = {}): Promise<Statement[]> =>
+      (await api.dump())
+        .map((hex) => statementCodec.dec(hex) as Statement)
         .filter(filterDecKey(dest))
-        .filter(filterTopics(topics))
-    },
+        .filter(filterTopics(topics)),
+  }
+}
 
-    dump: (): Promise<Statement[]> =>
-      req<HexString[], []>("statement_dump", []).then((res) =>
-        res.map(statementCodec.dec),
+export type StatementCallback = (statements: Statement[]) => void
+
+export const createStatementSubscriptionSdk = (req: SubscriptionRequestFn) => {
+  const api = getSubscriptionApi(req)
+  return {
+    subscribe: (
+      filter: TopicFilter,
+      onStatements: StatementCallback,
+      onError?: (error: Error) => void,
+    ): Unsubscribe =>
+      api.subscribe(
+        filter,
+        (event: StatementEvent) =>
+          onStatements(event.statements.map((hex) => statementCodec.dec(hex) as Statement)),
+        onError,
       ),
+
+    subscribeRaw: (
+      filter: TopicFilter,
+      onEvent: (event: StatementEvent) => void,
+      onError?: (error: Error) => void,
+    ): Unsubscribe => api.subscribe(filter, onEvent, onError),
   }
 }
