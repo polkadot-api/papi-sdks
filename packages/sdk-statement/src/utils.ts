@@ -12,14 +12,6 @@ export const filterDecKey = (key?: SizedHex<32>) => {
   return (v: Statement) => v.decryptionKey === hexKey
 }
 
-export const filterTopics = (topics?: Array<SizedHex<32>>) => {
-  if (!topics) return () => true
-  const hexTopics = topics // Already hex strings (SizedHex)
-  return (v: Statement) =>
-    (v.topics?.length ?? 0) >= hexTopics.length &&
-    hexTopics.every((top, idx) => top === v.topics![idx])
-}
-
 /**
  * Create an expiry value from timestamp and sequence number.
  *
@@ -29,7 +21,12 @@ export const filterTopics = (topics?: Array<SizedHex<32>>) => {
 export const createExpiry = (
   expirationTimestampSecs: number,
   sequenceNumber: number = 0,
-): bigint => (BigInt(expirationTimestampSecs) << 32n) | BigInt(sequenceNumber)
+): bigint => {
+  if (sequenceNumber < 0 || sequenceNumber > 0xffffffff) {
+    throw new RangeError("sequenceNumber must be 0-4294967295")
+  }
+  return (BigInt(expirationTimestampSecs) << 32n) | BigInt(sequenceNumber)
+}
 
 /**
  * Parse an expiry value into its components.

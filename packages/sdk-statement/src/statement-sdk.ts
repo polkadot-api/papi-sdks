@@ -21,6 +21,50 @@ const ANY_FILTER: TopicFilter = "any"
  */
 export const createStatementSdk = (req: RequestFn, subscribe: SubscribeFn) => {
   const api = getApi(req, subscribe)
+
+  /**
+   * Get statements from store matching the given filter.
+   *
+   * This method subscribes to the statement store, collects all existing
+   * statements matching the filter, then unsubscribes and returns them.
+   *
+   * @param filter Topic filter for statements. Defaults to matching all.
+   */
+  const getStatements = (
+    filter: TopicFilter = ANY_FILTER,
+  ): Promise<Statement[]> =>
+    new Promise((resolve, reject) => {
+      const statements: Statement[] = []
+
+      const unsubscribe = api.subscribeStatement(
+        filter,
+        (event: StatementEvent) => {
+          if (event.event === "newStatements") {
+            for (const encoded of event.data.statements) {
+              try {
+                statements.push(statementCodec.dec(encoded))
+              } catch (e) {
+                // Skip malformed statements
+              }
+            }
+
+            // Initial dump complete when remaining is 0 or undefined
+            if (
+              event.data.remaining === 0 ||
+              event.data.remaining === undefined
+            ) {
+              unsubscribe()
+              resolve(statements)
+            }
+          }
+        },
+        (error: Error) => {
+          unsubscribe()
+          reject(error)
+        },
+      )
+    })
+
   return {
     /**
      * Submit a Statement to the store.
@@ -29,46 +73,7 @@ export const createStatementSdk = (req: RequestFn, subscribe: SubscribeFn) => {
     submit: (stmt: Statement): Promise<SubmitResult> =>
       api.submit(toHex(statementCodec.enc(stmt))),
 
-    /**
-     * Get statements from store matching the given filter.
-     *
-     * This method subscribes to the statement store, collects all existing
-     * statements matching the filter, then unsubscribes and returns them.
-     *
-     * @param filter Topic filter for statements. Defaults to matching all.
-     */
-    getStatements: (filter: TopicFilter = ANY_FILTER): Promise<Statement[]> =>
-      new Promise((resolve, reject) => {
-        const statements: Statement[] = []
-
-        const unsubscribe = api.subscribeStatement(
-          filter,
-          (event: StatementEvent) => {
-            if (event.event === "newStatements") {
-              for (const encoded of event.data.statements) {
-                try {
-                  statements.push(statementCodec.dec(encoded))
-                } catch (e) {
-                  // Skip malformed statements
-                }
-              }
-
-              // Initial dump complete when remaining is 0 or undefined
-              if (
-                event.data.remaining === 0 ||
-                event.data.remaining === undefined
-              ) {
-                unsubscribe()
-                resolve(statements)
-              }
-            }
-          },
-          (error: Error) => {
-            unsubscribe()
-            reject(error)
-          },
-        )
-      }),
+    getStatements,
 
     /**
      * Subscribe to statements matching the given filter.
@@ -112,9 +117,7 @@ export const createStatementSdk = (req: RequestFn, subscribe: SubscribeFn) => {
     ): Promise<Statement[]> => {
       const filter: TopicFilter =
         topics.length > 0 ? { matchAll: topics } : ANY_FILTER
-      const statements = await createStatementSdk(req, subscribe).getStatements(
-        filter,
-      )
+      const statements = await getStatements(filter)
       return statements.filter((stmt) => stmt.decryptionKey === undefined)
     },
 
@@ -130,9 +133,7 @@ export const createStatementSdk = (req: RequestFn, subscribe: SubscribeFn) => {
     ): Promise<Statement[]> => {
       const filter: TopicFilter =
         topics.length > 0 ? { matchAll: topics } : ANY_FILTER
-      const statements = await createStatementSdk(req, subscribe).getStatements(
-        filter,
-      )
+      const statements = await getStatements(filter)
       return statements.filter(filterDecKey(dest))
     },
   }
