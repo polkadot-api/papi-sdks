@@ -7,7 +7,7 @@ import {
   SizedHex,
 } from "polkadot-api"
 import { mergeUint8 } from "polkadot-api/utils"
-import { pasAh, passet, wndAh } from "../.papi/descriptors/dist"
+import { pasAh, wndAh } from "../.papi/descriptors/dist"
 import { GenericInkDescriptors } from "./descriptor-types"
 import { EncodingProvider, inkEncoding, solEncoding } from "./encoding-provider"
 import { getContract } from "./get-contract"
@@ -29,7 +29,6 @@ export const createInkSdk = (
   options?: Partial<InkSdkOptions>,
 ): InkSdk => {
   const typedApi: AllTypedApis = {
-    passet: client.getTypedApi(passet),
     pasAh: client.getTypedApi(pasAh),
     wndAh: client.getTypedApi(wndAh),
   }
@@ -76,7 +75,7 @@ export const createInkSdk = (
 
   return {
     addressIsMapped(address) {
-      return reviveAddressIsMapped(typedApi.passet, address)
+      return reviveAddressIsMapped(typedApi.pasAh, address)
     },
     getContract: curriedGetContract,
     getDeployer: getDeployerSdk,

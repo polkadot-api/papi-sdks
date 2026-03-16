@@ -109,11 +109,8 @@ export interface ReferendaSdk<
     options?: Partial<{
       enactment: TraitsScheduleDispatchTime
     }>,
-  ): Transaction<any, string, string, unknown>
-  createSpenderReferenda(
-    callData: Uint8Array,
-    value: bigint,
-  ): Transaction<any, string, string, unknown>
+  ): Transaction
+  createSpenderReferenda(callData: Uint8Array, value: bigint): Transaction
   getSubmittedReferendum(txEvent: TxEvent): {
     index: number
     track: number

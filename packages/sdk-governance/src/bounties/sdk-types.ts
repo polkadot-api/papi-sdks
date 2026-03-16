@@ -15,7 +15,7 @@ export interface GenericBounty extends BountyWithoutDescription {
 }
 
 interface ClosableBounty {
-  close(): Transaction<any, string, string, unknown>
+  close(): Transaction
 }
 export interface ProposedBounty<
   TEnums extends {
@@ -24,7 +24,7 @@ export interface ProposedBounty<
 >
   extends GenericBounty, ClosableBounty {
   type: "Proposed"
-  approve(): Transaction<any, string, string, unknown>
+  approve(): Transaction
   filterApprovingReferenda(referenda: OngoingReferendum<TEnums>[]): Promise<
     Array<{
       referendum: OngoingReferendum<TEnums>
@@ -47,10 +47,7 @@ export interface FundedBounty<
 >
   extends GenericBounty, ClosableBounty {
   type: "Funded"
-  proposeCurator(
-    curator: SS58String,
-    fee: bigint,
-  ): Transaction<any, string, string, unknown>
+  proposeCurator(curator: SS58String, fee: bigint): Transaction
   filterProposingReferenda(referenda: OngoingReferendum<TEnums>[]): Promise<
     Array<{
       referendum: OngoingReferendum<TEnums>
@@ -72,21 +69,21 @@ export interface FundedBounty<
 }
 
 interface CuratorUnassignable {
-  unassignCurator(): Transaction<any, string, string, unknown>
+  unassignCurator(): Transaction
 }
 export interface CuratorProposedBounty
   extends GenericBounty, CuratorUnassignable, ClosableBounty {
   type: "CuratorProposed"
   curator: SS58String
-  acceptCuratorRole(): Transaction<any, string, string, unknown>
+  acceptCuratorRole(): Transaction
 }
 export interface ActiveBounty
   extends GenericBounty, CuratorUnassignable, ClosableBounty {
   type: "Active"
   curator: SS58String
   updateDue: number
-  extendExpiry(remark?: string): Transaction<any, string, string, unknown>
-  award(beneficiary: SS58String): Transaction<any, string, string, unknown>
+  extendExpiry(remark?: string): Transaction
+  award(beneficiary: SS58String): Transaction
 }
 export interface PendingPayoutBounty
   extends GenericBounty, CuratorUnassignable {
@@ -94,7 +91,7 @@ export interface PendingPayoutBounty
   curator: SS58String
   beneficiary: SS58String
   unlockAt: number
-  claim(): Transaction<any, string, string, unknown>
+  claim(): Transaction
 }
 
 export type Bounty<

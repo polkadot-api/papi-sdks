@@ -15,12 +15,11 @@ import {
   type SS58String,
   type TypedApi,
 } from "polkadot-api"
-import type { PasAh, Passet, WndAh } from "../.papi/descriptors/dist"
+import type { PasAh, WndAh } from "../.papi/descriptors/dist"
 import type { GenericInkDescriptors } from "./descriptor-types"
 import type { SdkStorage } from "./get-storage"
 
 export type AllTypedApis = {
-  passet: TypedApi<Passet>
   pasAh: TypedApi<PasAh>
   wndAh: TypedApi<WndAh>
 }
@@ -100,7 +99,7 @@ type DryRunDeployFn<D extends GenericInkDescriptors> = <
       events: D["__types"]["event"][]
       gasRequired: Gas
       storageDeposit: bigint
-      deploy: () => AsyncTransaction<any, any, any, any>
+      deploy: () => AsyncTransaction
     },
     | GetErr<CommonTypedApi>
     | FlattenErrors<D["__types"]["messages"][L]["response"]>
@@ -112,7 +111,7 @@ type DeployFn<D extends GenericInkDescriptors> = <
 >(
   constructor: L,
   args: DeployArgs<D["__types"]["constructors"][L]["message"]>,
-) => AsyncTransaction<any, any, any, any>
+) => AsyncTransaction
 
 type EstimateAddrFn<D extends GenericInkDescriptors> = <
   L extends string & keyof D["__types"]["constructors"],
@@ -178,7 +177,7 @@ export interface ContractSdk<D extends GenericInkDescriptors> {
         events: D["__types"]["event"][]
         gasRequired: Gas
         storageDeposit: bigint
-        send: () => AsyncTransaction<any, any, any, any>
+        send: () => AsyncTransaction
       },
       | GetErr<CommonTypedApi>
       | FlattenErrors<D["__types"]["messages"][L]["response"]>
@@ -189,7 +188,7 @@ export interface ContractSdk<D extends GenericInkDescriptors> {
             raw: Uint8Array
             gasRequired: Gas
             storageDeposit: bigint
-            send: () => AsyncTransaction<any, any, any, any>
+            send: () => AsyncTransaction
           }
         }
     >
@@ -197,7 +196,7 @@ export interface ContractSdk<D extends GenericInkDescriptors> {
   send: <L extends string & keyof D["__types"]["messages"]>(
     message: L,
     args: SendArgs<D["__types"]["messages"][L]["message"]>,
-  ) => AsyncTransaction<any, any, any, any>
+  ) => AsyncTransaction
   dryRunRedeploy: DryRunDeployFn<D>
   redeploy: DeployFn<D>
   filterEvents: (

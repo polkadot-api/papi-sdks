@@ -30,9 +30,9 @@ export interface MultisigSdk<Addr> {
   getMultisigTx(
     multisig: MultisigAccount<Addr>,
     signatory: Addr,
-    txOrCallData: Transaction<any, any, any, any> | Uint8Array,
+    txOrCallData: Transaction | Uint8Array,
     options?: MultisigTxOptions<Addr>,
-  ): AsyncTransaction<any, any, any, any>
+  ): AsyncTransaction
   getMultisigSigner(
     multisig: MultisigAccount<Addr>,
     signer: PolkadotSigner,

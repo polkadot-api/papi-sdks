@@ -32,7 +32,7 @@ interface CommonVote {
   balance: bigint
 
   getLock(outcome: PollOutcome): VoteLock
-  remove(): Transaction<any, string, string, unknown>
+  remove(): Transaction
 }
 export interface StandardVote extends CommonVote {
   type: "standard"
@@ -56,7 +56,7 @@ interface TrackDetails {
     block: number
     balance: bigint
   } | null
-  unlock(): Transaction<any, string, string, unknown>
+  unlock(): Transaction
 }
 export type UnlockSchedule = Array<{
   block: number
@@ -83,7 +83,7 @@ export interface TrackDelegating extends TrackDetails {
   balance: bigint
   conviction: VotingConviction
   lockDuration: number
-  remove(): Transaction<any, string, string, unknown>
+  remove(): Transaction
 }
 export type VotingTrack = TrackCasting | TrackDelegating
 
@@ -104,11 +104,8 @@ export interface ConvictionVotingSdk {
     poll: number,
     value: bigint,
     conviction?: VotingConviction,
-  ): Transaction<any, string, string, unknown>
-  voteAbstain(
-    poll: number,
-    value: bigint,
-  ): Transaction<any, string, string, unknown>
+  ): Transaction
+  voteAbstain(poll: number, value: bigint): Transaction
   voteSplit(
     poll: number,
     vote: Partial<{
@@ -116,5 +113,5 @@ export interface ConvictionVotingSdk {
       nay: bigint
       abstain: bigint
     }>,
-  ): Transaction<any, string, string, unknown>
+  ): Transaction
 }

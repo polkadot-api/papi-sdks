@@ -13,30 +13,27 @@ export interface GenericChildBounty extends ChildBountyWithoutDescription {
 }
 
 interface ClosableBounty {
-  close(): Transaction<any, string, string, unknown>
+  close(): Transaction
 }
 export interface AddedChildBounty extends GenericChildBounty, ClosableBounty {
   type: "Added"
-  proposeCurator(
-    curator: SS58String,
-    fee: bigint,
-  ): Transaction<any, string, string, unknown>
+  proposeCurator(curator: SS58String, fee: bigint): Transaction
 }
 
 interface CuratorUnassignable {
-  unassignCurator(): Transaction<any, string, string, unknown>
+  unassignCurator(): Transaction
 }
 export interface CuratorProposedChildBounty
   extends GenericChildBounty, CuratorUnassignable, ClosableBounty {
   type: "CuratorProposed"
   curator: SS58String
-  acceptCuratorRole(): Transaction<any, string, string, unknown>
+  acceptCuratorRole(): Transaction
 }
 export interface ActiveChildBounty
   extends GenericChildBounty, CuratorUnassignable, ClosableBounty {
   type: "Active"
   curator: SS58String
-  award(beneficiary: SS58String): Transaction<any, string, string, unknown>
+  award(beneficiary: SS58String): Transaction
 }
 export interface PendingPayoutChildBounty
   extends GenericChildBounty, CuratorUnassignable {
@@ -44,7 +41,7 @@ export interface PendingPayoutChildBounty
   curator: SS58String
   beneficiary: SS58String
   unlockAt: number
-  claim(): Transaction<any, string, string, unknown>
+  claim(): Transaction
 }
 
 export type ChildBounty =
