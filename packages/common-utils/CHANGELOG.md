@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Changed
+
+- AsyncTransaction takes at most 2 generic arguments: Asset and Ext
+
 ## 0.3.0 2026-02-23
 
 ### Changed

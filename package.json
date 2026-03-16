@@ -24,11 +24,11 @@
     "@rollup/plugin-node-resolve": "^16.0.3",
     "prettier": "^3.8.1",
     "rollup": "^4.59.0",
-    "rollup-plugin-dts": "^6.3.0",
+    "rollup-plugin-dts": "^6.4.0",
     "rollup-plugin-esbuild": "^6.2.1",
     "typescript": "^5.9.3",
     "vite-tsconfig-paths": "^6.1.1",
-    "vitest": "^4.0.18"
+    "vitest": "^4.1.0"
   },
   "packageManager": "pnpm@10.30.1+sha512.3590e550d5384caa39bd5c7c739f72270234b2f6059e13018f975c313b1eb9fefcc09714048765d4d9efe961382c312e624572c0420762bdc5d5940cdf9be73a"
 }

@@ -9,19 +9,13 @@
       "chain": "westend_asset_hub",
       "metadata": ".papi/metadata/wndAh.scale",
       "genesis": "0x67f9723393ef76214df0118c34bbbd3dbebc8ed46a10973a8c969d48fe7598c9",
-      "codeHash": "0xac70e823f8800dd6bfa9eacfd0b52a6b6a7426bb97682fa7f8c5b077051bb4fa"
-    },
-    "passet": {
-      "wsUrl": "wss://passet-hub-paseo.ibp.network",
-      "metadata": ".papi/metadata/passet.scale",
-      "genesis": "0xfd974cf9eaf028f5e44b9fdd1949ab039c6cf9cc54449b0b60d71b042e79aeb6",
-      "codeHash": "0xedc99e025ff3d49960fb34d8005e91f555638f4e7f997b602507946876c12f50"
+      "codeHash": "0xd195ae6fe231497569f212f12ae64eee3c2c8b7525f2aae65535149a9b1386e7"
     },
     "pasAh": {
       "chain": "paseo_asset_hub",
       "metadata": ".papi/metadata/pasAh.scale",
       "genesis": "0xd6eec26135305a8ad257a20d003357284c8aa03d0bdb2b357ab0a22371e11ef2",
-      "codeHash": "0x580f8c8474f117c97f7027f89598e7dfa83d1c9cb5cdd24aee121a70787be206"
+      "codeHash": "0xc66e1574f0df569b29c04d46ae77aeebb622c79fd582de906913886f7853e74b"
     }
   }
 }

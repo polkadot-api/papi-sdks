@@ -1,5 +1,4 @@
 import {
-  Binary,
   BlockInfo,
   Enum,
   PolkadotClient,
@@ -25,14 +24,14 @@ export const getRemoteProxySdk = (
   const { txFromCallData } = paraApi
 
   const proxyTx = (
-    tx: Transaction<any, any, any, any>,
+    tx: Transaction,
     {
       proof,
       block,
       at,
       proxied,
     }: {
-      proof: Binary[]
+      proof: Uint8Array[]
       block: number
       at: BlockInfo
       proxied: SS58String
@@ -76,12 +75,12 @@ export const getRemoteProxySdk = (
           getEncodedData,
         } = proxyTx(
           ...(await Promise.all([
-            txFromCallData(Binary.fromBytes(callData)),
+            txFromCallData(callData),
             getProof(proxiedAccount),
           ])),
         )
 
-        const newCallData = (await getEncodedData()).asBytes()
+        const newCallData = await getEncodedData()
 
         const newSignedExtensions = { ...signedExtensions }
         if (!mortality.preserve) {
@@ -107,10 +106,8 @@ export const getRemoteProxySdk = (
     }
   }
 
-  const getProxiedTx = async (
-    proxiedAccount: SS58String,
-    tx: Transaction<any, any, any, any>,
-  ) => proxyTx(tx, await getProof(proxiedAccount))
+  const getProxiedTx = async (proxiedAccount: SS58String, tx: Transaction) =>
+    proxyTx(tx, await getProof(proxiedAccount))
 
   return {
     getProxiedTx,

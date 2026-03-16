@@ -1,23 +1,9 @@
 import { AsyncTransaction, wrapAsyncTx } from "@polkadot-api/common-sdk-utils"
 import { GenericEvent } from "@polkadot-api/ink-contracts"
 import { SizedHex } from "@polkadot-api/substrate-bindings"
-import {
-  CompatibilityLevel,
-  Enum,
-  ResultPayload,
-  SS58String,
-  Transaction,
-  TypedApi,
-} from "polkadot-api"
+import { Enum, ResultPayload, SS58String, Transaction } from "polkadot-api"
 import { mergeUint8 } from "polkadot-api/utils"
-
-import { Passet } from "../.papi/descriptors/dist"
-import {
-  AllTypedApis,
-  CommonTypedApi,
-  Gas,
-  ReviveStorageError,
-} from "./sdk-types"
+import { AllTypedApis, Gas, ReviveStorageError } from "./sdk-types"
 import {
   getDeploymentAddressWithNonce,
   getDeploymentAddressWithSalt,
@@ -113,7 +99,7 @@ export const reviveProvider = (
   allApis: AllTypedApis,
   atBest: boolean,
 ): ContractsProvider => {
-  const typedApi = allApis.passet as CommonTypedApi
+  const typedApi = allApis.pasAh
 
   const callOptions = atBest ? { at: "best" } : {}
   const traceCall = async ({
@@ -122,13 +108,7 @@ export const reviveProvider = (
     input,
     value,
   }: Pick<GenericTransaction, "from" | "to" | "input" | "value">) => {
-    const isPasset = (
-      await allApis.passet.getStaticApis()
-    ).compat.apis.ReviveApi.trace_call.isCompatible(
-      CompatibilityLevel.BackwardsCompatible,
-    )
-    const api = isPasset ? allApis.passet : allApis.pasAh
-    return api.apis.ReviveApi.trace_call(
+    return typedApi.apis.ReviveApi.trace_call(
       {
         authorization_list: [],
         blob_versioned_hashes: [],
@@ -179,25 +159,15 @@ export const reviveProvider = (
       input: Uint8Array,
     ) =>
       Promise.all([
-        allApis.passet
-          .getStaticApis()
-          .then((s) =>
-            s.compat.apis.ReviveApi.call.isCompatible(
-              CompatibilityLevel.Partial,
-            ),
-          )
-          .then((isPasset) => (isPasset ? allApis.passet : allApis.pasAh))
-          .then(async (api) =>
-            api.apis.ReviveApi.call(
-              origin,
-              dest,
-              value,
-              gas_limit,
-              storage_deposit_limit,
-              input,
-              callOptions,
-            ),
-          ),
+        typedApi.apis.ReviveApi.call(
+          origin,
+          dest,
+          value,
+          gas_limit,
+          storage_deposit_limit,
+          input,
+          callOptions,
+        ),
         traceCall({
           from: ss58ToEthereum(origin),
           input: {
@@ -225,18 +195,11 @@ export const reviveProvider = (
           return getEventsFromTrace(trace.value)
         })()
 
-        if ("weight_required" in call) {
-          return {
-            ...call,
-            events,
-            gas_required: call.weight_required,
-            gas_consumed: call.weight_consumed,
-          }
-        } else {
-          return {
-            ...call,
-            events,
-          }
+        return {
+          ...call,
+          events,
+          gas_required: call.weight_required,
+          gas_consumed: call.weight_consumed,
         }
       }),
     dryRunInstantiate: (
@@ -252,26 +215,16 @@ export const reviveProvider = (
       salt: SizedHex<32> | undefined,
     ) =>
       Promise.all([
-        allApis.passet
-          .getStaticApis()
-          .then((s) =>
-            s.compat.apis.ReviveApi.instantiate.isCompatible(
-              CompatibilityLevel.Partial,
-            ),
-          )
-          .then((isPasset) => (isPasset ? allApis.passet : allApis.pasAh))
-          .then(async (api) =>
-            api.apis.ReviveApi.instantiate(
-              origin,
-              value,
-              gas_limit,
-              storage_deposit_limit,
-              code,
-              data,
-              salt,
-              callOptions,
-            ),
-          ),
+        typedApi.apis.ReviveApi.instantiate(
+          origin,
+          value,
+          gas_limit,
+          storage_deposit_limit,
+          code,
+          data,
+          salt,
+          callOptions,
+        ),
         typedApi.constants.Revive.NativeToEthRatio().then((nativeToEth) =>
           traceCall({
             from: ss58ToEthereum(origin),
@@ -302,18 +255,11 @@ export const reviveProvider = (
           return getEventsFromTrace(trace.value)
         })()
 
-        if ("weight_required" in call) {
-          return {
-            ...call,
-            events,
-            gas_required: call.weight_required,
-            gas_consumed: call.weight_consumed,
-          }
-        } else {
-          return {
-            ...call,
-            events,
-          }
+        return {
+          ...call,
+          events,
+          gas_required: call.weight_required,
+          gas_consumed: call.weight_consumed,
         }
       }),
     getEstimatedAddress: async (
@@ -374,22 +320,9 @@ export const reviveProvider = (
       }
 
       return wrapAsyncTx(async (): Promise<Transaction> => {
-        if (
-          (
-            await allApis.passet.getStaticApis()
-          ).compat.tx.Revive.call.isCompatible(CompatibilityLevel.Partial)
-        ) {
-          return allApis.passet.tx.Revive.call({
-            storage_deposit_limit,
-            weight_limit: payload.gas_limit,
-            ...payload,
-          })
-        }
-
-        return (
-          allApis.pasAh as Exclude<CommonTypedApi, TypedApi<Passet>>
-        ).tx.Revive.call({
+        return allApis.pasAh.tx.Revive.call({
           storage_deposit_limit,
+          weight_limit: payload.gas_limit,
           ...payload,
         })
       })
@@ -401,25 +334,9 @@ export const reviveProvider = (
       }
 
       return wrapAsyncTx(async () => {
-        if (
-          (
-            await allApis.passet.getStaticApis()
-          ).compat.tx.Revive.instantiate.isCompatible(
-            CompatibilityLevel.Partial,
-          )
-        ) {
-          return allApis.passet.tx.Revive.instantiate({
-            storage_deposit_limit,
-            salt,
-            weight_limit: payload.gas_limit,
-            ...payload,
-          })
-        }
-
-        return (
-          typedApi as Exclude<CommonTypedApi, TypedApi<Passet>>
-        ).tx.Revive.instantiate({
+        return typedApi.tx.Revive.instantiate({
           storage_deposit_limit,
+          weight_limit: payload.gas_limit,
           salt,
           ...payload,
         }) as Transaction
@@ -432,25 +349,9 @@ export const reviveProvider = (
       }
 
       return wrapAsyncTx(async () => {
-        if (
-          (
-            await allApis.passet.getStaticApis()
-          ).compat.tx.Revive.instantiate.isCompatible(
-            CompatibilityLevel.Partial,
-          )
-        ) {
-          return allApis.passet.tx.Revive.instantiate_with_code({
-            storage_deposit_limit,
-            salt,
-            weight_limit: payload.gas_limit,
-            ...payload,
-          })
-        }
-
-        return (
-          allApis.pasAh as Exclude<CommonTypedApi, TypedApi<Passet>>
-        ).tx.Revive.instantiate_with_code({
+        return allApis.pasAh.tx.Revive.instantiate_with_code({
           storage_deposit_limit,
+          weight_limit: payload.gas_limit,
           salt,
           ...payload,
         }) as Transaction

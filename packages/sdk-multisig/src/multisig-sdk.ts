@@ -105,7 +105,7 @@ export const createMultisigSdk: CreateMultisigSdk = (client, addrType) => {
         maybe_timepoint: multisigInfo?.when,
       }
 
-      const wrappedTx: Transaction<any, any, any, any> =
+      const wrappedTx: Transaction =
         method === "approve_as_multi"
           ? activeApi.tx.Multisig.approve_as_multi({
               ...commonPayload,

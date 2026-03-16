@@ -25,7 +25,7 @@ export const stopNominationFn = (
         api.query.Staking.Payee.getValue(address),
       ])
 
-      const txs: Transaction<any, any, any, any>[] = []
+      const txs: Transaction[] = []
       // Chill only if it has targets selected
       if (nominator?.targets.length) {
         txs.push(api.tx.Staking.chill())
@@ -61,7 +61,7 @@ export const stopNominationFn = (
       const calls = txs.map((tx) => tx.decodedCall)
       return unsafeApi.tx.Utility.batch_all({
         calls,
-      }) as unknown as Transaction<any, any, any, any>
+      }) as unknown as Transaction
     })
 }
 
@@ -86,7 +86,7 @@ export const upsertNominationFn = (
       const totalLocked = ledger?.total ?? 0n
       const unlocking = totalLocked - currentBond
 
-      const txs: Array<Transaction<any, any, any, any>> = []
+      const txs: Array<Transaction> = []
 
       const bondDiff = bond != null ? bond - currentBond : 0n
       if (bondDiff > 0) {
@@ -185,6 +185,6 @@ export const upsertNominationFn = (
       }
       return unsafeApi.tx.Utility.batch_all({
         calls,
-      }) as unknown as Transaction<any, any, any, any>
+      }) as unknown as Transaction
     })
 }

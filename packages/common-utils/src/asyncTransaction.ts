@@ -1,29 +1,19 @@
 import type { Transaction } from "polkadot-api"
 import { from, switchMap } from "rxjs"
 
-export type AsyncTransaction<
-  Arg extends {} | undefined = any,
-  Pallet extends string = any,
-  Name extends string = any,
-  Asset = any,
-> = Omit<
-  Transaction<Arg, Pallet, Name, Asset>,
+export type AsyncTransaction<Asset = any, Ext = any> = Omit<
+  Transaction<Asset, Ext>,
   "decodedCall" | "getEncodedData" | "getBareTx"
 > & {
-  decodedCall: Promise<Transaction<Arg, Pallet, Name, Asset>["decodedCall"]>
+  decodedCall: Promise<Transaction<Asset, Ext>["decodedCall"]>
   getEncodedData: () => Promise<Uint8Array>
   getBareTx: () => Promise<Uint8Array>
-  waited: Promise<Transaction<Arg, Pallet, Name, Asset>>
+  waited: Promise<Transaction<Asset, Ext>>
 }
 
-export const wrapAsyncTx = <
-  Arg extends {} | undefined,
-  Pallet extends string,
-  Name extends string,
-  Asset,
->(
-  fn: () => Promise<Transaction<Arg, Pallet, Name, Asset>>,
-): AsyncTransaction<Arg, Pallet, Name, Asset> => {
+export const wrapAsyncTx = <Asset, Ext>(
+  fn: () => Promise<Transaction<Asset, Ext>>,
+): AsyncTransaction<Asset, Ext> => {
   const promise = fn()
 
   // Prevent some runtimes from terminating for an uncaught exception

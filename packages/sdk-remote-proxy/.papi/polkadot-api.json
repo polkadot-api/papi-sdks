@@ -9,13 +9,13 @@
       "chain": "kusama",
       "metadata": ".papi/metadata/ksm.scale",
       "genesis": "0xb0a8d493285c2df73290dfb7e61f870f17b41801197a149ca93654499ea3dafe",
-      "codeHash": "0x61f85ac4293bc553907a679756587ce31f485279e8fb063f72edeaebc5177e57"
+      "codeHash": "0x844aa31f5462e76a0ffd44b5bccdc6efb2827126d0477a35b06d702030b13840"
     },
     "ksmAh": {
       "chain": "kusama_asset_hub",
       "metadata": ".papi/metadata/ksmAh.scale",
       "genesis": "0x48239ef607d7928874027a43a67689209727dfb3d3dc5e5b03a39bdc2eda771a",
-      "codeHash": "0x01c6e9388c6829fc05131c8fdea3ac23b490fe72433963367daaed967c59c7bf"
+      "codeHash": "0xdefa3628d113f815fda8bbf9874c879adec02779df43737d77473347e72138c6"
     }
   }
 }
