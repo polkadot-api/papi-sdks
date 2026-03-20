@@ -1,11 +1,13 @@
 import { SizedHex } from "@polkadot-api/substrate-bindings"
 import { toHex } from "@polkadot-api/utils"
 import {
-  firstValueFrom,
+  lastValueFrom,
   map,
   mergeAll,
   Observable,
   filter as rxjsFilter,
+  scan,
+  takeWhile,
 } from "rxjs"
 import { getApi } from "./api"
 import { Statement, statementCodec } from "./codec"
@@ -22,11 +24,19 @@ const ANY_FILTER: TopicFilter = "any"
 export const createStatementSdk = (endpoint: string) => {
   const api = getApi(endpoint)
 
-  const getStatements$ = (filter: TopicFilter): Observable<Statement[]> =>
+  const getStatements$ = (
+    filter: TopicFilter,
+  ): Observable<{
+    statements: Statement[]
+    remaining?: number
+  }> =>
     api.subscribeStatement(filter).pipe(
       map((evt) => {
         if (evt.event === "newStatements") {
-          return evt.data.statements.map(statementCodec.dec)
+          return {
+            statements: evt.data.statements.map(statementCodec.dec),
+            remaining: evt.data.remaining,
+          }
         }
         return null
       }),
@@ -43,7 +53,23 @@ export const createStatementSdk = (endpoint: string) => {
    */
   const getStatements = (
     filter: TopicFilter = ANY_FILTER,
-  ): Promise<Statement[]> => firstValueFrom(getStatements$(filter))
+  ): Promise<Statement[]> =>
+    lastValueFrom(
+      getStatements$(filter).pipe(
+        scan(
+          (acc: { statements: Statement[]; remaining: number }, evt) => ({
+            statements: [...acc.statements, ...evt.statements],
+            remaining: evt.remaining ?? 0,
+          }),
+          {
+            statements: [],
+            remaining: 0,
+          },
+        ),
+        takeWhile((v) => v.remaining > 0, true),
+        map((v) => v.statements),
+      ),
+    )
 
   return {
     /**
@@ -67,7 +93,10 @@ export const createStatementSdk = (endpoint: string) => {
      * @returns Unsubscribe function.
      */
     subscribeStatements: (filter: TopicFilter): Observable<Statement> =>
-      getStatements$(filter).pipe(mergeAll()),
+      getStatements$(filter).pipe(
+        map((v) => v.statements),
+        mergeAll(),
+      ),
 
     /**
      * Get broadcasts (statements with no decryptionKey) matching topics.
