@@ -1,5 +1,6 @@
 export * from "./codec"
-export * from "./statement-sdk"
+export * from "./filters"
 export * from "./signer"
-export type { SubmitResult, TopicFilter, StatementEvent } from "./types"
+export * from "./statement-sdk"
+export type { StatementEvent, SubmitResult, TopicFilter } from "./types"
 export { stringToTopic } from "./utils"

@@ -73,8 +73,8 @@ type SubmitRejected = {
     }
   | {
       /**
-       * Account reached its statement limit and submitted expiry is too low
-       * to evict existing.
+       * Account reached its statement limit and submitted expiry is too low to
+       * evict existing.
        */
       reason: "accountFull"
       /**

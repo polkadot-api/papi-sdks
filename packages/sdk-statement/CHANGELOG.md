@@ -8,9 +8,9 @@
   - `createStatementSdk` takes an endpoint URL rather than a `req` function.
   - Update `Statement` to new spec: replaces `priority` for `expiry`.
   - Removes `dump()`
-  - `getStatements` requires the `topics` parameter
-  - Adds `getBroadcasts` and `getPosted` for filtering based on the `dest` parameter
-  - Adds `subscribeStatements(topics)` for subscribing
+  - `getStatements` takes a `topicFilter` parameter
+  - Adds filtering functions for broadcasts and posted
+  - Adds `subscribeStatements(topicFilter)` for subscribing
 
 ## 0.4.1 2026-03-16
 

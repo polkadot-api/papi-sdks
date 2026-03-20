@@ -1,4 +1,3 @@
-import { SizedHex } from "@polkadot-api/substrate-bindings"
 import { toHex } from "@polkadot-api/utils"
 import {
   lastValueFrom,
@@ -7,13 +6,12 @@ import {
   Observable,
   filter as rxjsFilter,
   scan,
+  startWith,
   takeWhile,
 } from "rxjs"
 import { getApi } from "./api"
 import { Statement, statementCodec } from "./codec"
 import { SubmitResult, TopicFilter } from "./types"
-
-const ANY_FILTER: TopicFilter = "any"
 
 /**
  * Create statement sdk.
@@ -25,7 +23,7 @@ export const createStatementSdk = (endpoint: string) => {
   const api = getApi(endpoint)
 
   const getStatements$ = (
-    filter: TopicFilter,
+    filter: TopicFilter = "any",
   ): Observable<{
     statements: Statement[]
     remaining?: number
@@ -51,9 +49,7 @@ export const createStatementSdk = (endpoint: string) => {
    *
    * @param filter  Topic filter for statements. Defaults to matching all.
    */
-  const getStatements = (
-    filter: TopicFilter = ANY_FILTER,
-  ): Promise<Statement[]> =>
+  const getStatements = (filter?: TopicFilter): Promise<Statement[]> =>
     lastValueFrom(
       getStatements$(filter).pipe(
         scan(
@@ -68,6 +64,7 @@ export const createStatementSdk = (endpoint: string) => {
         ),
         takeWhile((v) => v.remaining > 0, true),
         map((v) => v.statements),
+        startWith([]),
       ),
     )
 
@@ -92,41 +89,10 @@ export const createStatementSdk = (endpoint: string) => {
      * @param onError      Callback for errors.
      * @returns Unsubscribe function.
      */
-    subscribeStatements: (filter: TopicFilter): Observable<Statement> =>
+    subscribeStatements: (filter?: TopicFilter): Observable<Statement> =>
       getStatements$(filter).pipe(
         map((v) => v.statements),
         mergeAll(),
       ),
-
-    /**
-     * Get broadcasts (statements with no decryptionKey) matching topics.
-     *
-     * @param topics  Topics to match (all must be present).
-     */
-    getBroadcasts: async (
-      topics: Array<SizedHex<32>> = [],
-    ): Promise<Statement[]> => {
-      const filter: TopicFilter =
-        topics.length > 0 ? { matchAll: topics } : ANY_FILTER
-      const statements = await getStatements(filter)
-      return statements.filter((stmt) => stmt.decryptionKey === undefined)
-    },
-
-    /**
-     * Get posted statements (with decryptionKey) matching topics and
-     * destination.
-     *
-     * @param topics  Topics to match (all must be present).
-     * @param dest    Destination decryption key.
-     */
-    getPosted: async (
-      topics: Array<SizedHex<32>>,
-      dest: SizedHex<32>,
-    ): Promise<Statement[]> => {
-      const filter: TopicFilter =
-        topics.length > 0 ? { matchAll: topics } : ANY_FILTER
-      const statements = await getStatements(filter)
-      return statements.filter((stmt) => stmt.decryptionKey === dest)
-    },
   }
 }
