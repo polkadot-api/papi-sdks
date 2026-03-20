@@ -89,10 +89,15 @@ export const createStatementSdk = (endpoint: string) => {
      * @param onError      Callback for errors.
      * @returns Unsubscribe function.
      */
-    subscribeStatements: (filter?: TopicFilter): Observable<Statement> =>
+    getStatement$: (filter?: TopicFilter): Observable<Statement> =>
       getStatements$(filter).pipe(
         map((v) => v.statements),
         mergeAll(),
       ),
+
+    /**
+     * Close the connection and clean resources.
+     */
+    destroy: api.destroy,
   }
 }

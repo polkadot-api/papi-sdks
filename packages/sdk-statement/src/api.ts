@@ -18,7 +18,8 @@ export const getApi = (endpoint: string) => {
 
       const sendUnsubscribe = () => {
         // Fire-and-forget
-        subId != null && client.request(unsubscribeMethod, [subId])
+        subId != null &&
+          client.request(unsubscribeMethod, [subId]).catch(() => {})
       }
 
       client._request(method, params, {
@@ -54,5 +55,7 @@ export const getApi = (endpoint: string) => {
         "statement_unsubscribeStatement",
         [topicFilter],
       ),
+
+    destroy: () => client.destroy(),
   }
 }

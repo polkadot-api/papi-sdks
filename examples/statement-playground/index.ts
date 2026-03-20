@@ -1,7 +1,9 @@
 import {
   createStatementSdk,
+  filterPosted,
   getStatementSigner,
   stringToTopic,
+  topicFilter,
   type Statement,
 } from "@polkadot-api/sdk-statement"
 import { Binary, Blake2256 } from "@polkadot-api/substrate-bindings"
@@ -28,18 +30,30 @@ const stmt1: Statement = {
 }
 
 // SIGN AND SUBMIT STATEMENT
+const subscription = sdk
+  .getStatement$()
+  .subscribe((r) => console.log("received new statement", r))
+
 const signed1 = await alice.sign(stmt1)
 console.log(await sdk.submit(signed1))
 
 console.log(
+  "posted to 'key' with topics '1' and '2'",
   JSON.stringify(
-    await sdk.getPosted(
-      [stringToTopic("1"), stringToTopic("2")],
-      stringToTopic("key"),
-    ),
+    (
+      await sdk.getStatements(
+        topicFilter([stringToTopic("1"), stringToTopic("2")]),
+      )
+    ).filter(filterPosted(stringToTopic("key"))),
     jsonSerialize,
   ),
 )
 
 // GET ALL STATEMENTS (i.e. `dump`)
-console.log(JSON.stringify(await sdk.getStatements(), jsonSerialize))
+console.log(
+  "all statements",
+  JSON.stringify(await sdk.getStatements(), jsonSerialize),
+)
+
+subscription.unsubscribe()
+sdk.destroy()

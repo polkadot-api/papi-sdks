@@ -10,7 +10,7 @@
   - Removes `dump()`
   - `getStatements` takes a `topicFilter` parameter
   - Adds filtering functions for broadcasts and posted
-  - Adds `subscribeStatements(topicFilter)` for subscribing
+  - Adds `getStatement$(topicFilter)` for subscribing
 
 ## 0.4.1 2026-03-16
 

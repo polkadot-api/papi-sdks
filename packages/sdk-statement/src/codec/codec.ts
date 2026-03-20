@@ -137,7 +137,7 @@ const createExpiry = (timestamp: number, sequenceNumber: number = 0) => {
   if (sequenceNumber < 0 || sequenceNumber > MAX_SEQ_NUMBER) {
     throw new RangeError(`sequenceNumber must be 0-${MAX_SEQ_NUMBER}`)
   }
-  return (BigInt(timestamp) << 32n) | BigInt(sequenceNumber)
+  return (BigInt(Math.floor(timestamp)) << 32n) | BigInt(sequenceNumber)
 }
 
 const parseExpiry = (expiry: bigint) => ({
