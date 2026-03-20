@@ -7,7 +7,6 @@ import {
   SizedBytes,
   SizedHex,
   Struct,
-  u32,
   u64,
   Variant,
   Vector,
@@ -26,8 +25,15 @@ export type Proof = Enum<{
 
 export type Statement = Partial<{
   proof: Proof
+  /**
+   * @deprecated Experimental feature, may be removed/changed in future
+   *             releases.
+   */
   decryptionKey: SizedHex<32>
-  priority: number
+  expiry: {
+    timestampSecs: number
+    sequence: number
+  }
   channel: SizedHex<32>
   topics: Array<SizedHex<32>>
   data: Uint8Array
@@ -36,7 +42,7 @@ export type Statement = Partial<{
 const sortIdxs = {
   proof: 0,
   decryptionKey: 1,
-  priority: 2,
+  expiry: 2,
   channel: 3,
   topics: 4,
   topic1: 4,
@@ -60,7 +66,7 @@ const field = Variant({
     onChain: Struct({ who: bin32, blockHash: bin32, event: u64 }),
   }),
   decryptionKey: bin32,
-  priority: u32,
+  expiry: u64,
   channel: bin32,
   topic1: bin32,
   topic2: bin32,
@@ -88,6 +94,13 @@ export const statementCodec = enhanceCodec<
           stmt[k]!.forEach((v, i) => {
             statement.push(Enum(`topic${i + 1}` as `topic${1 | 2 | 3 | 4}`, v))
           })
+        } else if (k === "expiry") {
+          statement.push(
+            Enum(
+              "expiry",
+              createExpiry(stmt.expiry!.timestampSecs, stmt.expiry!.sequence),
+            ),
+          )
         } else {
           statement.push(Enum(k, stmt[k]!))
         }
@@ -104,7 +117,9 @@ export const statementCodec = enhanceCodec<
       if (idx <= maxIdx) throw new Error("Unexpected entries order")
       maxIdx = idx
 
-      if (!v.type.startsWith("topic")) {
+      if (v.type === "expiry") {
+        statement.expiry = parseExpiry(v.value)
+      } else if (!v.type.startsWith("topic")) {
         ;(statement as any)[v.type] = v.value
       } else if (v.type !== `topic${++maxTopicChecked}`) {
         throw new Error(`Unexpected ${v.type}`)
@@ -116,3 +131,16 @@ export const statementCodec = enhanceCodec<
     return statement
   },
 )
+
+const MAX_SEQ_NUMBER = 0xffffffff
+const createExpiry = (timestamp: number, sequenceNumber: number = 0) => {
+  if (sequenceNumber < 0 || sequenceNumber > MAX_SEQ_NUMBER) {
+    throw new RangeError(`sequenceNumber must be 0-${MAX_SEQ_NUMBER}`)
+  }
+  return (BigInt(timestamp) << 32n) | BigInt(sequenceNumber)
+}
+
+const parseExpiry = (expiry: bigint) => ({
+  timestampSecs: Number(expiry >> 32n),
+  sequence: Number(expiry & 0xffffffffn),
+})

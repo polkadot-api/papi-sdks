@@ -1,3 +1,24 @@
+import { HexString, SizedHex } from "@polkadot-api/substrate-bindings"
+
+/**
+ * Filter for subscribing to statements with different topics.
+ */
+export type TopicFilter =
+  | "any"
+  | { matchAll: Array<SizedHex<32>> }
+  | { matchAny: Array<SizedHex<32>> }
+
+/**
+ * An item returned by the statement subscription stream.
+ */
+export type StatementEvent = {
+  event: "newStatements"
+  data: {
+    statements: HexString[]
+    remaining?: number
+  }
+}
+
 type SubmitNew = {
   /**
    * Statement was accepted as new.
@@ -10,9 +31,15 @@ type SubmitKnown = {
    */
   status: "known"
 }
+type SubmitKnownExpired = {
+  /**
+   * Statement was already known but has expired.
+   */
+  status: "knownExpired"
+}
 type SubmitRejected = {
   /**
-   * Statement was rejected because the store is full or priority is too low.
+   * Statement was rejected because the store is full or expiry is too low.
    */
   status: "rejected"
 } & (
@@ -32,38 +59,44 @@ type SubmitRejected = {
     }
   | {
       /**
-       * Attempting to replace a channel message with lower or equal priority.
+       * Attempting to replace a channel message with lower or equal expiry.
        */
       reason: "channelPriorityTooLow"
       /**
-       * The priority of the submitted statement.
+       * The expiry of the submitted statement.
        */
-      submitted_priority: number
+      submitted_expiry: bigint
       /**
-       * The minimum priority of the existing channel message.
+       * The minimum expiry of the existing channel message.
        */
-      min_priority: number
+      min_expiry: bigint
     }
   | {
       /**
-       * Account reached its statement limit and submitted priority is too low
+       * Account reached its statement limit and submitted expiry is too low
        * to evict existing.
        */
       reason: "accountFull"
       /**
-       * The priority of the submitted statement.
+       * The expiry of the submitted statement.
        */
-      submitted_priority: number
+      submitted_expiry: bigint
       /**
-       * The minimum priority of the existing statement.
+       * The minimum expiry of the existing statement.
        */
-      min_priority: number
+      min_expiry: bigint
     }
   | {
       /**
        * The global statement store is full and cannot accept new statements.
        */
       reason: "storeFull"
+    }
+  | {
+      /**
+       * Account has no allowance set.
+       */
+      reason: "noAllowance"
     }
 )
 type SubmitInvalid = {
@@ -98,10 +131,28 @@ type SubmitInvalid = {
        */
       max_size: number
     }
+  | {
+      /**
+       * Statement has already expired. The expiry field is in the past.
+       */
+      reason: "alreadyExpired"
+    }
 )
+type SubmitInternalError = {
+  /**
+   * Internal store error.
+   */
+  status: "internalError"
+  /**
+   * Error message.
+   */
+  error: string
+}
 
 export type SubmitResult =
   | SubmitNew
   | SubmitKnown
+  | SubmitKnownExpired
   | SubmitRejected
   | SubmitInvalid
+  | SubmitInternalError
