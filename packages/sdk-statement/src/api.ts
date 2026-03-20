@@ -1,26 +1,61 @@
 import { HexString } from "@polkadot-api/substrate-bindings"
-import { fromHex } from "@polkadot-api/utils"
-import { SubmitResult } from "./types"
+import { createClient, UnsubscribeFn } from "@polkadot-api/substrate-client"
+import { getWsProvider } from "@polkadot-api/ws-provider"
+import { Observable } from "rxjs"
+import { StatementEvent, SubmitResult, TopicFilter } from "./types"
 
-export type RequestFn = <Reply = any, Params extends Array<any> = any[]>(
-  method: string,
-  params: Params,
-) => Promise<Reply>
+export const getApi = (endpoint: string) => {
+  const client = createClient(getWsProvider(endpoint))
 
-export const getApi = (req: RequestFn) => ({
-  submit: (stmt: HexString) =>
-    req<SubmitResult | undefined, [HexString]>("statement_submit", [stmt]),
+  const subscribe = <T>(
+    method: string,
+    unsubscribeMethod: string,
+    params: any[],
+  ) =>
+    new Observable<T>((obs) => {
+      let unsubInner: UnsubscribeFn | null = null
+      let subId: string | null = null
 
-  dump: () => req<HexString[], []>("statement_dump", []),
+      const sendUnsubscribe = () => {
+        // Fire-and-forget
+        subId != null &&
+          client.request(unsubscribeMethod, [subId]).catch(() => {})
+      }
 
-  broadcasts: (matchAllTopics: HexString[]) =>
-    req<HexString[], [number[][]]>("statement_broadcastsStatement", [
-      matchAllTopics.map((v) => [...fromHex(v)]),
-    ]),
+      client._request(method, params, {
+        onSuccess: (res: string, follow) => {
+          subId = res
+          if (obs.closed) {
+            sendUnsubscribe()
+            return
+          }
+          unsubInner = follow(subId, {
+            next: (data: any) => obs.next(data),
+            error: (e) => obs.error(e),
+          })
+        },
+        onError(e) {
+          obs.error(e)
+        },
+      })
 
-  posted: (matchAllTopics: HexString[], dest: HexString) =>
-    req<HexString[], [number[][], number[]]>("statement_postedStatement", [
-      matchAllTopics.map((v) => [...fromHex(v)]),
-      [...fromHex(dest)],
-    ]),
-})
+      return () => {
+        sendUnsubscribe()
+        unsubInner?.()
+      }
+    })
+
+  return {
+    submit: (stmt: HexString) =>
+      client.request<SubmitResult>("statement_submit", [stmt]),
+
+    subscribeStatement: (topicFilter: TopicFilter) =>
+      subscribe<StatementEvent>(
+        "statement_subscribeStatement",
+        "statement_unsubscribeStatement",
+        [topicFilter],
+      ),
+
+    destroy: () => client.destroy(),
+  }
+}

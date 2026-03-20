@@ -42,7 +42,10 @@
   "license": "MIT",
   "dependencies": {
     "@polkadot-api/substrate-bindings": "0.19.0",
+    "@polkadot-api/substrate-client": "^0.6.0",
     "@polkadot-api/utils": "^0.3.0",
-    "polkadot-api": "^2.0.0-rc.5"
+    "@polkadot-api/ws-provider": "^0.8.1",
+    "polkadot-api": "^2.0.0-rc.5",
+    "rxjs": "^7.8.2"
   }
 }

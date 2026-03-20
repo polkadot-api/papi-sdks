@@ -2,6 +2,16 @@
 
 ## Unreleased
 
+### Changed
+
+- Change API to new subscription-based statement store
+  - `createStatementSdk` takes an endpoint URL rather than a `req` function.
+  - Update `Statement` to new spec: replaces `priority` for `expiry`.
+  - Removes `dump()`
+  - `getStatements` takes a `topicFilter` parameter
+  - Adds filtering functions for broadcasts and posted
+  - Adds `getStatement$(topicFilter)` for subscribing
+
 ## 0.4.1 2026-03-16
 
 ### Fixed
