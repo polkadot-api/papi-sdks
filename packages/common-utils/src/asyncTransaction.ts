@@ -1,19 +1,19 @@
 import type { Transaction } from "polkadot-api"
 import { from, switchMap } from "rxjs"
 
-export type AsyncTransaction<Asset = any, Ext = any> = Omit<
-  Transaction<Asset, Ext>,
-  "decodedCall" | "getEncodedData" | "getBareTx"
-> & {
-  decodedCall: Promise<Transaction<Asset, Ext>["decodedCall"]>
+type ExtensionConstraints = Transaction extends Transaction<infer R> ? R : never
+export type AsyncTransaction<
+  EC extends ExtensionConstraints = ExtensionConstraints,
+> = Omit<Transaction<EC>, "decodedCall" | "getEncodedData" | "getBareTx"> & {
+  decodedCall: Promise<Transaction<EC>["decodedCall"]>
   getEncodedData: () => Promise<Uint8Array>
   getBareTx: () => Promise<Uint8Array>
-  waited: Promise<Transaction<Asset, Ext>>
+  waited: Promise<Transaction<EC>>
 }
 
-export const wrapAsyncTx = <Asset, Ext>(
-  fn: () => Promise<Transaction<Asset, Ext>>,
-): AsyncTransaction<Asset, Ext> => {
+export const wrapAsyncTx = <EC extends ExtensionConstraints>(
+  fn: () => Promise<Transaction<EC>>,
+): AsyncTransaction<EC> => {
   const promise = fn()
 
   // Prevent some runtimes from terminating for an uncaught exception
@@ -22,10 +22,11 @@ export const wrapAsyncTx = <Asset, Ext>(
   })
 
   return {
-    sign: (...args) => promise.then((tx) => tx.sign(...args)),
-    signSubmitAndWatch: (...args) =>
-      from(promise).pipe(switchMap((tx) => tx.signSubmitAndWatch(...args))),
-    signAndSubmit: (...args) => promise.then((tx) => tx.signAndSubmit(...args)),
+    create: (...args) => promise.then((tx) => tx.create(...args)),
+    createSubmitAndWatch: (...args) =>
+      from(promise).pipe(switchMap((tx) => tx.createSubmitAndWatch(...args))),
+    createAndSubmit: (...args) =>
+      promise.then((tx) => tx.createAndSubmit(...args)),
     getEstimatedFees: (...args) =>
       promise.then((tx) => tx.getEstimatedFees(...args)),
     getPaymentInfo: (...args) =>

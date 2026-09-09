@@ -29,10 +29,10 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@polkadot-api/common-sdk-utils": "workspace:*",
-    "@polkadot-api/substrate-bindings": "^0.20.1",
+    "@polkadot-api/common-sdk-utils": "0.3.0",
+    "@polkadot-api/substrate-bindings": "^0.21.1",
     "@react-rxjs/utils": "^0.9.7",
-    "polkadot-api": "2.0.2",
+    "polkadot-api": "2.2.2",
     "scale-ts": "^1.6.1"
   },
   "peerDependencies": {

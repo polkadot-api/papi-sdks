@@ -7,4 +7,6 @@ export type SdkDefinition<P, R> = {
   metadataTypes: any
   getMetadata: any
   genesis: any
+  extensions: any
+  requiredExtensions: any
 }
