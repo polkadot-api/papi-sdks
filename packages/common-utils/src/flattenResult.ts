@@ -6,8 +6,7 @@ const isResult = (value: unknown): value is Result =>
   typeof value.success === "boolean"
 
 export type Result<S = unknown, E = unknown> =
-  | { success: true; value: S }
-  | { success: false; value: E }
+  { success: true; value: S } | { success: false; value: E }
 
 /**
  * Flattens a nested Result<Result<Result<number>, ErrorA>, ErrorB>, ErrorC>
@@ -36,9 +35,8 @@ export type FlattenErrors<T> =
   IsAny<T> extends true
     ? any
     : T extends Result
-      ?
-          | (T & { success: false })["value"]
-          | FlattenErrors<(T & { success: true })["value"]>
+      ? | (T & { success: false })["value"]
+        | FlattenErrors<(T & { success: true })["value"]>
       : never
 
 /**

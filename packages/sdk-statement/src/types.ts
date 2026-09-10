@@ -101,7 +101,4 @@ type SubmitInvalid = {
 )
 
 export type SubmitResult =
-  | SubmitNew
-  | SubmitKnown
-  | SubmitRejected
-  | SubmitInvalid
+  SubmitNew | SubmitKnown | SubmitRejected | SubmitInvalid

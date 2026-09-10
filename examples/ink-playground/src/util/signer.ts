@@ -3,7 +3,7 @@ import {
   entropyToMiniSecret,
   mnemonicToEntropy,
 } from "@polkadot-labs/hdkd-helpers"
-import { getPolkadotSigner } from "polkadot-api/signer"
+import { getTxCreator } from "polkadot-api/tx-creator"
 
 const alice_mnemonic =
   "bottom drive obey lake curtain smoke basket hold race lonely fit walk"
@@ -11,8 +11,4 @@ const entropy = mnemonicToEntropy(alice_mnemonic)
 const miniSecret = entropyToMiniSecret(entropy)
 const derive = sr25519CreateDerive(miniSecret)
 const alice = derive("//Alice")
-export const aliceSigner = getPolkadotSigner(
-  alice.publicKey,
-  "Sr25519",
-  alice.sign,
-)
+export const aliceSigner = getTxCreator(alice.publicKey, "Sr25519", alice.sign)

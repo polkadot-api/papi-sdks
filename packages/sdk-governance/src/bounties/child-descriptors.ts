@@ -130,6 +130,5 @@ type ChildBountiesSdkDefinition<
 > = SdkDefinition<ChildBountiesSdkPallets<St>, ApisTypedef<{}>>
 export type ChildBountiesSdkTypedApi<
   St extends DescriptorEntry<StorageDescriptor<any, any, any, any>> =
-    | ChildBountiesV0Storage
-    | ChildBountiesV1Storage,
+    ChildBountiesV0Storage | ChildBountiesV1Storage,
 > = TypedApi<ChildBountiesSdkDefinition<St>>

@@ -36,12 +36,10 @@ export function createLinkedAccountsSdk(
     cache[address] = merge(
       proxy$(address).pipe(
         filter((v) => v.length > 0),
-        map(
-          (value): LinkedAccountsResult => ({
-            type: "proxy",
-            value: { addresses: value },
-          }),
-        ),
+        map((value): LinkedAccountsResult => ({
+          type: "proxy",
+          value: { addresses: value },
+        })),
       ),
       from(multisigProvider(address)).pipe(
         filter((v) => !!v),
@@ -85,24 +83,20 @@ export function createLinkedAccountsSdk(
 
         if (result.type === "proxy") {
           return accounts$.pipe(
-            map(
-              (accounts): NestedLinkedAccountsResult => ({
-                type: "proxy",
-                value: { accounts },
-              }),
-            ),
+            map((accounts): NestedLinkedAccountsResult => ({
+              type: "proxy",
+              value: { accounts },
+            })),
           )
         }
         return accounts$.pipe(
-          map(
-            (accounts): NestedLinkedAccountsResult => ({
-              type: "multisig",
-              value: {
-                threshold: result.value.threshold,
-                accounts,
-              },
-            }),
-          ),
+          map((accounts): NestedLinkedAccountsResult => ({
+            type: "multisig",
+            value: {
+              threshold: result.value.threshold,
+              accounts,
+            },
+          })),
         )
       }),
     )

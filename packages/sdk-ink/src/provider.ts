@@ -186,8 +186,10 @@ export const reviveProvider = (
           if (!trace.success) return undefined
 
           if ("type" in trace.value) {
-            if (trace.value.type === "Prestate") {
-              console.error("Unexpected prestate response for events")
+            if (trace.value.type !== "Call") {
+              console.error(
+                `Unexpected ${trace.value.type} response for events`,
+              )
               return undefined
             }
             return getEventsFromTrace(trace.value.value)
@@ -246,8 +248,10 @@ export const reviveProvider = (
           if (!trace.success) return undefined
 
           if ("type" in trace.value) {
-            if (trace.value.type === "Prestate") {
-              console.error("Unexpected prestate response for events")
+            if (trace.value.type !== "Call") {
+              console.error(
+                `Unexpected ${trace.value.type} response for events`,
+              )
               return undefined
             }
             return getEventsFromTrace(trace.value.value)
